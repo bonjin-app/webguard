@@ -78,6 +78,9 @@ class ServletIntegrationTest {
         assertTrue(csp.contains("connect-src 'self'"));
         assertTrue(csp.contains("object-src 'none'"));
         assertTrue(csp.contains("frame-ancestors 'none'"));
+        assertTrue(csp.contains("form-action 'self'"));
+        assertTrue(csp.contains("require-trusted-types-for 'script'"));
+        assertTrue(csp.contains("trusted-types 'none'"));
         assertFalse(csp.contains("unsafe-inline"));
     }
 

@@ -123,6 +123,7 @@ export function createObfuscatorOptions(
   } = options;
   const config = resolveConfig({ obfuscation: input }).obfuscation;
   const basic = config.level === "basic";
+  const high = config.level === "high";
   return {
     target: "browser-no-eval",
     compact: true,
@@ -134,20 +135,25 @@ export function createObfuscatorOptions(
     reservedNames: [...config.reservedNames, ...config.reservedProperties],
     reservedStrings: source === undefined ? [] : reservedModuleStrings(source),
     controlFlowFlattening: config.level === "high",
-    controlFlowFlatteningThreshold: 0.5,
+    controlFlowFlatteningThreshold: high ? 0.75 : 0.5,
     deadCodeInjection: config.deadCodeInjection,
     deadCodeInjectionThreshold: 0.2,
     stringArray: !basic,
     stringArrayEncoding:
       config.stringArrayEncoding === "none" ? [] : [config.stringArrayEncoding],
-    stringArrayThreshold: 0.5,
-    stringArrayCallsTransform: false,
+    stringArrayThreshold: high ? 1 : 0.5,
+    stringArrayCallsTransform: high,
+    stringArrayCallsTransformThreshold: high ? 0.75 : 0.5,
     stringArrayRotate: !basic,
     stringArrayShuffle: !basic,
-    stringArrayWrappersCount: basic ? 0 : 1,
-    numbersToExpressions: false,
+    stringArrayWrappersCount: basic ? 0 : high ? 2 : 1,
+    stringArrayWrappersType: high ? "function" : "variable",
+    stringArrayWrappersParametersMaxCount: 3,
+    stringArrayWrappersChainedCalls: true,
+    numbersToExpressions: high,
     transformObjectKeys: false,
-    splitStrings: false,
+    splitStrings: high,
+    splitStringsChunkLength: 8,
     unicodeEscapeSequence: false,
     debugProtection: false,
     debugProtectionInterval: 0,

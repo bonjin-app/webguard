@@ -1,3 +1,4 @@
+import { createSecurityHeaders } from "@webguard/core";
 import { test, expect } from "@playwright/test";
 for (const [name, port] of [
   ["vanilla-js", 4176],
@@ -55,8 +56,7 @@ test("React protected build preserves state, async import, routing, forms and CS
       response,
       headers: {
         ...response.headers(),
-        "content-security-policy":
-          "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'",
+        ...createSecurityHeaders(),
       },
     });
   });

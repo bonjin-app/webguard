@@ -5,7 +5,12 @@ import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
 import { createJiti } from "jiti";
 import { fileURLToPath } from "node:url";
-import { resolveConfig, type WebGuardConfigInput } from "@webguard/core";
+import {
+  resolveConfig,
+  createSecurityHeaders,
+  type TrustedTypesMode,
+  type WebGuardConfigInput,
+} from "@webguard/core";
 import { verifyManifest } from "@webguard/integrity";
 import { protectDirectory } from "./pipeline.js";
 import { scanDirectory } from "./scan.js";
@@ -77,6 +82,52 @@ function protectOptions(command: Command) {
     )
     .option("--no-private-artifacts", "Do not retain private source maps");
 }
+interface HeaderOptions {
+  trustedTypes: string;
+  allowScriptOrigin?: string[];
+  allowStyleOrigin?: string[];
+  allowConnectOrigin?: string[];
+  allowImgOrigin?: string[];
+  allowFontOrigin?: string[];
+  allowWorkerOrigin?: string[];
+}
+program
+  .command("headers")
+  .description(
+    "Print strict HTTP response header JSON; does not apply it to a server or lock developer tools",
+  )
+  .option("--trusted-types <mode>", "enforce, report-only or off", "enforce")
+  .option(
+    "--allow-script-origin <origins...>",
+    "Additional exact script origins",
+  )
+  .option("--allow-style-origin <origins...>", "Additional exact style origins")
+  .option("--allow-connect-origin <origins...>", "Additional exact API origins")
+  .option("--allow-img-origin <origins...>", "Additional exact image origins")
+  .option("--allow-font-origin <origins...>", "Additional exact font origins")
+  .option(
+    "--allow-worker-origin <origins...>",
+    "Additional exact worker origins",
+  )
+  .action((options: HeaderOptions) => {
+    console.log(
+      JSON.stringify(
+        createSecurityHeaders({
+          trustedTypes: options.trustedTypes as TrustedTypesMode,
+          allowedOrigins: {
+            script: options.allowScriptOrigin,
+            style: options.allowStyleOrigin,
+            connect: options.allowConnectOrigin,
+            img: options.allowImgOrigin,
+            font: options.allowFontOrigin,
+            worker: options.allowWorkerOrigin,
+          },
+        }),
+        null,
+        2,
+      ),
+    );
+  });
 program
   .command("init")
   .description("Create a config without replacing an existing file")

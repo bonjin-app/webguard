@@ -58,9 +58,12 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
   const preset = input.preset === undefined ? "standard" : input.preset;
   if (!["basic", "standard", "strict", "custom"].includes(preset))
     throw new TypeError("Unknown preset");
+  const effectiveLevel =
+    input.obfuscation?.level ??
+    (preset === "basic" ? "basic" : preset === "strict" ? "high" : "standard");
   const defaults: ObfuscationConfig = {
     enabled: true,
-    stringArrayEncoding: "none",
+    stringArrayEncoding: effectiveLevel === "high" ? "rc4" : "none",
     level:
       preset === "basic" ? "basic" : preset === "strict" ? "high" : "standard",
     include: ["**/*.{js,mjs,cjs}"],
@@ -171,3 +174,9 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
 export function defineConfig<const T extends WebGuardConfigInput>(input: T): T {
   return input;
 }
+
+export {
+  createSecurityHeaders,
+  type SecurityHeadersOptions,
+  type TrustedTypesMode,
+} from "./security.js";

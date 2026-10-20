@@ -88,3 +88,24 @@ describe("configuration", () => {
     expect(() => resolveConfig(input as never)).toThrow();
   });
 });
+
+it("uses encoded strings for Strict and High without changing Standard or explicit overrides", () => {
+  expect(
+    resolveConfig({ preset: "strict" }).obfuscation.stringArrayEncoding,
+  ).toBe("rc4");
+  expect(
+    resolveConfig({ obfuscation: { level: "high" } }).obfuscation
+      .stringArrayEncoding,
+  ).toBe("rc4");
+  expect(resolveConfig().obfuscation.stringArrayEncoding).toBe("none");
+  expect(
+    resolveConfig({
+      preset: "strict",
+      obfuscation: { stringArrayEncoding: "none" },
+    }).obfuscation.stringArrayEncoding,
+  ).toBe("none");
+  expect(
+    resolveConfig({ preset: "strict", obfuscation: { level: "basic" } })
+      .obfuscation.stringArrayEncoding,
+  ).toBe("none");
+});

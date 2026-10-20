@@ -267,3 +267,23 @@ describe("source map comment stripping", () => {
     ).toMatch(/const\s+value/);
   });
 });
+
+it("High hides non-public payload strings and preserves async behavior without eval", async () => {
+  const phrases = [
+    "confidential_internal_rule_731",
+    "pricing_branch_delta_942",
+    "risk_weight_alpha_582",
+    "workflow_phase_omega_341",
+  ];
+  const input = `async function calculate(){const rules=${JSON.stringify(phrases)};const answer=await Promise.resolve(rules.map((value,index)=>value+":"+index).join("|"));return answer;} globalThis.result=calculate();`;
+  const result = await obfuscate(input, { level: "high", seed: 42 });
+  for (const phrase of phrases) expect(result.code).not.toContain(phrase);
+  const context: Record<string, unknown> = {};
+  runInNewContext(result.code, context, {
+    timeout: 5000,
+    contextCodeGeneration: { strings: false, wasm: false },
+  });
+  expect(await context.result).toBe(
+    phrases.map((value, index) => `${value}:${index}`).join("|"),
+  );
+});

@@ -11,6 +11,7 @@ Protect original source maps, development sources, private configuration, deploy
 - Credential scanning is heuristic, redacts matched values and fails protection on detected risks before and after transforms.
 - CLI rejects overlapping destinations and symlinks and stages work before publication. It assumes a local filesystem not concurrently controlled by an adversary; it is not an OS sandbox.
 - SRI/CSP strengthen resource loading when served correctly. A trusted local manifest anchors deployment verification. Same-channel mutable manifests do not authenticate themselves.
+- Generated response policies can block unapproved resource loads and inline handlers. Enforced Trusted Types rejects raw-string DOM sinks where supported; these policies do not prohibit browser-owned debugging execution. See [policy integration](docs/SECURITY_HARDENING.md).
 - Browser callbacks indicate uncertain hints. Disabling the SDK, using browser menus, modifying JavaScript, or inspecting network responses bypasses client-only friction.
 - Playground execution has no same-origin privilege, DOM or network access. Output size and runtime limits reduce accidental abuse, not all memory exhaustion or browser-engine attacks.
 

@@ -88,6 +88,10 @@ Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'
 
 Adapt origins for your application. Test actual production behavior; this example intentionally excludes inline scripts and `unsafe-eval`. WebGuard does not silently weaken your CSP.
 
+## Strong protection and injection policy
+
+Use `webguard({ preset: 'strict' })` for stronger control-flow/string transforms and default reversible RC4 string encoding. Generate CSP/Trusted Types response headers with `node packages/cli/dist/bin.js headers`. These must be applied by your server/CDN and do not lock the developer console. See [hardening and attack boundaries](docs/SECURITY_HARDENING.md).
+
 ## Browser SDK
 
 ```ts
@@ -113,14 +117,14 @@ All intrusive controls are opt-in, including Strict. Detection is event-driven; 
 
 ## Policies
 
-| Preset   | Build behavior                                                                     |
-| -------- | ---------------------------------------------------------------------------------- |
-| Basic    | Compact code and local identifier renaming; no integrity manifest by default       |
-| Standard | Safe AST obfuscation and string-array transformation; integrity enabled            |
-| Strict   | High control-flow transformation; integrity enabled; browser blocking still opt-in |
-| Custom   | Standard defaults with individually configured fields                              |
+| Preset   | Build behavior                                                                                               |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| Basic    | Compact code and local identifier renaming; no integrity manifest by default                                 |
+| Standard | Safe AST obfuscation and string-array transformation; integrity enabled                                      |
+| Strict   | Stronger control-flow and string transforms + RC4 encoding; integrity enabled; browser blocking still opt-in |
+| Custom   | Standard defaults with individually configured fields                                                        |
 
-`obfuscation.level` is `basic`, `standard`, or `high`. Public property renaming and dead-code injection are off by default. Optional Base64/RC4 string encoding is reversible and is not secret storage. Module specifiers and bundler placeholders stay readable so loading remains correct. Required license/preservation/copyright comments are retained; ordinary comments are removed. Renaming requires explicit reserved public-property patterns; it can break reflection and serialization even when a transform is syntactically valid. Test your actual application. Excluded JavaScript still has mapping comments removed; `.map` and original TS/TSX/JSX/Vue/Svelte files are never copied into public output.
+`obfuscation.level` is `basic`, `standard`, or `high`. Public property renaming and dead-code injection are off by default. Strict/High defaults to RC4; optional Base64/RC4 string encoding is reversible and is not secret storage. Module specifiers and bundler placeholders stay readable so loading remains correct. Required license/preservation/copyright comments are retained; ordinary comments are removed. Renaming requires explicit reserved public-property patterns; it can break reflection and serialization even when a transform is syntactically valid. Test your actual application. Excluded JavaScript still has mapping comments removed; `.map` and original TS/TSX/JSX/Vue/Svelte files are never copied into public output.
 
 ## Deployment verification
 

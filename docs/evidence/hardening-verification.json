@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-20T05:29:35.998Z",
+  "node": "v22.23.2",
+  "baseCommit": "c5647b9",
+  "scope": "Generic strong obfuscation and browser response policies",
+  "checks": {
+    "build": "12 tasks passed, docs rebuilt after guide update",
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "unitIntegration": {
+      "passed": 115,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "projects": ["chromium", "firefox", "webkit"],
+      "responseHeaders": "Playwright route responses emulate generated policy; no deployed policy claim"
+    },
+    "jspServlet": {
+      "passed": 4,
+      "failed": 0,
+      "java": 17,
+      "tomcat": "10.1.61",
+      "artifact": "WAR"
+    },
+    "finalManifestReadback": "4 example outputs valid",
+    "focusedSecurityReview": "reported origin injection defect fixed; no remaining actionable finding in final narrow review",
+    "codexConfigurationChanged": false,
+    "deployment": "local only",
+    "npmPublish": false,
+    "remoteCI": "not run"
+  },
+  "sha256": {
+    "packages/core/src/security.ts": "08934aebecb70e17b3c4baba955f765a72549cb4a799590d876cf2b67c36f709",
+    "packages/core/dist/index.js": "144181438a07c08e451a953a40dee8c8c5ad4f25a4d6483ba17205c96d435bc4",
+    "packages/obfuscator/dist/index.js": "4612b0c2753ac307387d3f49259c4aebb0fe136456e609e2904b1cfe0adddf80",
+    "packages/cli/dist/bin.js": "7466ed2a9fa58b54e274ca05227157955c91b1298e3c9d45cdd01e2ca266ce90",
+    "packages/browser/dist/webguard.global.js": "1780c8c376d3fe7abbd0862fae083bf6dba8ec5e4451c7161d559d01aa623ba3",
+    "examples/react-vite/dist/webguard-manifest.json": "0e6f53a799ec367d15876bb58c43538997fbc7bb2a64b5cd0356d96657a7e36c",
+    "examples/vanilla-js/dist/webguard-manifest.json": "6423fe48140427aaa034f1d33cd4106045374061d3be44fabb37a5c97642d299",
+    "examples/vanilla-ts/dist/webguard-manifest.json": "c45a18a0fc2689088f44da81110c7d900885707020757898fb3c4b58e1e05d57",
+    "examples/jsp-servlet/src/main/webapp/assets/webguard-manifest.json": "847fca6b0bf8f7a0c7fec74e1f43c55d98ef43026b2124eea518e576d4e02894",
+    "examples/jsp-servlet/target/webguard.war": "f7e392fa0ab6de4b1a83340a5f3b9d15ac3cfce40991edc0aff0675b838a98b0"
+  }
+}

@@ -80,3 +80,20 @@ it("rejects malformed default configuration instead of silently applying default
   expect(result.status).toBe(1);
   expect(result.stderr).toContain("must be an object");
 });
+
+it("prints strict security response headers and rejects injected origin tokens", async () => {
+  const root = await fixture();
+  const result = run(root, "headers");
+  expect(result.status).toBe(0);
+  const headers = JSON.parse(result.stdout);
+  expect(headers["Content-Security-Policy"]).toContain(
+    "require-trusted-types-for 'script'",
+  );
+  const invalid = run(
+    root,
+    "headers",
+    "--allow-script-origin",
+    "https://cdn.example; script-src *",
+  );
+  expect(invalid.status).toBe(1);
+});

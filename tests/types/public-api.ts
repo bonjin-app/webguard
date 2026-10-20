@@ -73,3 +73,13 @@ obfuscate("const a = 1;", { seed: "7" });
 // @ts-expect-error Transformation results are asynchronous.
 const synchronousResult: ObfuscationResult = obfuscate("const a = 1;");
 void synchronousResult;
+
+import { createSecurityHeaders } from "@webguard/core";
+createSecurityHeaders({
+  trustedTypes: "report-only",
+  allowedOrigins: { connect: ["https://api.example"] },
+});
+// @ts-expect-error only defined Trusted Types modes are accepted
+createSecurityHeaders({ trustedTypes: "automatic" });
+// @ts-expect-error CSP source categories are closed
+createSecurityHeaders({ allowedOrigins: { default: ["*"] } });

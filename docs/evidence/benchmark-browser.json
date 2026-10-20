@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-10-20T05:14:01.923Z",
+  "measuredAt": "2026-10-20T05:28:09.006Z",
   "browser": "156.0.8078.4",
   "samplesPerCase": 3,
   "cases": [
@@ -7,28 +7,28 @@
       "kind": "baseline",
       "samples": [
         {
-          "domContentLoadedMs": 289.90000000596046,
-          "loadMs": 289.90000000596046,
+          "domContentLoadedMs": 486,
+          "loadMs": 486.90000000596046,
           "resourceTransferBytes": 227632,
-          "lazyRoundtripMs": 83.67641599999934,
-          "taskDurationSeconds": 0.182015,
-          "jsHeapUsedBytes": 3003320
+          "lazyRoundtripMs": 347.7867919999999,
+          "taskDurationSeconds": 0.133788,
+          "jsHeapUsedBytes": 3053528
         },
         {
-          "domContentLoadedMs": 45,
-          "loadMs": 45.099999994039536,
+          "domContentLoadedMs": 105.40000000596046,
+          "loadMs": 105.80000001192093,
           "resourceTransferBytes": 227632,
-          "lazyRoundtripMs": 69.47487499999988,
-          "taskDurationSeconds": 0.11959,
-          "jsHeapUsedBytes": 3053984
+          "lazyRoundtripMs": 178.07500000000073,
+          "taskDurationSeconds": 0.122585,
+          "jsHeapUsedBytes": 3068672
         },
         {
-          "domContentLoadedMs": 48.5,
-          "loadMs": 48.5,
+          "domContentLoadedMs": 57,
+          "loadMs": 57.29999998211861,
           "resourceTransferBytes": 227632,
-          "lazyRoundtripMs": 71.54541599999902,
-          "taskDurationSeconds": 0.105389,
-          "jsHeapUsedBytes": 3017944
+          "lazyRoundtripMs": 53.53016699999989,
+          "taskDurationSeconds": 0.117141,
+          "jsHeapUsedBytes": 3008352
         }
       ]
     },
@@ -36,28 +36,28 @@
       "kind": "protected",
       "samples": [
         {
-          "domContentLoadedMs": 61.400000005960464,
-          "loadMs": 61.5,
-          "resourceTransferBytes": 239632,
-          "lazyRoundtripMs": 64.67858299999898,
-          "taskDurationSeconds": 0.145567,
-          "jsHeapUsedBytes": 3307312
+          "domContentLoadedMs": 329.19999998807907,
+          "loadMs": 329.19999998807907,
+          "resourceTransferBytes": 1778396,
+          "lazyRoundtripMs": 78.92891699999927,
+          "taskDurationSeconds": 0.390447,
+          "jsHeapUsedBytes": 12263192
         },
         {
-          "domContentLoadedMs": 89.90000000596046,
-          "loadMs": 90.09999999403954,
-          "resourceTransferBytes": 239632,
-          "lazyRoundtripMs": 92.69304199999897,
-          "taskDurationSeconds": 0.147136,
-          "jsHeapUsedBytes": 3283660
+          "domContentLoadedMs": 247,
+          "loadMs": 247,
+          "resourceTransferBytes": 1778396,
+          "lazyRoundtripMs": 154.67904199999975,
+          "taskDurationSeconds": 0.374718,
+          "jsHeapUsedBytes": 10442036
         },
         {
-          "domContentLoadedMs": 149.60000002384186,
-          "loadMs": 149.60000002384186,
-          "resourceTransferBytes": 239632,
-          "lazyRoundtripMs": 75.74025000000074,
-          "taskDurationSeconds": 0.182841,
-          "jsHeapUsedBytes": 3229032
+          "domContentLoadedMs": 281.90000000596046,
+          "loadMs": 281.90000000596046,
+          "resourceTransferBytes": 1778396,
+          "lazyRoundtripMs": 151.32162499999868,
+          "taskDurationSeconds": 0.36232,
+          "jsHeapUsedBytes": 10416768
         }
       ]
     }
