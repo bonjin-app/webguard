@@ -6,6 +6,7 @@ const browserTests = [
   "**/e2e/demo.spec.ts",
   "**/e2e/playground.spec.ts",
   "**/e2e/lab.spec.ts",
+  "**/e2e/runtime-demo.spec.ts",
 ];
 export default defineConfig({
   testDir: "tests",

@@ -673,3 +673,128 @@ footer strong {
   outline: 2px solid #65e5c5;
   outline-offset: 3px;
 }
+.runtime-demo {
+  border: 1px solid #36574d;
+  padding: 22px;
+  background: #0e1c20;
+}
+.runtime-limit {
+  border-left: 3px solid #dfb87d;
+  padding: 10px 14px;
+  background: #22251f;
+}
+.runtime-limit strong {
+  color: #f1d6ac;
+  font-size: 13px;
+}
+.runtime-limit p {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.runtime-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.runtime-grid .sample-card {
+  padding: 18px;
+}
+.runtime-grid .toggles {
+  width: 100%;
+  font-size: 12px;
+  flex-shrink: 1;
+}
+.runtime-grid label {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.runtime-grid input:not([type="checkbox"]) {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  background: #0f1b20;
+  color: #dbe9ec;
+  border: 1px solid #42645b;
+  border-radius: 5px;
+}
+.runtime-grid details {
+  width: 100%;
+  font-size: 12px;
+  margin-top: 15px;
+  color: #b5cec8;
+}
+.runtime-grid summary {
+  cursor: pointer;
+  line-height: 1.8;
+}
+#setup > pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.runtime-grid pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  width: 100%;
+  font:
+    11px/1.8 "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+.runtime-target {
+  border: 1px dashed #70c5ac;
+  width: 100%;
+  padding: 20px 12px;
+  margin: 14px 0;
+  text-align: center;
+  color: #ace9d5;
+  font-size: 12px;
+  line-height: 1.8;
+  cursor: crosshair;
+}
+.runtime-target:focus-visible {
+  outline: 2px solid #65e5c5;
+  outline-offset: 3px;
+}
+.runtime-target small {
+  color: #8ea7af;
+  font-size: 11px;
+}
+.runtime-outcome {
+  min-height: 45px;
+  color: #b4ebd6;
+  overflow-wrap: anywhere;
+  margin-top: 8px;
+}
+.runtime-log {
+  list-style: none;
+  max-height: 160px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  color: #a1d0bf;
+  font-size: 11px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.runtime-grid #detection {
+  margin-top: 16px;
+}
+#runtime-integrity {
+  margin-top: 14px;
+}
+#runtime-state {
+  color: #b4ebd6;
+}
+#runtime-config-error {
+  color: #f0ba96;
+}
+@media (max-width: 760px) {
+  .runtime-grid {
+    grid-template-columns: 1fr;
+  }
+  .runtime-demo {
+    padding: 16px;
+  }
+}

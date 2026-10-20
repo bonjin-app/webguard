@@ -1,0 +1,229 @@
+{
+  "verifiedAt": "2026-10-20T11:27:27.655Z",
+  "url": "https://webguard.uulab.co.kr/demo#live-demo",
+  "accountId": "1302e647c709ce0cc8b4d64938772cb9",
+  "worker": "webguard-demo",
+  "versionId": "fd2c5843-c722-4577-8dbc-35b737d0f08d",
+  "deploymentId": "d371d152-99f8-4c6a-a1d0-f6e3f9defa6a",
+  "trafficPercentage": 100,
+  "previousVersionId": "c2df10c1-c6bc-4267-a5d4-faf38984049e",
+  "deploymentMethod": "Existing connected Cloudflare account, Wrangler-generated bundle, preserved settings and unchanged protected-app mounts",
+  "parentCommit": "ef98f07",
+  "bundleSha256": "942d0214b671e81de7667f07569e9f6fc04a98910d0ba2f97972804c3c437da4",
+  "sourceSha256": {
+    "apps/playground/index.html": "3052aa1d3654e6bd71b0cb8b0b2130a7d95d932934bd6d65be60dc9a5886dcdb",
+    "apps/playground/src/main.ts": "411eb95e4ba3ab58629b2f5210bc3ffe8b8266ef2972ff691cbbde03974c1c3c",
+    "apps/playground/src/runtime-demo.ts": "89bae26414aaef117c69e009257c90ead71bc645aa0c0c02a03f9f5f35f56b5e",
+    "apps/playground/src/style.css": "e94a290d21cc96c9855a699eabbd58b100ddae5bc2af712331ef74599cded000",
+    "tests/e2e/runtime-demo.spec.ts": "bf276d4b9947211ab851d943ed6988354a28d4ee6f06b41b538f050d0fb4c7c4",
+    "playwright.public.config.ts": "d5a8b3902b551b3bc83495db3b5f1cf6d48f939afb0250bc0979b6ac30bedca5"
+  },
+  "publicFiles": [
+    {
+      "path": "/index.html",
+      "sha256": "eab9876cf91e350dc91759ed4d7e6015f877c0396eb03c3f5911b357ea008c54",
+      "bytes": 643
+    },
+    {
+      "path": "/third-party-licenses.md",
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+      "bytes": 68
+    },
+    {
+      "path": "/examples/vanilla-ts/index.html",
+      "sha256": "5b67cef96d0e20628c6b85a7d2dfd33bfdf9b869104c0dd412016c19a8c392dc",
+      "bytes": 2516
+    },
+    {
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "sha256": "11e0f73cf296682b647a7fc73846cae9cf514a69f6920034fababb6095dd1af4",
+      "bytes": 663
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BSlN3o1r.js",
+      "sha256": "3102a28ea8c2c462f138e412c9d8f5877ed20444827f98aba48bf9bea9784504",
+      "bytes": 10450
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+      "bytes": 766
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/lazy-DHhR8Jya.js",
+      "sha256": "c5a77642ec7369be9717522e16b7fa3788899fe8a95263fda4ad9802fb02d702",
+      "bytes": 1203
+    },
+    {
+      "path": "/examples/vanilla-js/index.html",
+      "sha256": "eb4d9528519f0a3521e454da4f3981e2364ae7213dd54bbe0248deea4af8feb8",
+      "bytes": 2516
+    },
+    {
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "sha256": "230be34c9a941804f2113ea4a608ab398a2a910a3f46ab967c91603127c40f4b",
+      "bytes": 661
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+      "bytes": 766
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-CokxOdMK.js",
+      "sha256": "fa5c324910e3fd34774f5fe033ded2094f58223a4d503aba47c53782a4c8c0e6",
+      "bytes": 9252
+    },
+    {
+      "path": "/examples/vanilla-js/assets/lazy-r-NePmiN.js",
+      "sha256": "3847bbf61ee5052fcfc1415516ef6e69809544300bc8e4408bada8e6b1e11d49",
+      "bytes": 570
+    },
+    {
+      "path": "/examples/react/index.html",
+      "sha256": "b1a8b6d521096a0a649ce5e87834c209ed4db4aaa4ac6ae738ea586a6c114e63",
+      "bytes": 604
+    },
+    {
+      "path": "/examples/react/third-party-licenses.md",
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+      "bytes": 3429
+    },
+    {
+      "path": "/examples/react/webguard-manifest.json",
+      "sha256": "93c19f88c0dc9715a1434716c07d5e67208f6cfca4391211fd54a1fde3fd4e10",
+      "bytes": 817
+    },
+    {
+      "path": "/examples/react/assets/index-DlQ_wBAa.js",
+      "sha256": "a8e053aef03f8455ee19cd6b374d8bedac1947f06b7af2248e0c275dd4d0d233",
+      "bytes": 1803091
+    },
+    {
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+      "bytes": 812
+    },
+    {
+      "path": "/examples/react/assets/lazy-BrhojCPd.js",
+      "sha256": "9119d01b8e94cd1932d855e411aa43d7793200682c84d9b5c775832f408ddb81",
+      "bytes": 2564
+    },
+    {
+      "path": "/docs/INSTALL.ko.txt",
+      "sha256": "5f1155c11fe7fb8538760fe8b84b5428bdc13175e3d0d34fd7f6334a8c38b682",
+      "bytes": 12287
+    },
+    {
+      "path": "/docs/index.html",
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87",
+      "bytes": 534
+    },
+    {
+      "path": "/docs/third-party-licenses.md",
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+      "bytes": 68
+    },
+    {
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f",
+      "bytes": 11196
+    },
+    {
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+      "bytes": 2538
+    },
+    {
+      "path": "/assets/index-D0m-au4g.css",
+      "sha256": "4b074b9630b0ce315417199781036972ed8fe19971637982280936eaf097ab5f",
+      "bytes": 10486
+    },
+    {
+      "path": "/assets/index-Xom8eeGE.js",
+      "sha256": "51581c5e9ce8bfcfd28d95acbc02873ae7f9d1841d8bbe64db3aa264543d36e9",
+      "bytes": 44035
+    },
+    {
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+      "bytes": 1654565
+    },
+    {
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+      "bytes": 124999
+    }
+  ],
+  "checks": {
+    "engines": ["chromium", "firefox", "webkit"],
+    "localInitial": {
+      "passed": 44,
+      "failed": 19,
+      "additionalErrors": 2,
+      "note": "Long wall-time stalls and timeouts were recorded; native input observer registration raced with browser input. This run is not passing evidence."
+    },
+    "localChromiumIsolation": {
+      "passed": 5,
+      "failed": 1,
+      "note": "The SDK UI had already observed trusted F12 cancellation; the independent test observer missed that event. Observer setup is now awaited."
+    },
+    "localExistingRegression": {
+      "passed": 43,
+      "failed": 2,
+      "note": "Firefox narrow install-command overflow, fixed with scoped wrapping."
+    },
+    "localSDKFinal": {
+      "passed": 21,
+      "failed": 0
+    },
+    "localNarrowFinal": {
+      "passed": 2,
+      "failed": 0
+    },
+    "publicInitial": {
+      "passed": 69,
+      "failed": 1,
+      "note": "The file-read UI and hash checks passed; Firefox exposed one network response for cached reads where the test required two."
+    },
+    "publicNetworkObservationFinal": {
+      "passed": 3,
+      "failed": 0,
+      "note": "Unchanged pass-through routes disable caching only for the network-observation fixture; real responses and both SDK results remain required."
+    },
+    "publicUniqueChecksVerified": 70,
+    "mainTypecheck": true,
+    "workerTypecheck": true,
+    "eslint": true,
+    "format": true,
+    "dryRun": true
+  },
+  "visibleIAB": {
+    "wholeTour": true,
+    "shortcutOn": true,
+    "contextMenuOn": true,
+    "sdkHashMatch": true,
+    "sdkAlteredExpectedHashMismatch": true,
+    "threeScenariosVerified": true,
+    "highPreset": true,
+    "outputsMatch": true
+  },
+  "behavior": {
+    "defaultMode": "observation, restrictions off until user enables or starts full tour",
+    "nativeInputEvidence": "trusted keyboard/mouse events with defaultPrevented, separate from synthetic events",
+    "editableException": true,
+    "logMax": 20,
+    "typedValuesCollected": false,
+    "logsUploaded": false,
+    "integrityDeadlineMs": 10000,
+    "integrityFailureRequiresMismatchEvent": true
+  },
+  "limits": [
+    "DevTools windows, browser-menu opening, existing console and external debugging cannot be locked by this SDK",
+    "Dimension signals can be inaccurate",
+    "Public manifest SDK verification is a teaching example, not an authenticity boundary",
+    "Quote validation remains a stateless server example, not SDK authorization"
+  ],
+  "npmChanged": false,
+  "codexSettingsChanged": false
+}

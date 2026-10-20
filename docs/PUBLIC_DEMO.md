@@ -4,6 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
+## Complete feature tour
+
+The first screen now exposes the real SDK, rather than placing its controls beneath the transformation tools. **전체 기능 체험 시작** enables shortcut/context-menu restrictions and explicit integrity checks, starts the SDK file verification and the three policy/tampering probes, and protects the current editor source using High. Existing editor content is preserved. A concurrent run is rejected with a visible message instead of relabeling an in-progress transform. Individual controls remain available; reloading returns to observation mode.
+
+The live panel includes:
+
+- Immediate on/off controls, individual shortcut/context-menu/dimension-detection/warning/integrity settings, a validated 40–1000 pixel heuristic threshold, and the actual `getOptions()` policy rendered as an update example.
+- A focusable body target and an editable input. Browser keyboard/mouse tests observe trusted F12 and context-menu events, their real `defaultPrevented` state, and editable-field exceptions. Synthetic trials are separately labeled and do not establish DevTools-window prevention.
+- Calls to the actual `checkIntegrity()` API against a manifest-listed protected JavaScript asset, followed by a one-character changed expected hash. Results require a real SDK mismatch event; a fetch error is not presented as a mismatch. Tests also replace actual response bytes to prove the display reacts to changed content. An explicit disabled policy performs no requests. A ten-second UI deadline disables integrity checking and aborts SDK requests instead of leaving a permanent busy control.
+- A local event history capped at 20 entries, a clear button, no typed-input collection and no event upload. Dimension signals are labeled as uncertain and never converted into a claim that DevTools is open.
+
+The document language is Korean. The install command now wraps on narrow Firefox viewports. The notice at the top explicitly distinguishes page input restrictions from Chrome-menu, existing-console and external-debugger control.
+
+Verified deployment: Worker version `fd2c5843-c722-4577-8dbc-35b737d0f08d`, deployment `d371d152-99f8-4c6a-a1d0-f6e3f9defa6a`, 100% traffic. All 27 public files matched the local payload hashes. The final SDK browser set passed 21 checks; the two Firefox layout regressions passed after wrapping the command. The public matrix passed 69 of 70 checks, with a cached-read network-observer assumption failing once; the unchanged-response, cache-disabled observation fixture then passed on all three engines, completing verification of all 70 unique public checks. This is not a claim that the initial full matrix was clean. Earlier attempts and long wall-time stalls are retained in the evidence file. Main/Worker TypeScript, scoped ESLint, formatting and the deployment dry run passed.
+
+This extends the lab release below; the earlier lab version and evidence remain historical. See [the complete-tour evidence](evidence/runtime-demo-deployment.json) and [the completed live panel](evidence/runtime-demo.png). npm packages and Codex settings are unchanged.
+
 ## Interactive lab release
 
 The first screen now offers a one-click sequence and individual repeatable scenarios:

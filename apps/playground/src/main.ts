@@ -3,11 +3,17 @@ import { runIsolated, type RunResult } from "./sandbox";
 import { examples, integrations } from "./examples";
 import "./style.css";
 import { labMarkup, initLab } from "./lab";
+import {
+  runtimeMarkup,
+  initRuntimeDemo,
+  reportRuntimeThreat,
+} from "./runtime-demo";
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard<span class="badge">PLAYGROUND</span></a><a class="docs-link" href="/docs/">Documentation ↗</a></header>
 <main><div class="intro"><div><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>직접 조작하고, 보호 결과를 확인하세요.</h1><p>스크립트 삽입·파일 변조·가격 요청 변조부터 강한 난독화까지 직접 시험하세요.</p></div><span class="local"><span></span> 브라우저 시험 + 데모 API</span></div>
 <nav class="demo-nav" aria-label="체험 안내"><a href="#security-lab">방어 시나리오 체험</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
+${runtimeMarkup}
 ${labMarkup}
 <section id="try-examples" class="demo-section" aria-labelledby="try-heading"><div class="section-heading"><div><h2 id="try-heading">예제로 바로 시작하세요</h2><p>원클릭으로 High 난독화와 실제 실행 결과를 비교합니다. 코드는 이 브라우저에서만 처리합니다.</p></div><span class="badge">READY TO RUN</span></div><div class="sample-grid">${examples.map((item) => `<article class="sample-card"><h3>${item.title}</h3><p>${item.description}</p><p class="expected">예상 결과<br><code>${item.expected}</code></p><button class="sample-run" data-example="${item.id}">${item.title} 예제 실행</button></article>`).join("")}</div></section>
 <section class="toolbar" aria-label="Protection controls"><div class="presets" role="group" aria-label="Protection preset"><button data-preset="basic" aria-pressed="false">Basic</button><button data-preset="standard" aria-pressed="true">Standard</button><button data-preset="high" aria-pressed="false">High</button></div><p id="preset-description">Balanced string protection for everyday builds.</p><button id="protect" class="primary">Protect & compare <span aria-hidden="true">↗</span></button></section>
@@ -16,8 +22,6 @@ ${labMarkup}
 <section class="metrics" aria-label="Measured comparison"><article><h2>Code size</h2><strong id="size-change">—</strong><p id="size-detail">UTF-8 bytes, before → after</p></article><article><h2>Execution time</h2><strong id="timing">—</strong><p>Source → protected · one run, not a benchmark</p></article><article><h2>Output comparison</h2><strong id="equivalence">Not run</strong><p>Captured console output and completion status</p></article></section>
 <section class="results"><div><h2>Execution output <span class="badge">ISOLATED</span></h2><pre id="logs">// Console output appears after protection.</pre></div><div><h2>Local protection report</h2><pre id="report">No report yet.</pre></div></section>
 <section id="app-examples" class="demo-section" aria-labelledby="apps-heading"><div class="section-heading"><div><h2 id="apps-heading">보호된 웹앱을 직접 써보세요</h2><p>난독화된 실제 빌드입니다. 폼·카운터·화면 이동·동적 모듈이 동작하는지 확인하세요.</p></div></div><div class="sample-grid"><article class="sample-card"><span class="badge">AUTOMATIC SDK · STRICT</span><h3>React + Vite</h3><p>SDK 자동 시작, 강한 난독화, 서버 헤더와 실시간 제어를 한 앱에서 체험합니다.</p><a class="demo-link" href="/examples/react/">React 데모 열기</a></article><article class="sample-card"><span class="badge">MANUAL SDK · STANDARD</span><h3>JavaScript</h3><p>SDK를 직접 연결한 예제입니다. 단축키 옵션을 켜고 입력·동적 로딩을 시험하세요.</p><a class="demo-link" href="/examples/vanilla-js/">JavaScript 데모 열기</a></article><article class="sample-card"><span class="badge">TYPESCRIPT · STANDARD</span><h3>TypeScript</h3><p>TypeScript를 빌드한 뒤 보호한 예제입니다. 실행 동작과 SDK 옵션을 확인하세요.</p><a class="demo-link" href="/examples/vanilla-ts/">TypeScript 데모 열기</a></article></div></section>
-<section id="live-demo" class="advisory"><div><h2>실시간 SDK 체험 <span class="badge">ADVISORY</span></h2><p id="detection">Monitoring local browser signals. No signal observed.</p><p>옵션은 즉시 적용됩니다. 실제 F12는 입력창 밖의 본문을 클릭한 뒤 시험하세요. 브라우저 메뉴나 이미 열린 개발자도구는 잠그지 않습니다.</p></div><div class="toggles"><label><input id="shortcuts" type="checkbox"> Restrict F12 / inspect shortcuts</label><label><input id="context" type="checkbox"> Restrict context menu</label></div></section>
-<section class="live-check"><div><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p>이 버튼은 페이지 이벤트 처리를 시험합니다. 실제 개발자도구 창의 열림 여부를 확인하는 검사는 아닙니다.</p></section>
 <section id="setup" class="demo-section" aria-labelledby="setup-heading"><div class="section-heading"><div><h2 id="setup-heading">확인했다면 내 프로젝트에 적용하세요</h2><p>npm으로 설치하고 Vite 설정 한 번으로 적용하세요. <a href="/docs/#install">한국어 설치 가이드</a>에서 서버 헤더와 실시간 설정도 확인할 수 있습니다.</p></div></div><pre><code>npm install --save-dev uulab-webguard@0.2.0</code></pre><div class="setup-tabs" role="group" aria-label="적용 코드 선택">${integrations.map((item, index) => `<button data-integration="${item.id}" aria-pressed="${index === 0}">${item.title}</button>`).join("")}</div><p id="setup-hint"></p><div class="code-panel"><pre><code id="setup-code"></code></pre><button id="copy-setup" class="sample-run">적용 코드 복사</button></div><p id="copy-setup-status" aria-live="polite"></p><details><summary>이 데모를 직접 실행하려면</summary><pre><code>pnpm install --frozen-lockfile
 pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 웹앱·문서를 제공합니다. JSP는 위 준비 명령으로 WAR를 만든 뒤 별도 Tomcat에서 실행하세요.</p></details></section>
 <footer><strong>Protection has limits.</strong> Delivered JavaScript can still be inspected and modified. Keep secrets and authorization on your server. Execution supports console-based JavaScript, without DOM access; imports and network requests are blocked. Workers are stopped after 1 second. This is a testing aid, not a hostile-code containment service.</footer></main>`;
@@ -218,42 +222,10 @@ copy.addEventListener("click", async () => {
 });
 const guard = WebGuard.init({
   devtools: { detect: true, response: "monitor" },
-  onThreat: (event) => {
-    element("detection").textContent =
-      `Local advisory: ${event.type}. No data sent.`;
-  },
+  integrity: { enabled: true },
+  onThreat: reportRuntimeThreat,
 });
-function configureGuard() {
-  guard.update({
-    devtools: {
-      blockShortcuts: element<HTMLInputElement>("shortcuts").checked,
-      blockContextMenu: element<HTMLInputElement>("context").checked,
-    },
-  });
-}
-element("shortcuts").addEventListener("change", configureGuard);
-element("context").addEventListener("change", configureGuard);
-function tryEvent(event: Event, label: string) {
-  document.dispatchEvent(event);
-  element("live-result").textContent =
-    `${label} 시험 이벤트: ${event.defaultPrevented ? "차단됨" : "허용됨"} · 현재 페이지에 즉시 적용`;
-}
-element("test-f12").addEventListener("click", () =>
-  tryEvent(
-    new KeyboardEvent("keydown", {
-      key: "F12",
-      bubbles: true,
-      cancelable: true,
-    }),
-    "F12",
-  ),
-);
-element("test-menu").addEventListener("click", () =>
-  tryEvent(
-    new MouseEvent("contextmenu", { bubbles: true, cancelable: true }),
-    "우클릭",
-  ),
-);
+const cleanupRuntime = initRuntimeDemo(guard);
 let currentIntegration: (typeof integrations)[number] = integrations[0];
 function showIntegration() {
   element("setup-code").textContent = currentIntegration.code;
@@ -292,4 +264,36 @@ element("copy-setup").addEventListener("click", async () => {
 });
 showIntegration();
 initLab();
-window.addEventListener("pagehide", () => guard.destroy(), { once: true });
+element("runtime-tour").addEventListener("click", () => {
+  if (
+    protect.disabled ||
+    element<HTMLButtonElement>("lab-all").disabled ||
+    element<HTMLButtonElement>("runtime-integrity").disabled
+  ) {
+    element("runtime-tour-status").textContent =
+      "진행 중인 시험이 있습니다. 결과가 나온 뒤 다시 시작하세요.";
+    return;
+  }
+  if (!element<HTMLInputElement>("runtime-threshold").checkValidity()) {
+    element("runtime-tour-status").textContent =
+      "감지 기준을 40~1000 사이 정수로 입력한 뒤 시작하세요.";
+    return;
+  }
+  element<HTMLInputElement>("sdk-integrity").checked = true;
+  element("sdk-integrity").dispatchEvent(new Event("change"));
+  element<HTMLButtonElement>("runtime-enable").click();
+  element<HTMLButtonElement>("runtime-integrity").click();
+  element<HTMLButtonElement>("lab-all").click();
+  selectPreset("high");
+  protect.click();
+  element("runtime-tour-status").textContent =
+    "전체 기능 시험을 시작했습니다. 각 영역의 실제 결과를 확인하고, 본문 시험 영역에서 키·우클릭을 직접 시험하세요. 개발자도구 창 자체를 잠그는 기능은 아닙니다.";
+});
+window.addEventListener(
+  "pagehide",
+  () => {
+    cleanupRuntime();
+    guard.destroy();
+  },
+  { once: true },
+);
