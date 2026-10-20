@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Diagnostics and favicon fix
+## Expanded guards and protected Playground (current)
+
+The complete tour now runs five policy/tampering scenarios plus the SDK and a real deployment-resource audit. New before/after probes compare a fixed JSON fetch against `connect-src` enforcement and a harmless `innerHTML` assignment against Trusted Types enforcement. Unsupported Trusted Types is explicitly excluded from successful checks; an interrupted or invalid control response never counts as protection. The fixed CORS fixture returns no request or user data and accepts no credentialed response sharing.
+
+The Playground entry bundle itself now uses WebGuard's strict preset (High transforms and RC4 string encoding). Entry JS and CSS carry file-bound SHA-384 SRI, and public source maps remain disabled. Build-only reports and original/configuration files stay outside the exact public allowlist. Browser-delivered JS/CSS still remain inspectable. The visitor can fetch the actual private-path probes and compare entry bytes with the document SRI in the new **배포 리소스 검사** panel. This checks deployment observations, not authorization or authenticity of an attacker-controlled HTML document.
+
+The stricter application build exposed an existing `function.toString()` bootstrap assumption: transformed code referenced outer string decoders that were absent in the isolated frame. A standalone raw bootstrap preserves the original sandbox, worker and message-channel boundaries while removing that closure dependency. Infinite-loop, blocked-network and forged-message regressions remain covered. Resource audits also retain their event listeners across persisted page lifecycle transitions, abort old work and prevent stale results from replacing a new run. Lifecycle tests simulate the browser events; they do not prove that a particular navigation was admitted to BFCache.
+
+Current deployment: Worker version `799cd048-5712-45e6-bb14-bc61c3ac5b8c`, deployment `99b788e8-8bd5-4fa8-937c-9be36f8995f4`, 100% traffic. Implementation source commit: `1a24aa3`. Final verification passed 99 local browser checks and 104 public checks (99 browser + five HTTP), each across Chromium, Firefox and WebKit where applicable, plus 20 local API/routing tests. All 29 public files matched prepared SHA-256 values; root/Worker type checks, scoped lint, formatting and the deployment dry run passed. npm publication and Codex settings were unchanged. The following release sections are historical.
+
+[Korean guard guide](DEMO_GUARDS.ko.md) · [Resource audit screenshot](evidence/resource-guards.png) · [Deployment and validation evidence](evidence/expanded-guards-deployment.json).
+
+## Diagnostics and favicon fix (historical)
 
 The missing `/favicon.ico` now serves a real 32px ICO; the head links both the matching SVG mark and the ICO fallback. Both images decode to 32×32 in Chromium, Firefox and WebKit and serve HTTP 200 with image content types.
 
