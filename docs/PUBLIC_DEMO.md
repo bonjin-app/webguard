@@ -4,7 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Expanded guards and protected Playground (current)
+## Interactive switches and deployed compatibility (current)
+
+Open [policy switches](https://webguard.uulab.co.kr/demo#policy-lab) to enable or disable network, DOM string insertion and inline-script restrictions independently. **선택 정책 비교 실행** runs an all-off control and the selected settings in fresh opaque-origin sandbox frames. The before/after panels display actual allowed, blocked, unsupported or failed observations. Changing a switch invalidates old results. The switches affect the isolated trial; the main document and server retain their deployment policies.
+
+[Deployment compatibility](https://webguard.uulab.co.kr/demo#compatibility-lab) checks a real Korean multipage document, UTF-8 bytes and declaration order, CSP meta and response headers, final redirect URL/query preservation, the constant HTTP API and exact missing-page 404. The direct link opens the actual nested page. Browser UI verifies a followed redirect, while HTTP tests separately inspect 308 and Location. Invalid MIME types, malformed head placement, missing enforced headers, incorrect API markers and SPA fallback cannot produce a successful audit. HTTP API connectivity is separate from local Vite preview proxy verification.
+
+The complete feature tour includes both panels, existing live SDK controls, five security scenarios, resource auditing and High obfuscation. Trusted Types availability remains explicit. New runs cancel pending work on page lifecycle transitions, and failed controls never count as successful protection. The public nested-page adapter now derives directory aliases only from allowed index documents, preserves mount boundaries and query parameters, and retains exact private-path and missing-file rejection.
+
+The demo exposes local 0.3.0 candidate features independently of npm. **npm publication remains paused: latest is 0.2.0 and 0.3.0 is unpublished.** The installation guide retains that distinction. Codex settings are unchanged.
+
+Current Worker version: `3a1fc944-abea-4814-b013-5b746d0da20a`; deployment: `fbd09e5e-b121-43c0-a57d-5ca972620e34`, 100% traffic. Implementation source: `4a0ae1c`. Bindings, compatibility settings, observability and hostname mappings are retained. The adapter explicitly marks prepared HTML as `text/html; charset=utf-8`, including HEAD responses; Cloudflare asset MIME metadata alone omitted the encoding. Comparison columns now retain their full width even when all policies are off.
+
+Final validation: 287 unit/integration tests, 72 local browser checks of the changed panels and full tour, all 13 build tasks, root/Worker types, lint, formatting and dry run passed. The final public matrix passed 145 of 146 checks; one WebKit source execution reached the existing 1,000 ms sandbox limit while the protected example completed correctly. All six WebKit Playground checks then passed in isolation on the same deployed version, without changing code or deadlines. Thus all 146 unique checks are covered across those runs; the initial full run was not clean. All 31 deployed files matched prepared SHA-256 values. Earlier iterations, the observed execution limit and exact verification scope remain in the release evidence.
+
+[Korean usage guide](DEMO_GUARDS.ko.md) · [On](evidence/policy-switches-on.png) · [Off](evidence/policy-switches-off.png) · [Compatibility](evidence/deployment-compatibility.png) · [Release evidence](evidence/interactive-switches-deployment.json).
+
+## Expanded guards and protected Playground (historical)
 
 The complete tour now runs five policy/tampering scenarios plus the SDK and a real deployment-resource audit. New before/after probes compare a fixed JSON fetch against `connect-src` enforcement and a harmless `innerHTML` assignment against Trusted Types enforcement. Unsupported Trusted Types is explicitly excluded from successful checks; an interrupted or invalid control response never counts as protection. The fixed CORS fixture returns no request or user data and accepts no credentialed response sharing.
 
@@ -12,7 +28,7 @@ The Playground entry bundle itself now uses WebGuard's strict preset (High trans
 
 The stricter application build exposed an existing `function.toString()` bootstrap assumption: transformed code referenced outer string decoders that were absent in the isolated frame. A standalone raw bootstrap preserves the original sandbox, worker and message-channel boundaries while removing that closure dependency. Infinite-loop, blocked-network and forged-message regressions remain covered. Resource audits also retain their event listeners across persisted page lifecycle transitions, abort old work and prevent stale results from replacing a new run. Lifecycle tests simulate the browser events; they do not prove that a particular navigation was admitted to BFCache.
 
-Current deployment: Worker version `799cd048-5712-45e6-bb14-bc61c3ac5b8c`, deployment `99b788e8-8bd5-4fa8-937c-9be36f8995f4`, 100% traffic. Implementation source commit: `1a24aa3`. Final verification passed 99 local browser checks and 104 public checks (99 browser + five HTTP), each across Chromium, Firefox and WebKit where applicable, plus 20 local API/routing tests. All 29 public files matched prepared SHA-256 values; root/Worker type checks, scoped lint, formatting and the deployment dry run passed. npm publication and Codex settings were unchanged. The following release sections are historical.
+Historical deployment: Worker version `799cd048-5712-45e6-bb14-bc61c3ac5b8c`, deployment `99b788e8-8bd5-4fa8-937c-9be36f8995f4`, 100% traffic. Implementation source commit: `1a24aa3`. Final verification passed 99 local browser checks and 104 public checks (99 browser + five HTTP), each across Chromium, Firefox and WebKit where applicable, plus 20 local API/routing tests. All 29 public files matched prepared SHA-256 values; root/Worker type checks, scoped lint, formatting and the deployment dry run passed. npm publication and Codex settings were unchanged. The following release sections are historical.
 
 [Korean guard guide](DEMO_GUARDS.ko.md) · [Resource audit screenshot](evidence/resource-guards.png) · [Deployment and validation evidence](evidence/expanded-guards-deployment.json).
 

@@ -1,0 +1,350 @@
+{
+  "release": "interactive-switches",
+  "sourceCommit": "4a0ae1c",
+  "verifiedAt": "2026-10-20T13:24:58.378Z",
+  "url": "https://webguard.uulab.co.kr/demo",
+  "worker": {
+    "name": "webguard-demo",
+    "versionId": "3a1fc944-abea-4814-b013-5b746d0da20a",
+    "deploymentId": "fbd09e5e-b121-43c0-a57d-5ca972620e34",
+    "trafficPercent": 100,
+    "createdOn": "2026-10-20T13:17:46.379955Z",
+    "previousStableVersion": "799cd048-5712-45e6-bb14-bc61c3ac5b8c"
+  },
+  "changes": [
+    "Independent network, DOM string insertion and parser-inline policy switches with all-off and selected fresh opaque sandbox trials",
+    "Real before/after observations; changed settings invalidate old results; baseline failures and unsupported APIs are not successful blocks",
+    "Real Korean multipage, UTF-8 bytes and early charset/CSP order, enforced headers, followed final URL/query, fixed API and exact 404 audit",
+    "Public nested index aliases preserve exact allowlist, mount boundaries and canonical redirect queries",
+    "Prepared HTML explicitly serves UTF-8 on Cloudflare GET/HEAD; full-width comparison columns when policies are disabled",
+    "Whole tour includes the new panels alongside actual SDK, five scenarios, deployed resource audit and High obfuscation"
+  ],
+  "verification": {
+    "finalPublic": {
+      "mainRun": {
+        "passed": 145,
+        "failed": 1
+      },
+      "isolatedWebKitFollowup": {
+        "passed": 6,
+        "failed": 0,
+        "scope": "Complete playground.spec.ts on the same deployed version; execution budgets and source unchanged"
+      },
+      "uniqueChecksCovered": 146,
+      "browserChecks": 141,
+      "httpChecks": 5,
+      "engines": ["chromium", "firefox", "webkit"],
+      "command": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts --workers 2 --output test-results/interactive-switches-release-public",
+      "followupCommand": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts tests/e2e/playground.spec.ts --project webkit --workers 1 --output test-results/interactive-switches-webkit-readback"
+    },
+    "finalScopedLocal": {
+      "passed": 72,
+      "scope": ["policy-demo", "compat-demo", "diagnostics", "runtime-demo"],
+      "engines": ["chromium", "firefox", "webkit"]
+    },
+    "earlierFullLocal": {
+      "passed": 141,
+      "note": "Before final copy/layout rebuild; final changed panels and full tour rerun locally and complete final deployed matrix above"
+    },
+    "unitIntegration": {
+      "passed": 287,
+      "files": 23
+    },
+    "finalRoutingIntegration": {
+      "passed": 15
+    },
+    "buildTasks": 13,
+    "mountedBuild": true,
+    "rootTypecheck": true,
+    "workerTypecheck": true,
+    "lint": true,
+    "format": true,
+    "wranglerDryRun": true,
+    "fileReadback": {
+      "verifiedAt": "2026-10-20T13:18:17.256Z",
+      "total": 31,
+      "matched": 31,
+      "files": [
+        {
+          "path": "/assets/index-CmL3UyEr.css",
+          "status": 200,
+          "bytes": 11383,
+          "sha256": "d510ad37d89aa3ecfb5d9db4ed687ce5a6d4a53890f2162306a835a6a97c712e",
+          "match": true
+        },
+        {
+          "path": "/assets/index-Dnr54jlS.js",
+          "status": 200,
+          "bytes": 472925,
+          "sha256": "b0942f30da5360a6010e1ec20323628eec16185b9ca8a76205d3028f9624586b",
+          "match": true
+        },
+        {
+          "path": "/assets/index.browser-CtOKMlmK.js",
+          "status": 200,
+          "bytes": 1654565,
+          "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "match": true
+        },
+        {
+          "path": "/assets/transform.worker-CjrfSGER.js",
+          "status": 200,
+          "bytes": 124999,
+          "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "match": true
+        },
+        {
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "bytes": 16736,
+          "sha256": "231815c1d09391b5d6487a230f3beab1119f6a294ccd68b9d2d0b6296e9ee6af",
+          "match": true
+        },
+        {
+          "path": "/docs/assets/index-D8lqVnMZ.js",
+          "status": 200,
+          "bytes": 14431,
+          "sha256": "68b671eccabe73d65e5ac3476bac0d92e25fbc29cba99c6a8602fb527ee095a5",
+          "match": true
+        },
+        {
+          "path": "/docs/assets/index-ian2f1mJ.css",
+          "status": 200,
+          "bytes": 2538,
+          "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+          "match": true
+        },
+        {
+          "path": "/docs/index.html",
+          "status": 200,
+          "bytes": 534,
+          "sha256": "87878ea65128f115f75151aaacfedb292ca31a46e09b3693556b2311b556ad24",
+          "match": true
+        },
+        {
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/index-Dp_iiFwF.css",
+          "status": 200,
+          "bytes": 812,
+          "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/index-XXtv1J1E.js",
+          "status": 200,
+          "bytes": 1807629,
+          "sha256": "377e1d209e01b60ab7047bbd0d849d2d9c5f7f1dba6119d839b4cccd0f41e350",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/lazy-CEqxc1k8.js",
+          "status": 200,
+          "bytes": 2628,
+          "sha256": "ff5f60581f73cb2715df2b9df51f6e3bbcbc22270e365bba0548ebaed2ee769e",
+          "match": true
+        },
+        {
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "bytes": 899,
+          "sha256": "3ac3b84815f190c36f36159ffeac66e657e2ef0e035cbd96443177dca119b176",
+          "match": true
+        },
+        {
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "bytes": 3429,
+          "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "match": true
+        },
+        {
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "bytes": 817,
+          "sha256": "0bedcad3b21f71dc27564c8c55099d696d48cf9acd40b64fe97f5bb325e18359",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "bytes": 1676,
+          "sha256": "3bea2931aa5da6ca79c72a3112e4e2fc1573bf5319892e3910f0df67e2598dac",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/about-FiU8Zt40.js",
+          "status": 200,
+          "bytes": 634,
+          "sha256": "ed9994d4d237775110244ae539b205ed884407807f04d137fef4c2a8401c669d",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/index-CtxlV23l.js",
+          "status": 200,
+          "bytes": 9466,
+          "sha256": "4bb53446154e8440b224bf478ae3202d8e7b7bbdaf272cf460e7c9c7d8c07408",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/lazy-DpOZAfWT.js",
+          "status": 200,
+          "bytes": 575,
+          "sha256": "b6528b6897b9ac08e31495ae2e221656397b58baf6bf92377a493b1425265839",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/style-BXb_tRrn.css",
+          "status": 200,
+          "bytes": 766,
+          "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "2416a55aea2e2e5878af68b77296a6f4102054b1ff368384559157b94786514a",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "bytes": 960,
+          "sha256": "fbc3414070bb0187c5cdc5553a8c0175ba2d10dd5a1964f5417733578e17ebb5",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+          "status": 200,
+          "bytes": 766,
+          "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-CYlQnf28.js",
+          "status": 200,
+          "bytes": 10559,
+          "sha256": "080b20d9c1cd35db878d9f5798d02075944fcfe1543b89e16b589180eadc6676",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/lazy-BkK9c6VC.js",
+          "status": 200,
+          "bytes": 1224,
+          "sha256": "c437e0ae1bc8a4d8a04f558515f16e65b91f5e48d8d227982eaaf3ddb1ab6b44",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "077ded27dd8f28ce67c5ab35a337fac196923203dc097d14c7a401d6d81de73d",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "bytes": 663,
+          "sha256": "f641d29f257b85ff407b67a656795d0cbf426b786b5616972e87033b9cbb4a12",
+          "match": true
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200,
+          "bytes": 4286,
+          "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "match": true
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "bytes": 301,
+          "sha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "match": true
+        },
+        {
+          "path": "/index.html",
+          "status": 200,
+          "bytes": 922,
+          "sha256": "556a8c291a3f1990317a61653a39e65a45928addbe8a608d57b6d4d4a05f0d11",
+          "match": true
+        },
+        {
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        }
+      ]
+    },
+    "screenshots": {
+      "policy-switches-on.png": "8f11053a60062dabcc4c36beef69eb024b2eed63748ba5fd6138786a183f38b9",
+      "policy-switches-off.png": "584d5c68ade0e3477bb14ceefdf6c8c26232e5b2c88f10588e7298b540f4a539",
+      "deployment-compatibility.png": "472604af8e4ca77d51ca9bd09dae2b47ad0b3f874dba90b4b3d992086425c145"
+    }
+  },
+  "resolvedDuringVerification": [
+    "Malformed head placement and MIME substring false PASS rejected with independent negative regressions before deployment",
+    "Existing generic status-region test scoped to transformation status after adding a second accessible status region",
+    "WebKit synthetic redirect fixture replaced by actual Node HTTP 308 with independent status/Location assertions",
+    "First public run had 138 passed and 8 failures related to omitted UTF-8 response charset; Worker header corrected and final matrix rerun",
+    "Visual review found prior copy retained in a copied build artifact; rebuilt source and added actual panel-copy assertion",
+    "A later matrix had 145 passed and a fast-completion lifecycle-observation race; test now gates an actual request before cancellation, with three-engine reruns",
+    "All-off panel width shrink reproduced in browser, corrected and checked in final matrix"
+  ],
+  "observedExecutionLimit": {
+    "finalMatrixFailure": "One WebKit source execution reached the existing 1000 ms sandbox budget; protected execution of the same example completed with correct output",
+    "mainRun": {
+      "passed": 145,
+      "failed": 1
+    },
+    "sameVersionIsolatedFollowup": {
+      "passed": 6,
+      "failed": 0
+    },
+    "timeoutsOrSourceRelaxed": false,
+    "note": "Retained as an observed bounded-runtime failure, not relabeled as protection success or a clean initial full run"
+  },
+  "protection": {
+    "preset": "strict",
+    "chunkTransforms": {
+      "index": {
+        "inputBytes": 95924,
+        "outputBytes": 692757,
+        "durationMs": 1732.871916
+      }
+    },
+    "mainEntryOnly": true,
+    "publicSourceMaps": false,
+    "entryAndCssSRI": true
+  },
+  "retained": {
+    "bindings": true,
+    "compatibilitySettings": true,
+    "observability": true,
+    "hostnameMappings": true,
+    "temporaryUploadCredentialsRemoved": true,
+    "codexSettingsUnchanged": true
+  },
+  "npm": {
+    "publicationPaused": true,
+    "latest": "0.2.0",
+    "candidate": "0.3.0",
+    "candidatePublished": false,
+    "verifiedAt": "2026-10-20T13:24:58.379Z"
+  },
+  "boundaries": [
+    "Policy toggles apply to isolated fixed teaching trials, not the main document or server authorization",
+    "Browser-delivered assets and DevTools remain observable; source/config/maps excluded from public files",
+    "Trusted Types support is explicit and unsupported is never counted as blocked",
+    "HTTP API connectivity does not establish Vite preview proxy execution on Cloudflare",
+    "Browser lifecycle events are simulated; no assertion that a real navigation entered BFCache"
+  ]
+}
