@@ -214,6 +214,9 @@ importers:
       '@webguard/obfuscator':
         specifier: workspace:*
         version: link:../obfuscator
+      parse5:
+        specifier: ^8.0.0
+        version: 8.0.1
       picomatch:
         specifier: ^4.0.3
         version: 4.0.7

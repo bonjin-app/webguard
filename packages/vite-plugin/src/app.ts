@@ -2,6 +2,14 @@ import { lstat } from "node:fs/promises";
 import { join, resolve, relative, isAbsolute, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
+import {
+  parse,
+  serialize,
+  defaultTreeAdapter,
+  html as htmlNamespaces,
+  type DefaultTreeAdapterMap,
+} from "parse5";
+import { protectedPreview } from "./preview.js";
 import { WebGuard, type WebGuardOptions } from "@webguard/browser";
 import {
   createSecurityHeaders,
@@ -14,12 +22,97 @@ import { webguard } from "./index.js";
 export interface WebGuardAppOptions extends WebGuardConfigInput {
   /** Build-time serializable SDK settings. Shortcuts/context menus require explicit opt-in. */
   runtime?: Omit<WebGuardOptions, "preset" | "onThreat"> | false;
-  /** Emit deployment header files; the host must apply them. Defaults to enforced Trusted Types. */
+  /** Inject early HTML CSP and emit deployment headers; HTTP-only directives still require the host. */
   headers?: SecurityHeadersOptions | false;
 }
 const bootstrapUrl = "/@webguard/auto-start";
 const bootstrapId = "\0webguard:auto-start";
 const headerFiles = ["webguard-headers.json", "_headers"];
+
+/** Insert policy after HTML hooks have finished, before any browser resource can be loaded. */
+function addMetaPolicy(
+  source: string,
+  enforcement: string,
+  filename: string,
+): string {
+  const document = parse(source);
+  let head: DefaultTreeAdapterMap["element"] | undefined;
+  const encodings: DefaultTreeAdapterMap["element"][] = [];
+  const visit = (node: DefaultTreeAdapterMap["node"]): void => {
+    if ("tagName" in node && node.namespaceURI === htmlNamespaces.NS.HTML) {
+      if (node.tagName === "head") head = node;
+      if (node.tagName === "meta") {
+        const equivalent = node.attrs
+          .find((attribute) => attribute.name === "http-equiv")
+          ?.value.trim()
+          .toLowerCase();
+        const charset = node.attrs.find(
+          (attribute) => attribute.name === "charset",
+        );
+        if (charset || equivalent === "content-type") {
+          const content = node.attrs.find(
+            (attribute) => attribute.name === "content",
+          )?.value;
+          // Vite emits UTF-8 bytes; accepting another encoding would misdecode the document.
+          const encoding =
+            charset?.value ??
+            content
+              ?.match(
+                /^text\/html\s*;\s*charset\s*=\s*(?:"(utf-8)"|'(utf-8)'|(utf-8))\s*;?\s*$/i,
+              )
+              ?.slice(1)
+              .find(Boolean);
+          if (encoding?.trim().toLowerCase() !== "utf-8")
+            throw new Error(
+              `Invalid or conflicting charset in ${filename}; Vite HTML must declare UTF-8`,
+            );
+          encodings.push(node);
+        }
+        if (
+          equivalent === "content-security-policy" ||
+          equivalent === "content-security-policy-report-only"
+        )
+          throw new Error(
+            `Existing CSP meta in ${filename}; use headers:false to manage the document policy explicitly`,
+          );
+      }
+    }
+    if ("childNodes" in node) for (const child of node.childNodes) visit(child);
+    // Template contents are inert and must not become document policy/encoding declarations.
+  };
+  visit(document);
+  if (!head) throw new Error(`Unable to place CSP meta in ${filename}`);
+  // frame-ancestors is ignored in meta. Keep it in the emitted HTTP policy only.
+  const content = enforcement
+    .split(";")
+    .map((directive) => directive.trim())
+    .filter(
+      (directive) =>
+        directive &&
+        directive.split(/\s+/)[0]?.toLowerCase() !== "frame-ancestors",
+    )
+    .join("; ");
+  const meta = defaultTreeAdapter.createElement(
+    "meta",
+    htmlNamespaces.NS.HTML,
+    [
+      { name: "http-equiv", value: "Content-Security-Policy" },
+      { name: "content", value: content },
+    ],
+  );
+  // Keep the encoding declaration within the first 1024 bytes even for large policies.
+  // Normalize compatible duplicates and late declarations without moving resource tags ahead of CSP.
+  for (const encoding of encodings) defaultTreeAdapter.detachNode(encoding);
+  const charset = defaultTreeAdapter.createElement(
+    "meta",
+    htmlNamespaces.NS.HTML,
+    [{ name: "charset", value: "utf-8" }],
+  );
+  charset.parentNode = head;
+  meta.parentNode = head;
+  head.childNodes.unshift(charset, meta);
+  return serialize(document);
+}
 
 /** One build configuration: Strict protection, automatic SDK startup and deployment header artifacts.
  * Legacy webguard() remains build-only; this opt-in convenience entry point adds the runtime.
@@ -127,6 +220,22 @@ export function createWebGuardApp(
             throw new Error(
               `WebGuard refuses to replace existing output ${name}`,
             );
+        for (const asset of Object.values(bundle)) {
+          if (
+            asset.type !== "asset" ||
+            !asset.fileName.toLowerCase().endsWith(".html")
+          )
+            continue;
+          const html =
+            typeof asset.source === "string"
+              ? asset.source
+              : Buffer.from(asset.source).toString("utf8");
+          asset.source = addMetaPolicy(
+            html,
+            responseHeaders["Content-Security-Policy"]!,
+            asset.fileName,
+          );
+        }
         this.emitFile({
           type: "asset",
           fileName: "webguard-headers.json",
@@ -145,5 +254,5 @@ export function createWebGuardApp(
       },
     },
   };
-  return [bootstrap, webguard(policy)];
+  return [bootstrap, webguard(policy), protectedPreview(responseHeaders)];
 }

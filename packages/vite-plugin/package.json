@@ -26,6 +26,7 @@
     "build": "tsup src/index.ts src/client.ts --format esm --dts --clean"
   },
   "dependencies": {
+    "parse5": "^8.0.0",
     "@webguard/core": "workspace:*",
     "@webguard/obfuscator": "workspace:*",
     "@webguard/cli": "workspace:*",

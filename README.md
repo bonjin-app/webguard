@@ -10,10 +10,11 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
 
-Published as [`uulab-webguard@0.2.0`](https://www.npmjs.com/package/uulab-webguard). Fresh npm registry consumers passed with Vite 7.3.1 and 8.3.4, including declarations, protected builds, automatic SDK startup, live controls, applied HTTP policies and the installed deployment checker.
+**0.3.0 is an unpublished local candidate; the currently published npm version is 0.2.0.** The behavior below describes the candidate, not the published 0.2.0 package. Review it in a separate application using a reviewed local tarball, for example `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`. One candidate package supplies the plugin, SDK, deployment checker and Node protection server.
 
 ```sh
-npm install --save-dev uulab-webguard@0.2.0
+# After 0.3.0 is published only; it is not available from npm yet.
+npm install -D uulab-webguard@0.3.0
 ```
 
 ```ts
@@ -28,7 +29,30 @@ export default defineConfig({
 });
 ```
 
-Keep existing plugins. Run the normal production build; automatic SDK startup and Strict/High protection need no separate SDK install. Development/HMR stays unrestricted. Generated HTTP header files still require host application. Browser-safe live controls use `uulab-webguard/client`.
+Keep existing plugins. `webguardApp()` defaults to Strict/High with reversible RC4 string encoding, automatic SDK startup, SRI and no public source maps. It also inserts an early HTML CSP meta policy: same-origin network access (`connect-src 'self'`) and Trusted Types enforcement in supported browsers apply even without host headers. Development/HMR stays unrestricted. Shortcut/context-menu restrictions remain opt-in. Browser-safe live controls use `uulab-webguard/client`.
+
+```sh
+npm run build && npx webguard-serve dist --port 4173
+```
+
+The Node server applies generated response headers and denies private build files. The Vite plugin also applies those protections automatically to `vite preview`, with no separate preview configuration. Use the Node API from server code only:
+
+```js
+import { createProtectedServer } from "uulab-webguard/server";
+const server = await createProtectedServer("dist");
+server.listen(4173, "127.0.0.1");
+```
+
+Static hosts/CDNs must still apply real HTTP headers and private-file rules. `frame-ancestors`, Trusted Types report-only and MIME response protection cannot be supplied by HTML meta. `_headers` handling depends on the host. Allow an external API with `headers.allowedOrigins.connect: ["https://api.example.com"]` using exact origins. `headers.trustedTypes` accepts `enforce` (default), `report-only` or `off`; report-only requires actual HTTP headers. `headers: false` opts out of automatic meta/header/preview policy handling. Unsupported Trusted Types must never be reported as protected.
+
+| Layer              | Candidate behavior                                                               | Boundary                                                    |
+| ------------------ | -------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Built HTML         | Early CSP meta restricts script/network use and enforces supported Trusted Types | No HTTP-only directives or private-file serving rules       |
+| HTTP server        | Protection server/preview applies response headers and private-file restrictions | Static hosts must implement their own header and path rules |
+| SDK                | Automatic startup; optional input restrictions and advisory signals              | F12/context-menu restrictions default off; no DevTools lock |
+| Application server | Developer-owned price, input and authorization checks                            | Not an automatic SDK feature                                |
+
+Unsupported Trusted Types is never verification success. Expected fixed-probe CSP/TypeError messages and HTTP 409 must be corroborated by before/after outcomes. Unexpected 404/5xx responses, baseline failures and unhandled application exceptions remain faults, even when their console messages are red.
 
 After deployment, compare real responses with the trusted local build:
 
@@ -36,7 +60,7 @@ After deployment, compare real responses with the trusted local build:
 npx --no-install webguard-check dist --url https://YOUR-SITE.example/
 ```
 
-This checks asset and entry HTML bytes, actual response headers, source-map absence and private deployment-control URLs. Failures produce JSON errors and exit code 1. The Node API is `checkDeployment(directory, baseUrl)` from `uulab-webguard/verify`. See the [0.2.0 changes](docs/CHANGELOG.md).
+This checks asset and entry HTML bytes, actual response headers, source-map absence and private deployment-control URLs. Failures produce JSON errors and exit code 1. The Node API is `checkDeployment(directory, baseUrl)` from `uulab-webguard/verify`. See the [release changes](docs/CHANGELOG.md).
 
 ## Run this repository
 
@@ -119,7 +143,7 @@ export default defineConfig({
 });
 ```
 
-`webguardApp()` defaults to Strict/High, automatically initializes the SDK before the HTML module app entry, and emits `webguard-headers.json` plus `_headers` for your server. The React example has live F12/context-menu toggles without a rebuild or reload. [One-setting setup, live controls and server integration](docs/ONE_STEP_SETUP.md).
+`webguardApp()` defaults to Strict/High, automatically initializes the SDK before the HTML module app entry, inserts early CSP meta and emits `webguard-headers.json` plus `_headers` for your server. Its Vite preview hook applies generated HTTP headers and private-file restrictions automatically unless `headers: false`. The React example has live F12/context-menu toggles without a rebuild or reload. [One-setting setup, live controls and server integration](docs/ONE_STEP_SETUP.md).
 
 For only build protection, keep `webguard({ preset: "standard" })`. The plugin is build-only. It transforms chunks before content-hashed filenames are finalized, sanitizes the final output, adds SRI to local script/style/modulepreload tags and emits a manifest. Development HMR remains available. Private Vite maps, when requested, go into a unique sibling `.webguard-private/` directory. Initial support is written browser application builds; library, SSR and in-memory builds fail explicitly.
 
@@ -133,7 +157,7 @@ Adapt origins for your application. Test actual production behavior; this exampl
 
 ## Strong protection and injection policy
 
-Use `webguard({ preset: 'strict' })` for stronger control-flow/string transforms and default reversible RC4 string encoding. Generate CSP/Trusted Types response headers with `node packages/cli/dist/bin.js headers`. These must be applied by your server/CDN and do not lock the developer console. See [hardening and attack boundaries](docs/SECURITY_HARDENING.md).
+`webguardApp()` enables stronger control-flow/string transforms and reversible RC4 string encoding by default. Its early meta CSP enforces supported script/network/Trusted Types rules in built HTML; its generated HTTP policies also cover directives unavailable in meta. For standalone policy generation use `node packages/cli/dist/bin.js headers`, then apply those headers through your server/CDN. None of these policies locks the developer console. Trusted Types is not HTML sanitization, and server prices/authorization remain application server responsibilities. See [hardening and attack boundaries](docs/SECURITY_HARDENING.md).
 
 ## Browser SDK
 

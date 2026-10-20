@@ -1,6 +1,6 @@
 {
   "name": "uulab-webguard",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Vite application protection, automatic browser advisory controls, and deployment header policies.",
   "type": "module",
   "license": "MIT",
@@ -35,6 +35,10 @@
     "./verify": {
       "types": "./dist/verify.d.ts",
       "import": "./dist/verify.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
     }
   },
   "scripts": {
@@ -61,8 +65,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "homepage": "https://webguard-demo.uulab.workers.dev/docs/#install",
+  "homepage": "https://webguard.uulab.co.kr/docs/#install",
   "bin": {
-    "webguard-check": "./dist/check.js"
+    "webguard-check": "./dist/check.js",
+    "webguard-serve": "./dist/serve.js"
   }
 }

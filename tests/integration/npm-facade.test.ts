@@ -22,6 +22,7 @@ it("keeps original wrapper semantics and does not resolve disabled runtime entri
   expect(webguardApp().map((plugin) => plugin.name)).toEqual([
     "webguard-app-bootstrap",
     "webguard",
+    "webguard-protected-preview",
   ]);
   const resolver = vi.fn(() => {
     throw new Error("Disabled runtime resolver ran");

@@ -241,3 +241,111 @@ it("rejects source maps, development paths, encoded traversal and escaping symli
   for (const path of ["/%ZZ", "/%00", "http://evil.invalid/index.html"])
     expect((await get(port, path)).status, path).toBe(400);
 });
+
+it("serves physical nested directory indexes and preserves queries in canonical redirects", async () => {
+  const { dist } = await fixture();
+  const about = "<!doctype html><title>About page</title>";
+  await mkdir(join(dist, "about/team"), { recursive: true });
+  await writeFile(join(dist, "about/index.html"), about);
+  await writeFile(
+    join(dist, "about/team/index.html"),
+    "<title>Team page</title>",
+  );
+  const port = await start(dist);
+  for (const path of ["/about/", "/about/index.html", "/about/?lang=ko"]) {
+    const response = await get(port, path);
+    expect(response.status, path).toBe(200);
+    expect(response.body).toBe(about);
+    expect(response.headers["content-type"]).toContain("text/html");
+  }
+  expect((await get(port, "/about/team/")).body).toContain("Team page");
+  const query = "?lang=ko&next=%2Fdocs%3Fx%3D1&word=a+b";
+  for (const method of ["GET", "HEAD"]) {
+    const redirect = await get(port, "/about" + query, method);
+    expect(redirect.status).toBe(308);
+    expect(redirect.headers.location).toBe("/about/" + query);
+    expect(redirect.headers["content-security-policy"]).toBe(
+      policy["Content-Security-Policy"],
+    );
+    if (method === "HEAD") expect(redirect.body).toBe("");
+  }
+  const head = await get(port, "/about/", "HEAD");
+  expect(head.status).toBe(200);
+  expect(head.body).toBe("");
+  expect(Number(head.headers["content-length"])).toBe(Buffer.byteLength(about));
+  const post = await get(port, "/about/", "POST");
+  expect(post.status).toBe(405);
+  expect(post.headers.allow).toBe("GET, HEAD");
+  expect(post.headers.location).toBeUndefined();
+  for (const path of [
+    "/about/missing/",
+    "/assets",
+    "/about/index.html/",
+    "/not-a-route",
+    "/%2fabout",
+  ])
+    for (const method of ["GET", "HEAD"]) {
+      const response = await get(port, path, method);
+      expect(response.status, `${method} ${path}`).toBe(404);
+      expect(response.headers.location).toBeUndefined();
+      if (method === "HEAD") expect(response.body).toBe("");
+    }
+});
+it("validates directory aliases and index targets before redirecting or serving", async () => {
+  const { dist, root } = await fixture();
+  for (const path of [
+    "public-page",
+    "private",
+    "server",
+    "src",
+    "masked-index",
+    "outside-index",
+  ])
+    await mkdir(join(dist, path));
+  await writeFile(
+    join(dist, "public-page/index.html"),
+    "<title>Public nested page</title>",
+  );
+  for (const path of ["private", "server", "src"])
+    await writeFile(join(dist, path, "index.html"), "SECRET_PRIVATE_INDEX");
+  const outside = join(root, "outside");
+  await mkdir(outside);
+  await writeFile(join(outside, "index.html"), "SECRET_OUTSIDE_INDEX");
+  await symlink(join(dist, "public-page"), join(dist, "public-alias"));
+  await symlink(join(dist, "private"), join(dist, "hidden-alias"));
+  await symlink(outside, join(dist, "outside-alias"));
+  await symlink(
+    join(dist, "private/index.html"),
+    join(dist, "masked-index/index.html"),
+  );
+  await symlink(
+    join(outside, "index.html"),
+    join(dist, "outside-index/index.html"),
+  );
+  const port = await start(dist);
+  expect((await get(port, "/public-alias/")).body).toContain(
+    "Public nested page",
+  );
+  expect((await get(port, "/public-alias")).headers.location).toBe(
+    "/public-alias/",
+  );
+  for (const path of [
+    "/private",
+    "/server",
+    "/src",
+    "/hidden-alias",
+    "/outside-alias",
+    "/masked-index",
+    "/outside-index",
+  ])
+    for (const suffix of ["", "/", "/index.html"])
+      for (const method of ["GET", "HEAD"]) {
+        const response = await get(port, path + suffix, method);
+        expect(response.status, `${method} ${path + suffix}`).toBe(404);
+        expect(response.headers.location).toBeUndefined();
+        expect(response.body).not.toContain("SECRET");
+        expect(response.headers["content-security-policy"]).toBe(
+          policy["Content-Security-Policy"],
+        );
+      }
+});

@@ -2,9 +2,9 @@ import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
-import { createRequire } from "node:module";
+import { createRequire, builtinModules } from "node:module";
 import { chromium } from "@playwright/test";
 
 const run = promisify(execFile);
@@ -70,7 +70,7 @@ check(
 );
 check(/^\d+\.\d+\.\d+$/.test(vite ?? ""), "Use an exact Vite version");
 const directory = await mkdtemp(join(tmpdir(), "webguard-npm-consumer-"));
-let server, browser;
+let server, serverProcess, browser;
 try {
   await writeFile(
     join(directory, "package.json"),
@@ -94,6 +94,7 @@ try {
       "--registry=https://registry.npmjs.org",
       registry ? `${candidate.name}@${candidate.version}` : tarball,
       `vite@${vite}`,
+      "@types/node@22.18.0",
     ],
     directory,
   );
@@ -120,7 +121,14 @@ try {
     ),
     "Unexpected installation or packing hook",
   );
-  for (const name of [".", "./client", "./browser", "./headers", "./verify"])
+  for (const name of [
+    ".",
+    "./client",
+    "./browser",
+    "./headers",
+    "./verify",
+    "./server",
+  ])
     check(
       metadata.exports?.[name]?.types && metadata.exports[name].import,
       `Missing public export ${name}`,
@@ -169,7 +177,7 @@ try {
     }
     check(
       allowedRoot.has(local) ||
-        /^dist\/(?:index|browser|client|headers|verify|check)\.(?:js|d\.ts)$/.test(
+        /^dist\/(?:index|browser|client|headers|verify|check|server|serve)\.(?:js|d\.ts)$/.test(
           local,
         ) ||
         local === "examples/server.mjs",
@@ -186,14 +194,18 @@ try {
     "Consumer installed an internal workspace package",
   );
   await inspect(join(packageRoot, "dist"));
+  const builtinSpecifiers = [
+    ...new Set(builtinModules.map((name) => name.replace(/^node:/, ""))),
+  ];
+  const escapedBuiltins = builtinSpecifiers
+    .map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|");
+  const nodeImport = new RegExp(
+    `(?:\\bfrom\\s*|\\bimport\\s*(?:\\(\\s*)?|\\brequire\\s*\\(\\s*)["'](?:node:|(?:${escapedBuiltins}|vite|javascript-obfuscator)["'])`,
+  );
   for (const name of ["browser.js", "client.js"]) {
     const text = await readFile(join(packageRoot, "dist", name), "utf8");
-    check(
-      !/(?:from\s*["']node:|require\(["'](?:node:|fs|path)|from\s*["'](?:vite|javascript-obfuscator))/.test(
-        text,
-      ),
-      `Node dependency in ${name}`,
-    );
+    check(!nodeImport.test(text), `Node dependency in ${name}`);
   }
   await writeFile(
     join(directory, "vite.config.mjs"),
@@ -216,6 +228,13 @@ if(typeof WebGuard.init!=='function'||!createSecurityHeaders()['Content-Security
     `import {webguardApp,webguard,type WebGuardAppOptions} from 'uulab-webguard'; import {getWebGuard} from 'uulab-webguard/client'; import {WebGuard,type WebGuardOptions} from 'uulab-webguard/browser'; import {createSecurityHeaders,type SecurityHeadersOptions} from 'uulab-webguard/headers';
 const config:WebGuardAppOptions={preset:'strict',runtime:{devtools:{blockShortcuts:false}}};webguardApp(config);webguard({preset:'standard'});getWebGuard()?.update({devtools:{blockShortcuts:true}});const runtime:WebGuardOptions={devtools:{response:'monitor'}};WebGuard.init(runtime).destroy();const headers:SecurityHeadersOptions={trustedTypes:'report-only'};createSecurityHeaders(headers);
 import {checkDeployment} from 'uulab-webguard/verify'; void checkDeployment;
+import {createProtectedServer} from 'uulab-webguard/server'; import type {Server} from 'node:http'; const createServer:(directory:string)=>Promise<Server>=createProtectedServer;void createServer;
+// @ts-expect-error The public server accepts a directory string.
+createProtectedServer(42);
+createProtectedServer('dist').then(server=>{
+// @ts-expect-error Returned values expose the Node Server API, not arbitrary methods.
+server.nonexistentWebGuardServerMethod();
+});
 // @ts-expect-error The internal runtime resolver is not part of the public API.
 webguardApp({resolveRuntime:()=>'/tmp/runtime.js'});
 // @ts-expect-error Shortcut options are nested.
@@ -265,10 +284,111 @@ WebGuard.init({blockShortcuts:true});\n`,
     ),
     "Host header artifact missing",
   );
+  const { parse } = await import(
+    pathToFileURL(
+      createRequire(join(packageRoot, "package.json")).resolve("parse5"),
+    ).href
+  );
+  function checkMeta(html, { enabled = true, trustedTypes = true } = {}) {
+    const nodes = [];
+    function walk(node) {
+      nodes.push(node);
+      for (const child of node.childNodes ?? []) walk(child);
+    }
+    walk(parse(html));
+    const attr = (node, name) =>
+      node.attrs?.find((attribute) => attribute.name === name)?.value;
+    const policies = nodes.filter(
+      (node) =>
+        node.tagName === "meta" &&
+        attr(node, "http-equiv")?.toLowerCase() === "content-security-policy",
+    );
+    if (!enabled) {
+      check(
+        policies.length === 0,
+        "headers:false still injected a CSP meta policy",
+      );
+      return;
+    }
+    check(
+      policies.length === 1,
+      "Built HTML requires exactly one enforced CSP meta policy",
+    );
+    const meta = policies[0];
+    check(meta.parentNode?.tagName === "head", "CSP meta must be inside head");
+    const firstScript = nodes.findIndex((node) => node.tagName === "script");
+    check(
+      firstScript >= 0 && nodes.indexOf(meta) < firstScript,
+      "CSP meta must precede every script",
+    );
+    const policy = attr(meta, "content") ?? "";
+    check(
+      policy.includes("default-src 'none'") &&
+        policy.includes("connect-src 'self'"),
+      "CSP meta missing same-origin resource restrictions",
+    );
+    if (trustedTypes)
+      check(
+        policy.includes("require-trusted-types-for 'script'"),
+        "Default CSP meta missing enforced Trusted Types",
+      );
+    else
+      check(
+        !/(?:require-trusted-types-for|(?:^|;)\s*trusted-types(?:\s|$))/i.test(
+          policy,
+        ),
+        "Report-only Trusted Types became enforced through meta",
+      );
+  }
+  checkMeta(await readFile(join(directory, "dist/index.html"), "utf8"));
+  for (const variant of [
+    {
+      name: "without-headers",
+      options: "{headers:false}",
+      enabled: false,
+      trustedTypes: false,
+    },
+    {
+      name: "report-only",
+      options: "{headers:{trustedTypes:'report-only'}}",
+      enabled: true,
+      trustedTypes: false,
+    },
+  ]) {
+    const configFile = `vite.${variant.name}.config.mjs`;
+    await writeFile(
+      join(directory, configFile),
+      `import {defineConfig} from 'vite';import {webguardApp} from 'uulab-webguard';export default defineConfig({plugins:[webguardApp(${variant.options})]});\n`,
+    );
+    await command(
+      process.execPath,
+      [
+        join(directory, "node_modules/vite/bin/vite.js"),
+        "build",
+        "--config",
+        configFile,
+        "--outDir",
+        `dist-${variant.name}`,
+      ],
+      directory,
+    );
+    checkMeta(
+      await readFile(
+        join(directory, `dist-${variant.name}/index.html`),
+        "utf8",
+      ),
+      variant,
+    );
+  }
+  await writeFile(
+    join(directory, "server-api.mjs"),
+    "export {createProtectedServer} from 'uulab-webguard/server';\n",
+  );
   const installedServer = await import(
-    pathToFileURL(join(packageRoot, "examples/server.mjs")).href
+    pathToFileURL(join(directory, "server-api.mjs")).href
   );
   server = await installedServer.createProtectedServer(join(directory, "dist"));
+  check(!server.listening, "Public server API unexpectedly started listening");
   await new Promise((resolveListening, reject) => {
     server.once("error", reject);
     server.listen(0, "127.0.0.1", resolveListening);
@@ -282,10 +402,86 @@ WebGuard.init({blockShortcuts:true});\n`,
       headers["Content-Security-Policy"],
     "Real server did not apply generated headers",
   );
+  for (const path of [
+    "webguard-report.json",
+    "webguard-headers.json",
+    "_headers",
+    "src/main.ts",
+    "package.json",
+    ".env",
+    "vite.config.mjs",
+  ])
+    check(
+      (await fetch(`${url}/${path}`)).status === 404,
+      `Public server exposed a private URL: ${path}`,
+    );
   check(
-    (await fetch(url + "/webguard-report.json")).status === 404,
-    "Installed example server exposed its local build report",
+    metadata.bin?.["webguard-serve"] === "./dist/serve.js",
+    "Missing public protected-server command",
   );
+  await new Promise((resolveClose, reject) => {
+    server.closeAllConnections();
+    server.close((error) => (error ? reject(error) : resolveClose()));
+  });
+  server = undefined;
+  let serveDiagnostics = "";
+  serverProcess = spawn(
+    join(directory, "node_modules/.bin/webguard-serve"),
+    ["dist", "--port", String(address.port)],
+    { cwd: directory, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  let serveSpawnError;
+  serverProcess.once("error", (error) => {
+    serveSpawnError = error;
+  });
+  serverProcess.stdout.on("data", (bytes) => {
+    serveDiagnostics += String(bytes);
+  });
+  serverProcess.stderr.on("data", (bytes) => {
+    serveDiagnostics += String(bytes);
+  });
+  let ready = false;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (serveSpawnError || serverProcess.exitCode !== null)
+      throw new Error(
+        `Installed server CLI exited before readiness: ${serveSpawnError?.message ?? serveDiagnostics}`,
+      );
+    try {
+      if (
+        (await fetch(url, { signal: globalThis.AbortSignal.timeout(300) }))
+          .status === 200
+      ) {
+        ready = true;
+        break;
+      }
+    } catch {
+      /* Wait for actual HTTP readiness. */
+    }
+    await new Promise((resolveReady) => setTimeout(resolveReady, 50));
+  }
+  check(ready, `Installed server CLI did not listen: ${serveDiagnostics}`);
+  const served = await fetch(url);
+  check(
+    served.headers.get("content-security-policy") ===
+      headers["Content-Security-Policy"],
+    "Installed server CLI omitted generated CSP",
+  );
+  check(
+    served.headers.get("x-content-type-options") === "nosniff",
+    "Installed server CLI omitted nosniff",
+  );
+  for (const path of [
+    "webguard-report.json",
+    "webguard-headers.json",
+    "_headers",
+    "src/main.ts",
+    "package.json",
+    ".env",
+  ])
+    check(
+      (await fetch(`${url}/${path}`)).status === 404,
+      `Installed server CLI exposed a private URL: ${path}`,
+    );
   check(
     metadata.bin?.["webguard-check"] === "./dist/check.js",
     "Missing public checker command",
@@ -347,7 +543,108 @@ WebGuard.init({blockShortcuts:true});\n`,
     (await page.locator("#counter").textContent()) === "Count: 1",
     "Protected interaction changed",
   );
+  let nonselfRequests = 0;
+  await page.route("https://webguard-consumer.invalid/**", async (route) => {
+    nonselfRequests++;
+    await route.fulfill({
+      status: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: "unexpected nonself request",
+    });
+  });
+  const policyBlocks = await page.evaluate(async () => {
+    let network = false,
+      sink = false;
+    try {
+      await fetch("https://webguard-consumer.invalid/private");
+    } catch {
+      network = true;
+    }
+    try {
+      document.createElement("div").innerHTML = "<p>Untrusted sink fixture</p>";
+    } catch {
+      sink = true;
+    }
+    return { network, sink };
+  });
+  check(
+    policyBlocks.network && policyBlocks.sink && nonselfRequests === 0,
+    "Default browser policy did not block nonself fetch and string HTML sinks",
+  );
   check(errors.length === 0, `Browser errors: ${errors.join("; ")}`);
+  await browser.close();
+  browser = undefined;
+  await new Promise((resolveClose) => {
+    serverProcess.once("close", resolveClose);
+    serverProcess.kill("SIGTERM");
+  });
+  serveDiagnostics = "";
+  serveSpawnError = undefined;
+  serverProcess = spawn(
+    process.execPath,
+    [
+      join(directory, "node_modules/vite/bin/vite.js"),
+      "preview",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      String(address.port),
+      "--strictPort",
+    ],
+    { cwd: directory, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  serverProcess.once("error", (error) => {
+    serveSpawnError = error;
+  });
+  serverProcess.stdout.on("data", (bytes) => {
+    serveDiagnostics += String(bytes);
+  });
+  serverProcess.stderr.on("data", (bytes) => {
+    serveDiagnostics += String(bytes);
+  });
+  ready = false;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (serveSpawnError || serverProcess.exitCode !== null)
+      throw new Error(
+        `Installed Vite preview exited before readiness: ${serveSpawnError?.message ?? serveDiagnostics}`,
+      );
+    try {
+      if (
+        (await fetch(url, { signal: globalThis.AbortSignal.timeout(300) }))
+          .status === 200
+      ) {
+        ready = true;
+        break;
+      }
+    } catch {
+      /* Wait for the installed preview to listen. */
+    }
+    await new Promise((resolveReady) => setTimeout(resolveReady, 50));
+  }
+  check(ready, `Installed Vite preview did not listen: ${serveDiagnostics}`);
+  const preview = await fetch(url);
+  check(
+    preview.headers.get("content-security-policy") ===
+      headers["Content-Security-Policy"],
+    "Installed Vite preview omitted generated CSP",
+  );
+  check(
+    preview.headers.get("x-content-type-options") === "nosniff",
+    "Installed Vite preview omitted nosniff",
+  );
+  for (const path of [
+    "webguard-report.json",
+    "webguard-headers.json",
+    "_headers",
+    "src/main.ts",
+    "package.json",
+    ".env",
+    "vite.config.mjs",
+  ])
+    check(
+      (await fetch(`${url}/${path}`)).status === 404,
+      `Installed Vite preview exposed a private URL: ${path}`,
+    );
   console.log(
     JSON.stringify({
       source: registry ? "registry" : "tarball",
@@ -358,11 +655,27 @@ WebGuard.init({blockShortcuts:true});\n`,
       liveControls: true,
       strictHeaders: true,
       deploymentCheck: true,
+      publicServerApi: true,
+      installedServerCli: true,
+      protectedPreview: true,
+      cspMeta: true,
+      headerOptOut: true,
+      reportOnlyMeta: true,
       browserErrors: errors.length,
     }),
   );
 } finally {
   await browser?.close();
+  if (
+    serverProcess?.pid &&
+    serverProcess.exitCode === null &&
+    serverProcess.signalCode === null
+  ) {
+    await new Promise((resolveClose) => {
+      serverProcess.once("close", resolveClose);
+      serverProcess.kill("SIGTERM");
+    });
+  }
   if (server)
     await new Promise((resolveClose, reject) => {
       server.closeAllConnections();

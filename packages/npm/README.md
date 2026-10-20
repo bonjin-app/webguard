@@ -1,11 +1,16 @@
 # uulab-webguard
 
-Vite 웹 앱에 강한 난독화, 자동 브라우저 SDK 시작, SRI·무결성 매니페스트와 서버 헤더 파일을 적용합니다. Node.js 22.12 이상과 Vite 7/8을 지원하는 ESM 패키지입니다.
+Vite preview의 명시적인 `preview.proxy` 경로는 백엔드가 응답 헤더·인증·비공개 자료를 보호해야 합니다. 좁은 API prefix를 사용하세요. `proxy.bypass`는 정적 파일 보호 우회를 막기 위해 지원하지 않으며 시작 전 오류로 표시합니다.
 
-[데모 체험](https://webguard-demo.uulab.workers.dev) · [한국어 전체 가이드](INSTALL.ko.md) · [온라인 가이드](https://webguard-demo.uulab.workers.dev/docs/#install)
+Vite 웹 앱에 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 적용하는 단일 패키지입니다. Node.js 22.12 이상, Vite 7/8의 ESM 웹 앱을 지원합니다.
+
+[데모 체험](https://webguard.uulab.co.kr/demo) · [한국어 전체 가이드](INSTALL.ko.md) · [온라인 가이드](https://webguard.uulab.co.kr/docs/#install)
+
+**0.3.0은 아직 npm에 게시하지 않은 로컬 후보입니다. 현재 공개 버전은 0.2.0입니다.** 이 문서의 새 동작은 후보 기준이며 공개 0.2.0의 동작과 구분하세요. 검토한 로컬 `.tgz`가 있다면 시험 앱에서 `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`로 설치할 수 있습니다.
 
 ```sh
-npm install --save-dev uulab-webguard@0.2.0
+# 0.3.0 배포 후에만 실행 — 현재 레지스트리에는 없음
+npm install -D uulab-webguard@0.3.0
 ```
 
 ```ts
@@ -13,48 +18,69 @@ npm install --save-dev uulab-webguard@0.2.0
 import { defineConfig } from "vite";
 import { webguardApp } from "uulab-webguard";
 
-export default defineConfig({
-  plugins: [
-    webguardApp({
-      runtime: {
-        devtools: { blockShortcuts: true, blockContextMenu: true },
-      },
-    }),
-  ],
+export default defineConfig({ plugins: [webguardApp()] });
+```
+
+SDK를 따로 설치하거나 앱에서 초기화하지 않습니다. 0.3.0은 앱 리소스보다 앞에 CSP 메타 정책도 넣어, 호스트 헤더가 없어도 기본 `connect-src 'self'`와 지원 브라우저의 Trusted Types 강제를 적용합니다. `frame-ancestors`, report-only와 MIME 보호는 실제 HTTP 헤더가 필요합니다. Trusted Types 미지원 환경은 보호된 것으로 판단하지 마세요. 개발/HMR에는 적용하지 않습니다.
+
+```sh
+npm run build && npx webguard-serve dist --port 4173
+```
+
+`http://127.0.0.1:4173`에서 확인하세요. 보호 서버는 생성된 HTTP 정책을 적용하고 소스맵·보고서·서버 제어 파일 등 비공개 경로를 숨깁니다. 기본 CLI는 루프백 검증용이며 없는 경로는 404입니다. 같은 플러그인이 Vite preview에도 별도 설정 없이 헤더·비공개 경로 제한을 적용합니다. 정적 호스트·CDN에서도 `_headers` 지원 여부와 비공개 파일 거부 규칙을 각각 적용해야 합니다.
+
+```ts
+webguardApp({
+  headers: {
+    allowedOrigins: { connect: ["https://api.example.com"] },
+    trustedTypes: "report-only",
+  },
+  runtime: {
+    devtools: { blockShortcuts: true, blockContextMenu: true },
+  },
 });
 ```
 
-SDK를 따로 설치하거나 앱에 초기화 코드를 넣을 필요가 없습니다. `webguardApp()`은 Strict/High가 기본값이며, F12·우클릭 가로채기는 위처럼 명시적으로 켭니다. `npm run dev`에는 적용되지 않고 빌드된 페이지에서 SDK 시작 후 동작합니다.
+외부 API는 정확한 출처만 허용합니다. Trusted Types는 기본 `enforce`이며 `report-only`·`off`로 조정할 수 있습니다. report-only는 HTTP 헤더를 호스트에 반영해야 동작합니다. `headers: false`는 자동 CSP 메타·헤더 생성과 preview 정책 처리를 끕니다. 입력 제한은 기본 꺼짐이며 선택적으로 켭니다. 이 제한은 개발자도구 창 자체를 잠그지 않습니다.
 
-```sh
-npm run build
-node node_modules/uulab-webguard/examples/server.mjs dist --port 4173
-```
+| 구분                   | 후보에서 적용되는 범위                                        | 별도 책임·제한                         |
+| ---------------------- | ------------------------------------------------------------- | -------------------------------------- |
+| 자동 HTML 정책         | 초기 CSP 메타로 스크립트·네트워크·지원되는 Trusted Types 강제 | HTTP 전용 정책·비공개 파일 숨김 불가   |
+| HTTP 보호 서버·preview | 실제 응답 헤더와 비공개 파일 거부                             | 정적 호스트는 자체 규칙 반영 필요      |
+| SDK                    | 자동 시작, 선택적 F12·우클릭 제한, 추정 신호                  | 제한은 기본 꺼짐, 개발자도구 잠금 불가 |
+| 앱 서버                | 가격·입력·권한 검증을 직접 구현                               | SDK 자동 기능이 아님                   |
 
-`http://127.0.0.1:4173`에서 확인하세요. 포함된 예제 서버는 생성된 `webguard-headers.json`을 실제 응답에 적용합니다. 운영에서는 서버·CDN에 정책을 반영해야 합니다. `_headers` 지원 호스트는 생성 파일을 최종 출력에 유지하세요. 예제 서버는 루프백 전용이며 없는 경로는 404를 반환합니다.
+Trusted Types 미지원은 성공으로 세지 않습니다. 데모의 의도된 CSP/TypeError·HTTP 409는 결과와 함께 확인하세요. 일반 앱의 404·5xx·처리되지 않은 예외나 기준 요청 실패를 보호 성공으로 분류하지 마세요.
 
-실제 배포에 사용한 로컬 `dist`로 파일 무결성·실제 보안 헤더·소스맵과 제어 파일 노출을 함께 검사하세요. 실패 시 JSON 오류와 종료 코드 1을 반환합니다.
-
-```sh
-npx --no-install webguard-check dist --url http://127.0.0.1:4173/
-npx --no-install webguard-check dist --url https://YOUR-SITE.example/
-```
-
-실시간 전환은 앱 코드에서 가능합니다.
+실시간 변경은 브라우저 코드에서 수행합니다. 새로고침하면 빌드 설정으로 돌아갑니다.
 
 ```ts
 import { getWebGuard } from "uulab-webguard/client";
 getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 ```
 
+Node 서버 API도 제공합니다. 브라우저 번들에 가져오지 마세요.
+
+```js
+import { createProtectedServer } from "uulab-webguard/server";
+const server = await createProtectedServer("dist");
+server.listen(4173, "127.0.0.1");
+```
+
+실제 배포에 사용한 로컬 출력으로 응답을 검사하세요. 실패 시 JSON 오류와 종료 코드 1을 반환합니다.
+
+```sh
+npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+npx --no-install webguard-check dist --url https://YOUR-SITE.example/
+```
+
 - `uulab-webguard`: Vite `webguardApp()` / 빌드 전용 `webguard()`
-- `uulab-webguard/client`: 자동 SDK 조회·실시간 변경
-- `uulab-webguard/browser`: 수동 SDK 사용
-- `uulab-webguard/headers`: 서버 정책 생성
-- `uulab-webguard/verify`: Node 배포 검사 `checkDeployment(directory, baseUrl)`
+- `/client`: 자동 SDK 조회·실시간 변경
+- `/browser`: 수동 SDK 사용
+- `/headers`: 서버 정책 생성
+- `/server`: Node 보호 서버 `createProtectedServer(directory)`
+- `/verify`: Node 배포 검사 `checkDeployment(directory, baseUrl)`
 
-Trusted Types와 CSP는 기존 DOM 삽입·외부 위젯에 영향을 줄 수 있습니다. 호환성 점검에는 `headers: { trustedTypes: "report-only" }`, 기존 호스트 정책 유지에는 `headers: false`를 사용하세요. 브라우저용 코드는 `/client`나 `/browser`를 가져오세요. 서버/빌드 도구인 루트 진입점을 앱 번들에 넣지 마세요.
+난독화와 RC4 문자열 인코딩은 전달된 HTML·CSS·JavaScript나 네트워크 요청을 숨기지 않습니다. 브라우저 메뉴·콘솔·이미 열린 개발자도구는 통제하지 못합니다. 비밀키·가격 재계산·권한 검증은 서버에 두세요. 서버 검증은 SDK의 자동 기능이 아닙니다. 원격 수집·무한 디버거 루프를 추가하지 않습니다.
 
-브라우저에 전달된 소스는 관찰·수정할 수 있고 난독화는 분석 비용을 높입니다. 브라우저 메뉴·콘솔·이미 열린 개발자도구를 완전히 막지는 못합니다. 비밀키와 권한 검사는 서버에 두세요. 원격 수집·설치 스크립트·무한 디버거 루프를 추가하지 않습니다.
-
-MIT · 난독화 엔진 javascript-obfuscator의 BSD-2-Clause 라이선스 고지 포함.
+MIT · 난독화 엔진 javascript-obfuscator의 BSD-2-Clause 고지 포함.

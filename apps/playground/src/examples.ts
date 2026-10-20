@@ -46,7 +46,7 @@ export const integrations = [
   {
     id: "vite",
     title: "Vite 설정",
-    hint: "npm install -D uulab-webguard@0.2.0 후 vite.config.ts에 한 번 설정합니다. SDK 초기화 코드를 앱에 따로 넣을 필요가 없습니다.",
+    hint: "미게시 0.3.0 로컬 후보 기준입니다. 검토한 tgz를 설치하거나 0.3.0 게시 후 npm으로 설치하세요. 현재 공개 버전은 0.2.0입니다. SDK·초기 CSP 메타가 자동 적용되며 외부 API는 정확한 출처를 허용합니다.",
     code: `import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
 
@@ -77,12 +77,14 @@ getWebGuard()?.update({
   {
     id: "server",
     title: "서버 헤더 적용",
-    hint: "npm run build 후 실행합니다. 포함된 예제 서버가 생성된 정책을 실제 응답 헤더에 적용합니다.",
-    code: `npm run build
-node node_modules/uulab-webguard/examples/server.mjs dist --port 4174
+    hint: "검토한 0.3.0 로컬 후보 설치 후 사용하는 명령입니다. 실제 HTTP 정책·비공개 파일 제한을 적용하며 Vite preview도 별도 설정 없이 적용합니다. 정적 호스트는 자체 규칙을 반영하세요.",
+    code: `# 검토한 로컬 0.3.0 tgz 설치 후 또는 0.3.0 게시 후
+npm run build
+npx webguard-serve dist --port 4173
 
-# http://127.0.0.1:4174 에서 실행 결과와 응답 헤더 확인
-# 정적 호스팅은 빌드가 만든 _headers 지원 여부에 맞게 반영`,
+# http://127.0.0.1:4173 에서 빌드와 실제 HTTP 정책 확인
+# 정적 호스트는 _headers 적용과 비공개 경로 거부 규칙을 모두 설정
+# frame-ancestors와 report-only는 실제 HTTP 헤더가 필요`,
   },
   {
     id: "jsp",

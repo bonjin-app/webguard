@@ -45,9 +45,12 @@ async function metadata() {
     pkg.publishConfig?.registry !== registry
   )
     throw new Error("Public registry/access must be explicit");
-  if (pkg.bin?.["webguard-check"] !== "./dist/check.js")
+  if (
+    pkg.bin?.["webguard-check"] !== "./dist/check.js" ||
+    pkg.bin?.["webguard-serve"] !== "./dist/serve.js"
+  )
     throw new Error(
-      "Public package must expose webguard-check as ./dist/check.js",
+      "Public package must expose webguard-check and webguard-serve",
     );
   for (const [name, value] of Object.entries(pkg.dependencies ?? {}))
     if (name.startsWith("@webguard/") || /workspace:|file:|link:/.test(value))
@@ -116,6 +119,9 @@ async function prepare() {
       "dist/verify.js",
       "dist/verify.d.ts",
       "dist/check.js",
+      "dist/server.js",
+      "dist/server.d.ts",
+      "dist/serve.js",
     ])
       if (!paths.includes(path))
         throw new Error(`Missing public file: ${path}`);

@@ -10,9 +10,17 @@ export async function prepareNpmPackageMetadata() {
     new URL("docs/INSTALL.ko.md", source),
     new URL("INSTALL.ko.md", target),
   );
-  await copyFile(
-    new URL("examples/security-server/server.mjs", source),
+  await writeFile(
     new URL("examples/server.mjs", target),
+    (
+      await readFile(
+        new URL("examples/security-server/server.mjs", source),
+        "utf8",
+      )
+    ).replace(
+      "../../packages/vite-plugin/src/static-server.mjs",
+      "../dist/server.js",
+    ),
   );
   const license = await readFile(
     new URL("docs/licenses/javascript-obfuscator.txt", source),

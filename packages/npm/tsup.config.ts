@@ -16,6 +16,8 @@ export default defineConfig([
       headers: "src/headers.ts",
       verify: "src/verify.ts",
       check: "src/check.ts",
+      server: "src/server.ts",
+      serve: "src/serve.ts",
     },
     platform: "node",
   },

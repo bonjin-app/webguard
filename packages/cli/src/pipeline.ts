@@ -21,6 +21,7 @@ import {
 } from "./fs-utils.js";
 import { scanDirectory, type Finding } from "./scan.js";
 import { addSubresourceIntegrity, sanitizeInlineSources } from "./html.js";
+import { isPrivatePath } from "./private-path.mjs";
 export interface ProtectionReport {
   version: 1;
   preset: string;
@@ -129,7 +130,13 @@ export async function protectDirectory(
         }
         continue;
       }
-      if (/\.(?:tsx?|jsx|vue|svelte)$/i.test(path)) {
+      // Root deployment controls are consumed by hosting/server integrations. They
+      // remain in the output, but the shared public-serving rule denies requests.
+      if (
+        path !== "_headers" &&
+        path !== "webguard-headers.json" &&
+        isPrivatePath(path)
+      ) {
         report.removedSources.push(path);
         continue;
       }

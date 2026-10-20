@@ -28,7 +28,10 @@ async function releaseFixture(allowPublish = false) {
     JSON.stringify({
       name: target.name,
       version: target.version,
-      bin: { "webguard-check": "./dist/check.js" },
+      bin: {
+        "webguard-check": "./dist/check.js",
+        "webguard-serve": "./dist/serve.js",
+      },
       publishConfig: {
         access: "public",
         registry: "https://registry.npmjs.org",
