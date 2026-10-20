@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-20T06:00:29.335Z",
+  "scope": "Local demo gateway only",
+  "outputs": [
+    {
+      "name": "react",
+      "prefix": "/examples/react/",
+      "local": {
+        "valid": true,
+        "errors": []
+      },
+      "remote": {
+        "valid": true,
+        "errors": [],
+        "checked": 8
+      },
+      "reportOutputMatches": true,
+      "responseCsp": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'"
+    },
+    {
+      "name": "vanilla-js",
+      "prefix": "/examples/vanilla-js/",
+      "local": {
+        "valid": true,
+        "errors": []
+      },
+      "remote": {
+        "valid": true,
+        "errors": [],
+        "checked": 7
+      },
+      "reportOutputMatches": true,
+      "responseCsp": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'"
+    },
+    {
+      "name": "vanilla-ts",
+      "prefix": "/examples/vanilla-ts/",
+      "local": {
+        "valid": true,
+        "errors": []
+      },
+      "remote": {
+        "valid": true,
+        "errors": [],
+        "checked": 7
+      },
+      "reportOutputMatches": true,
+      "responseCsp": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-20T06:00:14.922Z",
+  "browser": "156.0.8078.4",
+  "results": [
+    {
+      "example": "장바구니 계산",
+      "preset": "high",
+      "outputsMatch": true
+    },
+    {
+      "example": "폼 검증",
+      "preset": "high",
+      "outputsMatch": true
+    },
+    {
+      "example": "데이터 집계",
+      "preset": "high",
+      "outputsMatch": true
+    }
+  ],
+  "mobileWidth": 390,
+  "noHorizontalOverflow": true,
+  "scope": "Local headless Chromium"
+}

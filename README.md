@@ -10,13 +10,14 @@ Requires Node **22.12+** and pnpm **11.10.0**.
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm verify
-pnpm exec playwright install chromium firefox webkit
-pnpm test:e2e
-pnpm --filter @webguard/playground dev
+pnpm demo
 ```
 
-Open the localhost address printed by Vite. The Playground transforms code locally in a worker; it does not upload it. Its isolated execution harness has no DOM or network access and terminates long-running workers. It compares console output, not arbitrary program semantics. It is a development demonstration, not a hardened multi-tenant code execution service.
+Open `http://127.0.0.1:4173`. Start with three one-click High examples, try live F12/context-menu controls, open protected React/JavaScript/TypeScript apps and copy integration snippets. Documentation and examples use the same origin. [Demo walkthrough](docs/DEMO_GUIDE.md).
+
+For verification: `pnpm verify`, `pnpm exec playwright install chromium firefox webkit`, then `pnpm test:e2e`. The test command prepares the complete demo before browser checks. `pnpm dev` starts only the standalone transformation UI.
+
+The Playground transforms code locally in a worker; it does not upload it. Its isolated execution harness has no DOM or network access and terminates long-running workers. It compares console output, not arbitrary program semantics. It is a development demonstration, not a hardened multi-tenant code execution service.
 
 `@webguard/*` are **temporary local workspace names**. These packages have not been published. A registry check found `@webguard/core` already registered; namespace ownership and final names must be resolved before publication. Do not install an unrelated registry package expecting this implementation.
 
@@ -156,6 +157,6 @@ This explicitly fetches deployment resources and compares them to your **local**
 
 Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Next.js, Webpack, Nuxt and Angular adapters are future work; use the generic static-output CLI where appropriate.
 
-`pnpm benchmark` writes real fixture measurements to [Node benchmark evidence](docs/evidence/benchmark-node.json). Measurements are environment-dependent, not performance promises. [Verification record](docs/VERIFICATION.md) separates automated tests, builds and external/device limitations.
+`pnpm benchmark` writes real fixture measurements to [Node benchmark evidence](docs/evidence/benchmark-node.json). Measurements are environment-dependent, not performance promises. [Demo verification](docs/DEMO_VERIFICATION.md) records the runnable hub checks. [Foundation verification](docs/VERIFICATION.md) separates automated tests, builds and external/device limitations.
 
 See [architecture](ARCHITECTURE.md), [threat model](THREAT_MODEL.md), [security policy](SECURITY.md), [contributing](CONTRIBUTING.md) and [third-party licenses](THIRD_PARTY_NOTICES.md). Original WebGuard code is MIT licensed; javascript-obfuscator is BSD-2-Clause.

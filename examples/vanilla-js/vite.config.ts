@@ -1,3 +1,5 @@
 import { defineConfig } from "vite";
-import { webguard } from "@webguard/vite-plugin";
-export default defineConfig({ plugins: [webguard()] });
+import { webguardApp } from "@webguard/vite-plugin";
+export default defineConfig({
+  plugins: [webguardApp({ preset: "standard", runtime: false })],
+});

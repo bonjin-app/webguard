@@ -14,4 +14,6 @@
 - Opt-in `webguardApp()` combines Strict protection, automatic SDK injection and server header artifacts in one Vite configuration.
 - Live SDK policy updates and a runnable Node response-header server example.
 
+- Runnable example hub with one-click High samples, live SDK trials, copyable integration snippets and same-origin protected applications via `pnpm demo`.
+
 No packages or hosted applications have been published by this work.

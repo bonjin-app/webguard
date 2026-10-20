@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-20T06:01:26.939Z",
+  "baseCommit": "ba4b571",
+  "checks": {
+    "workspaceBuild": 12,
+    "additionalMountedBuilds": 4,
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "unitIntegration": {
+      "passed": 151,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "projects": ["chromium", "firefox", "webkit"]
+    },
+    "curatedHighSamples": {
+      "passed": 3,
+      "browser": "local Chromium"
+    },
+    "mobile": {
+      "width": 390,
+      "horizontalOverflow": false
+    },
+    "mountedManifestsAndHttpReadback": {
+      "passed": 3
+    },
+    "focusedReview": "no actionable finding",
+    "publicDeployment": false,
+    "npmPublish": false,
+    "remoteCI": "not run",
+    "codexConfigurationChanged": false
+  },
+  "sha256": {
+    "apps/playground/src/main.ts": "2e250db6ef7214ae772533a05052512ae06e436655b9a05e393f2dc428e39ad6",
+    "apps/playground/src/examples.ts": "a9c652238bc33a7e676989567447f9385d2adf13895e80c05f62d2335bf109a0",
+    "scripts/build-demo.mjs": "a6f2bec710c1610ffd1e78b1bfe3f7235dbd7634c7374ae3e17df9be2f550225",
+    "scripts/demo-server.mjs": "4ac051dffc31b2a15416684e04f67b357aff4fd6b806495b135388a3be9331ba",
+    ".demo-dist/playground/index.html": "a25a5df51134ffce3bfc64dba01dadfaca1764ad6f76a30dbbc1047798f6f5b7",
+    ".demo-dist/react/webguard-manifest.json": "52049b92a03a66725c665594f50c334eb59bf84f0374c3ed2516327d3f63730f",
+    ".demo-dist/vanilla-js/webguard-manifest.json": "440656b15f78c4b8fe13895fc20775eb93f7580bc1b4c91af74d701c920f7f99",
+    ".demo-dist/vanilla-ts/webguard-manifest.json": "5d4afbee23c949cf47a61a4ecde803e078270e063e0d741cccb8359893baae3f"
+  }
+}

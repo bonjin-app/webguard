@@ -21,9 +21,11 @@ export default defineConfig({
     ["@webguard/example-vanilla-ts", 4177],
   ].map(([name, port]) => ({
     command:
-      name === "@webguard/example-react-vite"
-        ? `node examples/security-server/server.mjs examples/react-vite/dist --port ${port}`
-        : `pnpm --filter ${name} preview --port ${port} --strictPort`,
+      name === "@webguard/playground"
+        ? `node scripts/demo-server.mjs --port ${port}`
+        : name === "@webguard/example-react-vite"
+          ? `node examples/security-server/server.mjs examples/react-vite/dist --port ${port}`
+          : `pnpm --filter ${name} preview --port ${port} --strictPort`,
     url: `http://127.0.0.1:${port}`,
     reuseExistingServer: false,
     timeout: 30000,

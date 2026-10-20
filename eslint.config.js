@@ -4,6 +4,9 @@ export default tseslint.config(
   {
     ignores: [
       "**/dist/**",
+      ".demo-dist/**",
+      ".demo-stage-*/**",
+      ".demo-backup-*/**",
       "node_modules/**",
       "playwright-report/**",
       "test-results/**",

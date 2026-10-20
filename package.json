@@ -15,12 +15,14 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:e2e": "playwright test",
+    "test:e2e": "pnpm demo:build && playwright test",
     "verify": "pnpm build && pnpm typecheck && pnpm lint && pnpm test",
     "benchmark": "node scripts/benchmark.mjs",
     "dev": "pnpm --filter @webguard/playground dev",
     "benchmark:browser": "node scripts/benchmark-browser.mjs",
-    "test:package": "node scripts/verify-package-consumer.mjs"
+    "test:package": "node scripts/verify-package-consumer.mjs",
+    "demo:build": "pnpm build && node scripts/build-demo.mjs",
+    "demo": "pnpm demo:build && node scripts/demo-server.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

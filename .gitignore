@@ -11,3 +11,8 @@ test-results/
 examples/jsp-servlet/src/main/webapp/assets/
 examples/jsp-servlet/target/
 .playwright-cli/
+
+.demo-dist/
+
+.demo-stage-*/
+.demo-backup-*/
