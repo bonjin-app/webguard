@@ -1,0 +1,238 @@
+{
+  "verifiedAt": "2026-10-20T11:35:19.390Z",
+  "url": "https://webguard.uulab.co.kr/demo#security-lab",
+  "worker": "webguard-demo",
+  "versionId": "a1ec6f30-6dc8-4a6e-ae65-eb70a89b6918",
+  "deploymentId": "dcdaaa1a-a163-4928-85c1-3a15616d7f2d",
+  "trafficPercentage": 100,
+  "previousVersionId": "fd2c5843-c722-4577-8dbc-35b737d0f08d",
+  "parentCommit": "2134237",
+  "sourceSha256": {
+    "apps/playground/index.html": "2c86f6f49fdb854142f71451d7bfe598d9a04e5b646592d636545ba445f2b16c",
+    "apps/playground/src/lab.ts": "3dc672717b8acc704745c47e7d28038f16f02d892eabc41ccd85c258fdfdc30e",
+    "apps/playground/src/style.css": "033a3e3ac1b7eac85036cff5dc20357b1e5acc00259758f0d8db93d6286a469d",
+    "apps/playground/public/favicon.svg": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+    "apps/playground/public/favicon.ico": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+    "tests/e2e/diagnostics.spec.ts": "6ef34e0514c2b96cc33ddc124acaabd42fd17dc1f6801d608255a7d51a799b6a"
+  },
+  "bundleSha256": "7f849ef1b168a0c3ff355c39f652c73d610cf01ddffda2a2074c7573a66a85bd",
+  "files": [
+    {
+      "path": "/favicon.ico",
+      "bytes": 4286,
+      "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+      "contentType": "image/x-icon"
+    },
+    {
+      "path": "/favicon.svg",
+      "bytes": 301,
+      "sha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+      "contentType": "image/svg+xml"
+    },
+    {
+      "path": "/index.html",
+      "bytes": 782,
+      "sha256": "c8b2ac5d8d83940a852cf65c73280328479297ac28f2075dc0d4f0f4976aada1",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/third-party-licenses.md",
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+      "contentType": "text/markdown"
+    },
+    {
+      "path": "/examples/vanilla-ts/index.html",
+      "bytes": 2516,
+      "sha256": "5b67cef96d0e20628c6b85a7d2dfd33bfdf9b869104c0dd412016c19a8c392dc",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "bytes": 663,
+      "sha256": "11e0f73cf296682b647a7fc73846cae9cf514a69f6920034fababb6095dd1af4",
+      "contentType": "application/json"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BSlN3o1r.js",
+      "bytes": 10450,
+      "sha256": "3102a28ea8c2c462f138e412c9d8f5877ed20444827f98aba48bf9bea9784504",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/lazy-DHhR8Jya.js",
+      "bytes": 1203,
+      "sha256": "c5a77642ec7369be9717522e16b7fa3788899fe8a95263fda4ad9802fb02d702",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/examples/vanilla-js/index.html",
+      "bytes": 2516,
+      "sha256": "eb4d9528519f0a3521e454da4f3981e2364ae7213dd54bbe0248deea4af8feb8",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "bytes": 661,
+      "sha256": "230be34c9a941804f2113ea4a608ab398a2a910a3f46ab967c91603127c40f4b",
+      "contentType": "application/json"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-CokxOdMK.js",
+      "bytes": 9252,
+      "sha256": "fa5c324910e3fd34774f5fe033ded2094f58223a4d503aba47c53782a4c8c0e6",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/lazy-r-NePmiN.js",
+      "bytes": 570,
+      "sha256": "3847bbf61ee5052fcfc1415516ef6e69809544300bc8e4408bada8e6b1e11d49",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/examples/react/index.html",
+      "bytes": 604,
+      "sha256": "b1a8b6d521096a0a649ce5e87834c209ed4db4aaa4ac6ae738ea586a6c114e63",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/examples/react/third-party-licenses.md",
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+      "contentType": "text/markdown"
+    },
+    {
+      "path": "/examples/react/webguard-manifest.json",
+      "bytes": 817,
+      "sha256": "93c19f88c0dc9715a1434716c07d5e67208f6cfca4391211fd54a1fde3fd4e10",
+      "contentType": "application/json"
+    },
+    {
+      "path": "/examples/react/assets/index-DlQ_wBAa.js",
+      "bytes": 1803091,
+      "sha256": "a8e053aef03f8455ee19cd6b374d8bedac1947f06b7af2248e0c275dd4d0d233",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/examples/react/assets/lazy-BrhojCPd.js",
+      "bytes": 2564,
+      "sha256": "9119d01b8e94cd1932d855e411aa43d7793200682c84d9b5c775832f408ddb81",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/docs/INSTALL.ko.txt",
+      "bytes": 12287,
+      "sha256": "5f1155c11fe7fb8538760fe8b84b5428bdc13175e3d0d34fd7f6334a8c38b682",
+      "contentType": "text/plain"
+    },
+    {
+      "path": "/docs/index.html",
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/docs/third-party-licenses.md",
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+      "contentType": "text/markdown"
+    },
+    {
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "bytes": 11196,
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f",
+      "contentType": "text/javascript"
+    },
+    {
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/assets/index-7Upxtjrf.css",
+      "bytes": 10705,
+      "sha256": "1346b1527bccc239db9208cb3b195b4fd1635d1278b51717bba224f588c3f797",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/assets/index-B1OI517c.js",
+      "bytes": 44894,
+      "sha256": "59625ee366e014824a75fcdc9145950b4f59f3c6d3fb8538a6aeda095f74401d",
+      "contentType": "application/javascript"
+    },
+    {
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+      "contentType": "text/javascript"
+    },
+    {
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+      "contentType": "text/javascript"
+    }
+  ],
+  "verification": {
+    "redBaseline": {
+      "failed": 3,
+      "note": "favicon 404, missing diagnostic guide, missing unexpected-response label"
+    },
+    "intermediate": {
+      "passed": 6,
+      "failed": 3,
+      "note": "SVG natural dimensions differed across engines; explicit 32px intrinsic dimensions added"
+    },
+    "localFinal": {
+      "passed": 9,
+      "failed": 0
+    },
+    "publicFinal": {
+      "passed": 13,
+      "failed": 0,
+      "http": 4,
+      "browser": 9
+    },
+    "engines": ["chromium", "firefox", "webkit"],
+    "iconHttp200": true,
+    "iconDecode32px": true,
+    "baselineUnexpectedConsoleErrors": 0,
+    "wholeTourUnhandledPageErrors": 0,
+    "unexpectedConsoleErrorsDuringWholeTour": 0,
+    "server500NotLabeledExpected": true,
+    "typecheck": true,
+    "workerTypecheck": true,
+    "scopedEslint": true,
+    "format": true,
+    "dryRun": true
+  },
+  "preserved": {
+    "cspEnforcement": true,
+    "quote409Rejection": true,
+    "consoleMethods": true,
+    "errorReporting": true,
+    "protectedExampleBytes": true,
+    "codexSettings": true,
+    "npmPublication": true
+  },
+  "scope": "Fix missing icons and explain deliberately generated security-probe diagnostics; expected CSP/409 messages remain visible. No console clearing or suppression."
+}

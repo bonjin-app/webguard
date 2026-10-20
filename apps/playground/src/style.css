@@ -798,3 +798,18 @@ footer strong {
     padding: 16px;
   }
 }
+.lab-console-guide {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border: 1px solid #59604b;
+  border-radius: 6px;
+  background: #20271f;
+}
+.lab-console-guide strong {
+  color: #e2d6ac;
+  font-size: 12px;
+}
+.lab-console-guide p {
+  margin-top: 6px;
+  font-size: 12px;
+}

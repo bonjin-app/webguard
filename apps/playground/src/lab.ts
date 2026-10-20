@@ -3,6 +3,7 @@ const initialContent =
 export const labMarkup = `
 <section id="security-lab" class="demo-section" aria-labelledby="lab-heading">
   <div class="section-heading"><div><div class="eyebrow">INTERACTIVE SECURITY LAB</div><h2 id="lab-heading">직접 바꾸고, 방어 결과를 확인하세요</h2><p>버튼을 누르면 실제 브라우저 정책·해시·서버 응답을 검사합니다. 개발자도구가 열려 있어도 체험할 수 있습니다.</p></div></div>
+  <aside id="lab-console-guide" class="lab-console-guide" aria-label="시험 진단 안내"><strong>예상된 시험 로그와 앱 오류를 구분하세요</strong><p>스크립트 삽입 시험은 CSP 위반 메시지를, 가격 변조 시험은 HTTP 409를 의도적으로 발생시킵니다. 개발자도구에 빨간색으로 표시될 수 있으며, 아래에서 차단 여부를 확인합니다. 404·5xx·처리되지 않은 예외는 예상된 차단으로 인정하지 않습니다. 시험 로그는 숨기거나 지우지 않습니다.</p></aside>
   <div class="lab-actions"><button id="lab-all" class="primary">전체 시나리오 실행</button><button id="lab-reset" class="text-button">체험 초기화</button><p id="lab-summary" aria-live="polite">시험을 선택하거나 전체 시나리오를 실행하세요.</p></div>
   <div class="sample-grid lab-grid">
     <article class="sample-card"><span class="badge">브라우저 정책 · 실제 실행</span><h3>01. 스크립트 삽입</h3><p>같은 시험 코드를 CSP 적용 전후에 실행합니다. 본문 페이지와 분리된 프레임에서만 동작합니다.</p><label for="lab-policy-kind">스크립트 시험 종류</label><select id="lab-policy-kind"><option value="inline">인라인 스크립트 삽입</option><option value="eval">eval 문자열 실행</option><option value="handler">HTML 이벤트 핸들러 삽입</option></select><pre class="lab-payload" id="lab-policy-payload"></pre><button id="lab-policy" class="sample-run">스크립트 삽입 비교</button><pre id="lab-policy-result" class="lab-result" aria-live="polite">아직 실행하지 않았습니다.</pre><p class="lab-limit">CSP 메타 정책을 사용하는 격리 체험입니다. 콘솔·브라우저 디버거의 실행을 차단하는 기능은 아닙니다.</p></article>
@@ -116,7 +117,7 @@ export function initLab() {
         (after.violations.some((value) => value.startsWith("script-src")) ||
           (selected === "eval" && after.error === "EvalError"));
       byId("lab-policy-result").textContent =
-        `보호 전: ${before.executed ? "실행됨" : "실행 확인 실패"}\n보호 적용: ${confirmed ? "차단 확인" : "확인 불가"}\n브라우저 위반 이벤트: ${after.violations.join(", ") || "없음"}\n실행 예외: ${after.error || "없음"}\n정책: script-src 'sha256-…' (시험 부트스트랩만 허용)`;
+        `보호 전: ${before.executed ? "실행됨" : "실행 확인 실패"}\n보호 적용: ${confirmed ? "차단 확인" : "확인 불가"}\n브라우저 위반 이벤트: ${after.violations.join(", ") || "없음"}\n실행 예외: ${after.error || "없음"}\n정책: script-src 'sha256-…' (시험 부트스트랩만 허용)\n시험 진단: ${confirmed ? "예상된 CSP 차단 · 앱 실행 오류 아님" : "관측 확인 불가 · 성공으로 판정하지 않음"}`;
       return confirmed;
     },
     integrity: async () => {
@@ -165,7 +166,7 @@ export function initLab() {
           ? input.status === 409 && input.body.accepted === false
           : input.status === 200 && input.body.accepted === true);
       byId("lab-api-result").textContent =
-        `정상 요청: HTTP ${normal.status}\n${mismatch ? "변조 요청" : "입력 요청"}: HTTP ${input.status}\n서버 계산 가격: ${input.body.total?.toLocaleString() ?? "확인 불가"}원\n${verified ? (mismatch ? "검증 확인 · 변조 가격 거부" : "검증 확인 · 정상 가격 허용") : "검증 실패 · 차단 성공으로 판정하지 않음"}\n${input.body.error ?? input.body.reason ?? "응답 내용 확인 불가"}`;
+        `정상 요청: HTTP ${normal.status}\n${mismatch ? "변조 요청" : "입력 요청"}: HTTP ${input.status}\n서버 계산 가격: ${input.body.total?.toLocaleString() ?? "확인 불가"}원\n${verified ? (mismatch ? "검증 확인 · 변조 가격 거부" : "검증 확인 · 정상 가격 허용") : "검증 실패 · 차단 성공으로 판정하지 않음"}\n${input.body.error ?? input.body.reason ?? "응답 내용 확인 불가"}\n시험 진단: ${verified ? (mismatch ? "예상된 HTTP 409 · 서버가 변조 가격을 거부함" : "정상 가격 요청 · HTTP 200") : "예상 밖의 응답 · API 오류 확인 필요"}`;
       return verified;
     },
   };

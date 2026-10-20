@@ -4,6 +4,16 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
+## Diagnostics and favicon fix
+
+The missing `/favicon.ico` now serves a real 32px ICO; the head links both the matching SVG mark and the ICO fallback. Both images decode to 32×32 in Chromium, Firefox and WebKit and serve HTTP 200 with image content types.
+
+The lab explains that its intentional CSP violation and rejected quote (HTTP 409) can appear as red browser-console entries. Each successful probe labels its expected diagnostic in its actual result; missing observations and server 500 responses remain failures. CSP enforcement, the server rejection and browser error reporting are preserved. No console clearing, global error suppression or fake successful response is introduced.
+
+Verified Worker version `a1ec6f30-6dc8-4a6e-ae65-eb70a89b6918`, deployment `dcdaaa1a-a163-4928-85c1-3a15616d7f2d`, 100% traffic. Nine local browser tests and all 13 scoped public checks passed, including no unexpected startup console errors, no unhandled application exceptions during the whole tour, and a mocked server-failure distinction. All 29 deployed files matched local hashes. The full earlier feature matrices are historical evidence; this release reran the checks appropriate to the icon and diagnostic-only changes.
+
+[Diagnostics fix evidence](evidence/demo-diagnostics-deployment.json) · [Expected-diagnostic explanation](evidence/demo-diagnostics.png).
+
 ## Complete feature tour
 
 The first screen now exposes the real SDK, rather than placing its controls beneath the transformation tools. **전체 기능 체험 시작** enables shortcut/context-menu restrictions and explicit integrity checks, starts the SDK file verification and the three policy/tampering probes, and protects the current editor source using High. Existing editor content is preserved. A concurrent run is rejected with a visible message instead of relabeling an in-progress transform. Individual controls remain available; reloading returns to observation mode.
