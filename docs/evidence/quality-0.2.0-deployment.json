@@ -1,0 +1,272 @@
+{
+  "checkedAt": "2026-10-20T07:58:24.197Z",
+  "url": "https://webguard-demo.uulab.workers.dev",
+  "sourceCommit": "0faf6acef7ee1ca066034c635de7d789633004a8",
+  "worker": "webguard-demo",
+  "versionId": "bf3bbe65-eed4-46fa-8da4-b85ebe0c8920",
+  "deploymentId": "388547f0-bcae-4762-9691-5b1b7d973347",
+  "trafficPercentage": 100,
+  "workersDevEnabled": true,
+  "previewUrlsEnabled": false,
+  "publicAssetCount": 27,
+  "allowlistedUrlCount": 32,
+  "routeManifestSha256": "9cdf51e3fa502f0c674fcbe2a223c8a82e718dcc2be85553a627630f7245829a",
+  "assets": [
+    {
+      "path": "/assets/index-DDSi63q5.js",
+      "status": 200,
+      "bytes": 25179,
+      "sha256": "06b1a2516820db31d0b07b540d09571ea5ca4e84a6bbc99b85775ab3859e5bd8"
+    },
+    {
+      "path": "/assets/index-DOLnvnvU.css",
+      "status": 200,
+      "bytes": 7850,
+      "sha256": "729b3b2f04ec3b6972e8b92e7252cfa960eca7c3e6b796a1289f7eafc3d48b41"
+    },
+    {
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "status": 200,
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+    },
+    {
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "status": 200,
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 573,
+      "sha256": "6daf1be656fbdbed28b6a8fd0c2a6c22af073012bd0eff845ece5c531a1294e8"
+    },
+    {
+      "path": "/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 573,
+      "sha256": "6daf1be656fbdbed28b6a8fd0c2a6c22af073012bd0eff845ece5c531a1294e8"
+    },
+    {
+      "path": "/docs/INSTALL.ko.txt",
+      "status": 200,
+      "bytes": 12304,
+      "sha256": "95c2b3bdc673913acbab92340aaec5b26921a4ee5387bb6a447b8866948f3c92"
+    },
+    {
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "status": 200,
+      "bytes": 11196,
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f"
+    },
+    {
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "status": 200,
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10"
+    },
+    {
+      "path": "/docs/index.html",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "path": "/docs/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "path": "/examples/react/assets/index-D9_BYEbx.js",
+      "status": 200,
+      "bytes": 1791811,
+      "sha256": "98a074a64d56253fae173453627433c0507bfee2097400f483938eb62cebf4e8"
+    },
+    {
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "status": 200,
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482"
+    },
+    {
+      "path": "/examples/react/assets/lazy-CtIjG0a-.js",
+      "status": 200,
+      "bytes": 2988,
+      "sha256": "69a90ab5c95a82dec37bb3655aef8f941113d9b45926fdca6b36d351b33f829c"
+    },
+    {
+      "path": "/examples/react/index.html",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "9ba97ffd29107a7325d24742f8645198a16cc58404ac5a974883c3982e8374d5"
+    },
+    {
+      "path": "/examples/react/third-party-licenses.md",
+      "status": 200,
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "path": "/examples/react/",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "9ba97ffd29107a7325d24742f8645198a16cc58404ac5a974883c3982e8374d5"
+    },
+    {
+      "path": "/examples/react/webguard-manifest.json",
+      "status": 200,
+      "bytes": 817,
+      "sha256": "5e38c2eb85985ae71b2d994752f0323aa662954acb1f1d8e9b31817918b15f5e"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-CCerO6eU.js",
+      "status": 200,
+      "bytes": 9674,
+      "sha256": "df11dc9ccb2bf2f42da6fbb5e264c6f5f7fdecdcad842606caa9627004e319f6"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/lazy-bPOzPLJ2.js",
+      "status": 200,
+      "bytes": 640,
+      "sha256": "02e54a1ee8eb849b9e8f7f1296f48ae231d54c05387bc6d7bd8a841fbbfd63e3"
+    },
+    {
+      "path": "/examples/vanilla-js/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "f6d3026224f8ce159e9a1cc25f1b924174f2b6081afe702e63b730f5a69ab616"
+    },
+    {
+      "path": "/examples/vanilla-js/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "f6d3026224f8ce159e9a1cc25f1b924174f2b6081afe702e63b730f5a69ab616"
+    },
+    {
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "bytes": 661,
+      "sha256": "85e5ce058353cb0efa0fa0e317a79aaa17cc73b3a404183270c0b2e5021976ab"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-CUfbDbsk.js",
+      "status": 200,
+      "bytes": 10356,
+      "sha256": "7ea8f2be66902559c0aa27f8d5aa711d1e1be2286481c4b7b2d5d889041f0ed2"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/lazy-5SzWsGSe.js",
+      "status": 200,
+      "bytes": 1208,
+      "sha256": "83dd7e3803573544a50a88dce5cb280db6ed1e3ff02417fedc398a485028ef89"
+    },
+    {
+      "path": "/examples/vanilla-ts/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "d0bdc1f74ccef0ac9a1dc79e976b07202c565aec3197c15e5b24a342cb84becb"
+    },
+    {
+      "path": "/examples/vanilla-ts/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "d0bdc1f74ccef0ac9a1dc79e976b07202c565aec3197c15e5b24a342cb84becb"
+    },
+    {
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "bytes": 663,
+      "sha256": "f59e0abce1fca1a0921a609494b725591eb8fbdfcab4c4c37c8b0f6572a0aefd"
+    }
+  ],
+  "npm": {
+    "name": "uulab-webguard",
+    "version": "0.2.0",
+    "integrity": "sha512-nr+D3OYTPgt5NWeSPaWVXlrWOF2RvAlO2WArOCzx0e48/TSMeztVr4O8rp2SGzvvQvN7ZlG9hTE6epTfgkVMaA==",
+    "registryConsumers": [
+      {
+        "source": "registry",
+        "package": "uulab-webguard",
+        "version": "0.2.0",
+        "vite": "7.3.1",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "browserErrors": 0
+      },
+      {
+        "source": "registry",
+        "package": "uulab-webguard",
+        "version": "0.2.0",
+        "vite": "8.3.4",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "browserErrors": 0
+      }
+    ]
+  },
+  "verification": {
+    "unitIntegrationPassed": 239,
+    "localBrowserPassed": 54,
+    "publicPassed": 35,
+    "publicFailed": 0,
+    "publicSkipped": 0,
+    "publicBrowsers": ["chromium", "firefox", "webkit"],
+    "httpChecks": 2,
+    "browserChecks": 33,
+    "publicGuideMatchesLocal": true,
+    "localDeploymentChecks": [
+      {
+        "name": "react",
+        "valid": true,
+        "errors": [],
+        "checked": 12
+      },
+      {
+        "name": "vanilla-js",
+        "valid": true,
+        "errors": [],
+        "checked": 11
+      },
+      {
+        "name": "vanilla-ts",
+        "valid": true,
+        "errors": [],
+        "checked": 11
+      }
+    ]
+  },
+  "guideUrls": [
+    "https://webguard-demo.uulab.workers.dev/docs/#install",
+    "https://webguard-demo.uulab.workers.dev/docs/INSTALL.ko.txt"
+  ]
+}

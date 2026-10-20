@@ -10,10 +10,10 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
 
-Published as [`uulab-webguard@0.1.0`](https://www.npmjs.com/package/uulab-webguard). Fresh npm registry consumers passed with Vite 7.3.1 and 8.3.4, including declarations, protected builds, automatic SDK startup, live controls and applied HTTP policies.
+Published as [`uulab-webguard@0.2.0`](https://www.npmjs.com/package/uulab-webguard). Fresh npm registry consumers passed with Vite 7.3.1 and 8.3.4, including declarations, protected builds, automatic SDK startup, live controls, applied HTTP policies and the installed deployment checker.
 
 ```sh
-npm install --save-dev uulab-webguard@0.1.0
+npm install --save-dev uulab-webguard@0.2.0
 ```
 
 ```ts
@@ -29,6 +29,14 @@ export default defineConfig({
 ```
 
 Keep existing plugins. Run the normal production build; automatic SDK startup and Strict/High protection need no separate SDK install. Development/HMR stays unrestricted. Generated HTTP header files still require host application. Browser-safe live controls use `uulab-webguard/client`.
+
+After deployment, compare real responses with the trusted local build:
+
+```sh
+npx --no-install webguard-check dist --url https://YOUR-SITE.example/
+```
+
+This checks asset and entry HTML bytes, actual response headers, source-map absence and private deployment-control URLs. Failures produce JSON errors and exit code 1. The Node API is `checkDeployment(directory, baseUrl)` from `uulab-webguard/verify`. See the [0.2.0 changes](docs/CHANGELOG.md).
 
 ## Run this repository
 

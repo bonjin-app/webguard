@@ -2,7 +2,7 @@
 
 The public distribution target for this release is **`uulab-webguard@0.2.0`**, public access on `https://registry.npmjs.org`. Internal `@webguard/*` packages are not publication targets. The public facade bundles their runtime code and declarations; its external dependencies are declared normally.
 
-Current state (2026-10-20): `uulab-webguard@0.1.0` is publicly published by `uulab`, with `latest` pointing to 0.1.0. The downloaded registry tarball matches the reviewed SHA-512. Fresh registry consumers passed with Vite 7.3.1 and 8.3.4, including type resolution, protected builds, automatic SDK, live controls, server policies and zero Chromium page errors. See [registry release evidence](evidence/npm-release.json).
+Current state (2026-10-20): `uulab-webguard@0.2.0` is publicly published by `uulab`, with `latest` pointing to 0.2.0. The downloaded registry tarball matches the reviewed SHA-512. Fresh registry consumers passed with Vite 7.3.1 and 8.3.4, including type resolution, protected builds, automatic SDK, live controls, server policies, the installed deployment checker and zero Chromium page errors. See [registry release evidence](evidence/npm-release.json) and [npm website proof](evidence/npm-publication-0.2.0.png). The [0.1.0 receipt](evidence/npm-release-0.1.0.json) is retained as historical evidence.
 
 ## Authenticate
 

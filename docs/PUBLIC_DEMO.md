@@ -6,16 +6,17 @@ The public adapter runs the same demo applications on Cloudflare Workers Static 
 
 ## Verified release
 
-Verified on 2026-10-20 (Asia/Seoul): Worker version `ac321925-7076-4594-a727-84058b65633f`, deployment `cc6c7c11-eb28-427d-98be-f55b3b54e2d2`, serving 100% of traffic through the enabled public Workers subdomain.
+Verified on 2026-10-20 (Asia/Seoul): Worker version `bf3bbe65-eed4-46fa-8da4-b85ebe0c8920`, deployment `388547f0-bcae-4762-9691-5b1b7d973347`, serving 100% of traffic through the enabled public Workers subdomain.
 
 - All 35 public checks passed: two HTTP/integrity checks and 33 browser checks across Chromium, Firefox and WebKit. No localhost preview server is used by this matrix.
 - All 27 publicly deployed files matched prepared local SHA-256 values. All five application mounts returned their intended response policies. Source maps, configuration, reports and original source probes returned 404.
-- Local validation passed: all 13 build tasks plus mounted demo builds, root/Worker TypeScript, ESLint, formatting, 162 unit/integration tests and 54 browser tests.
+- Local validation passed: all 13 build tasks plus mounted demo builds, root/Worker TypeScript, ESLint, formatting, 239 unit/integration tests and 54 browser tests.
+- The deployment checker verifies real entry HTML, assets, generated response headers and nonpublic URLs against trusted local output. Fresh npm registry installations of 0.2.0 passed with Vite 7.3.1 and 8.3.4, including the installed executable.
 - Vanilla example controls stay disabled until initialization completes. Browser regressions deliberately delay the script response and verify the first enabled click works. Preparation also rejects overlapping and symlinked output paths before creating directories.
 
-[Deployment metadata, hashes and HTTP readback](evidence/npm-onboarding-deployment.json) · [Public screenshot](evidence/public-demo.png). These are public HTTPS and local desktop-engine observations; npm publication is separately verified in [the release evidence](evidence/npm-release.json); remote CI and physical-device testing remain separate.
+[Deployment metadata, hashes and HTTP readback](evidence/quality-0.2.0-deployment.json) · [Public screenshot](evidence/public-demo.png). These are public HTTPS and local desktop-engine observations; npm publication is separately verified in [the release evidence](evidence/npm-release-0.2.0.json); remote CI and physical-device testing remain separate.
 
-The public onboarding now includes `npm install --save-dev uulab-webguard@0.1.0`, copyable one-setting Vite integration and the [full Korean guide](https://webguard-demo.uulab.workers.dev/docs/INSTALL.ko.txt). The original public release record is retained in [its evidence file](evidence/public-deployment.json).
+The public onboarding now includes `npm install --save-dev uulab-webguard@0.2.0`, copyable one-setting Vite integration, `webguard-check` and the [full Korean guide](https://webguard-demo.uulab.workers.dev/docs/INSTALL.ko.txt). The [0.1.0 onboarding release](evidence/npm-onboarding-deployment.json) and [original public release](evidence/public-deployment.json) are retained as historical records.
 
 ## Build and deploy
 
