@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+coverage/
+playwright-report/
+test-results/
+.webguard-private/
+.superpowers/
+*.tgz
