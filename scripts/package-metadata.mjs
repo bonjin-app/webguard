@@ -6,7 +6,8 @@ const descriptions = {
   integrity: "Local SHA-384 manifests and file verification.",
   browser: "Optional browser shortcut friction and advisory callbacks.",
   cli: "Transactional static-output protection and deployment verification.",
-  "vite-plugin": "Build-only Vite protection with integrity output.",
+  "vite-plugin":
+    "Vite protection: webguardApp() combines Strict transforms, automatic SDK startup and deployment header files. Browser-safe live controls: getWebGuard() from @webguard/vite-plugin/client.",
 };
 for (const [name, description] of Object.entries(descriptions)) {
   const dir = `packages/${name}`;

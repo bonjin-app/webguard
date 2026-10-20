@@ -20,7 +20,8 @@
       "@webguard/browser": ["packages/browser/src/index.ts"],
       "@webguard/cli": ["packages/cli/src/index.ts"],
       "@webguard/vite-plugin": ["packages/vite-plugin/src/index.ts"],
-      "@webguard/obfuscator/options": ["packages/obfuscator/src/options.ts"]
+      "@webguard/obfuscator/options": ["packages/obfuscator/src/options.ts"],
+      "@webguard/vite-plugin/client": ["packages/vite-plugin/src/client.ts"]
     }
   },
   "include": [

@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { WebGuard } from "@webguard/browser";
+import { getWebGuard } from "@webguard/vite-plugin/client";
 import "./style.css";
 function App() {
+  const automaticGuard = getWebGuard();
   const [count, setCount] = useState(0),
     [lazy, setLazy] = useState("Not loaded"),
     [name, setName] = useState(""),
     [greeting, setGreeting] = useState(""),
-    [block, setBlock] = useState(false),
+    [block, setBlock] = useState(
+      automaticGuard?.getOptions().devtools?.blockShortcuts === true,
+    ),
+    [contextMenu, setContextMenu] = useState(
+      automaticGuard?.getOptions().devtools?.blockContextMenu === true,
+    ),
     [events, setEvents] = useState<string[]>([]),
     [route, setRoute] = useState(location.hash || "#home");
   useEffect(() => {
-    const guard = WebGuard.init({
-      devtools: { detect: true, blockShortcuts: block },
+    const guard = getWebGuard();
+    guard?.update({
       onThreat: (e) => setEvents((old) => [...old.slice(-4), e.type]),
     });
-    return () => guard.destroy();
-  }, [block]);
+    return () => guard?.update({ onThreat: undefined });
+  }, []);
   useEffect(() => {
     const listener = () => setRoute(location.hash);
     window.addEventListener("hashchange", listener);
@@ -66,15 +72,44 @@ function App() {
         <p>{greeting}</p>
       </section>
       <section>
-        <h2>Optional shortcut friction</h2>
+        <h2>Live SDK controls</h2>
+        <p data-testid="guard-startup">
+          {automaticGuard
+            ? "Automatic SDK ready before React render"
+            : "SDK starts in protected builds; development stays unrestricted"}
+        </p>
         <label>
           <input
             type="checkbox"
             checked={block}
-            onChange={(e) => setBlock(e.target.checked)}
+            disabled={!automaticGuard}
+            onChange={(e) => {
+              getWebGuard()?.update({
+                devtools: { blockShortcuts: e.target.checked },
+              });
+              setBlock(e.target.checked);
+            }}
           />{" "}
           Intercept developer tool shortcuts
         </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={contextMenu}
+            disabled={!automaticGuard}
+            onChange={(e) => {
+              getWebGuard()?.update({
+                devtools: { blockContextMenu: e.target.checked },
+              });
+              setContextMenu(e.target.checked);
+            }}
+          />{" "}
+          Intercept context menu
+        </label>
+        <p>
+          Changes take effect immediately without a rebuild or reload. Editing
+          fields remain usable.
+        </p>
         <p>
           Browser menus and external inspection remain available. Detection is
           advisory.

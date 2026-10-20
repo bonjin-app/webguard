@@ -9,8 +9,13 @@ export interface IntegrityManifest {
   files: Record<string, { integrity: string; size: number }>;
 }
 
-// Only these root metadata files are outside the payload manifest.
-const metadata = new Set(["webguard-manifest.json", "webguard-report.json"]);
+// Root metadata/deployment controls are not fetchable application payload resources.
+const metadata = new Set([
+  "webguard-manifest.json",
+  "webguard-report.json",
+  "webguard-headers.json",
+  "_headers",
+]);
 const sri = /^sha384-[A-Za-z0-9+/]{64}$/;
 const unsafeSegments = new Set(["__proto__", "prototype", "constructor"]);
 function safePath(path: string): boolean {

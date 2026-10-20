@@ -66,19 +66,27 @@ Generated files:
 - `webguard-manifest.json`: SHA-384 SRI values and byte sizes for public assets.
 - `webguard-report.json`: paths, transformations, byte counts, heuristic findings and limitations; no matched credential values.
 
-The two root metadata files are excluded from the manifest to avoid self-reference. Nested files with these names remain hashed. A locally trusted manifest detects accidental or unauthorized asset changes, missing and unexpected files. An attacker who can replace both assets and the manifest can bypass an unanchored client check; protect the deployment pipeline and manifest separately.
+Root manifest/report files are excluded from the manifest to avoid self-reference. Root `_headers` and `webguard-headers.json` deployment controls are also excluded because servers/hosts consume them rather than expose them as application resources. Protect these policies through the deployment pipeline. Nested files with these names remain hashed. A locally trusted manifest detects accidental or unauthorized asset changes, missing and unexpected files. An attacker who can replace both assets and the manifest can bypass an unanchored client check; protect the deployment pipeline and manifest separately.
 
 ## Vite
 
-The example workspaces show local package linking:
+The opt-in all-in-one integration uses one build configuration and supplies the SDK transitively:
 
 ```ts
 import { defineConfig } from "vite";
-import { webguard } from "@webguard/vite-plugin";
-export default defineConfig({ plugins: [webguard({ preset: "standard" })] });
+import { webguardApp } from "@webguard/vite-plugin";
+export default defineConfig({
+  plugins: [
+    webguardApp({
+      runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+    }),
+  ],
+});
 ```
 
-The plugin is build-only. It transforms chunks before content-hashed filenames are finalized, sanitizes the final output, adds SRI to local script/style/modulepreload tags and emits a manifest. Development HMR remains available. Private Vite maps, when requested, go into a unique sibling `.webguard-private/` directory. Initial support is written browser application builds; library, SSR and in-memory builds fail explicitly.
+`webguardApp()` defaults to Strict/High, automatically initializes the SDK before the HTML module app entry, and emits `webguard-headers.json` plus `_headers` for your server. The React example has live F12/context-menu toggles without a rebuild or reload. [One-setting setup, live controls and server integration](docs/ONE_STEP_SETUP.md).
+
+For only build protection, keep `webguard({ preset: "standard" })`. The plugin is build-only. It transforms chunks before content-hashed filenames are finalized, sanitizes the final output, adds SRI to local script/style/modulepreload tags and emits a manifest. Development HMR remains available. Private Vite maps, when requested, go into a unique sibling `.webguard-private/` directory. Initial support is written browser application builds; library, SSR and in-memory builds fail explicitly.
 
 SRI validates referenced resources when supported and correctly served. It does not automatically secure every dynamically fetched resource. Set CSP as a real server response header, for example:
 
@@ -112,6 +120,8 @@ const guard = WebGuard.init({
 await guard.checkIntegrity("/assets/app.js", "sha384-BASE64_DIGEST");
 guard.destroy(); // removes listeners; safe to call repeatedly
 ```
+
+Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `@webguard/vite-plugin/client`.
 
 All intrusive controls are opt-in, including Strict. Detection is event-driven; there is no continuous polling, debugger loop, forced navigation or remote collection. Hints are advisory and not proof that developer tools are open. The standalone IIFE is `packages/browser/dist/webguard.global.js`, global `WebGuardSDK.WebGuard`.
 

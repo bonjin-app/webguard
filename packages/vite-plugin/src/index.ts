@@ -132,3 +132,5 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
   };
 }
 export default webguard;
+
+export { webguardApp, type WebGuardAppOptions } from "./app.js";

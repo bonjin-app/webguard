@@ -1,6 +1,6 @@
 # Generic hardening verification
 
-Checked locally on 2026-10-20 (Asia/Seoul), following the foundation-stage record. This change strengthens the reusable toolkit; no target service backend or external deployment was integrated.
+Checked locally on 2026-10-20 (Asia/Seoul), following the foundation-stage record, for commit `c8f2748` before automatic SDK integration. This change strengthens the reusable toolkit; no target service backend or external deployment was integrated.
 
 ## Observed results
 

@@ -11,4 +11,7 @@
 - Stronger Strict/High transforms with default RC4 string encoding, function wrappers, string splitting and numeric expressions.
 - Validated CSP/Trusted Types response-header API and `headers` CLI command, with browser attack regression tests.
 
+- Opt-in `webguardApp()` combines Strict protection, automatic SDK injection and server header artifacts in one Vite configuration.
+- Live SDK policy updates and a runnable Node response-header server example.
+
 No packages or hosted applications have been published by this work.

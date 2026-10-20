@@ -83,3 +83,20 @@ createSecurityHeaders({
 createSecurityHeaders({ trustedTypes: "automatic" });
 // @ts-expect-error CSP source categories are closed
 createSecurityHeaders({ allowedOrigins: { default: ["*"] } });
+
+import { webguardApp } from "@webguard/vite-plugin";
+import { getWebGuard } from "@webguard/vite-plugin/client";
+webguardApp({
+  runtime: { devtools: { blockShortcuts: true } },
+  headers: { trustedTypes: "report-only" },
+});
+getWebGuard()?.update({
+  devtools: { blockShortcuts: false },
+  onThreat: (e) => void e.type,
+});
+const livePolicy = getWebGuard()?.getOptions();
+void livePolicy;
+// @ts-expect-error Build bootstrap configuration cannot serialize callbacks.
+webguardApp({ runtime: { onThreat: () => {} } });
+// @ts-expect-error Live options retain typed boolean fields.
+getWebGuard()?.update({ devtools: { blockShortcuts: "yes" } });

@@ -113,3 +113,21 @@ it("hashes nested metadata names as ordinary payload files", async () => {
   await writeFile(join(dir, "nested/webguard-report.json"), "modified");
   expect((await verifyManifest(dir, manifest)).valid).toBe(false);
 });
+
+it("excludes root deployment control files from resource verification while hashing nested names", async () => {
+  const dir = await fixture();
+  await mkdir(join(dir, "nested"));
+  await writeFile(join(dir, "_headers"), "/*\n  X-Frame-Options: DENY");
+  await writeFile(join(dir, "webguard-headers.json"), "{}");
+  await writeFile(join(dir, "app.js"), "globalThis.answer=42");
+  await writeFile(join(dir, "nested/_headers"), "payload");
+  await writeFile(join(dir, "nested/webguard-headers.json"), "nested");
+  const manifest = await createManifest(dir);
+  expect(Object.keys(manifest.files)).toEqual([
+    "app.js",
+    "nested/_headers",
+    "nested/webguard-headers.json",
+  ]);
+  await writeFile(join(dir, "nested/_headers"), "tampered");
+  expect((await verifyManifest(dir, manifest)).valid).toBe(false);
+});

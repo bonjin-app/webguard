@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-20T05:48:50.138Z",
+  "localManifests": [
+    {
+      "directory": "examples/vanilla-js/dist",
+      "valid": true
+    },
+    {
+      "directory": "examples/vanilla-ts/dist",
+      "valid": true
+    },
+    {
+      "directory": "examples/react-vite/dist",
+      "valid": true
+    },
+    {
+      "directory": "examples/jsp-servlet/src/main/webapp/assets",
+      "valid": true
+    }
+  ],
+  "loopbackHttpDeployment": {
+    "valid": true,
+    "errors": [],
+    "checked": 8
+  },
+  "responseHeaders": {
+    "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+    "X-Content-Type-Options": "nosniff"
+  },
+  "scope": "Actual local Node HTTP example only; no external hosting or production deployment"
+}

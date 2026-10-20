@@ -1,6 +1,10 @@
 import { defineConfig } from "vite";
-import { webguard } from "@webguard/vite-plugin";
+import { webguardApp } from "@webguard/vite-plugin";
 export default defineConfig({
-  plugins: [webguard({ preset: "strict" })],
+  plugins: [
+    webguardApp({
+      runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+    }),
+  ],
   build: { license: { fileName: "third-party-licenses.md" }, target: "es2022" },
 });

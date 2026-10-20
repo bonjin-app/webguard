@@ -4,7 +4,7 @@ Work date: 2026-10-20, Asia/Seoul. This record applies to the local WebGuard imp
 
 ## Evidence recorded
 
-Foundation-stage observed results: **88 unit/integration tests**, **30 browser tests**, **4 live Java/Tomcat HTTP tests**, zero failures. All 12 build tasks, strict type checking, ESLint and formatting passed. Foundation hashes and check summary are in [verification.json](evidence/verification.json). Later Strict/policy changes have their own [hardening verification record](HARDENING_VERIFICATION.md); the measurements below are refreshed for the current code.
+Foundation-stage observed results: **88 unit/integration tests**, **30 browser tests**, **4 live Java/Tomcat HTTP tests**, zero failures. All 12 build tasks, strict type checking, ESLint and formatting passed. Foundation hashes and check summary are in [verification.json](evidence/verification.json). Later Strict/policy changes have their own [hardening verification record](HARDENING_VERIFICATION.md); the measurements below were captured at that hardening stage. The subsequent [automatic integration record](AUTO_INTEGRATION_VERIFICATION.md) covers SDK injection and live controls.
 
 - pnpm workspace: 7 reusable packages, 2 local apps, 3 Vite examples, plus a Maven JSP/Servlet example.
 - Node 22.23.2; TypeScript 5.9.3 strict; ESM/declaration outputs plus browser IIFE.

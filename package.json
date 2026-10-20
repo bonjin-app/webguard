@@ -19,7 +19,8 @@
     "verify": "pnpm build && pnpm typecheck && pnpm lint && pnpm test",
     "benchmark": "node scripts/benchmark.mjs",
     "dev": "pnpm --filter @webguard/playground dev",
-    "benchmark:browser": "node scripts/benchmark-browser.mjs"
+    "benchmark:browser": "node scripts/benchmark-browser.mjs",
+    "test:package": "node scripts/verify-package-consumer.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -84,9 +84,6 @@ importers:
 
   examples/react-vite:
     dependencies:
-      '@webguard/browser':
-        specifier: workspace:*
-        version: link:../../packages/browser
       react:
         specifier: ^19.2.0
         version: 19.3.1
@@ -181,6 +178,9 @@ importers:
 
   packages/vite-plugin:
     dependencies:
+      '@webguard/browser':
+        specifier: workspace:*
+        version: link:../browser
       '@webguard/cli':
         specifier: workspace:*
         version: link:../cli

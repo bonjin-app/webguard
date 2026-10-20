@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-20T05:49:28.009Z",
+  "node": "v22.23.2",
+  "baseCommit": "c8f2748",
+  "checks": {
+    "build": {
+      "passed": 12
+    },
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "unitIntegration": {
+      "passed": 147,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "projects": ["chromium", "firefox", "webkit"],
+      "realNodeApplicationHeaders": true,
+      "trustedPageF12KeyEventCanceled": true,
+      "livePolicyToggle": true
+    },
+    "jspServlet": {
+      "passed": 4,
+      "failed": 0,
+      "java": 17,
+      "tomcat": "10.1.61",
+      "war": true
+    },
+    "packedConsumer": "passed; plugin only direct protection dependency; unpublished internal packages supplied as local tarballs",
+    "manifestReadback": {
+      "passed": 4
+    },
+    "localHttpReadback": {
+      "valid": true,
+      "checked": 8
+    },
+    "focusedReview": "three defects closed with regression tests",
+    "codexConfigurationChanged": false,
+    "externalDeployment": false,
+    "npmPublish": false,
+    "remoteCI": "not run",
+    "physicalDevices": "not tested"
+  },
+  "sha256": {
+    "packages/browser/src/index.ts": "ca04a0bff717d88769744caa6644b4ccfa515a9380486d164942c64ccfb326e3",
+    "packages/vite-plugin/src/app.ts": "eb31735ff378fd30d4cab43f994b4665ee64757fbeae4c75718e36230ba6fd6c",
+    "packages/vite-plugin/dist/index.js": "89cb125a912263d0d2457990469aacdca91208034f5eefd52a15702e936d2099",
+    "packages/vite-plugin/dist/client.js": "ed3be0593cba4d1bb2af2e9e39df85c5793eaebdf3a7aa478578944c86a152d1",
+    "packages/browser/dist/webguard.global.js": "05a1433621db73581a0e2336f7365cc2c3e4539adfc32bfd00b422e2a00f6543",
+    "packages/integrity/dist/index.js": "21aeef599f4d99149e5c004ea4bd5cc5fa5dbeda8d24f9fafae151f2a6cd9ab7",
+    "examples/react-vite/dist/webguard-manifest.json": "6d44ab46e2ab23c37b4c99f4828dd89c1487e43b1ee526296bb2a2114020ed75",
+    "examples/react-vite/dist/webguard-headers.json": "d2eaaf56d3e8f6eced0224691ae8d8b2babbf6a407894672848f2965bca024e7",
+    "examples/react-vite/dist/_headers": "0265752b49357c3fc7e54c00608db7d53cec5dcfc26a68d3f35496c464f1df9c",
+    "examples/jsp-servlet/target/webguard.war": "0bcc876a181e8e381582558e82ed25b36a6432528e76cda6c5de14f6f10e513c"
+  }
+}
