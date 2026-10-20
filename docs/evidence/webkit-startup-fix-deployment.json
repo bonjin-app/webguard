@@ -1,0 +1,364 @@
+{
+  "release": "webkit-sandbox-startup-fix",
+  "sourceCommit": "ea2351f",
+  "verifiedAt": "2026-10-20T13:55:36.885Z",
+  "url": "https://webguard.uulab.co.kr/demo",
+  "worker": {
+    "name": "webguard-demo",
+    "versionId": "ec8af74b-42c8-4119-8ab4-ff0627909676",
+    "deploymentId": "c539c16d-052d-4c48-9d55-a19bd9740352",
+    "trafficPercent": 100,
+    "createdOn": "2026-10-20T13:44:41.703226Z",
+    "previousVersion": "3a1fc944-abea-4814-b013-5b746d0da20a"
+  },
+  "rootCause": {
+    "priorBehavior": "The iframe started a 1000 ms timer at new Worker, charging Worker startup against code execution; the parent started an 1800 ms watchdog before the iframe loaded",
+    "reproduction": "Delaying the actual native Worker bootstrap by 1400 ms reproduces Execution timed out for both short source and protected code; delaying frame startup by 2100 ms also fails",
+    "oldPublicStartupTests": {
+      "failed": 3,
+      "passed": 1
+    },
+    "oldPublicProtocolTests": {
+      "failed": 2
+    },
+    "oldPublicEmptyErrorTest": {
+      "failed": 1
+    },
+    "fix": "Validated one-shot frame-ready handshake and trusted Worker-ready handshake, followed by a bounded execution command using an iframe-created Blob payload; startup and execution deadlines are separate",
+    "startupBudgetMs": 5000,
+    "executionBudgetMs": 1000,
+    "executionResponseWatchdogMs": 1800,
+    "executionBudgetExtended": false,
+    "emptyErrors": "Empty thrown messages and explicit error fields are preserved as failures instead of Outputs match"
+  },
+  "protocol": {
+    "frameSourceNullOriginAndUUID": true,
+    "portTransferredOnce": true,
+    "workerControlIgnoredAfterStarting": true,
+    "noDeadlineResetFromWorkerResults": true,
+    "workerResultShapeAndAggregateSizeValidated": true,
+    "workerTimersBlobURLsAndPortsDisposed": true,
+    "networkCSPAndOpaqueOriginPreserved": true,
+    "noEvalPermissionAdded": true,
+    "rawBootstrapWithoutOuterScopeDecoders": true
+  },
+  "verification": {
+    "public": {
+      "passed": 170,
+      "failed": 0,
+      "browserChecks": 165,
+      "httpChecks": 5,
+      "engines": ["chromium", "firefox", "webkit"],
+      "automaticRetries": 0,
+      "command": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts --workers 2 --output test-results/webkit-stability-public-confirmed"
+    },
+    "local": {
+      "passed": 165,
+      "failed": 0,
+      "engines": ["chromium", "firefox", "webkit"]
+    },
+    "repeatedWebKitNormalExample": {
+      "passed": 5,
+      "failed": 0,
+      "automaticRetries": 0,
+      "command": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts tests/e2e/playground.spec.ts --project webkit --workers 1 --repeat-each 5 --grep \"protects locally, compares real output\" --output test-results/webkit-stability-repeat"
+    },
+    "earlierPublicMatrix": {
+      "passed": 169,
+      "interrupted": 1,
+      "project": "firefox",
+      "test": "compat-demo real multipage",
+      "error": "Object with guid response@... was not bound in the connection",
+      "traceObservation": "The 308 and Location assertions passed; navigation to the application then aborted in Playwright connection object lookup before UI assertions",
+      "sameVersionUnmodifiedTestRepeat": {
+        "passed": 3,
+        "failed": 0
+      },
+      "primarySignatureReference": "https://github.com/microsoft/playwright/issues/22210",
+      "note": "Retained separately from the WebKit application timeout; final matrix uses a fresh test process and unchanged code, deadlines and assertions"
+    },
+    "regressions": [
+      "Slow real Worker startup",
+      "Slow iframe startup",
+      "Unavailable startup classification and cleanup",
+      "Infinite code after delayed startup",
+      "Worker ready spam cannot extend execution",
+      "Worker constructor failure cleanup",
+      "Pending startup cancellation and subsequent run",
+      "Empty exceptions remain execution failures"
+    ],
+    "unitIntegration": {
+      "passed": 287,
+      "files": 23
+    },
+    "buildTasks": 13,
+    "mountedBuild": true,
+    "rootTypecheck": true,
+    "workerTypecheck": true,
+    "lint": true,
+    "format": true,
+    "wranglerDryRun": true,
+    "fileReadback": {
+      "verifiedAt": "2026-10-20T13:45:34.467Z",
+      "total": 31,
+      "matched": 31,
+      "files": [
+        {
+          "path": "/assets/index-C0zHreQg.js",
+          "status": 200,
+          "bytes": 502110,
+          "sha256": "b4f0a19208cfba80c3d13770dc3898c90fd24099c2ed5b35a86b91033a567f01",
+          "match": true
+        },
+        {
+          "path": "/assets/index-CmL3UyEr.css",
+          "status": 200,
+          "bytes": 11383,
+          "sha256": "d510ad37d89aa3ecfb5d9db4ed687ce5a6d4a53890f2162306a835a6a97c712e",
+          "match": true
+        },
+        {
+          "path": "/assets/index.browser-CtOKMlmK.js",
+          "status": 200,
+          "bytes": 1654565,
+          "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "match": true
+        },
+        {
+          "path": "/assets/transform.worker-CjrfSGER.js",
+          "status": 200,
+          "bytes": 124999,
+          "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "match": true
+        },
+        {
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "bytes": 16736,
+          "sha256": "231815c1d09391b5d6487a230f3beab1119f6a294ccd68b9d2d0b6296e9ee6af",
+          "match": true
+        },
+        {
+          "path": "/docs/assets/index-D8lqVnMZ.js",
+          "status": 200,
+          "bytes": 14431,
+          "sha256": "68b671eccabe73d65e5ac3476bac0d92e25fbc29cba99c6a8602fb527ee095a5",
+          "match": true
+        },
+        {
+          "path": "/docs/assets/index-ian2f1mJ.css",
+          "status": 200,
+          "bytes": 2538,
+          "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+          "match": true
+        },
+        {
+          "path": "/docs/index.html",
+          "status": 200,
+          "bytes": 534,
+          "sha256": "87878ea65128f115f75151aaacfedb292ca31a46e09b3693556b2311b556ad24",
+          "match": true
+        },
+        {
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/index-CNfIbObd.js",
+          "status": 200,
+          "bytes": 1793542,
+          "sha256": "37a8d73865d2a86c2ab41a282c1f3085219b19fe12476d2215c50dfa55934e96",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/index-Dp_iiFwF.css",
+          "status": 200,
+          "bytes": 812,
+          "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+          "match": true
+        },
+        {
+          "path": "/examples/react/assets/lazy-Dm9g_mAX.js",
+          "status": 200,
+          "bytes": 3062,
+          "sha256": "e0acaef6af03614071c63de3bb3e401c7e5a2e4201067a915037519a97da6546",
+          "match": true
+        },
+        {
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "bytes": 899,
+          "sha256": "9e871544738c2bb5c1a2dfd2553cf53bd2381197acbe5fc8695fa91e132bc35b",
+          "match": true
+        },
+        {
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "bytes": 3429,
+          "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "match": true
+        },
+        {
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "bytes": 817,
+          "sha256": "480afe6bbcaf454ed149abbe0a3f775a3982fa5b6d54b05012b7d07cb2b90a93",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "bytes": 1676,
+          "sha256": "8a3e8f548a7456045a949c9cb4176415bbf997de29c96c53b6f4d15dbdbb4fed",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/about-B38mtk6n.js",
+          "status": 200,
+          "bytes": 631,
+          "sha256": "f535cb29c5abf924584337f16fcafc84a23d23cdc293a82ef0dd7cf9073e80f2",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/index-BoR5abLp.js",
+          "status": 200,
+          "bytes": 9810,
+          "sha256": "bafe47ca21bb9a223fff978f8796f23ae5ea47d8b18af1d1a776a76abe7787c2",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/lazy-CULDqHiA.js",
+          "status": 200,
+          "bytes": 642,
+          "sha256": "5052e9ba55dea072f7d5298a49c18cfae5c024df1361e18d68d11b57e50bbcaf",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/style-BXb_tRrn.css",
+          "status": 200,
+          "bytes": 766,
+          "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "9b7eedf5d98999bddd52d999b8a4eb8f6b10ee8ed6f1fd6de14741e149caa9bf",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "bytes": 960,
+          "sha256": "b2b6b661efadf928470b6464d6d885899aee536f569619c19fa805fdcdf6a92b",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BInrXztO.js",
+          "status": 200,
+          "bytes": 10378,
+          "sha256": "477f86d726d14eade3bf23586bc49b23c5bc78029cc2f352353f32df4158d829",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+          "status": 200,
+          "bytes": 766,
+          "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/lazy-DqXdgeXG.js",
+          "status": 200,
+          "bytes": 1187,
+          "sha256": "31431d125021e125a91769962d7e91c34875064f6e02ef737556bc4ff4cbaf20",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "811548d220324c60aab56f4c6363995187a82687241306a953580cbd1de9452b",
+          "match": true
+        },
+        {
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "bytes": 663,
+          "sha256": "ad15cb8d2eb40bd3adc4a7059243c8e0b0c52269bf1502d65bd00ecd643db192",
+          "match": true
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200,
+          "bytes": 4286,
+          "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "match": true
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "bytes": 301,
+          "sha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "match": true
+        },
+        {
+          "path": "/index.html",
+          "status": 200,
+          "bytes": 922,
+          "sha256": "b1cf9347d80c2ca23c4623deca983f1a08b07f51a95f4ac735aefe8fac5f3255",
+          "match": true
+        },
+        {
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        }
+      ]
+    },
+    "initialImmediateDeploymentReadback": {
+      "matched": 27,
+      "total": 31,
+      "note": "Initial read began immediately after upload while edge version propagation was in progress; subsequent complete readback matched all files"
+    }
+  },
+  "protection": {
+    "preset": "strict",
+    "chunkTransforms": {
+      "index": {
+        "inputBytes": 101767,
+        "outputBytes": 732910,
+        "durationMs": 1508.007125
+      }
+    },
+    "mainEntryOnly": true,
+    "publicSourceMaps": false,
+    "entryAndCssSRI": true
+  },
+  "retained": {
+    "bindings": true,
+    "compatibilitySettings": true,
+    "observability": true,
+    "hostnameMappings": true,
+    "temporaryScopedCredentialsRemoved": true,
+    "codexSettingsUnchanged": true
+  },
+  "npm": {
+    "publicationPaused": true,
+    "latest": "0.2.0",
+    "candidate": "0.3.0",
+    "candidatePublished": false,
+    "verifiedAt": "2026-10-20T13:55:36.886Z"
+  },
+  "limits": [
+    "Browser scheduling can delay timer delivery; deadlines are nominal wall-clock budgets, not hard real-time guarantees",
+    "Untrusted Worker output is demonstrative and not an authenticity or authorization proof",
+    "Negative browser regressions intentionally inject startup faults without modifying production settings"
+  ]
+}

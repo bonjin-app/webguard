@@ -4,7 +4,21 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Interactive switches and deployed compatibility (current)
+## WebKit startup and execution budgets (current)
+
+The isolated runner now waits for the frame and a trusted Worker bootstrap to become ready before starting the existing 1,000 ms execution budget. Previously, the Worker timer began at construction and the parent watchdog began before the frame loaded, so cold startup could be reported as failed code execution. A 1,400 ms delay before a real native Worker starts reproduces the old failure for a trivial calculation; a 2,100 ms frame-start delay also reproduces the premature timeout.
+
+Startup is separately bounded at 5,000 ms, with an independent 1,800 ms execution-response watchdog after the trusted iframe reports running. Worker control messages cannot reset that phase or deadline. The payload uses an iframe-created Blob imported by a standalone Worker bootstrap; the original opaque origin and blob-only script/network CSP stay in force, without adding eval permission. Invalid results, synchronous construction errors, cancellation and page lifecycle transitions all clean up the Worker, Blob URLs, timers and ports. Empty thrown messages are preserved as execution failures instead of matching outputs.
+
+Current Worker version: `ec8af74b-42c8-4119-8ab4-ff0627909676`; deployment: `c539c16d-052d-4c48-9d55-a19bd9740352`, 100% traffic. Implementation source: `ea2351f`. npm publication remains paused: **latest 0.2.0; candidate 0.3.0 unpublished**. Bindings, compatibility settings, observability, hostnames and Codex settings are unchanged.
+
+The final complete public matrix passed **170 checks with zero failures and no automatic retries**, including 165 browser checks across Chromium, Firefox and WebKit plus five HTTP checks. All 165 local browser checks, 287 unit/integration tests, 13 build tasks, root/Worker types, lint, formatting and dry run passed. WebKit's normal obfuscation example also passed five consecutive cold-page runs. All 31 deployed files matched their prepared SHA-256 values.
+
+The earlier public matrix passed 169 checks and one Firefox navigation was interrupted by Playwright's internal response-object connection lookup after its HTTP redirect assertions had passed. The same unchanged scenario passed three consecutive isolated runs; the fresh complete matrix above then passed without changing product code, time budgets or assertions. This tooling interruption and the initial edge-propagation file readback remain in the evidence rather than being erased from the release history.
+
+[Root cause, reproduction and deployment evidence](evidence/webkit-startup-fix-deployment.json) · [Korean demo guide](DEMO_GUARDS.ko.md).
+
+## Interactive switches and deployed compatibility (historical)
 
 Open [policy switches](https://webguard.uulab.co.kr/demo#policy-lab) to enable or disable network, DOM string insertion and inline-script restrictions independently. **선택 정책 비교 실행** runs an all-off control and the selected settings in fresh opaque-origin sandbox frames. The before/after panels display actual allowed, blocked, unsupported or failed observations. Changing a switch invalidates old results. The switches affect the isolated trial; the main document and server retain their deployment policies.
 
@@ -14,7 +28,7 @@ The complete feature tour includes both panels, existing live SDK controls, five
 
 The demo exposes local 0.3.0 candidate features independently of npm. **npm publication remains paused: latest is 0.2.0 and 0.3.0 is unpublished.** The installation guide retains that distinction. Codex settings are unchanged.
 
-Current Worker version: `3a1fc944-abea-4814-b013-5b746d0da20a`; deployment: `fbd09e5e-b121-43c0-a57d-5ca972620e34`, 100% traffic. Implementation source: `4a0ae1c`. Bindings, compatibility settings, observability and hostname mappings are retained. The adapter explicitly marks prepared HTML as `text/html; charset=utf-8`, including HEAD responses; Cloudflare asset MIME metadata alone omitted the encoding. Comparison columns now retain their full width even when all policies are off.
+Historical Worker version: `3a1fc944-abea-4814-b013-5b746d0da20a`; deployment: `fbd09e5e-b121-43c0-a57d-5ca972620e34`, 100% traffic. Implementation source: `4a0ae1c`. Bindings, compatibility settings, observability and hostname mappings are retained. The adapter explicitly marks prepared HTML as `text/html; charset=utf-8`, including HEAD responses; Cloudflare asset MIME metadata alone omitted the encoding. Comparison columns now retain their full width even when all policies are off.
 
 Final validation: 287 unit/integration tests, 72 local browser checks of the changed panels and full tour, all 13 build tasks, root/Worker types, lint, formatting and dry run passed. The final public matrix passed 145 of 146 checks; one WebKit source execution reached the existing 1,000 ms sandbox limit while the protected example completed correctly. All six WebKit Playground checks then passed in isolation on the same deployed version, without changing code or deadlines. Thus all 146 unique checks are covered across those runs; the initial full run was not clean. All 31 deployed files matched prepared SHA-256 values. Earlier iterations, the observed execution limit and exact verification scope remain in the release evidence.
 
