@@ -1,0 +1,3 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<% response.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"); %>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WebGuard JSP example</title></head><body><h1>JSP + Servlet example</h1><p>Java and JSP stay on the server. Only static JavaScript is protected.</p><button id="status">Call Servlet</button><output id="result" aria-live="polite"></output><script src="assets/webguard.global.js" defer></script><script src="assets/app.js" defer></script></body></html>

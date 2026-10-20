@@ -8,3 +8,6 @@ test-results/
 .webguard-private/
 .superpowers/
 *.tgz
+examples/jsp-servlet/src/main/webapp/assets/
+examples/jsp-servlet/target/
+.playwright-cli/

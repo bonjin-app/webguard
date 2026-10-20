@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@webguard/shared": ["packages/shared/src/index.ts"],
+      "@webguard/core": ["packages/core/src/index.ts"],
+      "@webguard/obfuscator": ["packages/obfuscator/src/index.ts"],
+      "@webguard/integrity": ["packages/integrity/src/index.ts"],
+      "@webguard/browser": ["packages/browser/src/index.ts"],
+      "@webguard/cli": ["packages/cli/src/index.ts"],
+      "@webguard/vite-plugin": ["packages/vite-plugin/src/index.ts"],
+      "@webguard/obfuscator/options": ["packages/obfuscator/src/options.ts"]
+    }
+  },
+  "include": [
+    "packages/**/*.ts",
+    "tests/**/*.ts",
+    "apps/**/*.ts",
+    "examples/**/*.ts",
+    "examples/**/*.tsx",
+    "*.ts"
+  ],
+  "exclude": ["**/dist", "node_modules"]
+}

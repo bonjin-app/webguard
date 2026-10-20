@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-20T05:14:58.268Z",
+  "node": "v22.23.2",
+  "checks": {
+    "build": "12 packages/apps passed",
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "unitIntegration": {
+      "passed": 88,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 30,
+      "failed": 0,
+      "projects": ["chromium", "firefox", "webkit"]
+    },
+    "jspServlet": {
+      "passed": 4,
+      "failed": 0,
+      "java": 17,
+      "tomcat": "10.1.61"
+    },
+    "finalManifestReadback": "4 example outputs valid",
+    "deployment": "local preview only",
+    "npmPublish": false,
+    "remoteCI": "not run"
+  },
+  "sha256": {
+    "packages/browser/dist/webguard.global.js": "1780c8c376d3fe7abbd0862fae083bf6dba8ec5e4451c7161d559d01aa623ba3",
+    "examples/react-vite/dist/webguard-manifest.json": "bba7b712262122eebd7774bfb23c16d8f42afeae8eeaabc06c48c1ddff61f415",
+    "examples/vanilla-ts/dist/webguard-manifest.json": "a973f66bb2d290960ad7036b9356dc983bec638844e0be985c6c2db3db3cd7aa",
+    "examples/jsp-servlet/target/webguard.war": "d374baa46050cba40f1c3f582315847e5db606146c0cf7a358f43ef178705ee1"
+  }
+}

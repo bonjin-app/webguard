@@ -1,0 +1,57 @@
+body {
+  font-family: system-ui, sans-serif;
+  color: #203128;
+  background: #f2f5ef;
+  margin: 0;
+}
+main {
+  max-width: 44rem;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+section {
+  background: white;
+  padding: 1.5rem;
+  border: 1px solid #ced9cf;
+  border-radius: 0.75rem;
+  margin-block: 1.5rem;
+}
+h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-block: 0.5rem;
+}
+p {
+  line-height: 1.6;
+}
+button {
+  border: 1px solid #24523c;
+  background: #24523c;
+  color: white;
+  border-radius: 0.35rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  margin: 0.25rem;
+}
+input {
+  font: inherit;
+  padding: 0.5rem;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+form {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+form button {
+  justify-self: start;
+}
+output {
+  display: block;
+  padding-block: 0.5rem;
+  overflow-wrap: anywhere;
+}
+:focus-visible {
+  outline: 3px solid #9a5d0b;
+  outline-offset: 3px;
+}

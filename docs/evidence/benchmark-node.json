@@ -1,0 +1,48 @@
+{
+  "measuredAt": "2026-10-20T05:13:47.433Z",
+  "runtime": "v22.23.2",
+  "platform": "darwin arm64",
+  "fixture": "10,000 integer map/reduce; 10 isolated VM execution samples per level",
+  "baseline": {
+    "bytes": 151,
+    "executionMs": 3.5806669999992664,
+    "result": 2404114588
+  },
+  "runs": [
+    {
+      "level": "basic",
+      "inputBytes": 151,
+      "outputBytes": 266,
+      "sizeChangePercent": 76.16,
+      "transformMs": 124.35,
+      "meanExecutionMs": 1.88,
+      "processRssDeltaBytes": 9027584,
+      "result": 2404114588
+    },
+    {
+      "level": "standard",
+      "inputBytes": 151,
+      "outputBytes": 1354,
+      "sizeChangePercent": 796.69,
+      "transformMs": 300.44,
+      "meanExecutionMs": 7.54,
+      "processRssDeltaBytes": 7012352,
+      "result": 2404114588
+    },
+    {
+      "level": "high",
+      "inputBytes": 151,
+      "outputBytes": 1349,
+      "sizeChangePercent": 793.38,
+      "transformMs": 46.74,
+      "meanExecutionMs": 11.17,
+      "processRssDeltaBytes": 4587520,
+      "result": 2404114588
+    }
+  ],
+  "limitations": [
+    "Microbenchmark only; no universal performance threshold.",
+    "Node VM execution, not physical browser CPU or memory measurement.",
+    "RSS delta includes GC and engine allocation noise."
+  ]
+}

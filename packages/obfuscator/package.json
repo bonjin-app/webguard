@@ -1,0 +1,41 @@
+{
+  "name": "@webguard/obfuscator",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./options": {
+      "types": "./dist/options.d.ts",
+      "import": "./dist/options.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/options.ts --format esm --dts --clean"
+  },
+  "dependencies": {
+    "@webguard/core": "workspace:*",
+    "javascript-obfuscator": "5.9.0",
+    "acorn": "^8.15.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bonjin-app/webguard.git",
+    "directory": "packages/obfuscator"
+  }
+}

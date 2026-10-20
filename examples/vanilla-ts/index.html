@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title>WebGuard Vanilla TS example</title>
+  </head>
+  <body>
+    <main>
+      <p>WebGuard · Runnable example</p>
+      <h1>Vanilla TS</h1>
+      <p>Build-time protection with ordinary browser interactions.</p>
+      <section aria-labelledby="behavior-title">
+        <h2 id="behavior-title">Check the application</h2>
+        <button id="counter" type="button">Count: 0</button>
+        <button id="lazy-load" type="button">Load lazy module</button>
+        <output id="lazy-result" aria-live="polite">Not loaded</output>
+        <form id="echo-form">
+          <label for="message">Message</label>
+          <input id="message" name="message" required />
+          <button type="submit">Echo message</button>
+        </form>
+        <output id="echo-result" aria-live="polite"></output>
+      </section>
+      <section aria-labelledby="guard-title">
+        <h2 id="guard-title">Optional browser guard</h2>
+        <label
+          ><input id="guard-toggle" type="checkbox" /> Block developer
+          shortcuts</label
+        >
+        <p id="guard-status" role="status">Shortcut blocking off</p>
+        <p id="threat-status" aria-live="polite">No advisory events</p>
+        <p>
+          F12 blocking is optional and browser-dependent. Developer tools remain
+          available through browser controls. These signals never authorize
+          access.
+        </p>
+      </section>
+      <p>
+        Obfuscation makes analysis harder; it cannot hide secrets sent to a
+        browser. This example sends no telemetry.
+      </p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
