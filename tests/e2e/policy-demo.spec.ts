@@ -30,6 +30,13 @@ test("compares all policies, mixed settings and all-off using real sandbox opera
   await expect(page.locator("#policy-after")).toContainText("DOM: 허용");
   await expect(page.locator("#policy-after")).toContainText("인라인: 허용");
   await expect(page.locator("#policy-summary")).toContainText("비교 완료");
+  const comparisonWidth = await page
+    .locator("#policy-lab .sample-grid")
+    .evaluate(
+      (grid) =>
+        grid.getBoundingClientRect().width / grid.parentElement!.clientWidth,
+    );
+  expect(comparisonWidth).toBeGreaterThan(0.9);
   if (process.env.WEBGUARD_PUBLIC_URL && browserName === "chromium")
     await page
       .locator("#policy-lab")
@@ -76,22 +83,49 @@ test("reports failed baseline networking instead of claiming a successful block 
 test("cancels pending frames on pagehide and can run again after page restoration", async ({
   page,
 }) => {
-  await page.goto("/");
-  await page.locator("#policy-run").click();
-  await expect(page.locator("#policy-run")).toBeDisabled();
-  await page.evaluate(() =>
-    window.dispatchEvent(
-      new PageTransitionEvent("pagehide", { persisted: true }),
-    ),
-  );
-  await expect(page.locator("#policy-run")).toBeEnabled();
-  await expect(page.locator("#policy-summary")).toContainText("중단");
-  expect(await page.locator("#policy-lab iframe").count()).toBe(0);
-  await page.evaluate(() =>
-    window.dispatchEvent(
-      new PageTransitionEvent("pageshow", { persisted: true }),
-    ),
-  );
-  await page.locator("#policy-run").click();
-  await expect(page.locator("#policy-summary")).toContainText("비교 완료");
+  let releaseRequest!: () => void;
+  let observeRequest!: () => void;
+  const requestGate = new Promise<void>((resolve) => {
+    releaseRequest = resolve;
+  });
+  const requestObserved = new Promise<void>((resolve) => {
+    observeRequest = resolve;
+  });
+  let firstRequest = true;
+  await page.route("**/api/demo/network-probe", async (route) => {
+    if (!firstRequest) {
+      await route.continue();
+      return;
+    }
+    firstRequest = false;
+    observeRequest();
+    await requestGate;
+    // pagehide removes the requesting iframe; settle its held route as well.
+    await route.abort().catch(() => {});
+  });
+  try {
+    await page.goto("/");
+    await page.locator("#policy-run").click();
+    await requestObserved;
+    await expect(page.locator("#policy-lab iframe").first()).toBeAttached();
+    await expect(page.locator("#policy-run")).toBeDisabled();
+    await page.evaluate(() =>
+      window.dispatchEvent(
+        new PageTransitionEvent("pagehide", { persisted: true }),
+      ),
+    );
+    releaseRequest();
+    await expect(page.locator("#policy-run")).toBeEnabled();
+    await expect(page.locator("#policy-summary")).toContainText("중단");
+    expect(await page.locator("#policy-lab iframe").count()).toBe(0);
+    await page.evaluate(() =>
+      window.dispatchEvent(
+        new PageTransitionEvent("pageshow", { persisted: true }),
+      ),
+    );
+    await page.locator("#policy-run").click();
+    await expect(page.locator("#policy-summary")).toContainText("비교 완료");
+  } finally {
+    releaseRequest();
+  }
 });
