@@ -5,7 +5,12 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
 import { createRequire, builtinModules } from "node:module";
+import { createHash } from "node:crypto";
 import { chromium } from "@playwright/test";
+import {
+  prepareConsumerGuards,
+  verifyConsumerGuards,
+} from "./consumer-guards.mjs";
 
 const run = promisify(execFile);
 const require = createRequire(import.meta.url);
@@ -35,6 +40,8 @@ const candidate = JSON.parse(
 );
 let registry = false,
   tarball,
+  keep = false,
+  evidence,
   vite = "8.3.4";
 for (let index = 0; index < args.length; index++) {
   if (args[index] === "--registry") registry = true;
@@ -57,11 +64,13 @@ for (let index = 0; index < args.length; index++) {
   } else if (args[index] === "--tarball")
     tarball = resolve(args[++index] ?? "");
   else if (args[index] === "--vite") vite = args[++index];
+  else if (args[index] === "--keep") keep = true;
+  else if (args[index] === "--evidence") evidence = resolve(args[++index]);
   else if (!args[index].startsWith("-") && !tarball)
     tarball = resolve(args[index]);
   else
     throw new Error(
-      "Usage: node scripts/verify-npm-consumer.mjs (--prepared | --tarball PATH | --registry) [--vite VERSION]",
+      "Usage: node scripts/verify-npm-consumer.mjs (--prepared | --tarball PATH | --registry) [--vite VERSION] [--keep] [--evidence PATH]",
     );
 }
 check(
@@ -72,6 +81,16 @@ check(/^\d+\.\d+\.\d+$/.test(vite ?? ""), "Use an exact Vite version");
 const directory = await mkdtemp(join(tmpdir(), "webguard-npm-consumer-"));
 let server, serverProcess, browser;
 try {
+  if (evidence)
+    await writeFile(
+      evidence,
+      JSON.stringify({
+        status: "running",
+        checkedAt: new Date().toISOString(),
+        project: directory,
+        vite,
+      }) + "\n",
+    );
   await writeFile(
     join(directory, "package.json"),
     JSON.stringify({
@@ -102,6 +121,22 @@ try {
   const metadata = JSON.parse(
     await readFile(join(packageRoot, "package.json"), "utf8"),
   );
+  const tarballIntegrity = tarball
+    ? "sha512-" +
+      createHash("sha512")
+        .update(await readFile(tarball))
+        .digest("base64")
+    : undefined;
+  if (tarballIntegrity) {
+    const lock = JSON.parse(
+      await readFile(join(directory, "package-lock.json"), "utf8"),
+    );
+    check(
+      lock.packages["node_modules/uulab-webguard"].integrity ===
+        tarballIntegrity,
+      "Installed consumer lock differs from the tested tarball",
+    );
+  }
   check(
     metadata.name === candidate.name && metadata.version === candidate.version,
     "Unexpected installed package identity",
@@ -223,6 +258,7 @@ const status=document.querySelector('#status'),toggle=document.querySelector('#t
 function ready(){const guard=getWebGuard();if(!guard){requestAnimationFrame(ready);return;}status.textContent=JSON.stringify(guard.getOptions());toggle.disabled=false;toggle.addEventListener('click',()=>{const enabled=!guard.getOptions().devtools.blockShortcuts;guard.update({devtools:{blockShortcuts:enabled,blockContextMenu:enabled}});status.textContent=JSON.stringify(guard.getOptions());});}
 if(typeof WebGuard.init!=='function'||!createSecurityHeaders()['Content-Security-Policy'])throw new Error('Missing browser exports');ready();\n`,
   );
+  await prepareConsumerGuards(directory);
   await writeFile(
     join(directory, "consumer.ts"),
     `import {webguardApp,webguard,type WebGuardAppOptions} from 'uulab-webguard'; import {getWebGuard} from 'uulab-webguard/client'; import {WebGuard,type WebGuardOptions} from 'uulab-webguard/browser'; import {createSecurityHeaders,type SecurityHeadersOptions} from 'uulab-webguard/headers';
@@ -645,25 +681,58 @@ WebGuard.init({blockShortcuts:true});\n`,
       (await fetch(`${url}/${path}`)).status === 404,
       `Installed Vite preview exposed a private URL: ${path}`,
     );
-  console.log(
-    JSON.stringify({
-      source: registry ? "registry" : "tarball",
-      package: metadata.name,
-      version: metadata.version,
-      vite,
-      automaticSdk: true,
-      liveControls: true,
-      strictHeaders: true,
-      deploymentCheck: true,
-      publicServerApi: true,
-      installedServerCli: true,
-      protectedPreview: true,
-      cspMeta: true,
-      headerOptOut: true,
-      reportOnlyMeta: true,
-      browserErrors: errors.length,
-    }),
-  );
+  const guards = await verifyConsumerGuards({ directory, url, command });
+  const result = {
+    status: "passed",
+    checkedAt: new Date().toISOString(),
+    project: directory,
+    retained: keep,
+    source: registry ? "registry" : "tarball",
+    sourceCommit: (
+      await command(
+        "git",
+        ["rev-parse", "HEAD"],
+        fileURLToPath(new URL("../", import.meta.url)),
+      )
+    ).stdout.trim(),
+    tarball,
+    tarballIntegrity,
+    package: metadata.name,
+    version: metadata.version,
+    vite,
+    automaticSdk: true,
+    liveControls: true,
+    strictHeaders: true,
+    deploymentCheck: true,
+    publicServerApi: true,
+    installedServerCli: true,
+    protectedPreview: true,
+    cspMeta: true,
+    headerOptOut: true,
+    reportOnlyMeta: true,
+    browserErrors: errors.length,
+    ...guards,
+  };
+  if (evidence)
+    await writeFile(evidence, JSON.stringify(result, null, 2) + "\n");
+  console.log(JSON.stringify(result));
+} catch (error) {
+  if (evidence)
+    await writeFile(
+      evidence,
+      JSON.stringify(
+        {
+          status: "failed",
+          checkedAt: new Date().toISOString(),
+          project: directory,
+          vite,
+          error: String(error.stack ?? error),
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+  throw error;
 } finally {
   await browser?.close();
   if (
@@ -681,5 +750,6 @@ WebGuard.init({blockShortcuts:true});\n`,
       server.closeAllConnections();
       server.close((error) => (error ? reject(error) : resolveClose()));
     });
-  await rm(directory, { recursive: true, force: true });
+  if (keep) console.log(`Consumer project retained: ${directory}`);
+  else await rm(directory, { recursive: true, force: true });
 }

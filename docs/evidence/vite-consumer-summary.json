@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-10-20T23:57:56.537Z",
+  "sourceCommit": "0caecccfc7e7cb9ffe5cfd4f06c50022cf82efde",
+  "scope": "Fresh installed local candidate; no npm publication or public-demo deployment",
+  "candidate": {
+    "name": "uulab-webguard",
+    "version": "0.3.0",
+    "integrity": "sha512-7oodrGTMdtFhovaCmc74lRdAcGQ/YNxew4m/JClkqf/JxZJe+tP+aSgZCkqsYqb7B84wXKL2ahP5gMXNbEfagg=="
+  },
+  "registry": {
+    "latest": "0.2.0",
+    "candidatePublished": false
+  },
+  "matrices": [
+    {
+      "file": "installed-consumer-vite7.json",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-BguHGW",
+      "vite": "7.3.1",
+      "cases": 15,
+      "passed": 15
+    },
+    {
+      "file": "installed-consumer-vite8.json",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-cGxyRf",
+      "vite": "8.3.4",
+      "cases": 15,
+      "passed": 15
+    },
+    {
+      "file": "vite-starters.json",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1",
+      "vite": "8.3.4",
+      "cases": 9,
+      "compatiblePassed": 6,
+      "expectedStrictVanillaIncompatibilities": 3,
+      "passed": true
+    }
+  ],
+  "checks": {
+    "build": true,
+    "typecheck": true,
+    "unitTests": 287,
+    "lint": true,
+    "format": true
+  },
+  "limits": [
+    "Trusted Types report-only is a compatibility option, not DOM sink enforcement.",
+    "Shortcut interception does not lock browser DevTools.",
+    "HTTP-only policy directives and private-resource filtering require the configured host.",
+    "Demo server business authorization is not supplied automatically by the Vite plugin."
+  ]
+}

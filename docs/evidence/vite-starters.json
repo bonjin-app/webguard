@@ -1,0 +1,267 @@
+{
+  "checkedAt": "2026-10-20T23:54:33.999Z",
+  "sourceCommit": "0caecccfc7e7cb9ffe5cfd4f06c50022cf82efde",
+  "method": "Official create-vite starters outside repository; local tarball installed with npm; no application source edits or manual SDK initialization",
+  "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/uulab-webguard-0.3.0.tgz",
+  "tarballIntegrity": "sha512-7oodrGTMdtFhovaCmc74lRdAcGQ/YNxew4m/JClkqf/JxZJe+tP+aSgZCkqsYqb7B84wXKL2ahP5gMXNbEfagg==",
+  "createVite": "9.3.1",
+  "vite": "8.3.4",
+  "directory": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1",
+  "npmPublished": false,
+  "cases": [
+    {
+      "template": "vanilla",
+      "variant": "strict",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-vanilla",
+      "dist": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-vanilla/dist-strict",
+      "config": "import { defineConfig } from 'vite';\nimport { webguardApp } from 'uulab-webguard';\nexport default defineConfig({ plugins: [webguardApp()] });\n",
+      "installedVersion": "0.3.0",
+      "obfuscationPreset": "strict",
+      "chunkTransforms": {
+        "index": {
+          "inputBytes": 15342,
+          "outputBytes": 107270,
+          "durationMs": 418.25387500000033
+        }
+      },
+      "publicSourceMaps": false,
+      "sriAssetsVerified": 2,
+      "browsers": [
+        {
+          "name": "chromium",
+          "version": "156.0.8078.4",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [
+            "Failed to set the 'innerHTML' property on 'Element': This document requires 'TrustedHTML' assignment."
+          ],
+          "expectedIncompatibility": true,
+          "outcome": "expected-stock-innerHTML-incompatibility",
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        },
+        {
+          "name": "firefox",
+          "version": "157.0",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [
+            "Element.innerHTML setter: Sink type mismatch violation blocked by CSP"
+          ],
+          "expectedIncompatibility": true,
+          "outcome": "expected-stock-innerHTML-incompatibility",
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        },
+        {
+          "name": "webkit",
+          "version": "27.2",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": ["This assignment requires a TrustedHTML"],
+          "expectedIncompatibility": true,
+          "outcome": "expected-stock-innerHTML-incompatibility",
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        }
+      ],
+      "httpHeadersVerified": true,
+      "privatePaths404": true
+    },
+    {
+      "template": "vanilla",
+      "variant": "report-only",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-vanilla",
+      "dist": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-vanilla/dist-report-only",
+      "config": "import { defineConfig } from 'vite';\nimport { webguardApp } from 'uulab-webguard';\nexport default defineConfig({ plugins: [webguardApp({ headers: { trustedTypes: 'report-only' } })] });\n",
+      "installedVersion": "0.3.0",
+      "obfuscationPreset": "strict",
+      "chunkTransforms": {
+        "index": {
+          "inputBytes": 15342,
+          "outputBytes": 107138,
+          "durationMs": 369.184125
+        }
+      },
+      "publicSourceMaps": false,
+      "sriAssetsVerified": 2,
+      "browsers": [
+        {
+          "name": "chromium",
+          "version": "156.0.8078.4",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": false,
+            "violations": 4
+          }
+        },
+        {
+          "name": "firefox",
+          "version": "157.0",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": false,
+            "violations": 4
+          }
+        },
+        {
+          "name": "webkit",
+          "version": "27.2",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": false,
+            "violations": 4
+          }
+        }
+      ],
+      "httpHeadersVerified": true,
+      "privatePaths404": true
+    },
+    {
+      "template": "react",
+      "variant": "strict",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-react",
+      "dist": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-official-vite-starters-sv9du1/official-react/dist-strict",
+      "config": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nimport { webguardApp } from 'uulab-webguard';\nexport default defineConfig({ plugins: [react(), webguardApp()] });\n",
+      "installedVersion": "0.3.0",
+      "obfuscationPreset": "strict",
+      "chunkTransforms": {
+        "index": {
+          "inputBytes": 581390,
+          "outputBytes": 2911548,
+          "durationMs": 7920.995875
+        }
+      },
+      "publicSourceMaps": false,
+      "sriAssetsVerified": 2,
+      "browsers": [
+        {
+          "name": "chromium",
+          "version": "156.0.8078.4",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        },
+        {
+          "name": "firefox",
+          "version": "157.0",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        },
+        {
+          "name": "webkit",
+          "version": "27.2",
+          "automaticSdk": {
+            "preset": "strict",
+            "devtools": {
+              "detect": true
+            }
+          },
+          "trustedTypesSupported": true,
+          "pageErrors": [],
+          "expectedIncompatibility": false,
+          "outcome": "passed",
+          "counterWorks": true,
+          "inlinePolicy": {
+            "inlineBlocked": true,
+            "inlineBlockedByTrustedTypes": true,
+            "violations": 2
+          }
+        }
+      ],
+      "httpHeadersVerified": true,
+      "privatePaths404": true
+    }
+  ],
+  "limitations": [
+    "Browsers enforcing Trusted Types reject stock vanilla Vite innerHTML. Strict-default failures are recorded explicitly; report-only is a compatibility choice, not equivalent sink enforcement.",
+    "Trusted Types support is measured from each installed browser rather than inferred from its engine name.",
+    "Shortcut controls are advisory; a browser owner can open DevTools. Server authorization and demo business-validation scenarios are separate application code."
+  ],
+  "completedAt": "2026-10-20T23:55:24.896Z",
+  "passed": true
+}
