@@ -1,11 +1,50 @@
+import { realpathSync } from "node:fs";
 import { mkdir, rename, rm } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import type { Plugin, ResolvedConfig } from "vite";
 import picomatch from "picomatch";
 import { resolveConfig, type WebGuardConfigInput } from "@webguard/core";
 import { obfuscate } from "@webguard/obfuscator";
 import { protectDirectory, hasPotentialCredential } from "@webguard/cli";
+
+function canonicalDirectory(path: string): string {
+  try {
+    return realpathSync(path);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    const parent = dirname(path);
+    if (parent === path) throw error;
+    return join(canonicalDirectory(parent), basename(path));
+  }
+}
+
+function validateOutputDirectory(
+  output: { file?: unknown; dir?: unknown } | undefined,
+  root: string,
+  outDir: string,
+  cwd: unknown,
+  name: string,
+) {
+  if (output?.file !== undefined)
+    throw new Error(
+      `WebGuard does not support ${name}.file; configure build.outDir instead`,
+    );
+  if (output?.dir === undefined) return;
+  const directory = canonicalDirectory(resolve(root, outDir));
+  // Vite prepares directories relative to root; bundlers resolve them against cwd.
+  // Both must target the directory that closeBundle will protect.
+  if (
+    typeof output.dir !== "string" ||
+    !output.dir ||
+    typeof cwd !== "string" ||
+    canonicalDirectory(resolve(root, output.dir)) !== directory ||
+    canonicalDirectory(resolve(cwd, output.dir)) !== directory
+  )
+    throw new Error(
+      `WebGuard requires ${name}.dir to resolve to build.outDir; configure build.outDir instead`,
+    );
+}
 
 /** Build-only protection. Transform before Vite finalizes content-hashed filenames. */
 export function webguard(input: WebGuardConfigInput = {}): Plugin {
@@ -42,6 +81,37 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
         throw new Error(
           "WebGuard Vite plugin currently supports written browser application builds only",
         );
+      for (const [name, bundler] of [
+        ["rollupOptions", config.build.rollupOptions],
+        ["rolldownOptions", config.build.rolldownOptions],
+      ] as const) {
+        const output = bundler?.output;
+        if (Array.isArray(output))
+          throw new Error(
+            "WebGuard supports a single output directory; output arrays are not supported",
+          );
+        validateOutputDirectory(
+          output,
+          config.root,
+          config.build.outDir,
+          bundler?.cwd ?? process.cwd(),
+          `${name}.output`,
+        );
+      }
+    },
+    outputOptions: {
+      order: "post",
+      handler(output) {
+        const bundler = vite.build.rolldownOptions ?? vite.build.rollupOptions;
+        validateOutputDirectory(
+          output,
+          vite.root,
+          vite.build.outDir,
+          bundler?.cwd ?? process.cwd(),
+          "output",
+        );
+        return null;
+      },
     },
     renderChunk: {
       order: "post",

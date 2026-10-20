@@ -5,7 +5,7 @@ Vite 웹 앱에 강한 난독화, 자동 브라우저 SDK 시작, SRI·무결성
 [데모 체험](https://webguard-demo.uulab.workers.dev) · [한국어 전체 가이드](INSTALL.ko.md) · [온라인 가이드](https://webguard-demo.uulab.workers.dev/docs/#install)
 
 ```sh
-npm install --save-dev uulab-webguard@0.1.0
+npm install --save-dev uulab-webguard@0.2.0
 ```
 
 ```ts
@@ -33,6 +33,13 @@ node node_modules/uulab-webguard/examples/server.mjs dist --port 4173
 
 `http://127.0.0.1:4173`에서 확인하세요. 포함된 예제 서버는 생성된 `webguard-headers.json`을 실제 응답에 적용합니다. 운영에서는 서버·CDN에 정책을 반영해야 합니다. `_headers` 지원 호스트는 생성 파일을 최종 출력에 유지하세요. 예제 서버는 루프백 전용이며 없는 경로는 404를 반환합니다.
 
+실제 배포에 사용한 로컬 `dist`로 파일 무결성·실제 보안 헤더·소스맵과 제어 파일 노출을 함께 검사하세요. 실패 시 JSON 오류와 종료 코드 1을 반환합니다.
+
+```sh
+npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+npx --no-install webguard-check dist --url https://YOUR-SITE.example/
+```
+
 실시간 전환은 앱 코드에서 가능합니다.
 
 ```ts
@@ -44,6 +51,7 @@ getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 - `uulab-webguard/client`: 자동 SDK 조회·실시간 변경
 - `uulab-webguard/browser`: 수동 SDK 사용
 - `uulab-webguard/headers`: 서버 정책 생성
+- `uulab-webguard/verify`: Node 배포 검사 `checkDeployment(directory, baseUrl)`
 
 Trusted Types와 CSP는 기존 DOM 삽입·외부 위젯에 영향을 줄 수 있습니다. 호환성 점검에는 `headers: { trustedTypes: "report-only" }`, 기존 호스트 정책 유지에는 `headers: false`를 사용하세요. 브라우저용 코드는 `/client`나 `/browser`를 가져오세요. 서버/빌드 도구인 루트 진입점을 앱 번들에 넣지 마세요.
 

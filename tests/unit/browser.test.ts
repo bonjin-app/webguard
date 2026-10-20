@@ -78,6 +78,68 @@ describe("browser SDK", () => {
     guard.destroy();
     expect(fire({ key: "F12" })).toBe(false);
   });
+  it.each([
+    "<input>",
+    "<textarea></textarea>",
+    "<select><option>One</option></select>",
+    '<div contenteditable="true"><span>Editable text</span></div>',
+    '<div role="textbox"><span>Editable text</span></div>',
+  ])(
+    "preserves editable composed events inside open Shadow DOM: %s",
+    (markup) => {
+      const win = browser();
+      const events: ThreatEvent[] = [];
+      const guard = WebGuard.init({
+        devtools: { blockShortcuts: true, blockContextMenu: true },
+        onThreat: (event) => events.push(event),
+      });
+      cleanup.push(() => guard.destroy());
+      const host = win.document.createElement("div");
+      win.document.body.append(host);
+      const root = host.attachShadow({ mode: "open" });
+      root.innerHTML = markup;
+      const target = root.querySelector("span") ?? root.firstElementChild!;
+      const key = new win.KeyboardEvent("keydown", {
+        key: "F12",
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+      const menu = new win.MouseEvent("contextmenu", {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+      target.dispatchEvent(key);
+      target.dispatchEvent(menu);
+      expect(key.defaultPrevented).toBe(false);
+      expect(menu.defaultPrevented).toBe(false);
+      expect(events).toEqual([]);
+
+      // The same open shadow root must not exempt ordinary elements.
+      const ordinary = win.document.createElement("button");
+      root.append(ordinary);
+      const blockedKey = new win.KeyboardEvent("keydown", {
+        key: "F12",
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+      const blockedMenu = new win.MouseEvent("contextmenu", {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+      ordinary.dispatchEvent(blockedKey);
+      ordinary.dispatchEvent(blockedMenu);
+      expect(blockedKey.defaultPrevented).toBe(true);
+      expect(blockedMenu.defaultPrevented).toBe(true);
+      expect(events.map((event) => event.type)).toEqual([
+        "shortcut-blocked",
+        "context-menu-blocked",
+      ]);
+    },
+  );
   it("deduplicates resize heuristic transitions and isolates callback errors", () => {
     const win = browser();
     let count = 0;

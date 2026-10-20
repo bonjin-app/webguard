@@ -11,7 +11,12 @@ const common = {
 export default defineConfig([
   {
     ...common,
-    entry: { index: "src/index.ts", headers: "src/headers.ts" },
+    entry: {
+      index: "src/index.ts",
+      headers: "src/headers.ts",
+      verify: "src/verify.ts",
+      check: "src/check.ts",
+    },
     platform: "node",
   },
   {

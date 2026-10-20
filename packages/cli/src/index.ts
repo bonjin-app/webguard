@@ -5,4 +5,9 @@ export {
 } from "./pipeline.js";
 export { scanDirectory, hasPotentialCredential, type Finding } from "./scan.js";
 export { stripCssSourceMaps } from "./fs-utils.js";
-export { verifyDeployment, type DeploymentCheck } from "./remote.js";
+export {
+  verifyDeployment,
+  type DeploymentCheck,
+  type DeploymentCheckOptions,
+} from "./remote.js";
+export { checkDeployment } from "./check.js";

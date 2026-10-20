@@ -46,7 +46,7 @@ export const integrations = [
   {
     id: "vite",
     title: "Vite 설정",
-    hint: "npm install -D uulab-webguard@0.1.0 후 vite.config.ts에 한 번 설정합니다. SDK 초기화 코드를 앱에 따로 넣을 필요가 없습니다.",
+    hint: "npm install -D uulab-webguard@0.2.0 후 vite.config.ts에 한 번 설정합니다. SDK 초기화 코드를 앱에 따로 넣을 필요가 없습니다.",
     code: `import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
 

@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { readFile } from "node:fs/promises";
-import { verifyDeployment } from "../../packages/cli/src/remote";
+import { checkDeployment } from "../../packages/cli/src/check";
 
 test("public demo serves each application with its intended headers and rejects nonpublic files", async ({
   request,
@@ -38,7 +37,7 @@ test("public demo serves each application with its intended headers and rejects 
     expect(response.status(), path).toBe(404);
   }
 });
-test("deployed application bytes match trusted local manifests and source probes return absent", async ({
+test("deployment checker verifies trusted bytes, actual policies and private URL absence", async ({
   baseURL,
 }) => {
   for (const [name, path] of [
@@ -46,12 +45,9 @@ test("deployed application bytes match trusted local manifests and source probes
     ["vanilla-js", "/examples/vanilla-js/"],
     ["vanilla-ts", "/examples/vanilla-ts/"],
   ]) {
-    const manifest = JSON.parse(
-      await readFile(`.demo-dist/${name}/webguard-manifest.json`, "utf8"),
-    );
-    const result = await verifyDeployment(
+    const result = await checkDeployment(
+      `.demo-dist/${name}`,
       new URL(path!, baseURL).href,
-      manifest,
     );
     expect(result, name).toMatchObject({ valid: true, errors: [] });
   }

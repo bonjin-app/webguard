@@ -119,6 +119,10 @@ function editable(target: EventTarget | null): boolean {
   );
 }
 
+function editableEvent(event: Event): boolean {
+  return editable(event.target) || event.composedPath().some(editable);
+}
+
 function createGuard(
   initial: WebGuardOptions,
   onDestroy?: () => void,
@@ -127,6 +131,12 @@ function createGuard(
   const browserWindow = typeof window !== "undefined" ? window : undefined;
   const browserDocument = browserWindow?.document;
   let integrityRevision = 0;
+  const integrityRequests = new Set<AbortController>();
+  const abortIntegrityRequests = () => {
+    const pending = [...integrityRequests];
+    integrityRequests.clear();
+    for (const controller of pending) controller.abort();
+  };
   let destroyed = false,
     detected = false;
   const remove: (() => void)[] = [];
@@ -163,7 +173,7 @@ function createGuard(
       if (options.devtools?.blockShortcuts === true)
         listen(browserDocument, "keydown", (raw) => {
           const event = raw as KeyboardEvent;
-          if (destroyed || editable(event.target) || event.isComposing) return;
+          if (destroyed || editableEvent(event) || event.isComposing) return;
           const key = event.key.toLowerCase();
           const shortcut =
             key === "f12" ||
@@ -182,7 +192,7 @@ function createGuard(
         });
       if (options.devtools?.blockContextMenu === true)
         listen(browserDocument, "contextmenu", (event) => {
-          if (destroyed || editable(event.target)) return;
+          if (destroyed || editableEvent(event)) return;
           event.preventDefault();
           emit("context-menu-blocked");
         });
@@ -233,6 +243,7 @@ function createGuard(
       )
         detected = false;
       options = next;
+      if (options.integrity?.enabled !== true) abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
       installListeners();
     },
@@ -242,6 +253,7 @@ function createGuard(
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
       onDestroy?.();
     },
@@ -252,6 +264,7 @@ function createGuard(
         !destroyed &&
         options.integrity?.enabled === true &&
         revision === integrityRevision;
+      let controller: AbortController | undefined;
       try {
         if (
           !/^sha384-[A-Za-z0-9+/]{64}$/.test(expected) ||
@@ -260,7 +273,9 @@ function createGuard(
           typeof fetch !== "function"
         )
           return false;
-        const response = await fetch(url);
+        controller = new AbortController();
+        integrityRequests.add(controller);
+        const response = await fetch(url, { signal: controller.signal });
         if (!active()) return false;
         if (!response.ok) {
           emit("integrity-error", "Unable to fetch the requested resource.");
@@ -282,6 +297,11 @@ function createGuard(
         if (!active()) return false;
         emit("integrity-error", "Unable to verify the requested resource.");
         return false;
+      } finally {
+        if (controller) {
+          integrityRequests.delete(controller);
+          controller.abort();
+        }
       }
     },
   };

@@ -1,6 +1,6 @@
 # npm release operations
 
-The only public distribution target is **`uulab-webguard@0.1.0`**, public access on `https://registry.npmjs.org`. Internal `@webguard/*` packages are not publication targets. The public facade bundles their runtime code and declarations; its external dependencies are declared normally.
+The public distribution target for this release is **`uulab-webguard@0.2.0`**, public access on `https://registry.npmjs.org`. Internal `@webguard/*` packages are not publication targets. The public facade bundles their runtime code and declarations; its external dependencies are declared normally.
 
 Current state (2026-10-20): `uulab-webguard@0.1.0` is publicly published by `uulab`, with `latest` pointing to 0.1.0. The downloaded registry tarball matches the reviewed SHA-512. Fresh registry consumers passed with Vite 7.3.1 and 8.3.4, including type resolution, protected builds, automatic SDK, live controls, server policies and zero Chromium page errors. See [registry release evidence](evidence/npm-release.json).
 
@@ -27,8 +27,8 @@ Provider-required 2FA/publish approval remains a human step. Do not weaken accou
 pnpm install --frozen-lockfile
 pnpm release:prepare
 pnpm test:npm
-node scripts/verify-npm-consumer.mjs --tarball .npm-release/uulab-webguard-0.1.0.tgz --vite 7.3.1
-npm publish .npm-release/uulab-webguard-0.1.0.tgz --dry-run --access public --ignore-scripts --registry=https://registry.npmjs.org
+node scripts/verify-npm-consumer.mjs --prepared --vite 7.3.1
+npm publish .npm-release/uulab-webguard-0.2.0.tgz --dry-run --access public --ignore-scripts --registry=https://registry.npmjs.org
 pnpm release:publish
 pnpm release:readback
 pnpm test:npm:registry
@@ -39,7 +39,9 @@ node scripts/verify-npm-consumer.mjs --registry --vite 7.3.1
 
 `release:publish` runs the pinned official npm CLI 11.21.0 without replacing the global npm installation, so passkey publishing can use the supported browser challenge. Keep the publishing command in an interactive terminal and do not redirect its output: otherwise npm cannot complete the interactive authentication flow. A CLI login may be followed by a separate publish authentication challenge. Use the logged-in browser for the printed URL; no OTP or token needs to be pasted into chat.
 
-`release:readback` confirms registry version, latest tag, metadata integrity and downloaded tarball bytes, and writes `docs/evidence/npm-release.json`. The external consumer verifier uses a temporary project and installs only the facade plus Vite, with no workspace aliases or internal package overrides. It checks declarations, file inventory, absence of internal dependencies/maps, actual builds, automatic Strict SDK startup, live controls, server headers and browser errors. Registry mode must be run after publication; tarball mode is not registry evidence.
+Only registry readback is retried: at most six attempts with bounded delays. Publication is executed once. Version/latest propagation delays, network interruptions, HTTP 429 and 5xx can be retried; a different integrity or unexpected tarball origin stops immediately. Non-success responses are canceled before retrying. If npm accepts publication but readback stays unconfirmed, the command explicitly reports that publication succeeded and instructs the operator to run `release:readback`; never republish or unpublish as a retry. Unconfirmed checks do not write successful registry evidence.
+
+`release:readback` confirms registry version, latest tag, metadata integrity and downloaded tarball bytes, and writes `docs/evidence/npm-release.json`. Preserve versioned previous receipts before this write. The external consumer verifier uses a temporary project and installs only the facade plus Vite, with no workspace aliases or internal package overrides. It checks declarations, file inventory, absence of internal dependencies/maps, actual builds, automatic Strict SDK startup, live controls, server headers, the installed `webguard-check` executable and browser errors. `--prepared` reads the reviewed filename from `.npm-release/release.json`; registry mode installs the version from current package metadata and must run after publication. Tarball mode is not registry evidence.
 
 ## Update the public onboarding
 

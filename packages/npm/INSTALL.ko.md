@@ -9,10 +9,10 @@
 Node.js **22.12 이상**, Vite **7 또는 8**, ESM 방식의 Vite 웹 앱이 필요합니다. React·JavaScript·TypeScript 앱에 적용할 수 있습니다. SSR·라이브러리 빌드는 지원하지 않습니다.
 
 ```sh
-npm install --save-dev uulab-webguard@0.1.0
+npm install --save-dev uulab-webguard@0.2.0
 ```
 
-pnpm을 사용한다면 `pnpm add -D uulab-webguard@0.1.0`으로 설치하세요. SDK를 따로 설치하거나 앱 시작 코드에서 초기화할 필요가 없습니다. 빌드 단계에는 개발 의존성도 설치되어 있어야 합니다.
+pnpm을 사용한다면 `pnpm add -D uulab-webguard@0.2.0`으로 설치하세요. SDK를 따로 설치하거나 앱 시작 코드에서 초기화할 필요가 없습니다. 빌드 단계에는 개발 의존성도 설치되어 있어야 합니다.
 
 ## 2. Vite 설정 한 번
 
@@ -122,6 +122,37 @@ curl -I https://YOUR-SITE.example/
 
 실제 응답에서 `Content-Security-Policy`와 `X-Content-Type-Options: nosniff`를 확인하세요. `_headers` 파일 존재만으로 적용됐다고 판단하면 안 됩니다.
 
+### 배포 결과 자동 검사 (0.2.0 이상)
+
+실제 배포에 사용한 `dist`를 보관하고 다음 명령을 실행하세요. 개발 서버나 다른 빌드의 디렉터리로 검사하지 마세요.
+
+```sh
+# 예제 서버를 실행한 상태에서 다른 터미널에서 검사
+npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+
+# 운영 배포 후 — 하위 경로 배포라면 /app/처럼 정확한 경로 지정
+npx --no-install webguard-check dist --url https://YOUR-SITE.example/app/
+```
+
+검사는 먼저 로컬 매니페스트와 파일을 검증합니다. 이어서 실제 첫 화면·파일·404 응답의 헤더를 생성된 정책과 비교하고, 모든 파일의 크기와 SHA-384를 비교합니다. 소스맵과 보고서·정책 파일의 공개 여부도 확인합니다. 원격 매니페스트로 검사 기준을 바꾸지 않습니다. 실패하면 JSON의 `errors`에 항목별 이유를 출력하고 종료 코드 1을 반환하므로 CI 배포 후 단계에도 사용할 수 있습니다.
+
+```json
+{ "valid": true, "errors": [], "checked": 12 }
+```
+
+`checked`는 HTTP 요청 횟수이며 빌드마다 다릅니다. 요청별 제한 시간은 10초입니다. 리디렉션은 따라가지 않으며 정식 HTTPS 주소를 직접 지정하세요. 없는 파일에 SPA 폴백으로 200을 반환하면 실패합니다. 오류 응답에도 헤더를 적용하세요. CDN이 파일을 다시 축소·변환하면 해시가 달라져 실패하므로 배포한 바이트를 유지해야 합니다. 헤더는 공백을 정규화한 생성 값과 비교하므로 CDN에서 정책을 별도로 바꾸었다면 두 정책을 일치시킨 뒤 재검사하세요.
+
+Node 도구에서 사용할 수도 있습니다. 브라우저 앱 코드에 가져오지 마세요.
+
+```js
+import { checkDeployment } from "uulab-webguard/verify";
+const result = await checkDeployment("dist", "https://YOUR-SITE.example/");
+console.log(result);
+if (!result.valid) process.exitCode = 1;
+```
+
+이 검사는 관측 시점의 파일·헤더·지정 경로 노출을 확인합니다. 로그인·권한 우회·API 취약점·DDoS 검증을 대신하지 않습니다. `headers: false`나 무결성 매니페스트 생성을 끈 빌드는 검사에 필요한 로컬 정책을 직접 준비해야 합니다.
+
 ## 5. 기존 앱과 호환성 조정
 
 외부 API·폰트 등은 필요한 정확한 출처만 추가합니다. 다음은 외부 API 허용과 Trusted Types 호환성 점검 예시입니다.
@@ -140,6 +171,8 @@ webguardApp({
 기본 Trusted Types 강제 정책은 `innerHTML` 같은 문자열 DOM 삽입이나 외부 위젯을 막을 수 있습니다. `report-only`로 호환성을 점검한 뒤 `enforce`로 전환하세요. 이 옵션은 Trusted Types 점검만 조정하며, 나머지 CSP의 인라인·외부 스크립트 제한은 유지됩니다. 원격 보고 서버가 자동으로 설치되지는 않습니다.
 
 기존 호스트 헤더를 유지하려면 `headers: false`로 두고 서버에 직접 적용하세요. 기존 `_headers`나 출력 정책과 충돌하면 덮어쓰지 않고 빌드가 실패합니다. `runtime: false`는 자동 SDK만 끄고 빌드 보호는 유지합니다. 성능을 비교하려면 `preset: "standard"`로 낮출 수 있습니다.
+
+출력 위치는 `build.outDir`로 지정하세요. Rollup/Rolldown의 별도 `output.dir`·`output.file`이나 다중 출력으로 보호 후처리 경로를 우회하는 설정은 지원하지 않습니다.
 
 자동 초기화 없이 SDK만 직접 사용할 수도 있습니다. 자동 SDK와 중복 초기화하지 마세요.
 

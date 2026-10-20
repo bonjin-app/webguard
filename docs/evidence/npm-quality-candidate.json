@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-20T07:47:31.457Z",
+  "status": "locally-verified-candidate",
+  "name": "uulab-webguard",
+  "version": "0.2.0",
+  "filename": "uulab-webguard-0.2.0.tgz",
+  "integrity": "sha512-nr+D3OYTPgt5NWeSPaWVXlrWOF2RvAlO2WArOCzx0e48/TSMeztVr4O8rp2SGzvvQvN7ZlG9hTE6epTfgkVMaA==",
+  "files": [
+    "INSTALL.ko.md",
+    "LICENSE",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "dist/browser.d.ts",
+    "dist/browser.js",
+    "dist/check.d.ts",
+    "dist/check.js",
+    "dist/client.d.ts",
+    "dist/client.js",
+    "dist/headers.d.ts",
+    "dist/headers.js",
+    "dist/index.d.ts",
+    "dist/index.js",
+    "dist/verify.d.ts",
+    "dist/verify.js",
+    "examples/server.mjs",
+    "package.json"
+  ],
+  "preparedAt": "2026-10-20T07:46:19.951Z",
+  "registryPublished": false,
+  "verification": {
+    "unitIntegrationPassed": 239,
+    "localBrowserPassed": 54,
+    "localBrowsers": ["chromium", "firefox", "webkit"],
+    "typecheck": true,
+    "lint": true,
+    "format": true,
+    "workerTypecheck": true,
+    "consumerTypes": true,
+    "installedDeploymentChecker": true,
+    "consumers": [
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.2.0",
+        "vite": "7.3.1",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "browserErrors": 0
+      },
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.2.0",
+        "vite": "8.3.4",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "browserErrors": 0
+      }
+    ]
+  }
+}

@@ -1,3 +1,4 @@
+import { verifyRegistryRelease } from "./release-readback.mjs";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
@@ -44,6 +45,10 @@ async function metadata() {
     pkg.publishConfig?.registry !== registry
   )
     throw new Error("Public registry/access must be explicit");
+  if (pkg.bin?.["webguard-check"] !== "./dist/check.js")
+    throw new Error(
+      "Public package must expose webguard-check as ./dist/check.js",
+    );
   for (const [name, value] of Object.entries(pkg.dependencies ?? {}))
     if (name.startsWith("@webguard/") || /workspace:|file:|link:/.test(value))
       throw new Error(`Unpublished runtime dependency: ${name}`);
@@ -108,6 +113,9 @@ async function prepare() {
       "dist/client.js",
       "dist/browser.js",
       "dist/headers.js",
+      "dist/verify.js",
+      "dist/verify.d.ts",
+      "dist/check.js",
     ])
       if (!paths.includes(path))
         throw new Error(`Missing public file: ${path}`);
@@ -152,7 +160,7 @@ async function reviewed() {
     throw new Error("Prepared tarball changed after review");
   return { pkg, record, tarball };
 }
-async function publish() {
+export async function publish(readbackOptions = {}) {
   const { pkg, record, tarball } = await reviewed();
   const publisher = run("npm", ["whoami", `--registry=${registry}`]);
   const existing = await remote(pkg);
@@ -166,8 +174,7 @@ async function publish() {
       console.log(
         "Reviewed package is already published with identical integrity.",
       );
-      await readback();
-      return;
+      return readback(readbackOptions);
     }
     throw new Error(
       "Version already exists with different bytes; never overwrite/unpublish",
@@ -189,30 +196,51 @@ async function publish() {
     { cwd: root, stdio: "inherit" },
   );
   if (result.status !== 0) throw new Error("npm publication did not complete");
-  await readback();
-}
-async function readback() {
-  const { pkg, record } = await reviewed();
-  const published = await remote(pkg);
-  const version = published?.versions?.[pkg.version];
-  if (
-    !version ||
-    version.dist?.integrity !== record.integrity ||
-    published["dist-tags"]?.latest !== pkg.version
-  )
+  console.log(
+    "npm publish completed successfully. Only registry readback will be retried.",
+  );
+  try {
+    return await readback(readbackOptions);
+  } catch (cause) {
     throw new Error(
-      "Registry version/latest/integrity does not match the prepared release",
+      `npm publish succeeded, but registry readback is ${cause.status ?? "unconfirmed"}. Do not publish again. Run node scripts/release-npm.mjs readback. ${cause.message}`,
+      { cause },
     );
-  const url = new URL(version.dist.tarball);
-  if (url.protocol !== "https:" || url.hostname !== "registry.npmjs.org")
-    throw new Error("Unexpected registry tarball origin");
-  const response = await fetch(url);
-  if (
-    !response.ok ||
-    integrity(Buffer.from(await response.arrayBuffer())) !== record.integrity
-  )
-    throw new Error("Downloaded registry tarball integrity mismatch");
+  }
+}
+export async function readback(options = {}) {
+  const { pkg, record } = await reviewed();
+  let verified;
+  try {
+    verified = await verifyRegistryRelease(
+      { name: pkg.name, version: pkg.version, integrity: record.integrity },
+      {
+        onRetry: (state) =>
+          console.warn(
+            `Registry readback ${state.code}: retry ${state.nextAttempt} after ${state.delayMs}ms. Publication will not be repeated.`,
+          ),
+        ...options,
+      },
+    );
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        status: error.status ?? "failed",
+        name: pkg.name,
+        version: pkg.version,
+        reason: error.code ?? "READBACK_ERROR",
+        attempts: error.attempts ?? 0,
+        operation: "readback",
+        publicationRetried: false,
+        evidenceWritten: false,
+      }),
+    );
+    throw error;
+  }
+  const { published } = verified;
   const evidence = {
+    status: "verified",
+    attempts: verified.attempts,
     checkedAt: new Date().toISOString(),
     name: pkg.name,
     version: pkg.version,
@@ -221,12 +249,13 @@ async function readback() {
     integrity: record.integrity,
     downloadedTarballMatches: true,
     latest: published["dist-tags"].latest,
-    publisher: published.maintainers.map((user) => user.name),
+    publisher: (published.maintainers ?? []).map((user) => user.name),
   };
   const output = join(root, "docs/evidence/npm-release.json");
   await mkdir(dirname(output), { recursive: true });
   await writeFile(output, JSON.stringify(evidence, null, 2) + "\n");
   console.log(JSON.stringify(evidence, null, 2));
+  return evidence;
 }
 if (
   process.argv[1] &&

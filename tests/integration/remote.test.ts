@@ -1,12 +1,145 @@
-import { afterEach, expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { createServer, type Server } from "node:http";
 import { verifyDeployment } from "../../packages/cli/src/remote";
 import { hashContent } from "@webguard/integrity";
 const servers: Server[] = [];
 afterEach(async () => {
+  vi.unstubAllGlobals();
   await Promise.all(
-    servers.splice(0).map((s) => new Promise<void>((r) => s.close(() => r()))),
+    servers.splice(0).map(
+      (s) =>
+        new Promise<void>((r) => {
+          s.closeAllConnections();
+          s.close(() => r());
+        }),
+    ),
   );
+});
+
+it("reports network failures per asset and continues checking remaining paths", async () => {
+  const request = vi
+    .fn()
+    .mockRejectedValueOnce(new TypeError("fetch failed"))
+    .mockResolvedValue(new Response(null, { status: 404 }));
+  vi.stubGlobal("fetch", request);
+  const result = await verifyDeployment("https://example.com/app/", manifest);
+  expect(result.valid).toBe(false);
+  expect(result.checked).toBe(2);
+  expect(result.errors).toContain("Unable to check deployed asset: main.js");
+});
+
+it("validates every path before issuing any requests, including URL schemes", async () => {
+  const request = vi.fn();
+  vi.stubGlobal("fetch", request);
+  await expect(
+    verifyDeployment("https://example.com/app/", manifest, ["https:other.js"]),
+  ).rejects.toThrow("Unsafe deployment path");
+  expect(request).not.toHaveBeenCalled();
+});
+
+it("checks generated headers on the entry route, assets and missing source responses", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: URL) => {
+      if (input.pathname.endsWith("main.js"))
+        return new Response("globalThis.ok=true;", {
+          headers: { "X-Content-Type-Options": "nosniff" },
+        });
+      return new Response(null, {
+        status: input.pathname.endsWith(".map") ? 404 : 200,
+      });
+    }),
+  );
+  const result = await verifyDeployment(
+    "https://example.com/app/",
+    manifest,
+    [],
+    {
+      expectedHeaders: {
+        "Content-Security-Policy": "default-src 'none'",
+        "X-Content-Type-Options": "nosniff",
+      },
+    },
+  );
+  expect(result.checked).toBe(3);
+  expect(result.valid).toBe(false);
+  expect(result.errors).toContain(
+    "Missing response header on /: Content-Security-Policy",
+  );
+  expect(result.errors).toContain(
+    "Missing response header on main.js: Content-Security-Policy",
+  );
+  expect(result.errors).toContain(
+    "Missing response header on main.js.map: X-Content-Type-Options",
+  );
+});
+
+it("cancels an oversized response instead of buffering an unbounded deployment body", async () => {
+  const cancel = vi.fn();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array(100));
+    },
+    cancel,
+  });
+  vi.stubGlobal(
+    "fetch",
+    vi
+      .fn()
+      .mockResolvedValueOnce(new Response(stream))
+      .mockResolvedValue(new Response(null, { status: 404 })),
+  );
+  const result = await verifyDeployment("https://example.com/", manifest);
+  expect(result.errors).toContain("Deployed size exceeds manifest: main.js");
+  expect(cancel).toHaveBeenCalledOnce();
+});
+
+it("rejects a changed CSP value even when the header name is present", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      async (input: URL) =>
+        new Response(
+          input.pathname.endsWith("main.js") ? "globalThis.ok=true;" : null,
+          {
+            status: input.pathname.endsWith(".map") ? 404 : 200,
+            headers: {
+              "Content-Security-Policy":
+                "default-src *; script-src 'unsafe-inline'",
+            },
+          },
+        ),
+    ),
+  );
+  const result = await verifyDeployment("https://example.com/", manifest, [], {
+    expectedHeaders: { "Content-Security-Policy": "default-src 'none'" },
+  });
+  expect(result.errors).toContain(
+    "Response header mismatch on main.js: Content-Security-Policy",
+  );
+  expect(result.valid).toBe(false);
+});
+
+it("records HTTP timeout as a failed check and completes the source probes", async () => {
+  const s = createServer((req, res) => {
+    if (req.url?.endsWith(".map")) {
+      res.statusCode = 404;
+      res.end();
+    }
+  });
+  servers.push(s);
+  await new Promise<void>((r) => s.listen(0, "127.0.0.1", r));
+  const address = s.address();
+  if (!address || typeof address === "string") throw Error("Missing port");
+  const result = await verifyDeployment(
+    `http://127.0.0.1:${address.port}/`,
+    manifest,
+    [],
+    { timeoutMs: 50 },
+  );
+  expect(result).toMatchObject({ valid: false, checked: 2 });
+  expect(result.errors).toContain("Unable to check deployed asset: main.js");
+  s.closeAllConnections();
 });
 async function server(fallback = false) {
   const s = createServer((req, res) => {
@@ -49,7 +182,7 @@ it("does not mistake successful SPA fallback URLs for confirmed source-map absen
 it("reports byte changes against locally trusted hashes", async () => {
   const result = await verifyDeployment(await server(), {
     ...manifest,
-    files: { "main.js": { integrity: hashContent("different"), size: 9 } },
+    files: { "main.js": { integrity: hashContent("different"), size: 19 } },
   });
   expect(result.valid).toBe(false);
   expect(result.errors).toContain("Deployed hash mismatch: main.js");

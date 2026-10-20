@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { createRequire } from "node:module";
@@ -27,18 +27,41 @@ async function command(file, args, cwd) {
   }
 }
 const args = process.argv.slice(2);
+const candidate = JSON.parse(
+  await readFile(
+    new URL("../packages/npm/package.json", import.meta.url),
+    "utf8",
+  ),
+);
 let registry = false,
   tarball,
   vite = "8.3.4";
 for (let index = 0; index < args.length; index++) {
   if (args[index] === "--registry") registry = true;
-  else if (args[index] === "--tarball") tarball = resolve(args[++index] ?? "");
+  else if (args[index] === "--prepared") {
+    const record = JSON.parse(
+      await readFile(
+        new URL("../.npm-release/release.json", import.meta.url),
+        "utf8",
+      ),
+    );
+    check(
+      record.name === candidate.name &&
+        record.version === candidate.version &&
+        record.filename === `${candidate.name}-${candidate.version}.tgz`,
+      "Prepared release differs from package metadata",
+    );
+    tarball = fileURLToPath(
+      new URL(`../.npm-release/${record.filename}`, import.meta.url),
+    );
+  } else if (args[index] === "--tarball")
+    tarball = resolve(args[++index] ?? "");
   else if (args[index] === "--vite") vite = args[++index];
   else if (!args[index].startsWith("-") && !tarball)
     tarball = resolve(args[index]);
   else
     throw new Error(
-      "Usage: node scripts/verify-npm-consumer.mjs (--tarball PATH | --registry) [--vite VERSION]",
+      "Usage: node scripts/verify-npm-consumer.mjs (--prepared | --tarball PATH | --registry) [--vite VERSION]",
     );
 }
 check(
@@ -58,7 +81,7 @@ try {
     }),
   );
   console.log(
-    `Fresh npm consumer: ${registry ? "registry uulab-webguard@0.1.0" : "reviewed tarball"} + Vite ${vite}`,
+    `Fresh npm consumer: ${registry ? `registry ${candidate.name}@${candidate.version}` : "reviewed tarball"} + Vite ${vite}`,
   );
   await command(
     "npm",
@@ -69,7 +92,7 @@ try {
       "--no-fund",
       "--save-exact",
       "--registry=https://registry.npmjs.org",
-      registry ? "uulab-webguard@0.1.0" : tarball,
+      registry ? `${candidate.name}@${candidate.version}` : tarball,
       `vite@${vite}`,
     ],
     directory,
@@ -79,7 +102,7 @@ try {
     await readFile(join(packageRoot, "package.json"), "utf8"),
   );
   check(
-    metadata.name === "uulab-webguard" && metadata.version === "0.1.0",
+    metadata.name === candidate.name && metadata.version === candidate.version,
     "Unexpected installed package identity",
   );
   check(
@@ -97,7 +120,7 @@ try {
     ),
     "Unexpected installation or packing hook",
   );
-  for (const name of [".", "./client", "./browser", "./headers"])
+  for (const name of [".", "./client", "./browser", "./headers", "./verify"])
     check(
       metadata.exports?.[name]?.types && metadata.exports[name].import,
       `Missing public export ${name}`,
@@ -146,7 +169,9 @@ try {
     }
     check(
       allowedRoot.has(local) ||
-        /^dist\/(?:index|browser|client|headers)\.(?:js|d\.ts)$/.test(local) ||
+        /^dist\/(?:index|browser|client|headers|verify|check)\.(?:js|d\.ts)$/.test(
+          local,
+        ) ||
         local === "examples/server.mjs",
       `Unexpected public package file: ${local}`,
     );
@@ -190,6 +215,7 @@ if(typeof WebGuard.init!=='function'||!createSecurityHeaders()['Content-Security
     join(directory, "consumer.ts"),
     `import {webguardApp,webguard,type WebGuardAppOptions} from 'uulab-webguard'; import {getWebGuard} from 'uulab-webguard/client'; import {WebGuard,type WebGuardOptions} from 'uulab-webguard/browser'; import {createSecurityHeaders,type SecurityHeadersOptions} from 'uulab-webguard/headers';
 const config:WebGuardAppOptions={preset:'strict',runtime:{devtools:{blockShortcuts:false}}};webguardApp(config);webguard({preset:'standard'});getWebGuard()?.update({devtools:{blockShortcuts:true}});const runtime:WebGuardOptions={devtools:{response:'monitor'}};WebGuard.init(runtime).destroy();const headers:SecurityHeadersOptions={trustedTypes:'report-only'};createSecurityHeaders(headers);
+import {checkDeployment} from 'uulab-webguard/verify'; void checkDeployment;
 // @ts-expect-error The internal runtime resolver is not part of the public API.
 webguardApp({resolveRuntime:()=>'/tmp/runtime.js'});
 // @ts-expect-error Shortcut options are nested.
@@ -260,6 +286,22 @@ WebGuard.init({blockShortcuts:true});\n`,
     (await fetch(url + "/webguard-report.json")).status === 404,
     "Installed example server exposed its local build report",
   );
+  check(
+    metadata.bin?.["webguard-check"] === "./dist/check.js",
+    "Missing public checker command",
+  );
+  const checked = await command(
+    join(directory, "node_modules/.bin/webguard-check"),
+    ["dist", "--url", url],
+    directory,
+  );
+  const deployment = JSON.parse(checked.stdout);
+  check(
+    deployment.valid === true &&
+      deployment.checked > 4 &&
+      deployment.errors.length === 0,
+    "Installed CLI failed to verify actual protected deployment",
+  );
   browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   const errors = [];
@@ -315,6 +357,7 @@ WebGuard.init({blockShortcuts:true});\n`,
       automaticSdk: true,
       liveControls: true,
       strictHeaders: true,
+      deploymentCheck: true,
       browserErrors: errors.length,
     }),
   );
