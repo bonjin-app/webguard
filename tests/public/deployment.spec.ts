@@ -82,3 +82,32 @@ test("deployment checker verifies trusted bytes, actual policies and private URL
     expect(result, name).toMatchObject({ valid: true, errors: [] });
   }
 });
+
+test("public demo API rejects tampered prices and cross-origin or malformed input", async ({
+  request,
+  baseURL,
+}) => {
+  const origin = new URL(baseURL!).origin;
+  const send = (claimedTotal: number, originHeader = origin) =>
+    request.post("/api/demo/quote", {
+      headers: { Origin: originHeader },
+      data: { sku: "course", quantity: 1, claimedTotal },
+    });
+  const normal = await send(9900);
+  expect(normal.status()).toBe(200);
+  expect(await normal.json()).toMatchObject({ accepted: true, total: 9900 });
+  const tampered = await send(100);
+  expect(tampered.status()).toBe(409);
+  expect(await tampered.json()).toMatchObject({ accepted: false, total: 9900 });
+  expect(tampered.headers()["cache-control"]).toBe("no-store");
+  expect((await send(100, "https://other.test")).status()).toBe(403);
+  expect(
+    (
+      await request.post("/api/demo/quote", {
+        headers: { Origin: origin },
+        data: { sku: "course", quantity: 1, claimedTotal: 9900, role: "admin" },
+      })
+    ).status(),
+  ).toBe(400);
+  expect((await request.get("/api/demo/quote")).status()).toBe(405);
+});

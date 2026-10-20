@@ -1,0 +1,219 @@
+{
+  "verifiedAt": "2026-10-20T08:53:52.749Z",
+  "url": "https://webguard.uulab.co.kr/demo",
+  "worker": "webguard-demo",
+  "accountId": "1302e647c709ce0cc8b4d64938772cb9",
+  "versionId": "c2df10c1-c6bc-4267-a5d4-faf38984049e",
+  "deploymentId": "c2edbc87-f9ba-41df-a053-aeb94cb70f63",
+  "trafficPercentage": 100,
+  "previousVersion": "dcd29343-80af-46cf-9f3b-f1485a509ef9",
+  "deploymentMethod": "Connected Cloudflare API, Wrangler-generated bundle and asset hash algorithm",
+  "bundleSha256": "22c3d0f99d3f625222197e1fbb15238f480b6217ff02cef2a92bdd7ae09beb1b",
+  "sourceSha256": {
+    "apps/playground/src/lab.ts": "4a041dc5218e32e5b3b8ced2198d85fab2b06b2f6e270e9ac2c48d33b82859d1",
+    "apps/playground/src/main.ts": "eeef9f72f0d8ad2d63d6d3e15d4f8f10f76465de2139bb3643e72db13213389e",
+    "apps/playground/src/style.css": "905af590c893441e01d29d7f125c85534162bd8814b7efeccadb8334f1a73709",
+    "deployment/demo-api.mjs": "4caa7acc2eadd547aca716970bf740f1ac732e878e2c5a441a39c822f5162085",
+    "deployment/router.ts": "abd6392bdf94d6ebf0015da3c44823b01c54eb4c803a50a64874f3b3f98fcca0",
+    "scripts/demo-server.mjs": "ce365eb3c2555ccb4d036ad0ded3fcf640b230d209f9afd7bfe782551c535ddb"
+  },
+  "publicAssets": [
+    {
+      "path": "/index.html",
+      "bytes": 643,
+      "sha256": "337a3db52b280d2aaeac604c9f834de0e0a4fb0f2d204e815bd3af8d90f07990"
+    },
+    {
+      "path": "/third-party-licenses.md",
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "/examples/vanilla-ts/index.html",
+      "bytes": 2516,
+      "sha256": "5b67cef96d0e20628c6b85a7d2dfd33bfdf9b869104c0dd412016c19a8c392dc"
+    },
+    {
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "bytes": 663,
+      "sha256": "11e0f73cf296682b647a7fc73846cae9cf514a69f6920034fababb6095dd1af4"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BSlN3o1r.js",
+      "bytes": 10450,
+      "sha256": "3102a28ea8c2c462f138e412c9d8f5877ed20444827f98aba48bf9bea9784504"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/lazy-DHhR8Jya.js",
+      "bytes": 1203,
+      "sha256": "c5a77642ec7369be9717522e16b7fa3788899fe8a95263fda4ad9802fb02d702"
+    },
+    {
+      "path": "/examples/vanilla-js/index.html",
+      "bytes": 2516,
+      "sha256": "eb4d9528519f0a3521e454da4f3981e2364ae7213dd54bbe0248deea4af8feb8"
+    },
+    {
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "bytes": 661,
+      "sha256": "230be34c9a941804f2113ea4a608ab398a2a910a3f46ab967c91603127c40f4b"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-CokxOdMK.js",
+      "bytes": 9252,
+      "sha256": "fa5c324910e3fd34774f5fe033ded2094f58223a4d503aba47c53782a4c8c0e6"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/lazy-r-NePmiN.js",
+      "bytes": 570,
+      "sha256": "3847bbf61ee5052fcfc1415516ef6e69809544300bc8e4408bada8e6b1e11d49"
+    },
+    {
+      "path": "/examples/react/index.html",
+      "bytes": 604,
+      "sha256": "b1a8b6d521096a0a649ce5e87834c209ed4db4aaa4ac6ae738ea586a6c114e63"
+    },
+    {
+      "path": "/examples/react/third-party-licenses.md",
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "path": "/examples/react/webguard-manifest.json",
+      "bytes": 817,
+      "sha256": "93c19f88c0dc9715a1434716c07d5e67208f6cfca4391211fd54a1fde3fd4e10"
+    },
+    {
+      "path": "/examples/react/assets/index-DlQ_wBAa.js",
+      "bytes": 1803091,
+      "sha256": "a8e053aef03f8455ee19cd6b374d8bedac1947f06b7af2248e0c275dd4d0d233"
+    },
+    {
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482"
+    },
+    {
+      "path": "/examples/react/assets/lazy-BrhojCPd.js",
+      "bytes": 2564,
+      "sha256": "9119d01b8e94cd1932d855e411aa43d7793200682c84d9b5c775832f408ddb81"
+    },
+    {
+      "path": "/docs/INSTALL.ko.txt",
+      "bytes": 12287,
+      "sha256": "5f1155c11fe7fb8538760fe8b84b5428bdc13175e3d0d34fd7f6334a8c38b682"
+    },
+    {
+      "path": "/docs/index.html",
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "path": "/docs/third-party-licenses.md",
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "bytes": 11196,
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f"
+    },
+    {
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10"
+    },
+    {
+      "path": "/assets/index-BDN8WplS.css",
+      "bytes": 8759,
+      "sha256": "a5b20ff5a4abeec740cfbb622d16d9ca4d76e8e22f5678742618718bc80ed40a"
+    },
+    {
+      "path": "/assets/index-dYSb6xwb.js",
+      "bytes": 34808,
+      "sha256": "edc149f11d8737b823ff201826facb188dc135ebf1747c62047953d19f1a856f"
+    },
+    {
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+    },
+    {
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+    }
+  ],
+  "apiProbes": [
+    {
+      "claimedTotal": 9900,
+      "status": 200,
+      "body": {
+        "accepted": true,
+        "total": 9900,
+        "claimedTotal": 9900,
+        "reason": "Server price verified",
+        "demo": "Validation example only. No authentication, purchase or payment."
+      }
+    },
+    {
+      "claimedTotal": 100,
+      "status": 409,
+      "body": {
+        "accepted": false,
+        "total": 9900,
+        "claimedTotal": 100,
+        "reason": "Client price rejected; server price retained",
+        "demo": "Validation example only. No authentication, purchase or payment."
+      }
+    }
+  ],
+  "verification": {
+    "unitAndRouting": {
+      "passed": 18
+    },
+    "localBrowserInitial": {
+      "passed": 38,
+      "failed": 4,
+      "reason": "Duplicate status locator; WebKit eval violation event absent"
+    },
+    "localBrowserFinal": {
+      "passed": 45,
+      "failed": 0,
+      "engines": ["chromium", "firefox", "webkit"]
+    },
+    "public": {
+      "passed": 49,
+      "failed": 0,
+      "engines": ["chromium", "firefox", "webkit"],
+      "http": 4,
+      "browser": 45
+    },
+    "proofCapture": {
+      "passed": 1
+    },
+    "mainTypecheck": true,
+    "workerTypecheck": true,
+    "eslint": true,
+    "wranglerDryRun": true,
+    "securityReview": "No actionable findings; additional adapter 413/408 streaming probes passed"
+  },
+  "limits": [
+    "CSP meta-policy probe is not a DevTools lock",
+    "Local digest comparison is not authenticity or live SRI enforcement",
+    "Quote validation is a stateless server teaching endpoint, not SDK authorization",
+    "No device or CI validation claimed"
+  ],
+  "npmChanged": false,
+  "codexSettingsChanged": false
+}

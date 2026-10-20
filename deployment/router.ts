@@ -1,3 +1,5 @@
+import { handleDemoApi } from "./demo-api.mjs";
+
 export interface DeploymentManifest {
   version: number;
   mounts: { prefix: string; headers: Partial<Record<string, string>> }[];
@@ -38,9 +40,10 @@ export async function handleRequest(
       headers,
     });
   };
+  if (manifest.version !== 1) return error(503, "Deployment unavailable");
+  if (path === "/api/demo/quote") return handleDemoApi(request);
   if (!["GET", "HEAD"].includes(request.method))
     return error(405, "Method not allowed", { Allow: "GET, HEAD" });
-  if (manifest.version !== 1) return error(503, "Deployment unavailable");
   // Prepared filenames are ASCII. Reject all encoded path delimiters and nested encodings.
   if (
     !/^[A-Za-z0-9_./~-]+$/.test(path) ||

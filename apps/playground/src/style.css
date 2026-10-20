@@ -604,3 +604,72 @@ footer strong {
     margin-top: 8px;
   }
 }
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+}
+.lab-grid {
+  align-items: stretch;
+}
+.lab-grid label {
+  font-size: 12px;
+  color: #b9d8d0;
+  margin: 18px 0 8px;
+}
+.lab-grid select,
+.lab-grid input {
+  width: 100%;
+  border: 1px solid #42645b;
+  border-radius: 5px;
+  padding: 10px;
+  background: #0f1b20;
+  color: #dbe9ec;
+  font: inherit;
+  font-size: 12px;
+}
+.lab-grid textarea {
+  height: 134px;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #42645b;
+  border-radius: 5px;
+}
+.lab-grid pre {
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    11px/1.8 "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+.lab-payload {
+  color: #a2b9c1;
+  min-height: 100px;
+}
+.lab-grid .sample-run {
+  margin-top: 12px;
+}
+.lab-result {
+  border-top: 1px solid #2a3c44;
+  padding-top: 14px;
+  color: #9de6cb;
+  min-height: 85px;
+}
+.lab-grid .lab-limit {
+  margin-top: auto;
+  font-size: 11px;
+}
+.lab-note {
+  margin-top: 16px;
+}
+.lab-note a {
+  color: #9de6cb;
+}
+.lab-grid select:focus-visible {
+  outline: 2px solid #65e5c5;
+  outline-offset: 3px;
+}

@@ -2,11 +2,13 @@ import { WebGuard } from "@webguard/browser";
 import { runIsolated, type RunResult } from "./sandbox";
 import { examples, integrations } from "./examples";
 import "./style.css";
+import { labMarkup, initLab } from "./lab";
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard<span class="badge">PLAYGROUND</span></a><a class="docs-link" href="/docs/">Documentation ↗</a></header>
-<main><div class="intro"><div><div class="eyebrow">BUILD-TIME PROTECTION, MADE VISIBLE</div><h1>Your code. A little harder to read.</h1><p>Protect JavaScript and compare the result. Everything happens in your browser.</p></div><span class="local"><span></span> Local processing</span></div>
-<nav class="demo-nav" aria-label="체험 안내"><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
+<main><div class="intro"><div><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>직접 조작하고, 보호 결과를 확인하세요.</h1><p>스크립트 삽입·파일 변조·가격 요청 변조부터 강한 난독화까지 직접 시험하세요.</p></div><span class="local"><span></span> 브라우저 시험 + 데모 API</span></div>
+<nav class="demo-nav" aria-label="체험 안내"><a href="#security-lab">방어 시나리오 체험</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
+${labMarkup}
 <section id="try-examples" class="demo-section" aria-labelledby="try-heading"><div class="section-heading"><div><h2 id="try-heading">예제로 바로 시작하세요</h2><p>원클릭으로 High 난독화와 실제 실행 결과를 비교합니다. 코드는 이 브라우저에서만 처리합니다.</p></div><span class="badge">READY TO RUN</span></div><div class="sample-grid">${examples.map((item) => `<article class="sample-card"><h3>${item.title}</h3><p>${item.description}</p><p class="expected">예상 결과<br><code>${item.expected}</code></p><button class="sample-run" data-example="${item.id}">${item.title} 예제 실행</button></article>`).join("")}</div></section>
 <section class="toolbar" aria-label="Protection controls"><div class="presets" role="group" aria-label="Protection preset"><button data-preset="basic" aria-pressed="false">Basic</button><button data-preset="standard" aria-pressed="true">Standard</button><button data-preset="high" aria-pressed="false">High</button></div><p id="preset-description">Balanced string protection for everyday builds.</p><button id="protect" class="primary">Protect & compare <span aria-hidden="true">↗</span></button></section>
 <div id="status" role="status" aria-live="polite">Ready when you are. Start with the example or paste plain JavaScript.</div>
@@ -289,4 +291,5 @@ element("copy-setup").addEventListener("click", async () => {
   }
 });
 showIntegration();
+initLab();
 window.addEventListener("pagehide", () => guard.destroy(), { once: true });

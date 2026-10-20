@@ -2,7 +2,11 @@ import { defineConfig, devices } from "@playwright/test";
 const baseURL = process.env.WEBGUARD_PUBLIC_URL;
 if (!baseURL || new URL(baseURL).protocol !== "https:")
   throw new Error("Set WEBGUARD_PUBLIC_URL to the deployed HTTPS demo URL");
-const browserTests = ["**/e2e/demo.spec.ts", "**/e2e/playground.spec.ts"];
+const browserTests = [
+  "**/e2e/demo.spec.ts",
+  "**/e2e/playground.spec.ts",
+  "**/e2e/lab.spec.ts",
+];
 export default defineConfig({
   testDir: "tests",
   timeout: 45000,

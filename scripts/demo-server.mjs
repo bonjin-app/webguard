@@ -3,6 +3,8 @@ import { lstat, readFile, realpath } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createProtectedServer } from "../examples/security-server/server.mjs";
+import { Readable } from "node:stream";
+import { handleDemoApi } from "../deployment/demo-api.mjs";
 
 const mountDefinitions = [
   ["playground", "/"],
@@ -27,7 +29,7 @@ export async function createDemoServer(outputDirectory) {
     mounts.push({ prefix, server, headers });
   }
   const playground = mounts[0].server;
-  const gateway = createServer((request, response) => {
+  const gateway = createServer(async (request, response) => {
     const raw = request.url ?? "";
     try {
       if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("#"))
@@ -41,6 +43,36 @@ export async function createDemoServer(outputDirectory) {
     const queryIndex = raw.indexOf("?");
     const path = queryIndex < 0 ? raw : raw.slice(0, queryIndex);
     const query = queryIndex < 0 ? "" : raw.slice(queryIndex);
+    if (path === "/api/demo/quote") {
+      try {
+        const target = new URL(raw, `http://${request.headers.host}`);
+        const result = await handleDemoApi(
+          new globalThis.Request(target, {
+            method: request.method,
+            headers: request.headers,
+            ...(!["GET", "HEAD"].includes(request.method)
+              ? {
+                  body: Readable.toWeb(request),
+                  duplex: "half",
+                }
+              : {}),
+          }),
+        );
+        response.writeHead(result.status, Object.fromEntries(result.headers));
+        response.end(
+          request.method === "HEAD"
+            ? undefined
+            : Buffer.from(await result.arrayBuffer()),
+        );
+      } catch {
+        response.writeHead(400, {
+          "Content-Type": "text/plain",
+          "Cache-Control": "no-store",
+        });
+        response.end("Invalid demo request");
+      }
+      return;
+    }
     for (const mount of mounts.slice(1)) {
       if (path === mount.prefix.slice(0, -1)) {
         for (const [name, value] of Object.entries(mount.headers))

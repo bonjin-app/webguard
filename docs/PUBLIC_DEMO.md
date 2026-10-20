@@ -4,7 +4,25 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Verified release
+## Interactive lab release
+
+The first screen now offers a one-click sequence and individual repeatable scenarios:
+
+- Fixed inline script, `eval` and HTML event-handler probes run before/after CSP in separate opaque-origin, `allow-scripts` sandboxed frames. Success requires execution in the control plus nonexecution and a CSP violation (or the `eval` probe's actual `EvalError`) in the policy frame. Source, random token and message shape are checked; missing observations are not counted as success. The meta-policy fixture demonstrates browser policy, not DevTools prevention.
+- SHA-384 compares a known original, a fixed changed file and editable input. This is a local hash demonstration, not an authenticity proof or live SRI enforcement.
+- `/api/demo/quote` accepts same-origin JSON POST requests, recalculates the fixed course price on the server and returns HTTP 200 for 9,900 and HTTP 409 for a changed claim. The stateless sample does not create accounts, orders or payments and is not an SDK authorization feature. Origin checking is not authentication. Exact keys, integer/range constraints, a 1 KiB streaming body limit, a three-second read deadline and no-store responses bound the teaching endpoint.
+
+The main demo remains available at [the canonical URL](https://webguard.uulab.co.kr/demo#security-lab). Existing obfuscation examples, protected apps and live shortcut controls remain available. A failed/network-interrupted scenario displays failure and remains retryable; no fabricated result is substituted.
+
+Local API/routing checks (18 tests), main and Worker type checks, ESLint and a Wrangler dry run passed. The final local demo browser matrix passed all 45 tests across Chromium, Firefox and WebKit. The deployed HTTPS matrix passed all 49 checks (45 browser checks and four HTTP/integrity/API checks); an additional Chromium run captured the completed scenarios. The initial browser run found duplicate status-region selection and missing WebKit `eval` violation events (38 passed, four failed); the production UI and probe observations were corrected before the successful final run. Timeout and CSP settings were not relaxed to manufacture success.
+
+Worker version `c2df10c1-c6bc-4267-a5d4-faf38984049e`, deployment `c2edbc87-f9ba-41df-a053-aeb94cb70f63`, serves 100% of traffic. The CLI authentication store was unavailable, so the existing connected Cloudflare account was used for the public asset upload and atomic Worker update; bindings, compatibility date, observability and hostname mappings were preserved. Temporary scoped asset-upload tokens were removed after use. Codex settings and npm publication were not changed.
+
+[Interactive lab screenshot](evidence/security-lab.png) · [Release evidence](evidence/security-lab-deployment.json).
+
+Use `pnpm demo` for the full local gateway including the API. The Vite-only `pnpm dev` preview serves the frontend; a missing API is displayed as a failed request, not successful protection.
+
+## Branded-domain release (historical)
 
 Verified on 2026-10-20 (Asia/Seoul): Worker version `dcd29343-80af-46cf-9f3b-f1485a509ef9`, deployment `57c83a0b-21ac-48b3-a756-9bb03c7c228c`, serving 100% of traffic with the `webguard.uulab.co.kr` Custom Domain and the existing Workers subdomain enabled.
 
@@ -32,7 +50,7 @@ Wrangler is pinned in this workspace. `wrangler.jsonc` targets a dedicated `webg
 
 `deploy:build` assembles the full demo, prepares sanitized public assets and a private routing manifest, generates binding/runtime types and checks the Worker contract. Source maps, deployment controls, local-path reports, original sources, server files and dotfiles are excluded from the public upload. The three protected application manifests are checked against local files before preparation. Policy JSON is bundled into the Worker rather than publicly served.
 
-The Worker serves an explicit asset allowlist. It handles trailing-slash mounts, GET/HEAD, policy-bearing errors and 404 responses without an SPA fallback. HTML handling in the asset binding is disabled so explicit `index.html` verification remains possible. Bodies are streamed from the asset binding.
+The Worker serves an explicit asset allowlist and the exact stateless `/api/demo/quote` teaching route. Static files support GET/HEAD; the teaching API supports POST. It handles trailing-slash mounts, policy-bearing errors and 404 responses without an SPA fallback. HTML handling in the asset binding is disabled so explicit `index.html` verification remains possible. Bodies are streamed from the asset binding.
 
 ## Policies and runtime
 
