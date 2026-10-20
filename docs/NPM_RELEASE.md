@@ -37,6 +37,8 @@ node scripts/verify-npm-consumer.mjs --registry --vite 7.3.1
 
 `release:prepare` writes the tarball and SHA-512 inventory under ignored `.npm-release/`. `release:publish` checks that inventory, current identity, registry ownership and version availability, then uploads exactly that tarball. It does not publish other workspaces. A matching previously published version triggers full downloaded-tarball/latest-tag readback; a different existing version is rejected rather than replaced or unpublished.
 
+`release:publish` runs the pinned official npm CLI 11.21.0 without replacing the global npm installation, so passkey publishing can use the supported browser challenge. Keep the publishing command in an interactive terminal and do not redirect its output: otherwise npm cannot complete the interactive authentication flow. A CLI login may be followed by a separate publish authentication challenge. Use the logged-in browser for the printed URL; no OTP or token needs to be pasted into chat.
+
 `release:readback` confirms registry version, latest tag, metadata integrity and downloaded tarball bytes, and writes `docs/evidence/npm-release.json`. The external consumer verifier uses a temporary project and installs only the facade plus Vite, with no workspace aliases or internal package overrides. It checks declarations, file inventory, absence of internal dependencies/maps, actual builds, automatic Strict SDK startup, live controls, server headers and browser errors. Registry mode must be run after publication; tarball mode is not registry evidence.
 
 ## Update the public onboarding

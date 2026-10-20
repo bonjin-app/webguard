@@ -31,7 +31,7 @@
     "deploy": "pnpm deploy:build && wrangler deploy",
     "test:public": "playwright test -c playwright.public.config.ts",
     "release:prepare": "pnpm build && node scripts/release-npm.mjs prepare",
-    "release:publish": "node scripts/release-npm.mjs publish",
+    "release:publish": "npm exec --yes --package=npm@11.21.0 -- node scripts/release-npm.mjs publish",
     "release:readback": "node scripts/release-npm.mjs readback",
     "test:npm": "node scripts/verify-npm-consumer.mjs --tarball .npm-release/uulab-webguard-0.1.0.tgz",
     "test:npm:registry": "node scripts/verify-npm-consumer.mjs --registry"
