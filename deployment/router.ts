@@ -97,12 +97,16 @@ export async function handleRequest(
     if (![200, 206, 304].includes(asset.status))
       return error(502, "Asset unavailable");
     if (request.method === "HEAD" && asset.body) await asset.body.cancel();
+    const responseHeaders = headersFor(asset.headers);
+    // Prepared HTML is UTF-8; asset-store MIME metadata may omit the encoding.
+    if (entry.path.endsWith(".html"))
+      responseHeaders.set("Content-Type", "text/html; charset=utf-8");
     return new Response(
       request.method === "HEAD" || asset.status === 304 ? null : asset.body,
       {
         status: asset.status,
         statusText: asset.statusText,
-        headers: headersFor(asset.headers),
+        headers: responseHeaders,
       },
     );
   } catch {

@@ -59,10 +59,14 @@ test("public demo serves each application with its intended headers and rejects 
     ["/docs/", false],
     ["/examples/react/", true],
     ["/examples/vanilla-js/", true],
+    ["/examples/vanilla-js/about/", true],
     ["/examples/vanilla-ts/", true],
   ] as const) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
+    expect(response.headers()["content-type"], path).toBe(
+      "text/html; charset=utf-8",
+    );
     expect(response.headers()["x-content-type-options"]).toBe("nosniff");
     const csp = response.headers()["content-security-policy"] ?? "";
     expect(csp).toContain("object-src 'none'");

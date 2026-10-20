@@ -429,6 +429,7 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
     expect(demo.status).toBe(200);
     expect(await demo.text()).toBe("playground");
     expect(demo.headers.get("x-app")).toBe("playground");
+    expect(demo.headers.get("content-type")).toBe("text/html; charset=utf-8");
     expect(requested.at(-1)).toBe("/index.html");
     const slash = await handleRequest(
       new Request(`https://${host}/demo/?example=hello`),
@@ -443,6 +444,7 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
       manifest,
     );
     expect(head.status).toBe(200);
+    expect(head.headers.get("content-type")).toBe("text/html; charset=utf-8");
     expect(await head.text()).toBe("");
   }
   const root = await handleRequest(
