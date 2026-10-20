@@ -1,0 +1,145 @@
+{
+  "candidate": "uulab-webguard@0.3.0",
+  "status": "unpublished-local-candidate",
+  "sourceCommit": "9d12528",
+  "verifiedAt": "2026-10-20T12:46:22.498Z",
+  "publication": {
+    "requestedStatus": "deferred by user",
+    "cliCanceled": true,
+    "registryHasCandidate": false,
+    "latest": "0.2.0",
+    "publicSiteDeployment": "not changed in this quality work"
+  },
+  "artifact": {
+    "filename": "uulab-webguard-0.3.0.tgz",
+    "integrity": "sha512-7oodrGTMdtFhovaCmc74lRdAcGQ/YNxew4m/JClkqf/JxZJe+tP+aSgZCkqsYqb7B84wXKL2ahP5gMXNbEfagg==",
+    "files": 22,
+    "localTarballVerified": true
+  },
+  "improvements": [
+    "Automatic early HTML CSP plus protected preview and Node server API/CLI",
+    "Shared raw/private input removal and server path filtering",
+    "UTF-8 declaration before long CSP; compatible declarations normalized; inert template meta preserved",
+    "Real nested directory index routing with safe query-preserving redirects and symlink restrictions",
+    "Explicit API proxy forwarding; unsafe proxy.bypass startup rejection; proxied responses remain backend responsibility",
+    "Subpath-preserving nested redirects in protected preview",
+    "Korean guide explicitly distinguishes unpublished candidate and public version"
+  ],
+  "verification": {
+    "buildTasks": 13,
+    "unitAndIntegration": {
+      "passed": 285,
+      "files": 23
+    },
+    "typecheck": true,
+    "lint": true,
+    "format": true,
+    "headerlessBrowserPolicy": [
+      {
+        "engine": "chromium",
+        "version": "156.0.8078.4",
+        "httpCspHeaders": false,
+        "baseline": {
+          "connect": "accepted",
+          "externalRequests": 1,
+          "html": "accepted",
+          "trustedTypes": "supported",
+          "violations": [],
+          "pageErrors": 0
+        },
+        "protected": {
+          "connect": "blocked",
+          "externalRequests": 0,
+          "html": "TypeError",
+          "trustedTypes": "supported",
+          "violations": ["connect-src", "require-trusted-types-for"],
+          "pageErrors": 0
+        }
+      },
+      {
+        "engine": "firefox",
+        "version": "157.0",
+        "httpCspHeaders": false,
+        "baseline": {
+          "connect": "accepted",
+          "externalRequests": 1,
+          "html": "accepted",
+          "trustedTypes": "supported",
+          "violations": [],
+          "pageErrors": 0
+        },
+        "protected": {
+          "connect": "blocked",
+          "externalRequests": 0,
+          "html": "TypeError",
+          "trustedTypes": "supported",
+          "violations": ["connect-src", "require-trusted-types-for"],
+          "pageErrors": 0
+        }
+      },
+      {
+        "engine": "webkit",
+        "version": "27.2",
+        "httpCspHeaders": false,
+        "baseline": {
+          "connect": "accepted",
+          "externalRequests": 1,
+          "html": "accepted",
+          "trustedTypes": "supported",
+          "violations": [],
+          "pageErrors": 0
+        },
+        "protected": {
+          "connect": "blocked",
+          "externalRequests": 0,
+          "html": "TypeError",
+          "trustedTypes": "supported",
+          "violations": ["connect-src", "require-trusted-types-for"],
+          "pageErrors": 0
+        }
+      }
+    ],
+    "installedConsumers": [
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.3.0",
+        "vite": "8.3.4",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "publicServerApi": true,
+        "installedServerCli": true,
+        "protectedPreview": true,
+        "cspMeta": true,
+        "headerOptOut": true,
+        "reportOnlyMeta": true,
+        "browserErrors": 0
+      },
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.3.0",
+        "vite": "7.3.1",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "deploymentCheck": true,
+        "publicServerApi": true,
+        "installedServerCli": true,
+        "protectedPreview": true,
+        "cspMeta": true,
+        "headerOptOut": true,
+        "reportOnlyMeta": true,
+        "browserErrors": 0
+      }
+    ]
+  },
+  "notes": [
+    "No npm publication after cancellation. No DNS/Worker or Codex configuration changes in this quality work.",
+    "Earlier release-preparation validation found legacy manual CSP conflicts and outdated release-test fixtures; both were corrected before final checks.",
+    "Browser-owner DevTools remain available and browser-delivered JS/CSS remain observable.",
+    "DOM Trusted Types enforcement requires browser support; server authentication and permissions remain application responsibilities."
+  ]
+}
