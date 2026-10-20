@@ -1,0 +1,18 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/*/src/**",
+        "$TURBO_ROOT$/tsconfig.json",
+        "$TURBO_ROOT$/LICENSE",
+        "$TURBO_ROOT$/THIRD_PARTY_NOTICES.md",
+        "$TURBO_ROOT$/docs/INSTALL.ko.md",
+        "$TURBO_ROOT$/docs/licenses/javascript-obfuscator.txt",
+        "$TURBO_ROOT$/examples/security-server/server.mjs",
+        "$TURBO_ROOT$/scripts/npm-metadata.mjs"
+      ]
+    }
+  }
+}

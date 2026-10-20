@@ -1,4 +1,5 @@
-import { copyFile, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { prepareNpmPackageMetadata } from "./npm-metadata.mjs";
 const descriptions = {
   shared: "Shared threat-event types.",
   core: "Typed configuration, validation and policy presets.",
@@ -30,3 +31,7 @@ for (const [name, description] of Object.entries(descriptions)) {
 console.log(
   "Prepared local package documentation and license notices; nothing published.",
 );
+// The public facade is independently packed; internal workspace names stay private to this repo.
+await prepareNpmPackageMetadata();
+await mkdir("apps/docs/public", { recursive: true });
+await copyFile("docs/INSTALL.ko.md", "apps/docs/public/INSTALL.ko.txt");

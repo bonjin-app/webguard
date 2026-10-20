@@ -1,0 +1,61 @@
+{
+  "name": "uulab-webguard",
+  "version": "0.1.0",
+  "description": "Vite application protection, automatic browser advisory controls, and deployment header policies.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "INSTALL.ko.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "examples/server.mjs"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js"
+    },
+    "./headers": {
+      "types": "./dist/headers.d.ts",
+      "import": "./dist/headers.js"
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "javascript-obfuscator": "5.9.0",
+    "acorn": "^8.15.0",
+    "parse5": "^8.0.0",
+    "picomatch": "^4.0.3"
+  },
+  "peerDependencies": {
+    "vite": ">=7 <9"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bonjin-app/webguard.git",
+    "directory": "packages/npm"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "homepage": "https://webguard-demo.uulab.workers.dev/docs/#install"
+}

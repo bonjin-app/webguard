@@ -6,6 +6,30 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 **Browser-delivered HTML, CSS, JavaScript and network traffic remain observable. Obfuscation is not encryption. F12 interception cannot disable browser menus, external debuggers or user-controlled JavaScript. Never ship credentials or rely on this SDK for authorization.**
 
+## Install in a Vite application
+
+The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
+
+Release status (2026-10-20): the 0.1.0 tarball is prepared and locally tested; npm registry publication is waiting for CLI authentication (401). Installation by registry name becomes available after publication.
+
+```sh
+npm install --save-dev uulab-webguard@0.1.0
+```
+
+```ts
+import { defineConfig } from "vite";
+import { webguardApp } from "uulab-webguard";
+export default defineConfig({
+  plugins: [
+    webguardApp({
+      runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+    }),
+  ],
+});
+```
+
+Keep existing plugins. Run the normal production build; automatic SDK startup and Strict/High protection need no separate SDK install. Development/HMR stays unrestricted. Generated HTTP header files still require host application. Browser-safe live controls use `uulab-webguard/client`.
+
 ## Run this repository
 
 Requires Node **22.12+** and pnpm **11.10.0**.
@@ -21,7 +45,7 @@ For verification: `pnpm verify`, `pnpm exec playwright install chromium firefox 
 
 The Playground transforms code locally in a worker; it does not upload it. Its isolated execution harness has no DOM or network access and terminates long-running workers. It compares console output, not arbitrary program semantics. It is a development demonstration, not a hardened multi-tenant code execution service.
 
-`@webguard/*` are **temporary local workspace names**. These packages have not been published. A registry check found `@webguard/core` already registered; namespace ownership and final names must be resolved before publication. Do not install an unrelated registry package expecting this implementation.
+`@webguard/*` remain **internal local workspace names**, not public distribution names. `@webguard/core` belongs to another registry publisher. The public facade is `uulab-webguard`; do not install an unrelated package expecting this implementation. The workspace examples below use their internal links.
 
 ## Protect an existing application
 

@@ -2,7 +2,14 @@ import { afterEach, expect, it } from "vitest";
 import { mkdtemp, mkdir, writeFile, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { request, type Server, type IncomingHttpHeaders } from "node:http";
+import {
+  request,
+  createServer,
+  type Server,
+  type IncomingHttpHeaders,
+} from "node:http";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const roots: string[] = [];
 const servers: Server[] = [];
@@ -88,6 +95,56 @@ afterEach(async () => {
     roots.splice(0).map((root) => rm(root, { recursive: true, force: true })),
   );
 });
+it("starts the documented example command through a package-manager symlink", async () => {
+  const { root, dist } = await fixture();
+  const entry = join(root, "linked-server.mjs");
+  await symlink(
+    fileURLToPath(
+      new URL("../../examples/security-server/server.mjs", import.meta.url),
+    ),
+    entry,
+  );
+  const reservation = createServer();
+  await new Promise<void>((ready) => reservation.listen(0, "127.0.0.1", ready));
+  const address = reservation.address();
+  if (!address || typeof address === "string")
+    throw new Error("No reserved port");
+  await new Promise<void>((closed) => reservation.close(() => closed()));
+  const child = spawn(
+    process.execPath,
+    [entry, dist, "--port", String(address.port)],
+    { stdio: ["ignore", "pipe", "pipe"] },
+  );
+  try {
+    await new Promise<void>((ready, reject) => {
+      const timeout = setTimeout(
+        () => reject(new Error("Linked server did not start")),
+        5000,
+      );
+      child.stdout.on("data", (chunk) => {
+        if (chunk.toString().includes("Protected static example:")) {
+          clearTimeout(timeout);
+          ready();
+        }
+      });
+      child.once("error", (error) => {
+        clearTimeout(timeout);
+        reject(error);
+      });
+      child.once("exit", () => {
+        clearTimeout(timeout);
+        reject(new Error("Linked CLI exited before listening"));
+      });
+    });
+    const result = await get(address.port, "/");
+    expect(result.status).toBe(200);
+    expect(result.headers["content-security-policy"]).toBe(
+      policy["Content-Security-Policy"],
+    );
+  } finally {
+    child.kill();
+  }
+});
 it("fails startup on missing, malformed, empty, invalid, or escaped header policies", async () => {
   const { dist, root } = await fixture();
   await rm(join(dist, "webguard-headers.json"));
@@ -148,6 +205,7 @@ it("rejects source maps, development paths, encoded traversal and escaping symli
   await writeFile(join(dist, "source.ts"), "SECRET_SOURCE");
   await writeFile(join(dist, ".env"), "SECRET_ENV");
   await writeFile(join(dist, "vite.config.js"), "SECRET_CONFIG");
+  await writeFile(join(dist, "webguard-report.json"), "SECRET_LOCAL_PATH");
   await mkdir(join(dist, "src"));
   await writeFile(join(dist, "src/legacy.js"), "SECRET_DEV");
   await symlink(join(root, "secret.js"), join(dist, "escape.js"));
@@ -161,6 +219,7 @@ it("rejects source maps, development paths, encoded traversal and escaping symli
     "/vite.config.js",
     "/src/legacy.js",
     "/webguard-headers.json",
+    "/webguard-report.json",
     "/assets/",
     "/not-a-route",
     "/../secret.js",

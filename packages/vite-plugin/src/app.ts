@@ -25,6 +25,16 @@ const headerFiles = ["webguard-headers.json", "_headers"];
  * Legacy webguard() remains build-only; this opt-in convenience entry point adds the runtime.
  */
 export function webguardApp(input: WebGuardAppOptions = {}): Plugin[] {
+  return createWebGuardApp(input, () =>
+    fileURLToPath(import.meta.resolve("@webguard/browser")),
+  );
+}
+
+/** Internal facade adapter; the public API does not expose a runtime resolver. */
+export function createWebGuardApp(
+  input: WebGuardAppOptions,
+  resolveRuntime: () => string,
+): Plugin[] {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new TypeError("WebGuard app options must be an object");
   const { runtime, headers, ...buildOptions } = input;
@@ -92,9 +102,7 @@ export function webguardApp(input: WebGuardAppOptions = {}): Plugin[] {
     },
     load(id) {
       if (id !== bootstrapId || runtimeOptions === false) return;
-      const runtimePath = fileURLToPath(
-        import.meta.resolve("@webguard/browser"),
-      );
+      const runtimePath = resolveRuntime();
       return `import { installAutoGuard } from ${JSON.stringify(runtimePath)};\ninstallAutoGuard(${JSON.stringify(runtimeOptions)});`;
     },
     transformIndexHtml: {

@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-20T06:51:34.537Z",
+  "status": "candidate-not-published",
+  "name": "uulab-webguard",
+  "version": "0.1.0",
+  "integrity": "sha512-ZfGE17YHYUvbxmJ+s+jjlt29fHAh/0KmIuTqOcx/e/S2bldv8hCiqavWr6ZqigJA+xDXVUUU38nJOm2M8tQkuQ==",
+  "files": [
+    "INSTALL.ko.md",
+    "LICENSE",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "dist/browser.d.ts",
+    "dist/browser.js",
+    "dist/client.d.ts",
+    "dist/client.js",
+    "dist/headers.d.ts",
+    "dist/headers.js",
+    "dist/index.d.ts",
+    "dist/index.js",
+    "examples/server.mjs",
+    "package.json"
+  ],
+  "registryHttpStatus": 404,
+  "registryPublished": false,
+  "registryConsumerVerified": false,
+  "authentication": "npm whoami returned HTTP 401; human login/CLI authorization incomplete",
+  "verification": {
+    "unitIntegrationPassed": 162,
+    "localBrowserPassed": 54,
+    "buildTasksPassed": 13,
+    "typecheck": true,
+    "lint": true,
+    "format": true,
+    "packageInventory": true,
+    "sourceMaps": false,
+    "internalRuntimeDependencies": false,
+    "installHooks": false,
+    "consumers": [
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.1.0",
+        "vite": "7.3.1",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "browserErrors": 0
+      },
+      {
+        "source": "tarball",
+        "package": "uulab-webguard",
+        "version": "0.1.0",
+        "vite": "8.3.4",
+        "automaticSdk": true,
+        "liveControls": true,
+        "strictHeaders": true,
+        "browserErrors": 0
+      }
+    ],
+    "pnpmConsumer": {
+      "packageManager": "pnpm11.10.0",
+      "vite": "8.3.4",
+      "publicPackage": "uulab-webguard@0.1.0",
+      "workspaceOverrides": false,
+      "build": true,
+      "documentedSymlinkCli": true,
+      "httpStatus": 200,
+      "strictHeaders": true
+    }
+  },
+  "publicOnboardingDeployed": false,
+  "existingPublicDemoPreserved": true,
+  "codexConfigurationModified": false,
+  "reviewFindingsResolved": [
+    "Canonical CLI entry paths for pnpm symlinks",
+    "Full readback on matching-version publish retries",
+    "Complete engine license text included"
+  ]
+}

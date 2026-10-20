@@ -46,9 +46,9 @@ export const integrations = [
   {
     id: "vite",
     title: "Vite 설정",
-    hint: "vite.config.ts에 한 번 설정합니다. SDK 초기화 코드를 앱에 따로 넣을 필요가 없습니다.",
+    hint: "npm install -D uulab-webguard@0.1.0 후 vite.config.ts에 한 번 설정합니다. SDK 초기화 코드를 앱에 따로 넣을 필요가 없습니다.",
     code: `import { defineConfig } from 'vite';
-import { webguardApp } from '@webguard/vite-plugin';
+import { webguardApp } from 'uulab-webguard';
 
 export default defineConfig({
   plugins: [webguardApp({
@@ -62,7 +62,7 @@ export default defineConfig({
     id: "live",
     title: "실시간 변경 코드",
     hint: "자동 SDK가 시작된 앱에서 즉시 켜고 끕니다. 새로고침하면 빌드 설정으로 돌아갑니다.",
-    code: `import { getWebGuard } from '@webguard/vite-plugin/client';
+    code: `import { getWebGuard } from 'uulab-webguard/client';
 
 // 지금 켜기
 getWebGuard()?.update({
@@ -77,9 +77,9 @@ getWebGuard()?.update({
   {
     id: "server",
     title: "서버 헤더 적용",
-    hint: "이 저장소에서 실행합니다. 예제 서버가 빌드의 webguard-headers.json을 실제 HTTP 응답에 적용합니다.",
-    code: `pnpm --filter @webguard/example-react-vite build
-node examples/security-server/server.mjs examples/react-vite/dist --port 4174
+    hint: "npm run build 후 실행합니다. 포함된 예제 서버가 생성된 정책을 실제 응답 헤더에 적용합니다.",
+    code: `npm run build
+node node_modules/uulab-webguard/examples/server.mjs dist --port 4174
 
 # http://127.0.0.1:4174 에서 실행 결과와 응답 헤더 확인
 # 정적 호스팅은 빌드가 만든 _headers 지원 여부에 맞게 반영`,

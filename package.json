@@ -8,7 +8,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "build": "turbo run build && node scripts/package-metadata.mjs",
+    "build": "node scripts/package-metadata.mjs && turbo run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
@@ -29,7 +29,12 @@
     "deploy:build": "pnpm demo:build && pnpm deploy:prepare && pnpm deploy:types && pnpm deploy:typecheck",
     "deploy:dry-run": "wrangler deploy --dry-run --outdir .cloudflare-dist/bundle",
     "deploy": "pnpm deploy:build && wrangler deploy",
-    "test:public": "playwright test -c playwright.public.config.ts"
+    "test:public": "playwright test -c playwright.public.config.ts",
+    "release:prepare": "pnpm build && node scripts/release-npm.mjs prepare",
+    "release:publish": "node scripts/release-npm.mjs publish",
+    "release:readback": "node scripts/release-npm.mjs readback",
+    "test:npm": "node scripts/verify-npm-consumer.mjs --tarball .npm-release/uulab-webguard-0.1.0.tgz",
+    "test:npm:registry": "node scripts/verify-npm-consumer.mjs --registry"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

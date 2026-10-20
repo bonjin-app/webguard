@@ -50,7 +50,7 @@ function blocked(path) {
     /\.(?:map|ts|tsx|jsx|jsp|java|vue|svelte|coffee|env|md|ya?ml|toml|lock|log)$/i.test(
       path,
     ) ||
-    /(?:^|\/)(?:_headers|webguard-headers\.json|package(?:-lock)?\.json|pnpm-lock\.yaml|yarn\.lock)$/i.test(
+    /(?:^|\/)(?:_headers|webguard-(?:headers|report)\.json|package(?:-lock)?\.json|pnpm-lock\.yaml|yarn\.lock)$/i.test(
       path,
     ) ||
     /(?:^|\/)[^/]*config\.(?:js|mjs|cjs|json)$/i.test(path)
@@ -175,7 +175,8 @@ export async function createProtectedServer(directory) {
 
 if (
   process.argv[1] &&
-  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  (await realpath(process.argv[1]).catch(() => undefined)) ===
+    fileURLToPath(import.meta.url)
 ) {
   try {
     const [directory, ...args] = process.argv.slice(2);

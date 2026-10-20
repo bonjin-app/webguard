@@ -9,6 +9,7 @@ export default tseslint.config(
       ".deployment-stage-*/**",
       ".deployment-backup-*/**",
       ".wrangler/**",
+      ".npm-release/**",
       "deployment/worker-configuration.d.ts",
       ".demo-stage-*/**",
       ".demo-backup-*/**",
