@@ -65,16 +65,23 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
     const text = message.text(),
       url = message.location().url;
     const expectedPolicy =
-      /Content.?Security.?Policy|script-src/.test(text) &&
+      /Content.?Security.?Policy|script-src|connect-src|TrustedHTML|Trusted Type/i.test(
+        text,
+      ) &&
       (!url || url.startsWith("about:srcdoc"));
     const expectedQuote =
       url.endsWith("/api/demo/quote") && text.includes("409");
-    if (!expectedPolicy && !expectedQuote)
+    const expectedAudit =
+      text.includes("404") &&
+      /\/(src\/main\.ts|package\.json|\.env|vite\.config\.ts|webguard-report\.json|assets\/[^/]+\.js\.map)$/.test(
+        url,
+      );
+    if (!expectedPolicy && !expectedQuote && !expectedAudit)
       unexpectedConsole.push(`${url}: ${text}`);
   });
   await page.goto("/");
   await page.getByRole("button", { name: "전체 기능 체험 시작" }).click();
-  await expect(page.locator("#lab-summary")).toContainText("3개 검증 확인", {
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료", {
     timeout: 30000,
   });
   await expect(page.locator("#equivalence")).toHaveText("Outputs match");

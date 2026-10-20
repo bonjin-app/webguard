@@ -14,6 +14,7 @@
     "@webguard/obfuscator": "workspace:*"
   },
   "devDependencies": {
+    "@webguard/vite-plugin": "workspace:*",
     "vite": "8.3.4"
   }
 }

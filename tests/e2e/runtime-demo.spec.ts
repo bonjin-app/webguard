@@ -227,7 +227,7 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
   await expect(page.locator("#runtime-integrity-result")).toContainText(
     "다른 기대 해시: 불일치",
   );
-  await expect(page.locator("#lab-summary")).toContainText("3개 체험 완료", {
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료", {
     timeout: 30000,
   });
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {

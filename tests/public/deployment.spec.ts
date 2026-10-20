@@ -1,6 +1,26 @@
 import { test, expect } from "@playwright/test";
 import { checkDeployment } from "../../packages/cli/src/check";
 
+test("public network-policy fixture returns a fixed credential-free response only", async ({
+  request,
+}) => {
+  const response = await request.get("/api/demo/network-probe", {
+    headers: { Origin: "null" },
+  });
+  expect(response.status()).toBe(200);
+  expect(await response.json()).toEqual({ probe: "webguard-network-ok" });
+  expect(response.headers()["access-control-allow-origin"]).toBe("*");
+  expect(
+    response.headers()["access-control-allow-credentials"],
+  ).toBeUndefined();
+  expect(response.headers()["set-cookie"]).toBeUndefined();
+  expect(response.headers()["cache-control"]).toBe("no-store");
+  expect((await request.post("/api/demo/network-probe")).status()).toBe(405);
+  expect((await request.get("/api/demo/network-probe/private")).status()).toBe(
+    404,
+  );
+});
+
 test("branded demo entry preserves its canonical address, assets and safe redirects", async ({
   request,
   baseURL,

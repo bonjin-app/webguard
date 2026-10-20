@@ -21,7 +21,36 @@ test("executes real policy, integrity and server tampering scenarios", async ({
   await expect(page.locator("#lab-api-result")).toContainText(
     "변조 요청: HTTP 409",
   );
-  await expect(page.locator("#lab-summary")).toContainText("3개 체험 완료");
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료");
+  await expect(page.locator("#lab-network-result")).toContainText(
+    "보호 전: 응답 확인",
+  );
+  await expect(page.locator("#lab-network-result")).toContainText(
+    "보호 적용: 차단 확인",
+  );
+  const trustedTypesSupported = await page.evaluate(
+    () =>
+      typeof (
+        globalThis as typeof globalThis & {
+          trustedTypes?: { createPolicy?: unknown };
+        }
+      ).trustedTypes?.createPolicy === "function",
+  );
+  if (trustedTypesSupported) {
+    await expect(page.locator("#lab-trusted-types-result")).toContainText(
+      "보호 전: DOM 삽입됨",
+    );
+    await expect(page.locator("#lab-trusted-types-result")).toContainText(
+      "보호 적용: 차단 확인",
+    );
+    await expect(page.locator("#lab-summary")).toContainText("5개 검증 확인");
+  } else {
+    await expect(page.locator("#lab-trusted-types-result")).toContainText(
+      "미지원",
+    );
+    await expect(page.locator("#lab-summary")).toContainText("4개 검증 확인");
+    await expect(page.locator("#lab-summary")).toContainText("1개 미지원");
+  }
   await expect(page.locator("#lab-frames iframe")).toHaveCount(0);
   if (process.env.WEBGUARD_PUBLIC_URL && browserName === "chromium")
     await page
@@ -107,4 +136,92 @@ test("reports a network failure without claiming verification success and permit
   await expect(page.locator("#lab-api-result")).toContainText(
     "변조 요청: HTTP 409",
   );
+});
+
+test("compares actual network responses against connect-src blocking and fails closed without a baseline", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "네트워크 요청 비교", exact: true })
+    .click();
+  const result = page.locator("#lab-network-result");
+  await expect(result).toContainText("보호 전: 응답 확인");
+  await expect(result).toContainText("보호 적용: 차단 확인");
+  await expect(result).toContainText("connect-src");
+  await expect(page.locator("#lab-summary")).toContainText("1개 검증 확인");
+  await expect(page.locator("#lab-frames iframe")).toHaveCount(0);
+
+  await page.route("**/api/demo/network-probe", (route) => route.abort());
+  await page
+    .getByRole("button", { name: "네트워크 요청 비교", exact: true })
+    .click();
+  await expect(result).toContainText("보호 전: 응답 확인 실패");
+  await expect(result).not.toContainText("보호 적용: 차단 확인");
+  await expect(page.locator("#lab-summary")).toContainText("0개 검증 확인");
+  await expect(
+    page.getByRole("button", { name: "네트워크 요청 비교", exact: true }),
+  ).toBeEnabled();
+  await expect(page.locator("#lab-frames iframe")).toHaveCount(0);
+});
+
+test("compares actual innerHTML assignment with Trusted Types enforcement or reports unsupported explicitly", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const supported = await page.evaluate(
+    () =>
+      typeof (
+        globalThis as typeof globalThis & {
+          trustedTypes?: { createPolicy?: unknown };
+        }
+      ).trustedTypes?.createPolicy === "function",
+  );
+  await page
+    .getByRole("button", { name: "DOM 삽입 비교", exact: true })
+    .click();
+  const result = page.locator("#lab-trusted-types-result");
+  if (supported) {
+    await expect(result).toContainText("보호 전: DOM 삽입됨");
+    await expect(result).toContainText("보호 적용: 차단 확인");
+    await expect(result).toContainText("require-trusted-types-for");
+    await expect(result).toContainText("TypeError");
+    await expect(page.locator("#lab-summary")).toContainText("1개 검증 확인");
+  } else {
+    await expect(result).toContainText("미지원");
+    await expect(result).not.toContainText("차단 확인");
+    await expect(page.locator("#lab-summary")).toContainText("0개 검증 확인");
+    await expect(page.locator("#lab-summary")).toContainText("1개 미지원");
+  }
+  await expect(page.locator("#lab-frames iframe")).toHaveCount(0);
+  await page.getByRole("button", { name: "체험 초기화", exact: true }).click();
+  await expect(result).toHaveText("아직 실행하지 않았습니다.");
+  await expect(page.locator("#lab-network-result")).toHaveText(
+    "아직 실행하지 않았습니다.",
+  );
+});
+
+test("never counts an unavailable Trusted Types API as successful verification", async ({
+  page,
+}) => {
+  // Exercise capability fallback even on engines that provide Trusted Types.
+  await page.addInitScript(() => {
+    Object.defineProperty(globalThis, "trustedTypes", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "DOM 삽입 비교", exact: true })
+    .click();
+  await expect(page.locator("#lab-trusted-types-result")).toContainText(
+    "미지원",
+  );
+  await expect(page.locator("#lab-trusted-types-result")).not.toContainText(
+    "차단 확인",
+  );
+  await expect(page.locator("#lab-summary")).toContainText("0개 검증 확인");
+  await expect(page.locator("#lab-summary")).toContainText("1개 미지원");
+  await expect(page.locator("#lab-frames iframe")).toHaveCount(0);
 });

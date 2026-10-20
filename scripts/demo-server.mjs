@@ -4,7 +4,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createProtectedServer } from "../examples/security-server/server.mjs";
 import { Readable } from "node:stream";
-import { handleDemoApi } from "../deployment/demo-api.mjs";
+import { handleDemoApi, handleNetworkProbe } from "../deployment/demo-api.mjs";
 
 const mountDefinitions = [
   ["playground", "/"],
@@ -43,10 +43,12 @@ export async function createDemoServer(outputDirectory) {
     const queryIndex = raw.indexOf("?");
     const path = queryIndex < 0 ? raw : raw.slice(0, queryIndex);
     const query = queryIndex < 0 ? "" : raw.slice(queryIndex);
-    if (path === "/api/demo/quote") {
+    if (["/api/demo/quote", "/api/demo/network-probe"].includes(path)) {
       try {
         const target = new URL(raw, `http://${request.headers.host}`);
-        const result = await handleDemoApi(
+        const result = await (
+          path === "/api/demo/quote" ? handleDemoApi : handleNetworkProbe
+        )(
           new globalThis.Request(target, {
             method: request.method,
             headers: request.headers,

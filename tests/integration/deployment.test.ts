@@ -72,6 +72,33 @@ afterEach(async () => {
     roots.splice(0).map((root) => rm(root, { recursive: true, force: true })),
   );
 });
+it("routes the exact public network fixture independently of static assets", async () => {
+  const manifest: DeploymentManifest = { version: 1, mounts: [], assets: {} };
+  const assets = {
+    async fetch() {
+      throw new Error("Fixture must not use asset fallback");
+    },
+  };
+  const response = await handleRequest(
+    new Request("https://demo.test/api/demo/network-probe", {
+      headers: { Origin: "null" },
+    }),
+    assets,
+    manifest,
+  );
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({ probe: "webguard-network-ok" });
+  expect(response.headers.get("access-control-allow-origin")).toBe("*");
+  expect(
+    (
+      await handleRequest(
+        new Request("https://demo.test/api/demo/network-probe/extra"),
+        assets,
+        manifest,
+      )
+    ).status,
+  ).toBe(404);
+});
 it("stages only public payload, private route headers, and accurate sanitized integrity metadata", async () => {
   const { input, output, root } = await fixture();
   for (const [name, content] of [

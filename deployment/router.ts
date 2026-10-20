@@ -1,4 +1,4 @@
-import { handleDemoApi } from "./demo-api.mjs";
+import { handleDemoApi, handleNetworkProbe } from "./demo-api.mjs";
 
 export interface DeploymentManifest {
   version: number;
@@ -42,6 +42,7 @@ export async function handleRequest(
   };
   if (manifest.version !== 1) return error(503, "Deployment unavailable");
   if (path === "/api/demo/quote") return handleDemoApi(request);
+  if (path === "/api/demo/network-probe") return handleNetworkProbe(request);
   if (!["GET", "HEAD"].includes(request.method))
     return error(405, "Method not allowed", { Allow: "GET, HEAD" });
   // Prepared filenames are ASCII. Reject all encoded path delimiters and nested encodings.

@@ -1,3 +1,27 @@
+/** Public fixed fixture only. Never returns request data, credentials or user state. */
+export function handleNetworkProbe(request) {
+  const allowed = ["GET", "HEAD"].includes(request.method);
+  return new globalThis.Response(
+    request.method === "HEAD"
+      ? null
+      : JSON.stringify(
+          allowed
+            ? { probe: "webguard-network-ok" }
+            : { error: "GET or HEAD required" },
+        ),
+    {
+      status: allowed ? 200 : 405,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": "*",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
+        ...(!allowed ? { Allow: "GET, HEAD" } : {}),
+      },
+    },
+  );
+}
 /** Stateless teaching endpoint. No accounts, orders, payments or persistent writes. */
 export async function handleDemoApi(request) {
   const respond = (status, body, extra = {}) =>
