@@ -73,7 +73,7 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
       url.endsWith("/api/demo/quote") && text.includes("409");
     const expectedAudit =
       text.includes("404") &&
-      /\/(src\/main\.ts|package\.json|\.env|vite\.config\.ts|webguard-report\.json|assets\/[^/]+\.js\.map)$/.test(
+      /\/(src\/main\.ts|package\.json|\.env|vite\.config\.ts|webguard-report\.json|assets\/[^/]+\.js\.map|examples\/vanilla-js\/about\/not-a-static-page\/)$/.test(
         url,
       );
     if (!expectedPolicy && !expectedQuote && !expectedAudit)
@@ -85,6 +85,11 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
     timeout: 30000,
   });
   await expect(page.locator("#equivalence")).toHaveText("Outputs match");
+  await expect(page.locator("#policy-summary")).toContainText("비교 완료");
+  await expect(page.locator("#compat-summary")).toHaveAttribute(
+    "data-result",
+    "pass",
+  );
   await expect(page.locator("#runtime-integrity-result")).toContainText(
     "정상 해시: 일치",
   );

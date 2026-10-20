@@ -813,3 +813,38 @@ footer strong {
   margin-top: 6px;
   font-size: 12px;
 }
+#policy-lab .sample-grid,
+#resource-exposure .runtime-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#policy-lab .lab-actions label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #38524e;
+  border-radius: 5px;
+  color: #b5cec8;
+  font-size: 12px;
+}
+#policy-lab .lab-actions label:has(input:checked) {
+  border-color: #67d6bb;
+  background: #173b32;
+  color: #c8f1e5;
+}
+#policy-lab input {
+  accent-color: #67d6bb;
+}
+#policy-lab .lab-result {
+  min-height: 150px;
+}
+#compatibility-lab pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  #policy-lab .sample-grid,
+  #resource-exposure .runtime-grid {
+    grid-template-columns: 1fr;
+  }
+}

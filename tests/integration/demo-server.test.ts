@@ -56,6 +56,23 @@ async function start(root: string) {
     throw new Error("Missing loopback address");
   return address.port;
 }
+it("keeps nested page redirects within the application mount", async () => {
+  const root = await fixture();
+  await mkdir(join(root, "vanilla-js/about"));
+  await writeFile(
+    join(root, "vanilla-js/about/index.html"),
+    "<h1>한글 보안 체험</h1>",
+  );
+  const port = await start(root);
+  const response = await get(port, "/examples/vanilla-js/about?view=demo");
+  expect(response.status).toBe(308);
+  expect(response.headers.location).toBe(
+    "/examples/vanilla-js/about/?view=demo",
+  );
+  expect((await get(port, "/examples/vanilla-js/about/")).body).toContain(
+    "한글 보안 체험",
+  );
+});
 function get(
   port: number,
   path: string,

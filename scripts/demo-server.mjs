@@ -90,6 +90,17 @@ export async function createDemoServer(outputDirectory) {
       if (path.startsWith(mount.prefix)) {
         // Use the raw request path. URL canonicalization could erase traversal segments.
         request.url = raw.slice(mount.prefix.length - 1);
+        const setHeader = response.setHeader.bind(response);
+        response.setHeader = (name, value) => {
+          if (
+            name.toLowerCase() === "location" &&
+            typeof value === "string" &&
+            value.startsWith("/") &&
+            !value.startsWith("//")
+          )
+            value = mount.prefix.slice(0, -1) + value;
+          return setHeader(name, value);
+        };
         mount.server.emit("request", request, response);
         return;
       }

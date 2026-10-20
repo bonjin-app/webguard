@@ -4,6 +4,8 @@ import { examples, integrations } from "./examples";
 import "./style.css";
 import { labMarkup, initLab } from "./lab";
 import { resourceMarkup, initResources } from "./resource-demo";
+import { policyMarkup, initPolicyDemo } from "./policy-demo";
+import { compatMarkup, initCompatDemo } from "./compat-demo";
 import {
   runtimeMarkup,
   initRuntimeDemo,
@@ -12,9 +14,11 @@ import {
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard<span class="badge">PLAYGROUND</span></a><a class="docs-link" href="/docs/">Documentation ↗</a></header>
-<main><div class="intro"><div><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>직접 조작하고, 보호 결과를 확인하세요.</h1><p>스크립트·DOM 삽입, 네트워크 전송, 파일·가격 변조와 배포 리소스 보호를 직접 시험하세요.</p></div><span class="local"><span></span> 브라우저 시험 + 데모 API</span></div>
-<nav class="demo-nav" aria-label="체험 안내"><a href="#security-lab">방어 시나리오 체험</a><a href="#resource-exposure">리소스 공개 검사</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
+<main><div class="intro"><div><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>직접 조작하고, 보호 결과를 확인하세요.</h1><p>스크립트·DOM 삽입, 네트워크 전송, 파일·가격 변조와 배포 리소스 보호를 직접 시험하세요.</p></div><span class="local"><span></span> 0.3.0 후보 체험 · npm 게시 보류</span></div>
+<nav class="demo-nav" aria-label="체험 안내"><a href="#policy-lab">정책 켜기·끄기</a><a href="#compatibility-lab">배포 호환성</a><a href="#security-lab">방어 시나리오 체험</a><a href="#resource-exposure">리소스 공개 검사</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
 ${runtimeMarkup}
+${policyMarkup}
+${compatMarkup}
 ${labMarkup}
 ${resourceMarkup}
 <section id="try-examples" class="demo-section" aria-labelledby="try-heading"><div class="section-heading"><div><h2 id="try-heading">예제로 바로 시작하세요</h2><p>원클릭으로 High 난독화와 실제 실행 결과를 비교합니다. 코드는 이 브라우저에서만 처리합니다.</p></div><span class="badge">READY TO RUN</span></div><div class="sample-grid">${examples.map((item) => `<article class="sample-card"><h3>${item.title}</h3><p>${item.description}</p><p class="expected">예상 결과<br><code>${item.expected}</code></p><button class="sample-run" data-example="${item.id}">${item.title} 예제 실행</button></article>`).join("")}</div></section>
@@ -268,11 +272,15 @@ element("copy-setup").addEventListener("click", async () => {
 showIntegration();
 initLab();
 const cleanupResources = initResources();
+const cleanupPolicy = initPolicyDemo();
+const cleanupCompat = initCompatDemo();
 element("runtime-tour").addEventListener("click", () => {
   if (
     protect.disabled ||
     element<HTMLButtonElement>("lab-all").disabled ||
     element<HTMLButtonElement>("resource-audit").disabled ||
+    element<HTMLButtonElement>("policy-run").disabled ||
+    element<HTMLButtonElement>("compat-run").disabled ||
     element<HTMLButtonElement>("runtime-integrity").disabled
   ) {
     element("runtime-tour-status").textContent =
@@ -290,6 +298,9 @@ element("runtime-tour").addEventListener("click", () => {
   element<HTMLButtonElement>("runtime-integrity").click();
   element<HTMLButtonElement>("lab-all").click();
   element<HTMLButtonElement>("resource-audit").click();
+  element<HTMLButtonElement>("policy-enable-all").click();
+  element<HTMLButtonElement>("policy-run").click();
+  element<HTMLButtonElement>("compat-run").click();
   selectPreset("high");
   protect.click();
   element("runtime-tour-status").textContent =
@@ -299,5 +310,7 @@ window.addEventListener("pagehide", (event) => {
   if (event.persisted) return;
   cleanupRuntime();
   cleanupResources();
+  cleanupPolicy();
+  cleanupCompat();
   guard.destroy();
 });

@@ -230,6 +230,11 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
   await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료", {
     timeout: 30000,
   });
+  await expect(page.locator("#policy-summary")).toContainText("비교 완료");
+  await expect(page.locator("#compat-summary")).toHaveAttribute(
+    "data-result",
+    "pass",
+  );
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
     timeout: 30000,
   });

@@ -229,6 +229,8 @@ export async function prepareDeployment(
           if (!publicFile(child)) continue;
           const url = prefix + child;
           add(url, url, prefix);
+          if (child.endsWith("/index.html"))
+            add(prefix + child.slice(0, -"index.html".length), url, prefix);
           await mkdir(dirname(join(target, child)), { recursive: true });
           await writeFile(join(target, child), await readFile(file));
         }

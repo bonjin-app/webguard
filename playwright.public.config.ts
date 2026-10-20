@@ -9,6 +9,8 @@ const browserTests = [
   "**/e2e/runtime-demo.spec.ts",
   "**/e2e/diagnostics.spec.ts",
   "**/e2e/resources.spec.ts",
+  "**/e2e/policy-demo.spec.ts",
+  "**/e2e/compat-demo.spec.ts",
 ];
 export default defineConfig({
   testDir: "tests",

@@ -39,7 +39,7 @@ test("rejects invalid JavaScript without executing it", async ({ page }) => {
     .getByLabel("Source JavaScript", { exact: true })
     .fill("const broken = ;");
   await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.getByRole("status")).toContainText("Protection failed:", {
+  await expect(page.locator("#status")).toContainText("Protection failed:", {
     timeout: 30000,
   });
   await expect(page.locator("#equivalence")).toHaveText("Not run");

@@ -3,7 +3,7 @@ export const runtimeMarkup = `
 <section id="live-demo" class="demo-section runtime-demo" aria-labelledby="runtime-heading">
 <div class="section-heading"><div><div class="eyebrow">LIVE SDK · THIS PAGE</div><h2 id="runtime-heading">먼저 보호 옵션을 켜고 직접 시험하세요</h2><p>아래 설정은 이 페이지의 실제 SDK에 즉시 적용됩니다. 새로고침하면 관찰 모드로 돌아갑니다.</p></div><a class="demo-link" href="#security-lab">삽입·변조 시나리오 ↓</a></div>
 <div class="runtime-limit"><strong>개발자도구 창 자체는 차단하지 못합니다.</strong><p>이 체험은 페이지가 받는 단축키·우클릭 입력을 제한합니다. Chrome 메뉴, 이미 열린 도구, 외부 디버깅과 콘솔 실행은 통제하지 못합니다. 감지는 창 크기에 따른 추정 신호입니다.</p></div>
-<div class="lab-actions"><button id="runtime-tour" class="primary">전체 기능 체험 시작</button><p id="runtime-tour-status" aria-live="polite">입력 제한 켜기 → SDK 파일 검사 → 삽입·변조 3종 → High 난독화를 시작합니다. 실제 키 입력은 아래 영역에서 직접 시험하세요.</p></div>
+<div class="lab-actions"><button id="runtime-tour" class="primary">전체 기능 체험 시작</button><p id="runtime-tour-status" aria-live="polite">입력 제한·정책 스위치 → 배포 호환성·파일 검사 → 삽입·변조 5종 → High 난독화를 시작합니다. 실제 키 입력은 아래 영역에서 직접 시험하세요.</p></div>
 <div class="lab-actions"><button id="runtime-enable" class="primary">입력 제한 켜기</button><button id="runtime-disable" class="sample-run">입력 제한 끄기</button><p id="runtime-state" aria-live="polite"></p></div>
 <div class="runtime-grid"><article class="sample-card"><h3>1. 실제 SDK 설정</h3><div class="toggles">
 <label><input id="shortcuts" type="checkbox"> 단축키 제한 · Restrict F12 / inspect shortcuts</label>

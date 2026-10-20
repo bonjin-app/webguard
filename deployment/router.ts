@@ -75,6 +75,18 @@ export async function handleRequest(
       headers: headersFor({ Location: mount.prefix + query }),
     });
   }
+  if (!Object.hasOwn(manifest.assets, path) && !path.endsWith("/")) {
+    const directory = manifest.assets[path + "/"];
+    if (
+      directory &&
+      directory.mount === mount?.prefix &&
+      directory.path.endsWith("/index.html")
+    )
+      return new Response(null, {
+        status: 308,
+        headers: headersFor({ Location: path + "/" + url.search }),
+      });
+  }
   if (!Object.hasOwn(manifest.assets, path)) return error(404, "Not found");
   const entry = manifest.assets[path]!;
   if (!mount || entry.mount !== mount.prefix) return error(404, "Not found");

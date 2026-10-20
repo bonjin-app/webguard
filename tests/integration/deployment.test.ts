@@ -72,6 +72,54 @@ afterEach(async () => {
     roots.splice(0).map((root) => rm(root, { recursive: true, force: true })),
   );
 });
+it("publishes nested index aliases and canonicalizes only existing public directories", async () => {
+  const { input, output } = await fixture();
+  await mkdir(join(input, "playground", "about"));
+  await writeFile(
+    join(input, "playground", "about", "index.html"),
+    "<h1>한글 하위 페이지</h1>",
+  );
+  await prepare(input, output);
+  const manifest = await routes(output);
+  expect(manifest.assets["/about/"]).toEqual({
+    path: "/about/index.html",
+    mount: "/",
+  });
+  const assets = {
+    async fetch(request: Request) {
+      return new Response(
+        await readFile(join(output, "public", new URL(request.url).pathname)),
+      );
+    },
+  };
+  const redirect = await handleRequest(
+    new Request("https://demo.test/about?view=demo"),
+    assets,
+    manifest,
+  );
+  expect(redirect.status).toBe(308);
+  expect(redirect.headers.get("location")).toBe("/about/?view=demo");
+  expect(
+    await (
+      await handleRequest(
+        new Request("https://demo.test/about/"),
+        assets,
+        manifest,
+      )
+    ).text(),
+  ).toContain("한글 하위 페이지");
+  for (const path of ["/missing", "//about", "/about/private", "/about%2f"])
+    expect(
+      (
+        await handleRequest(
+          new Request("https://demo.test" + path),
+          assets,
+          manifest,
+        )
+      ).status,
+      path,
+    ).toBe(404);
+});
 it("routes the exact public network fixture independently of static assets", async () => {
   const manifest: DeploymentManifest = { version: 1, mounts: [], assets: {} };
   const assets = {
