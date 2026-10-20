@@ -2,7 +2,7 @@
 
 The only public distribution target is **`uulab-webguard@0.1.0`**, public access on `https://registry.npmjs.org`. Internal `@webguard/*` packages are not publication targets. The public facade bundles their runtime code and declarations; its external dependencies are declared normally.
 
-Current state: release candidate verified locally; npm identity lookup returned HTTP 401, so registry publication and registry consumer verification are incomplete. The existing public demo remains on its previously verified deployment. New onboarding pages are staged locally and must be deployed after publication.
+Current state (2026-10-20): `uulab-webguard@0.1.0` is publicly published by `uulab`, with `latest` pointing to 0.1.0. The downloaded registry tarball matches the reviewed SHA-512. Fresh registry consumers passed with Vite 7.3.1 and 8.3.4, including type resolution, protected builds, automatic SDK, live controls, server policies and zero Chromium page errors. See [registry release evidence](evidence/npm-release.json).
 
 ## Authenticate
 
@@ -43,7 +43,7 @@ node scripts/verify-npm-consumer.mjs --registry --vite 7.3.1
 
 ## Update the public onboarding
 
-After registry verification succeeds, remove the pending-publication note from the root README and this status paragraph. Rebuild and deploy the staged Korean onboarding:
+After registry verification succeeds, rebuild and deploy the Korean onboarding:
 
 ```sh
 pnpm deploy:build

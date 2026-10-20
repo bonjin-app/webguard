@@ -30,7 +30,7 @@ The three code snippets execute through the existing isolated console harness. T
 
 The Playground includes selectable, copyable Vite setup, live update, Node server and JSP/Servlet preparation snippets. Clipboard failure selects the code for manual copying. Read [one-setting setup](ONE_STEP_SETUP.md) for supported application builds, opt-outs and compatibility details.
 
-The packages are unpublished local workspace packages with temporary names. Examples use workspace links; do not install an unrelated registry package expecting this code. The public demo does not require npm package publication.
+The public distribution is `uulab-webguard@0.1.0`. Follow [the Korean installation guide](INSTALL.ko.md) for an external Vite application. Checked-in examples retain their internal `@webguard/*` workspace links; do not install an unrelated registry package expecting those names.
 
 JSP/Servlet needs Java 17, Maven and Tomcat 10.1+. The in-page JSP tab shows the asset-preparation and WAR build commands. See [the JSP example](../examples/jsp-servlet/README.md); its server cannot run inside the browser sandbox.
 

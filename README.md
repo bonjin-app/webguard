@@ -10,7 +10,7 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
 
-Release status (2026-10-20): the 0.1.0 tarball is prepared and locally tested; npm registry publication is waiting for CLI authentication (401). Installation by registry name becomes available after publication.
+Published as [`uulab-webguard@0.1.0`](https://www.npmjs.com/package/uulab-webguard). Fresh npm registry consumers passed with Vite 7.3.1 and 8.3.4, including declarations, protected builds, automatic SDK startup, live controls and applied HTTP policies.
 
 ```sh
 npm install --save-dev uulab-webguard@0.1.0

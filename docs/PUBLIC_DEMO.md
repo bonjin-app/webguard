@@ -6,14 +6,16 @@ The public adapter runs the same demo applications on Cloudflare Workers Static 
 
 ## Verified release
 
-Verified on 2026-10-20 (Asia/Seoul): Worker version `d8c6a71b-c105-4725-8987-19b10e9592c5`, deployment `3eac78cd-2391-4965-bfb5-0792bffea70e`, serving 100% of traffic through the enabled public Workers subdomain.
+Verified on 2026-10-20 (Asia/Seoul): Worker version `ac321925-7076-4594-a727-84058b65633f`, deployment `cc6c7c11-eb28-427d-98be-f55b3b54e2d2`, serving 100% of traffic through the enabled public Workers subdomain.
 
 - All 35 public checks passed: two HTTP/integrity checks and 33 browser checks across Chromium, Firefox and WebKit. No localhost preview server is used by this matrix.
-- All 26 publicly deployed files matched prepared local SHA-256 values. All five application mounts returned their intended response policies. Source maps, configuration, reports and original source probes returned 404.
-- Local validation passed: all 12 build tasks plus mounted demo builds, root/Worker TypeScript, ESLint, formatting, 158 unit/integration tests and 54 browser tests.
+- All 27 publicly deployed files matched prepared local SHA-256 values. All five application mounts returned their intended response policies. Source maps, configuration, reports and original source probes returned 404.
+- Local validation passed: all 13 build tasks plus mounted demo builds, root/Worker TypeScript, ESLint, formatting, 162 unit/integration tests and 54 browser tests.
 - Vanilla example controls stay disabled until initialization completes. Browser regressions deliberately delay the script response and verify the first enabled click works. Preparation also rejects overlapping and symlinked output paths before creating directories.
 
-[Deployment metadata, hashes and HTTP readback](evidence/public-deployment.json) · [Public screenshot](evidence/public-demo.png). These are public HTTPS and local desktop-engine observations; npm publication, remote CI and physical-device testing are separate.
+[Deployment metadata, hashes and HTTP readback](evidence/npm-onboarding-deployment.json) · [Public screenshot](evidence/public-demo.png). These are public HTTPS and local desktop-engine observations; npm publication is separately verified in [the release evidence](evidence/npm-release.json); remote CI and physical-device testing remain separate.
+
+The public onboarding now includes `npm install --save-dev uulab-webguard@0.1.0`, copyable one-setting Vite integration and the [full Korean guide](https://webguard-demo.uulab.workers.dev/docs/INSTALL.ko.txt). The original public release record is retained in [its evidence file](evidence/public-deployment.json).
 
 ## Build and deploy
 

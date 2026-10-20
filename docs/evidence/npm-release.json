@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-20T07:09:08.469Z",
+  "name": "uulab-webguard",
+  "version": "0.1.0",
+  "url": "https://www.npmjs.com/package/uulab-webguard",
+  "registry": "https://registry.npmjs.org",
+  "integrity": "sha512-ZfGE17YHYUvbxmJ+s+jjlt29fHAh/0KmIuTqOcx/e/S2bldv8hCiqavWr6ZqigJA+xDXVUUU38nJOm2M8tQkuQ==",
+  "downloadedTarballMatches": true,
+  "latest": "0.1.0",
+  "publisher": ["uulab"],
+  "registryConsumers": [
+    {
+      "source": "registry",
+      "package": "uulab-webguard",
+      "version": "0.1.0",
+      "vite": "7.3.1",
+      "automaticSdk": true,
+      "liveControls": true,
+      "strictHeaders": true,
+      "browserErrors": 0
+    },
+    {
+      "source": "registry",
+      "package": "uulab-webguard",
+      "version": "0.1.0",
+      "vite": "8.3.4",
+      "automaticSdk": true,
+      "liveControls": true,
+      "strictHeaders": true,
+      "browserErrors": 0
+    }
+  ],
+  "registryConsumerCheckedAt": "2026-10-20T07:10:36.128Z",
+  "localVerification": {
+    "unitIntegrationPassed": 162,
+    "browserPassed": 54
+  }
+}

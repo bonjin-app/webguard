@@ -45,7 +45,7 @@ Files: docs/INSTALL.ko.md, packages/npm/README.md, README.md, scripts/release-np
 
 ## Task 3: Publish and verify
 
-- [ ] Confirm npm identity and available public name. Publish exact tarball, satisfying npm human authentication if prompted.
-- [ ] Read registry version/integrity and perform clean install without tarball/workspace overrides; repeat consumer build/type/browser checks.
-- [ ] Update public onboarding only with confirmed registry status, rebuild and deploy documentation/demo, then verify public routes.
-- [ ] Record exact release/deployment evidence and local commit. If provider authentication blocks, finish all independent work and state the precise remaining step.
+- [x] Confirm npm identity and available public name. Publish exact tarball, satisfying npm human authentication if prompted.
+- [x] Read registry version/integrity and perform clean install without tarball/workspace overrides; repeat consumer build/type/browser checks.
+- [x] Update public onboarding only with confirmed registry status, rebuild and deploy documentation/demo, then verify public routes.
+- [x] Record exact release/deployment evidence and local commit. If provider authentication blocks, finish all independent work and state the precise remaining step.
