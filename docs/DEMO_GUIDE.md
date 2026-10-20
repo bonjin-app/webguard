@@ -1,5 +1,7 @@
 # Try WebGuard with examples
 
+Open the **[public demo](https://webguard-demo.uulab.workers.dev)** to try the examples without installing anything. [Public deployment details](PUBLIC_DEMO.md).
+
 From the repository root, install dependencies and start the complete local demo:
 
 ```sh
@@ -28,7 +30,7 @@ The three code snippets execute through the existing isolated console harness. T
 
 The Playground includes selectable, copyable Vite setup, live update, Node server and JSP/Servlet preparation snippets. Clipboard failure selects the code for manual copying. Read [one-setting setup](ONE_STEP_SETUP.md) for supported application builds, opt-outs and compatibility details.
 
-The packages are unpublished local workspace packages with temporary names. Examples use workspace links; do not install an unrelated registry package expecting this code. The demo is a local runnable distribution, not a claim of public hosting or registry publication.
+The packages are unpublished local workspace packages with temporary names. Examples use workspace links; do not install an unrelated registry package expecting this code. The public demo does not require npm package publication.
 
 JSP/Servlet needs Java 17, Maven and Tomcat 10.1+. The in-page JSP tab shows the asset-preparation and WAR build commands. See [the JSP example](../examples/jsp-servlet/README.md); its server cannot run inside the browser sandbox.
 

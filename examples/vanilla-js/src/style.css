@@ -55,3 +55,9 @@ output {
   outline: 3px solid #9a5d0b;
   outline-offset: 3px;
 }
+
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

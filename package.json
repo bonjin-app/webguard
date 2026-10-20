@@ -22,7 +22,14 @@
     "benchmark:browser": "node scripts/benchmark-browser.mjs",
     "test:package": "node scripts/verify-package-consumer.mjs",
     "demo:build": "pnpm build && node scripts/build-demo.mjs",
-    "demo": "pnpm demo:build && node scripts/demo-server.mjs"
+    "demo": "pnpm demo:build && node scripts/demo-server.mjs",
+    "deploy:prepare": "node scripts/prepare-deployment.mjs",
+    "deploy:types": "wrangler types deployment/worker-configuration.d.ts",
+    "deploy:typecheck": "tsc -p deployment/tsconfig.json --noEmit",
+    "deploy:build": "pnpm demo:build && pnpm deploy:prepare && pnpm deploy:types && pnpm deploy:typecheck",
+    "deploy:dry-run": "wrangler deploy --dry-run --outdir .cloudflare-dist/bundle",
+    "deploy": "pnpm deploy:build && wrangler deploy",
+    "test:public": "playwright test -c playwright.public.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -41,6 +48,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8.46.0",
     "vite": "8.3.4",
-    "vitest": "5.0.5"
+    "vitest": "5.0.5",
+    "wrangler": "4.151.2"
   }
 }

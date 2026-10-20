@@ -16,3 +16,9 @@ examples/jsp-servlet/target/
 
 .demo-stage-*/
 .demo-backup-*/
+
+.cloudflare-dist/
+.deployment-stage-*/
+.deployment-backup-*/
+.wrangler/
+deployment/worker-configuration.d.ts

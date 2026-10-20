@@ -1,5 +1,31 @@
 import { test, expect } from "@playwright/test";
 
+for (const name of ["vanilla-js", "vanilla-ts"]) {
+  test(`${name} keeps controls disabled until its module is ready`, async ({
+    page,
+  }) => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route(`**/examples/${name}/assets/*.js`, async (route) => {
+      await gate;
+      await route.continue();
+    });
+    try {
+      await page.goto(`/examples/${name}/`, { waitUntil: "commit" });
+      await expect(page.locator("#counter")).toBeDisabled();
+      await expect(page.locator("#guard-toggle")).toBeDisabled();
+      release();
+      await expect(page.locator("#counter")).toBeEnabled();
+      await page.locator("#counter").click();
+      await expect(page.locator("#counter")).toHaveText("Count: 1");
+    } finally {
+      release();
+    }
+  });
+}
+
 test("runs a ready-made strong example and shows its real output", async ({
   page,
 }) => {

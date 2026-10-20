@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webguard-demo",
+  "account_id": "1302e647c709ce0cc8b4d64938772cb9",
+  "main": "deployment/worker.ts",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "preview_urls": false,
+  "upload_source_maps": false,
+  "minify": true,
+  "send_metrics": false,
+  "assets": {
+    "directory": ".cloudflare-dist/public",
+    "binding": "ASSETS",
+    "html_handling": "none",
+    "not_found_handling": "none",
+    "run_worker_first": true,
+  },
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "logs": { "enabled": true, "head_sampling_rate": 0.1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.1 },
+  },
+}

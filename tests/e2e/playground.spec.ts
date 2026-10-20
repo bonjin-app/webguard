@@ -25,7 +25,9 @@ test("protects locally, compares real output, and creates a local integrity repo
   ).not.toBeChecked();
   if (browserName === "chromium") {
     await page.screenshot({
-      path: "docs/evidence/playground.png",
+      path: process.env.WEBGUARD_PUBLIC_URL
+        ? "docs/evidence/public-demo.png"
+        : "docs/evidence/playground.png",
       fullPage: true,
     });
   }

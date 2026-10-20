@@ -49,3 +49,9 @@ toggle.addEventListener("change", () => {
     : "Shortcut blocking off";
 });
 window.addEventListener("pagehide", () => guard.destroy(), { once: true });
+
+// Enable controls only after their event handlers have been installed.
+document.querySelectorAll("[data-await-startup]").forEach((control) => {
+  control.removeAttribute("disabled");
+});
+document.querySelector("#startup-status")!.textContent = "Example ready";

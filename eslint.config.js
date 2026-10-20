@@ -5,6 +5,11 @@ export default tseslint.config(
     ignores: [
       "**/dist/**",
       ".demo-dist/**",
+      ".cloudflare-dist/**",
+      ".deployment-stage-*/**",
+      ".deployment-backup-*/**",
+      ".wrangler/**",
+      "deployment/worker-configuration.d.ts",
       ".demo-stage-*/**",
       ".demo-backup-*/**",
       "node_modules/**",

@@ -1,0 +1,246 @@
+{
+  "checkedAt": "2026-10-20T06:18:57.871Z",
+  "url": "https://webguard-demo.uulab.workers.dev",
+  "worker": "webguard-demo",
+  "deploymentId": "3eac78cd-2391-4965-bfb5-0792bffea70e",
+  "versionId": "d8c6a71b-c105-4725-8987-19b10e9592c5",
+  "trafficPercentage": 100,
+  "workersDevEnabled": true,
+  "previewUrlsEnabled": false,
+  "wranglerVersion": "4.151.2",
+  "publicAssetCount": 26,
+  "allowlistedUrlCount": 31,
+  "routeManifestSha256": "2c6642cbe77db2a1b84b6929dd111aa6f00754f081f826f13571ef9a487c5c06",
+  "implementationFilesSha256": {
+    "wrangler.jsonc": "3c9592430d8689c9276b18070c06714a17d919957adb714e2baaea719028c268",
+    "deployment/worker.ts": "e28439dc7670aa4d7e9a8fd0e5df2223dd1c22e73ee3086fbab8a79b64a68b69",
+    "deployment/router.ts": "f5c5f4b464c2594458cfdcbd0707d80b90bbc6149857f7fdf43380456081228d",
+    "scripts/prepare-deployment.mjs": "6f2f02d784fbb1d1ac3eb64738a729f816545fd138c51cc820bf38026e8b59fc"
+  },
+  "assets": [
+    {
+      "path": "/assets/index-BVvBK-iw.js",
+      "status": 200,
+      "bytes": 24881,
+      "sha256": "e44d696810821e01fa183fd702320eb52b98ab147436bb51b3b6815d7fd4f1ba"
+    },
+    {
+      "path": "/assets/index-DOLnvnvU.css",
+      "status": 200,
+      "bytes": 7850,
+      "sha256": "729b3b2f04ec3b6972e8b92e7252cfa960eca7c3e6b796a1289f7eafc3d48b41"
+    },
+    {
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "status": 200,
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+    },
+    {
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "status": 200,
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+    },
+    {
+      "path": "/docs/assets/index-DffW4afX.js",
+      "status": 200,
+      "bytes": 9625,
+      "sha256": "1a6ae2c46b46df8c112c3d2875c7bb9d1014e64d3c6538243c20a4b4a2cd64f4"
+    },
+    {
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "status": 200,
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10"
+    },
+    {
+      "path": "/docs/index.html",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "e77c1b5b86d97681a90585596200b22cddca7b0150e4280442f6684c241ab479"
+    },
+    {
+      "path": "/docs/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "/examples/react/assets/index-DoTGv_Lr.js",
+      "status": 200,
+      "bytes": 1809407,
+      "sha256": "ebf708382e183af2dff3c93bb7e7857eeabaff3d33b451ccd1e3c7c39b5b770e"
+    },
+    {
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "status": 200,
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482"
+    },
+    {
+      "path": "/examples/react/assets/lazy-NAGAy-8e.js",
+      "status": 200,
+      "bytes": 2713,
+      "sha256": "23f58b4ae35523ec60d473fa00ebfb9656fb5ed3dd36a09488643ce532d3ebf0"
+    },
+    {
+      "path": "/examples/react/index.html",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "e6a5fd90ec0881a577272a2b9e094806acde1639c022e7aea5ab4a74703b2967"
+    },
+    {
+      "path": "/examples/react/third-party-licenses.md",
+      "status": 200,
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "path": "/examples/react/webguard-manifest.json",
+      "status": 200,
+      "bytes": 817,
+      "sha256": "60323c6a21032ab7fca72908d3d171de7412ecf1053932a35d10a26b1fbf0e9a"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/index-DvF2Eqge.js",
+      "status": 200,
+      "bytes": 9119,
+      "sha256": "d1ca838e03238ea6116fc6685172769562f6b2336e7281462b1b2474d7673051"
+    },
+    {
+      "path": "/examples/vanilla-js/assets/lazy-Bc2Ptpne.js",
+      "status": 200,
+      "bytes": 710,
+      "sha256": "7f4a73305e1b164158fb0b115748579c540b8301d6e83d5352ab40607b31c4e1"
+    },
+    {
+      "path": "/examples/vanilla-js/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "9db46fc58c94194d330c2953dba0094b6e4f2cfe54cf452cda6944dca7c8c38e"
+    },
+    {
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "bytes": 661,
+      "sha256": "7003e7b66e2ecde9ebf81876474ca290d2fa9aec1c85c383cc74f04b3e0aa6c6"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/index-Di1Q7DVi.js",
+      "status": 200,
+      "bytes": 10199,
+      "sha256": "d9cb71f533b6338fb5864433e80a9940a9bd7b9e9857165e361c395c679ac3e7"
+    },
+    {
+      "path": "/examples/vanilla-ts/assets/lazy-DV0OvI82.js",
+      "status": 200,
+      "bytes": 1162,
+      "sha256": "2f32986819235c658bef5a3e5cb2b4d0c5bd8fcb4af4d1be9395043ed303c38c"
+    },
+    {
+      "path": "/examples/vanilla-ts/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "ae2af1b6bf0c6a72487b24b2046d1f6f296c7145d1fa3c45411c8cb5c4da5164"
+    },
+    {
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "bytes": 663,
+      "sha256": "100868cf559649f649b9979beec5286e1662f05fbb8a5e41beab0954a9f6fad8"
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 573,
+      "sha256": "a25a5df51134ffce3bfc64dba01dadfaca1764ad6f76a30dbbc1047798f6f5b7"
+    },
+    {
+      "path": "/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    }
+  ],
+  "mounts": [
+    {
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/examples/react/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/examples/vanilla-js/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/examples/vanilla-ts/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    }
+  ],
+  "verification": {
+    "unitIntegration": {
+      "passed": 158,
+      "failed": 0,
+      "skipped": 0
+    },
+    "localBrowser": {
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0
+    },
+    "public": {
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "browsers": ["chromium", "firefox", "webkit"],
+      "httpChecks": 2,
+      "browserChecks": 33
+    },
+    "typecheck": true,
+    "workerTypecheck": true,
+    "lint": true
+  }
+}
