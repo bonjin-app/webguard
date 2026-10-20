@@ -328,3 +328,81 @@ it("rejects encoded separators and delimiters and streams successful asset bodie
   expect(await response.text()).toBe("streamed asset");
   expect(response.headers.get("x-app")).toBe("docs");
 });
+
+it("serves the branded demo entry with query-preserving canonical redirects and legacy compatibility", async () => {
+  const { input, output } = await fixture();
+  await prepare(input, output);
+  const manifest = await routes(output);
+  const requested: string[] = [];
+  const assets = {
+    async fetch(request: Request) {
+      requested.push(new URL(request.url).pathname);
+      return new Response("playground", {
+        headers: { "Content-Type": "text/html" },
+      });
+    },
+  };
+  for (const host of [
+    "webguard.uulab.co.kr",
+    "webguard-demo.uulab.workers.dev",
+  ]) {
+    const demo = await handleRequest(
+      new Request(`https://${host}/demo?example=hello`),
+      assets,
+      manifest,
+    );
+    expect(demo.status).toBe(200);
+    expect(await demo.text()).toBe("playground");
+    expect(demo.headers.get("x-app")).toBe("playground");
+    expect(requested.at(-1)).toBe("/index.html");
+    const slash = await handleRequest(
+      new Request(`https://${host}/demo/?example=hello`),
+      assets,
+      manifest,
+    );
+    expect(slash.status).toBe(308);
+    expect(slash.headers.get("location")).toBe("/demo?example=hello");
+    const head = await handleRequest(
+      new Request(`https://${host}/demo`, { method: "HEAD" }),
+      assets,
+      manifest,
+    );
+    expect(head.status).toBe(200);
+    expect(await head.text()).toBe("");
+  }
+  const root = await handleRequest(
+    new Request("https://webguard.uulab.co.kr/?next=https%3A%2F%2Fevil.test"),
+    assets,
+    manifest,
+  );
+  expect(root.status).toBe(307);
+  expect(root.headers.get("location")).toBe(
+    "/demo?next=https%3A%2F%2Fevil.test",
+  );
+  expect(root.headers.get("cache-control")).toBe("no-store");
+  const legacy = await handleRequest(
+    new Request("https://webguard-demo.uulab.workers.dev/"),
+    assets,
+    manifest,
+  );
+  expect(legacy.status).toBe(200);
+  for (const path of [
+    "/demo/private",
+    "/demo/webguard-report.json",
+    "/demo%2f",
+    "/demo//",
+  ]) {
+    const response = await handleRequest(
+      new Request(`https://webguard.uulab.co.kr${path}`),
+      assets,
+      manifest,
+    );
+    expect(response.status, path).toBe(404);
+  }
+  const post = await handleRequest(
+    new Request("https://webguard.uulab.co.kr/demo", { method: "POST" }),
+    assets,
+    manifest,
+  );
+  expect(post.status).toBe(405);
+});

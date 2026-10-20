@@ -1,0 +1,543 @@
+{
+  "checkedAt": "2026-10-20T08:24:29.377Z",
+  "url": "https://webguard.uulab.co.kr/demo",
+  "origin": "https://webguard.uulab.co.kr",
+  "legacyOrigin": "https://webguard-demo.uulab.workers.dev",
+  "workerVersion": "dcd29343-80af-46cf-9f3b-f1485a509ef9",
+  "deploymentId": "57c83a0b-21ac-48b3-a756-9bb03c7c228c",
+  "trafficPercentage": 100,
+  "publicAssetCount": 27,
+  "routeManifestSha256": "95d954ca2da0f6e6a3f513172f0ecb6085a15399a51831eef6d9655d57e69d28",
+  "guideMatchesLocal": true,
+  "readbacks": [
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/assets/index-DDSi63q5.js",
+      "status": 200,
+      "bytes": 25179,
+      "sha256": "06b1a2516820db31d0b07b540d09571ea5ca4e84a6bbc99b85775ab3859e5bd8"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/assets/index-DOLnvnvU.css",
+      "status": 200,
+      "bytes": 7850,
+      "sha256": "729b3b2f04ec3b6972e8b92e7252cfa960eca7c3e6b796a1289f7eafc3d48b41"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "status": 200,
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "status": 200,
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 643,
+      "sha256": "9b3c499db65056e3fa573feff9553f9790472f521839e44cd069b8187b6a4ace"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/",
+      "status": 307,
+      "location": "/demo"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/INSTALL.ko.txt",
+      "status": 200,
+      "bytes": 12287,
+      "sha256": "5f1155c11fe7fb8538760fe8b84b5428bdc13175e3d0d34fd7f6334a8c38b682"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "status": 200,
+      "bytes": 11196,
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "status": 200,
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/index.html",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/docs/",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "status": 200,
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/assets/index-IX18-K8W.js",
+      "status": 200,
+      "bytes": 1808763,
+      "sha256": "3e3beaa80394557f8a258cfacce29dda48541ea94d29e520b858b52abe5406aa"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/assets/lazy-DPX7SvKe.js",
+      "status": 200,
+      "bytes": 3079,
+      "sha256": "8cb23755c6f544a68da2195f22b4c897868dffaf7b852af36b9ed7b06548d4ad"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/index.html",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "0b6627de805d0c12bae4ec0d40c18202af8f548bd55afa41dfb944453babf66c"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/third-party-licenses.md",
+      "status": 200,
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "0b6627de805d0c12bae4ec0d40c18202af8f548bd55afa41dfb944453babf66c"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/react/webguard-manifest.json",
+      "status": 200,
+      "bytes": 817,
+      "sha256": "c3a5f501d5dfdd61d6501a731e4222cd06a78149d834cf04bd0a636f8949aa77"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/assets/index-D24HfPua.js",
+      "status": 200,
+      "bytes": 9608,
+      "sha256": "4f6b202106406d72ec8ff315a055328d482fc9be489891db54dadbde41edf5ea"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/assets/lazy-D69cUaVm.js",
+      "status": 200,
+      "bytes": 600,
+      "sha256": "7da253fde8af895317322a51b626ea2798c7cd63a43f0002866a20807cb4dcc2"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "877b31346c51d06c990b5a41b14928dc8765e5176b8999b5716cdbbf27e97f59"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "877b31346c51d06c990b5a41b14928dc8765e5176b8999b5716cdbbf27e97f59"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "bytes": 661,
+      "sha256": "16e3c6d5a00f2b01aa0f74383b563f1ba56915f7e528522d0910327e135eba16"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/assets/index-6tBBVSfG.js",
+      "status": 200,
+      "bytes": 10311,
+      "sha256": "ecbd8608eeec4be38566acf1aa80b512289b2b52b51e2d7bca7eed9fe335db6c"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/assets/lazy-B8BFf-03.js",
+      "status": 200,
+      "bytes": 1171,
+      "sha256": "87005f2d357cc7cc719d96de5dedb482411b87772ad32ad567f44f985157e25e"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "98c225f5f729182c155b00948950b0cd99a7b35a32dbd2cad6b5d414c87f5a1e"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "98c225f5f729182c155b00948950b0cd99a7b35a32dbd2cad6b5d414c87f5a1e"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "bytes": 663,
+      "sha256": "f4f334c68aa2b79ad7e61f7cdcc4dea3add84440c3b29ce624204c807f568cb4"
+    },
+    {
+      "origin": "https://webguard.uulab.co.kr",
+      "path": "/demo",
+      "status": 200,
+      "bytes": 643,
+      "sha256": "9b3c499db65056e3fa573feff9553f9790472f521839e44cd069b8187b6a4ace"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/assets/index-DDSi63q5.js",
+      "status": 200,
+      "bytes": 25179,
+      "sha256": "06b1a2516820db31d0b07b540d09571ea5ca4e84a6bbc99b85775ab3859e5bd8"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/assets/index-DOLnvnvU.css",
+      "status": 200,
+      "bytes": 7850,
+      "sha256": "729b3b2f04ec3b6972e8b92e7252cfa960eca7c3e6b796a1289f7eafc3d48b41"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/assets/index.browser-CtOKMlmK.js",
+      "status": 200,
+      "bytes": 1654565,
+      "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/assets/transform.worker-CjrfSGER.js",
+      "status": 200,
+      "bytes": 124999,
+      "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 643,
+      "sha256": "9b3c499db65056e3fa573feff9553f9790472f521839e44cd069b8187b6a4ace"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/",
+      "status": 200,
+      "bytes": 643,
+      "sha256": "9b3c499db65056e3fa573feff9553f9790472f521839e44cd069b8187b6a4ace"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/INSTALL.ko.txt",
+      "status": 200,
+      "bytes": 12287,
+      "sha256": "5f1155c11fe7fb8538760fe8b84b5428bdc13175e3d0d34fd7f6334a8c38b682"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/assets/index-DacCNKdv.js",
+      "status": 200,
+      "bytes": 11196,
+      "sha256": "1ea330ce98efb2bdb47c482930a1b2b4fcb156ec78e9a7a849a3e61132c8350f"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/assets/index-ian2f1mJ.css",
+      "status": 200,
+      "bytes": 2538,
+      "sha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/index.html",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/third-party-licenses.md",
+      "status": 200,
+      "bytes": 68,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/docs/",
+      "status": 200,
+      "bytes": 534,
+      "sha256": "2bda4a47affc9b0dc2ac5f66d1a0750bc24221ed038dddff9529edd3fda95e87"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/assets/index-Dp_iiFwF.css",
+      "status": 200,
+      "bytes": 812,
+      "sha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/assets/index-IX18-K8W.js",
+      "status": 200,
+      "bytes": 1808763,
+      "sha256": "3e3beaa80394557f8a258cfacce29dda48541ea94d29e520b858b52abe5406aa"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/assets/lazy-DPX7SvKe.js",
+      "status": 200,
+      "bytes": 3079,
+      "sha256": "8cb23755c6f544a68da2195f22b4c897868dffaf7b852af36b9ed7b06548d4ad"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/index.html",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "0b6627de805d0c12bae4ec0d40c18202af8f548bd55afa41dfb944453babf66c"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/third-party-licenses.md",
+      "status": 200,
+      "bytes": 3429,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "0b6627de805d0c12bae4ec0d40c18202af8f548bd55afa41dfb944453babf66c"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/react/webguard-manifest.json",
+      "status": 200,
+      "bytes": 817,
+      "sha256": "c3a5f501d5dfdd61d6501a731e4222cd06a78149d834cf04bd0a636f8949aa77"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/assets/index-D24HfPua.js",
+      "status": 200,
+      "bytes": 9608,
+      "sha256": "4f6b202106406d72ec8ff315a055328d482fc9be489891db54dadbde41edf5ea"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/assets/lazy-D69cUaVm.js",
+      "status": 200,
+      "bytes": 600,
+      "sha256": "7da253fde8af895317322a51b626ea2798c7cd63a43f0002866a20807cb4dcc2"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "877b31346c51d06c990b5a41b14928dc8765e5176b8999b5716cdbbf27e97f59"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "877b31346c51d06c990b5a41b14928dc8765e5176b8999b5716cdbbf27e97f59"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "bytes": 661,
+      "sha256": "16e3c6d5a00f2b01aa0f74383b563f1ba56915f7e528522d0910327e135eba16"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/assets/index-6tBBVSfG.js",
+      "status": 200,
+      "bytes": 10311,
+      "sha256": "ecbd8608eeec4be38566acf1aa80b512289b2b52b51e2d7bca7eed9fe335db6c"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+      "status": 200,
+      "bytes": 766,
+      "sha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/assets/lazy-B8BFf-03.js",
+      "status": 200,
+      "bytes": 1171,
+      "sha256": "87005f2d357cc7cc719d96de5dedb482411b87772ad32ad567f44f985157e25e"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/index.html",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "98c225f5f729182c155b00948950b0cd99a7b35a32dbd2cad6b5d414c87f5a1e"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/",
+      "status": 200,
+      "bytes": 2516,
+      "sha256": "98c225f5f729182c155b00948950b0cd99a7b35a32dbd2cad6b5d414c87f5a1e"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "bytes": 663,
+      "sha256": "f4f334c68aa2b79ad7e61f7cdcc4dea3add84440c3b29ce624204c807f568cb4"
+    },
+    {
+      "origin": "https://webguard-demo.uulab.workers.dev",
+      "path": "/demo",
+      "status": 200,
+      "bytes": 643,
+      "sha256": "9b3c499db65056e3fa573feff9553f9790472f521839e44cd069b8187b6a4ace"
+    }
+  ],
+  "sourceBaseCommit": "d091cab",
+  "sourceFiles": {
+    "deployment/router.ts": "c7f6ac661e4830e871d72583cf14a09a01a4e3081e4016819b09c2c6f7baefe9",
+    "deployment/worker.ts": "e28439dc7670aa4d7e9a8fd0e5df2223dd1c22e73ee3086fbab8a79b64a68b69",
+    "wrangler.jsonc": "190f79b34af14a6e86cbd550628e10916d763edfd99b400bb821a05a1c9a1829",
+    "apps/playground/index.html": "9f45e26e495ae5bcb169acca22a54d3a57ff4b44a3b3c1627112898fee13d2ba"
+  },
+  "provider": {
+    "hostname": "webguard.uulab.co.kr",
+    "service": "webguard-demo",
+    "enabled": true,
+    "previewsEnabled": false,
+    "dnsType": "AAAA",
+    "dnsProxied": true,
+    "dnsManagedByWorker": true,
+    "preexistingExactDnsRecords": 0,
+    "preexistingWorkerDomains": 0
+  },
+  "verification": {
+    "https": true,
+    "routingTestsPassed": 8,
+    "rootTypecheck": true,
+    "workerTypecheck": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "canonicalSuccessfulUniqueChecks": 36,
+    "canonicalBrowserChecks": {
+      "chromium": 11,
+      "firefox": 11,
+      "webkit": 11
+    },
+    "canonicalHttpChecks": 3,
+    "legacyHttpChecks": 3,
+    "localUnitAttempt": {
+      "passed": 238,
+      "failed": 2,
+      "reason": "Existing CLI process tests exceeded wall-clock budgets under machine load"
+    },
+    "serialRerun": {
+      "passed": 24,
+      "failed": 2,
+      "reason": "Two multi-command CLI workflows exceeded the default 30-second test budget"
+    },
+    "cliWorkflowConfirmation": {
+      "passed": 4,
+      "failed": 0,
+      "workers": 1,
+      "workflowTestTimeoutMs": 120000,
+      "individualCommandTimeoutMs": 30000
+    },
+    "publicInitialAttempt": {
+      "passed": 30,
+      "failed": 4,
+      "interrupted": 1,
+      "didNotRun": 1,
+      "reason": "Concurrent matrices shared the default test-results directory; Firefox traces were removed by the second run and additional Firefox checks exceeded deadlines"
+    },
+    "firefoxIsolatedRerun": {
+      "passed": 11,
+      "failed": 0,
+      "workers": 1,
+      "outputDirectory": "test-results/custom-domain-firefox",
+      "testTimeoutMs": 90000
+    }
+  },
+  "docsUrl": "https://webguard.uulab.co.kr/docs/#install",
+  "guideUrl": "https://webguard.uulab.co.kr/docs/INSTALL.ko.txt"
+}

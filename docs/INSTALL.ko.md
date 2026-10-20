@@ -1,6 +1,6 @@
 # WebGuard 설치와 적용 가이드
 
-[설치 없이 체험](https://webguard-demo.uulab.workers.dev) · [온라인 적용 안내](https://webguard-demo.uulab.workers.dev/docs/#install)
+[설치 없이 체험](https://webguard.uulab.co.kr/demo) · [온라인 적용 안내](https://webguard.uulab.co.kr/docs/#install)
 
 배포 패키지 이름은 **`uulab-webguard`**입니다. 저장소 내부의 `@webguard/*` 이름과 구분하세요. 다른 사람이 소유한 `@webguard/core`를 설치할 필요가 없습니다.
 

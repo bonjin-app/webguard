@@ -13,7 +13,7 @@ export async function handleRequest(
   assets: AssetBinding,
   manifest: DeploymentManifest,
 ): Promise<Response> {
-  const path = /^https?:\/\/[^/?#]+([^?#]*)/.exec(request.url)?.[1] || "/";
+  let path = /^https?:\/\/[^/?#]+([^?#]*)/.exec(request.url)?.[1] || "/";
   const mount =
     manifest.mounts.find(
       (entry) =>
@@ -48,6 +48,21 @@ export async function handleRequest(
     path.split("/").some((part) => part.startsWith("."))
   )
     return error(404, "Not found");
+  const url = new URL(request.url);
+  if (
+    (path === "/" && url.hostname === "webguard.uulab.co.kr") ||
+    path === "/demo/"
+  ) {
+    return new Response(null, {
+      status: path === "/" ? 307 : 308,
+      headers: headersFor({
+        Location: "/demo" + url.search,
+        "Cache-Control": "no-store",
+      }),
+    });
+  }
+  // Exact entry alias only; nested paths still require the public-file allowlist.
+  if (path === "/demo") path = "/";
   if (mount && mount.prefix !== "/" && path === mount.prefix.slice(0, -1)) {
     const queryIndex = request.url.indexOf("?");
     const query = queryIndex < 0 ? "" : request.url.slice(queryIndex);
@@ -59,7 +74,6 @@ export async function handleRequest(
   if (!Object.hasOwn(manifest.assets, path)) return error(404, "Not found");
   const entry = manifest.assets[path]!;
   if (!mount || entry.mount !== mount.prefix) return error(404, "Not found");
-  const url = new URL(request.url);
   url.pathname = entry.path;
   try {
     const asset = await assets.fetch(new Request(url, request));

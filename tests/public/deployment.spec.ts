@@ -1,6 +1,36 @@
 import { test, expect } from "@playwright/test";
 import { checkDeployment } from "../../packages/cli/src/check";
 
+test("branded demo entry preserves its canonical address, assets and safe redirects", async ({
+  request,
+  baseURL,
+}) => {
+  const demo = await request.get("/demo");
+  const index = await request.get("/index.html");
+  expect(demo.status()).toBe(200);
+  expect(await demo.body()).toEqual(await index.body());
+  expect(await demo.text()).toContain(
+    'href="https://webguard.uulab.co.kr/demo"',
+  );
+  const slash = await request.get("/demo/?example=hello", { maxRedirects: 0 });
+  expect(slash.status()).toBe(308);
+  expect(slash.headers().location).toBe("/demo?example=hello");
+  const root = await request.get("/?example=hello", { maxRedirects: 0 });
+  if (new URL(baseURL!).hostname === "webguard.uulab.co.kr") {
+    expect(root.status()).toBe(307);
+    expect(root.headers().location).toBe("/demo?example=hello");
+  } else expect(root.status()).toBe(200);
+  expect((await request.head("/demo")).status()).toBe(200);
+  expect((await request.post("/demo")).status()).toBe(405);
+  for (const path of [
+    "/demo/private",
+    "/demo/webguard-report.json",
+    "/demo%2f",
+    "/demo//",
+  ])
+    expect((await request.get(path)).status(), path).toBe(404);
+});
+
 test("public demo serves each application with its intended headers and rejects nonpublic files", async ({
   request,
 }) => {

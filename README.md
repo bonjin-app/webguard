@@ -2,7 +2,7 @@
 
 Local, open-source build protection for browser applications. WebGuard raises the effort of analyzing JavaScript, keeps source maps out of public artifacts, verifies asset integrity, and offers optional developer-tool shortcut friction.
 
-**[Try the public demo](https://webguard-demo.uulab.workers.dev)** — no installation or account required. Try High obfuscation, live shortcut controls and protected React/JavaScript/TypeScript applications. [Deployment and verification](docs/PUBLIC_DEMO.md).
+**[Try the public demo](https://webguard.uulab.co.kr/demo)** — no installation or account required. Try High obfuscation, live shortcut controls and protected React/JavaScript/TypeScript applications. [Deployment and verification](docs/PUBLIC_DEMO.md).
 
 **Browser-delivered HTML, CSS, JavaScript and network traffic remain observable. Obfuscation is not encryption. F12 interception cannot disable browser menus, external debuggers or user-controlled JavaScript. Never ship credentials or rely on this SDK for authorization.**
 
