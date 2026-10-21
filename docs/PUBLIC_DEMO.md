@@ -4,7 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## WebKit startup and execution budgets (current)
+## Project setup and compatibility diagnostics (current)
+
+[Open the project setup generator](https://webguard.uulab.co.kr/demo#setup). Select a DOM API app, React, or the original vanilla Vite template, then choose shortcut and context-menu restrictions. The copied Vite configuration follows the selections and survives integration-tab changes. The choices edit the setup example; they do not silently change the main demo's live SDK or CSP. Installation shows a reviewed local tgz path because **0.3.0 remains unpublished; npm latest remains 0.2.0**.
+
+The candidate's `webguardApp()` now issues an advisory `WG_TRUSTED_TYPES_SINK` build warning for recognizable application HTML string sinks under enforced Trusted Types. It reports relative file/sink names without source text, does not modify policy and excludes dependency/virtual code. TypeScript is inspected after Vite's transform. Aliases, dynamic properties, unparseable syntax and other sinks are outside this syntax scan; no warning is not proof of compatibility.
+
+The generator's exact output was installed and built in untouched official `create-vite@9.3.1` applications with Vite 8.3.4. React strict and explicit vanilla report-only each worked in all three engines with zero page errors. Original vanilla under enforced Trusted Types still reproduces its `innerHTML` startup failure in all three; the build warning now identifies that boundary before deployment. Report-only allows those HTML sinks and requires actual HTTP response headers for observation. It is not equivalent sink protection.
+
+Worker version **`15c15398-3cd8-4280-8d34-291f1faa3cc4`**, deployment **`4a2d66ed-0f11-4b93-a955-71f83c853573`**, serves 100% of traffic. Product source: `3dbc2f8`. All **31** public files matched their prepared SHA-256 values. Binding/runtime readback matched the preceding version; the deployment used `--keep-vars`. Hostname and Wrangler/Codex configuration files were not changed.
+
+Verification passed: **176 public browser/HTTP checks, zero failures, retries disabled**; 21 focused local browser checks; 297 unit/integration tests; both Vite 7.3.1 and 8.3.4 installed-consumer matrices (30 checks total); 13 build tasks; root/Worker types, lint, formatting, frozen lockfile and deployment dry run. Tests include the previous WebKit startup/execution/cancellation regressions. Automated engine results are separate from physical-device testing.
+
+The new local 0.3.0 tarball has a different hash from the preceding verification candidate; the old artifact and release record were archived locally rather than overwritten without a copy. Neither candidate was published to npm. The receipt records both hashes and retained consumer paths.
+
+[Deployment and candidate evidence](evidence/quality-onboarding-deployment.json) · [Public setup screenshot](evidence/setup-generator.png) · [Generated starter configurations](evidence/quality-onboarding-starters.json) · [Korean installation guide](INSTALL.ko.md).
+
+## WebKit startup and execution budgets (historical)
 
 The isolated runner now waits for the frame and a trusted Worker bootstrap to become ready before starting the existing 1,000 ms execution budget. Previously, the Worker timer began at construction and the parent watchdog began before the frame loaded, so cold startup could be reported as failed code execution. A 1,400 ms delay before a real native Worker starts reproduces the old failure for a trivial calculation; a 2,100 ms frame-start delay also reproduces the premature timeout.
 

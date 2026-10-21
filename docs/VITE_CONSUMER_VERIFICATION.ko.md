@@ -1,5 +1,7 @@
 # 새 Vite 프로젝트 설치 검증
 
+> 이 문서는 `9c1e10c` 시점의 초기 후보 검증 기록입니다. 이후 설정 생성기·빌드 호환성 진단을 추가한 후보의 결과는 [최신 공개 데모 검증](PUBLIC_DEMO.md)과 [후속 검증 기록](evidence/quality-onboarding-deployment.json)을 확인하세요. 아래 SHA-512는 당시 후보에 대한 값이며, 이후 같은 미게시 버전의 tgz 바이트와 다를 수 있습니다. 이전 tgz는 로컬 `.npm-release/history/64b68c831d953b50d067208aed5f9cf895f7e26fad2b0869ee3954de2f883a0c/`에 보존했습니다.
+
 2026-10-21 KST에 저장소 밖의 새 프로젝트에 **미게시 후보 `uulab-webguard@0.3.0` tgz**를 npm으로 설치해 검증했습니다. workspace 링크·소스 별칭·수동 SDK 초기화를 사용하지 않았습니다. npm 게시와 공개 데모 재배포는 수행하지 않았습니다. 확인 당시 npm `latest`는 `0.2.0`이고 `0.3.0`은 미게시입니다.
 
 ## 검증 결과
@@ -78,7 +80,7 @@ node scripts/verify-npm-consumer.mjs --prepared --vite 7.3.1 --keep --evidence d
 node scripts/verify-vite-starters.mjs
 ```
 
-각 receipt에 남긴 `project` / `directory` 경로에서 실제 소스·Vite 설정·설치 lockfile·빌드 산출물을 확인할 수 있습니다. 임시 디렉터리이므로 OS가 나중에 정리할 수 있습니다. 현재 후보 파일은 저장소의 `.npm-release/uulab-webguard-0.3.0.tgz`이며, 검사한 SHA-512는 아래 요약 receipt에 고정했습니다. npm에서 바로 설치할 수 있는 최신 버전과 혼동하지 마세요.
+각 receipt에 남긴 `project` / `directory` 경로에서 실제 소스·Vite 설정·설치 lockfile·빌드 산출물을 확인할 수 있습니다. 임시 디렉터리이므로 OS가 나중에 정리할 수 있습니다. 당시 후보 파일 경로는 저장소의 `.npm-release/uulab-webguard-0.3.0.tgz`이며, 검사한 SHA-512는 아래 요약 receipt에 고정했습니다. npm에서 바로 설치할 수 있는 최신 버전과 혼동하지 마세요.
 
 - [검증 요약과 후보 해시](evidence/vite-consumer-summary.json)
 - [Vite 8 독립 소비자](evidence/installed-consumer-vite8.json)

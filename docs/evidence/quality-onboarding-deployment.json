@@ -1,0 +1,328 @@
+{
+  "checkedAt": "2026-10-21T00:11:40.799Z",
+  "sourceCommit": "3dbc2f8184242c00d13ef5c40c76cddf377435c3",
+  "changes": [
+    "Advisory app-module Trusted Types compatibility diagnostic with stable WG_TRUSTED_TYPES_SINK code; no automatic policy relaxation",
+    "Public demo generator for strict DOM/React and explicitly labeled vanilla report-only compatibility; independent shortcut/context switches and current-code copy",
+    "Korean guides updated; generator output exercised without editing official starter application sources"
+  ],
+  "public": {
+    "url": "https://webguard.uulab.co.kr/demo#setup",
+    "worker": "webguard-demo",
+    "version": "15c15398-3cd8-4280-8d34-291f1faa3cc4",
+    "deployment": "4a2d66ed-0f11-4b93-a955-71f83c853573",
+    "trafficPercent": 100,
+    "previousVersion": "ec8af74b-42c8-4119-8ab4-ff0627909676",
+    "sameBindings": true,
+    "sameRuntime": true,
+    "configChanged": false,
+    "keepVars": true,
+    "assets": {
+      "checkedAt": "2026-10-21T00:07:29.181Z",
+      "files": [
+        {
+          "path": "/assets/index-DG6LPvp_.css",
+          "status": 200,
+          "localSha256": "93a5859984836fb16e338b8eeb1883dfec4e91ab53c89bbf7b6099d3756d7b30",
+          "remoteSha256": "93a5859984836fb16e338b8eeb1883dfec4e91ab53c89bbf7b6099d3756d7b30",
+          "matches": true
+        },
+        {
+          "path": "/assets/index-OXRRxzNw.js",
+          "status": 200,
+          "localSha256": "bc31cca73cdce145c67eb46f6c78cd3d5546d1b1b615ca87d4b9f5f06717ae01",
+          "remoteSha256": "bc31cca73cdce145c67eb46f6c78cd3d5546d1b1b615ca87d4b9f5f06717ae01",
+          "matches": true
+        },
+        {
+          "path": "/assets/index.browser-CtOKMlmK.js",
+          "status": 200,
+          "localSha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "remoteSha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "matches": true
+        },
+        {
+          "path": "/assets/transform.worker-CjrfSGER.js",
+          "status": 200,
+          "localSha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "remoteSha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "matches": true
+        },
+        {
+          "path": "/docs/assets/index-CsSfztDC.js",
+          "status": 200,
+          "localSha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3",
+          "remoteSha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3",
+          "matches": true
+        },
+        {
+          "path": "/docs/assets/index-ian2f1mJ.css",
+          "status": 200,
+          "localSha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+          "remoteSha256": "76e2b99685f8d4fea541d3cdc00ecbedcb167884ff549944782048b4d337bc10",
+          "matches": true
+        },
+        {
+          "path": "/docs/index.html",
+          "status": 200,
+          "localSha256": "5dc4eeb1d67f406343e2e70c5cc541557649cef77432faf38b1d11bd883fcf59",
+          "remoteSha256": "5dc4eeb1d67f406343e2e70c5cc541557649cef77432faf38b1d11bd883fcf59",
+          "matches": true
+        },
+        {
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "localSha256": "496b1d6cc945d4a182242a9d823bb2a24029966cfc9538b55ae6d45e57f30a15",
+          "remoteSha256": "496b1d6cc945d4a182242a9d823bb2a24029966cfc9538b55ae6d45e57f30a15",
+          "matches": true
+        },
+        {
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "localSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "remoteSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/index-C-I2U0mH.js",
+          "status": 200,
+          "localSha256": "9b6b15252e147ba155de1699e5014fe9d1d8d56d63616ac81210cb58eba56d8e",
+          "remoteSha256": "9b6b15252e147ba155de1699e5014fe9d1d8d56d63616ac81210cb58eba56d8e",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/index-Dp_iiFwF.css",
+          "status": 200,
+          "localSha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+          "remoteSha256": "69e77a871c9867c4a395404d2da54508bba439c2b24ec8439902a712f5ff4482",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/lazy-Bty78jXD.js",
+          "status": 200,
+          "localSha256": "8810d317964037e0cf4fbdc9c8c426fcaa1d8b6cfc23990856832fd4738d6285",
+          "remoteSha256": "8810d317964037e0cf4fbdc9c8c426fcaa1d8b6cfc23990856832fd4738d6285",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "localSha256": "140a3b2af64271da4ccf5fda9b730c146113306402caa0705d31c3747bda17a8",
+          "remoteSha256": "140a3b2af64271da4ccf5fda9b730c146113306402caa0705d31c3747bda17a8",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "localSha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "remoteSha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "localSha256": "394ac1fa85c15dcaa70435b2508c80817526123f6c09f72b9ebc1eee1ff14416",
+          "remoteSha256": "394ac1fa85c15dcaa70435b2508c80817526123f6c09f72b9ebc1eee1ff14416",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "localSha256": "c29875691da167a871ab5b179a398751064bbd78ba53650b9af5e6b87bf7ec09",
+          "remoteSha256": "c29875691da167a871ab5b179a398751064bbd78ba53650b9af5e6b87bf7ec09",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/about-DORTKwzq.js",
+          "status": 200,
+          "localSha256": "80dcd3cfcc7c6d66f905689df09a8714a4c848ce5054e22c7fae5702c0a7948d",
+          "remoteSha256": "80dcd3cfcc7c6d66f905689df09a8714a4c848ce5054e22c7fae5702c0a7948d",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/index-BPAi_gnZ.js",
+          "status": 200,
+          "localSha256": "5d84718c927acf1be817c8ca8cda1e868281d7ac6474a26ec1ad3acbaa28b09d",
+          "remoteSha256": "5d84718c927acf1be817c8ca8cda1e868281d7ac6474a26ec1ad3acbaa28b09d",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/lazy-CkWxJXBm.js",
+          "status": 200,
+          "localSha256": "679acfb4f72b64eb8648520ff44fdaf8fc52c303e9d9eb450fbbace83916499d",
+          "remoteSha256": "679acfb4f72b64eb8648520ff44fdaf8fc52c303e9d9eb450fbbace83916499d",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/style-BXb_tRrn.css",
+          "status": 200,
+          "localSha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "remoteSha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "localSha256": "2b83a1da67c46195776caa0ad521fc82b5d11b95e7a457cea977d91f82368a47",
+          "remoteSha256": "2b83a1da67c46195776caa0ad521fc82b5d11b95e7a457cea977d91f82368a47",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "localSha256": "3b5db9b2a7dcf095cfde14af78e4b282fd381c25cbf241b49d6bbd82063018f2",
+          "remoteSha256": "3b5db9b2a7dcf095cfde14af78e4b282fd381c25cbf241b49d6bbd82063018f2",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BtWOqqsH.js",
+          "status": 200,
+          "localSha256": "8ca29983c5d7090c096bf3d8c689a908c93b002ec4d6dcebd2c55541780fee8c",
+          "remoteSha256": "8ca29983c5d7090c096bf3d8c689a908c93b002ec4d6dcebd2c55541780fee8c",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BXb_tRrn.css",
+          "status": 200,
+          "localSha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "remoteSha256": "4ff848a524f554090212fcfae59bc23160158c2d86c00949252674fcca7bb0e9",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/lazy-BLNzuX9s.js",
+          "status": 200,
+          "localSha256": "f100cdf236ba5e23ad91db021e6ce6a26cbd2e9dac9425906bd3b7e373c86807",
+          "remoteSha256": "f100cdf236ba5e23ad91db021e6ce6a26cbd2e9dac9425906bd3b7e373c86807",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "localSha256": "c377bcac045910212a5f98a866e58f4809500952cb4e4edd36b25a9ea4090497",
+          "remoteSha256": "c377bcac045910212a5f98a866e58f4809500952cb4e4edd36b25a9ea4090497",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "localSha256": "d11883f7f360487f1d3703d41eb0bca1c7867e777db20a560dbdcb0e3a4a72f5",
+          "remoteSha256": "d11883f7f360487f1d3703d41eb0bca1c7867e777db20a560dbdcb0e3a4a72f5",
+          "matches": true
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200,
+          "localSha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "remoteSha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "matches": true
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "localSha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "remoteSha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "matches": true
+        },
+        {
+          "path": "/index.html",
+          "status": 200,
+          "localSha256": "5f7d54c9368e575f51bd459900425895550c2cbefe2956ff8acf8661e1edbe0d",
+          "remoteSha256": "5f7d54c9368e575f51bd459900425895550c2cbefe2956ff8acf8661e1edbe0d",
+          "matches": true
+        },
+        {
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "localSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "remoteSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "matches": true
+        }
+      ],
+      "matched": 31,
+      "total": 31
+    }
+  },
+  "verification": {
+    "buildTasks": 13,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "frozenLockfile": true,
+    "unitIntegration": {
+      "passed": 297,
+      "files": 24
+    },
+    "localBrowser": {
+      "passed": 21,
+      "engines": ["chromium", "firefox", "webkit"]
+    },
+    "installedConsumer": {
+      "passed": 30,
+      "receipts": [
+        {
+          "file": "quality-onboarding-vite7.json",
+          "vite": "7.3.1",
+          "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-4q6gkK",
+          "passed": 15
+        },
+        {
+          "file": "quality-onboarding-vite8.json",
+          "vite": "8.3.4",
+          "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-xEk36n",
+          "passed": 15
+        }
+      ]
+    },
+    "generatedOfficialStarters": {
+      "receipt": "quality-onboarding-starters.json",
+      "workingCases": 6,
+      "strictVanillaIncompatibilitiesReproduced": 3,
+      "strictVanillaBuildWarning": true,
+      "compatiblePageErrors": 0
+    },
+    "dryRun": true,
+    "publicBrowserAndHttp": {
+      "passed": 176,
+      "failed": 0,
+      "retries": 0,
+      "duration": "3.2m",
+      "logSha256": "87cde65c5510e741bddd4c443437a99f7b1b87c354c648c901f9438c2b40923f"
+    }
+  },
+  "developmentEvidence": {
+    "redSetup": "2 expected failures: missing project selector in existing demo",
+    "redBuildDiagnostics": "2 expected failures: missing JS/TS warnings before implementation",
+    "regressionCorrection": "Full suite initially exposed the old three-plugin-array expectation in npm-facade.test.ts; updated for the new diagnostic plugin and full 297-test suite passed."
+  },
+  "package": {
+    "name": "uulab-webguard",
+    "version": "0.3.0",
+    "integrity": "sha512-RZOxqqFOasQvvn4ZgPzO84damku2Gzp5D4SXGj+Kd2YeM58a3FrOJSY8JZgFaD9xE+2gsODuGtzKIB7gkzfrfA==",
+    "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/uulab-webguard-0.3.0.tgz",
+    "published": false,
+    "registryLatest": "0.2.0",
+    "candidatePublished": false,
+    "previousArtifact": {
+      "archive": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/history/64b68c831d953b50d067208aed5f9cf895f7e26fad2b0869ee3954de2f883a0c",
+      "sha256": "64b68c831d953b50d067208aed5f9cf895f7e26fad2b0869ee3954de2f883a0c",
+      "integrity": "sha512-7oodrGTMdtFhovaCmc74lRdAcGQ/YNxew4m/JClkqf/JxZJe+tP+aSgZCkqsYqb7B84wXKL2ahP5gMXNbEfagg=="
+    }
+  },
+  "screenshots": [
+    "docs/evidence/setup-generator.png",
+    "docs/evidence/quality-onboarding-demo-diagnostics.png",
+    "docs/evidence/quality-onboarding-deployment-compatibility.png",
+    "docs/evidence/quality-onboarding-public-demo.png",
+    "docs/evidence/quality-onboarding-resource-guards.png",
+    "docs/evidence/quality-onboarding-runtime-demo.png"
+  ],
+  "limits": [
+    "Syntax scan is advisory: dynamic keys, aliases, dependencies, unsupported syntax and unlisted sinks are not audited. No warning is not compatibility proof.",
+    "Official vanilla innerHTML remains incompatible with enforced Trusted Types; explicit report-only restores rendering but does not block that sink.",
+    "Keyboard event interception cannot lock native browser DevTools.",
+    "Automated desktop engines and public HTTP checks do not establish physical-device Safari coverage.",
+    "Existing deployment-check network errors remain generic; this change focuses on installation and build compatibility."
+  ],
+  "codexConfigChanged": false
+}
