@@ -4,7 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Opaque CSS Modules and bounded runtime guards (current)
+## Automatic observation and repeatable protection flow (current)
+
+[Try the updated demo](https://webguard.uulab.co.kr/demo?watch=d5fcf5c#runtime-hardening) · [Korean setup](https://webguard.uulab.co.kr/docs/#runtime-hardening). The previous execution toggle only allowed a manually requested timer sample. It now starts actual SDK observation via debugging.watch, with full-interval deadlines, visibility suspension and live getDebuggingState samples. The product demo and guide enable report-only observation by default; SDK consumer defaults remain OFF.
+
+Source **d5fcf5c** is deployed as Worker **bdc8d5d3-813a-4401-80b1-635ec4426580**, deployment **4c94544f-361f-47d6-b34d-413b53f803f0**, at 100% traffic. All **40/40 public files** match prepared SHA-256 values. Bindings and runtime settings are unchanged. npm publication remains paused; the canonical prepared release tarball is unchanged. All **34 packed candidate files** match the current build.
+
+The existing demo now has visible protection ON/OFF, a persistent last-signal record, separate manual results and actual counter/timestamp state. Repeated DOM test clicks always change the notice; a mismatch visibly stops observation, changing response alone does not accept modified content, and recovery explicitly restores and resumes. Frequent telemetry is not a live announcement. Native public UI progressed from 0 to 19 automatic samples without pressing the manual button.
+
+Fresh final checks passed **479/479 unit/integration**, **37 local feature browser cases** and **252 public HTTP/browser cases**, with two explicit Chromium-CDP-only tool skips in each browser matrix and no retries. Actual automatic Chromium pause/resume uses no manual sample: it verifies suspicion, persistence after normal observation, the optional page response and its exit. Ordinary automatic observation/DOM scenarios pass all three engines. Build, root/Worker types, full lint/format and dry run pass. Read-only review found a pagehide/OFF/ON lifecycle edge; paired lifecycle tracking and regression tests resolve both premature restart and stale suspension.
+
+The same candidate is installed into fresh Vite 8.3.4 and Next 16.4.2 / React 19.3.1 projects. One runtime configuration starts automatic observation. Vite verifies sample progress before a manual request; Next verifies automatic state after hydration while preserving SSR class/styles, nonce CSP, counter, lazy import and navigation. All three engines report no page errors or failed requests. Next public compiled JS grows from 977,091 to 7,138,757 uncompressed bytes; functional coverage does not establish performance neutrality.
+
+This is execution-delay observation and a client-side response, not a browser lock. Merely-open DevTools may be invisible to timing, and pauses are observable only after execution resumes and only if a timer deadline is delayed enough. CPU load or sleep can cause false positives. The SDK cannot close DevTools, stop console/background execution or replace server authorization. No debugger traps or forced reloads are introduced.
+
+[Deployment receipt](evidence/automatic-watch-deployment.json) · [Installed Vite](evidence/automatic-watch-vite-consumer-verification.json) · [Installed Next](evidence/automatic-watch-next-consumer-verification.json) · [Native public capture](evidence/automatic-watch-public.png).
+
+## Opaque CSS Modules and bounded runtime guards (preceding release)
 
 [Try the new controls](https://webguard.uulab.co.kr/demo?guards=368e725#runtime-hardening) · [Korean feature guide](https://webguard.uulab.co.kr/docs/#runtime-hardening). The actual obfuscated demo uses opaque CSS Modules and the same automatic SDK for selected static-DOM monitoring, explicit rebaseline and a one-shot visible-page timer-lateness sample. Controls compare genuine DOM changes with protection OFF/ON and optional native page response. No injected debugger loop or forced reload is used.
 

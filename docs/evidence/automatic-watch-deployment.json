@@ -1,0 +1,404 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T08:52:54.747Z",
+  "sourceCommit": "d5fcf5c",
+  "origin": "https://webguard.uulab.co.kr",
+  "deployment": {
+    "id": "4c94544f-361f-47d6-b34d-413b53f803f0",
+    "version": "bdc8d5d3-813a-4401-80b1-635ec4426580",
+    "previousVersion": "e832eaf9-9a35-4bab-9a35-071a749c9adf",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "scope": "Fix actual absence of automatic observation and non-repeatable DOM demo; not universal DevTools detection or closure",
+  "changes": [
+    "debugging.watch/intervalMs configuration starts full-deadline visible-page observation without a manual API call",
+    "getDebuggingState exposes detached watch samples and timestamps without per-tick threat events",
+    "Automatic watch ON/report on own demo and guide; SDK consumers remain opt-in",
+    "Visible protection ON/OFF, sticky signal history, separate manual results, repeatable DOM changes and explicit restoration",
+    "Response-only DOM mode changes preserve the original baseline; stopped observation is reflected in controls",
+    "Known page lifecycle survives off/on and pageshow while OFF; bounded paired handlers retained only after first activation until destroy",
+    "Frequently updating telemetry is not an aria-live announcement"
+  ],
+  "checks": {
+    "build": true,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "unitIntegrationTests": 479,
+    "finalLocalFeatureBrowser": {
+      "passed": 37,
+      "skipped": 2
+    },
+    "publicHttpBrowser": {
+      "passed": 252,
+      "skipped": 2,
+      "retries": 0
+    },
+    "browserEngines": ["chromium", "firefox", "webkit"],
+    "skips": "Chromium-only CDP debugger pause/resume tool test skipped on Firefox/WebKit; ordinary automatic watch and DOM tests passed in all three engines",
+    "actualAutomaticDebuggerTest": "No manual sample call; Chromium CDP pause/resume causes an automatic suspicion, sticky history survives normal samples, deliberate block response and exit work",
+    "readOnlyReview": "Known pagehide/off/on lifecycle defect fixed and re-reviewed; periodic telemetry live-region issue fixed; no remaining blocking finding"
+  },
+  "nativePublicBrowser": {
+    "manualSampleButtonUsed": false,
+    "automaticSampleProgress": {
+      "initial": 0,
+      "observed": 19
+    },
+    "capture": "automatic-watch-public.png"
+  },
+  "installedCandidate": {
+    "sha512": "b50e73be648a6f30cd8822003c369ef5ecb7b4b2e77982fdf79081667c64e78e1157169e58c1d5c2d204c45796b724fc4e585a7b86eb8251965ec2b134b6f7bb",
+    "packedFiles": 34,
+    "currentPackageFileMatches": 34,
+    "ViteAutomaticWatchWithoutManualSampleAllThreeEngines": true,
+    "NextAutomaticWatchWithSSRHydrationAllThreeEngines": true
+  },
+  "installedReceipts": [
+    "automatic-watch-vite-consumer-verification.json",
+    "automatic-watch-next-consumer-verification.json"
+  ],
+  "npm": {
+    "publication": "paused",
+    "canonicalPreparedTarballUnchanged": true,
+    "canonicalSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f"
+  },
+  "publicFiles": {
+    "checkedAt": "2026-10-21T08:46:37.881Z",
+    "total": 40,
+    "matched": 40,
+    "files": [
+      {
+        "file": "assets/index-DhV5xNB5.css",
+        "path": "/assets/index-DhV5xNB5.css",
+        "status": 200,
+        "bytes": 35800,
+        "sha256": "2e1fc59517e705c67ddb2684cca72daad541e5625c092aaa27ba8a0c289c385b",
+        "match": true
+      },
+      {
+        "file": "assets/index-I_bNKnk6.js",
+        "path": "/assets/index-I_bNKnk6.js",
+        "status": 200,
+        "bytes": 816920,
+        "sha256": "4bea2c727f8789dd2428390e7caeba789fbb31e20d622876b520e8a5ee0026c7",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-SIl-Vz5i.js",
+        "path": "/assets/index.browser-SIl-Vz5i.js",
+        "status": 200,
+        "bytes": 1759324,
+        "sha256": "dc95c4cb41765de5a79fc305e01d6f338940df92bf9b60367f981af1bff0ff64",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-ClBRW4XL.js",
+        "path": "/assets/transform.worker-ClBRW4XL.js",
+        "status": 200,
+        "bytes": 958081,
+        "sha256": "f9687f55d655831a3a60d5c5f25fed8a0676b9398f47682c30a656181a587b6f",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 20944,
+        "sha256": "ebdd006038e3bfdbd6ee6888de5a2cc69a3b34dcc1f02ec02d2354965e8f4c46",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 41881,
+        "sha256": "9a55f5c488bdabb8da81a7303e6585e6ca709a7ebd52f990351344d46c55f586",
+        "match": true
+      },
+      {
+        "file": "docs/SSR_VERIFICATION.txt",
+        "path": "/docs/SSR_VERIFICATION.txt",
+        "status": 200,
+        "bytes": 10048,
+        "sha256": "04f29c48127373aa76688441a3265e3a58b094c5c0f4667cad4fbb8961c34a6d",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-DTOymHXg.js",
+        "path": "/docs/assets/index-DTOymHXg.js",
+        "status": 200,
+        "bytes": 312982,
+        "sha256": "3dfb89b1bd371c574acd9ef0450bb6157086f8e4323ecf2841c8376786069a14",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-gal6gU6H.css",
+        "path": "/docs/assets/index-gal6gU6H.css",
+        "status": 200,
+        "bytes": 9377,
+        "sha256": "f6fbdc8f8364f1a58cb696b7ec724e29157f7f531013de39e2ac6f16d43194db",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 4804,
+        "sha256": "aac2e1f3fa8e9f78a52f9f37fa4b3c690dd207476a874599ba61016e2cd71bdf",
+        "match": true
+      },
+      {
+        "file": "docs/og-docs.png",
+        "path": "/docs/og-docs.png",
+        "status": 200,
+        "bytes": 65729,
+        "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-CVdGDmg9.js",
+        "path": "/examples/react/assets/index-CVdGDmg9.js",
+        "status": 200,
+        "bytes": 1923041,
+        "sha256": "8c88e023617f0d11b466396626f0359892e3cac16cda2321a09a2e290ab1ae78",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-DgKYqqEb.js",
+        "path": "/examples/react/assets/lazy-DgKYqqEb.js",
+        "status": 200,
+        "bytes": 3219,
+        "sha256": "75d12d51cdf42883468ea22a8bf94894b79216084a970f951c55f2e99258c52c",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "ee50d77d502a7b32aea775e8dba57abf44a3499131126c663bd1e51b9a9f0403",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "1bdaabe2a0d1a7d954f3075f01d391482404a06d74c63a3d0e467f993d40f17f",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "06e7d32eec36b684d5542c86074b0666ef2b2411dc7ab47a850ef4dafa63409d",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-In0kmK_z.js",
+        "path": "/examples/vanilla-js/assets/about-In0kmK_z.js",
+        "status": 200,
+        "bytes": 637,
+        "sha256": "73abde3af26c9e98a195ab2918f1d50ce77a441ae770a85ca0da59c35dcb68bd",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-DF7rZTU1.js",
+        "path": "/examples/vanilla-js/assets/index-DF7rZTU1.js",
+        "status": 200,
+        "bytes": 26065,
+        "sha256": "1d003b8bed970e930e4ca2327364ccb2602712b6c8183558eeb6cd3b7b6f5d2d",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-Da01Hd8K.js",
+        "path": "/examples/vanilla-js/assets/lazy-Da01Hd8K.js",
+        "status": 200,
+        "bytes": 636,
+        "sha256": "8cb3dea6704f5305df05c208995e41cde23c419bba4e82dec8793d4494aa3f72",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "aa82832359df12c041c82f093358a6f6ecf5b6c0d3c598515fd2307dfae44c15",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 962,
+        "sha256": "c8ea8384186fa6fc0cd143f5cc3a60e1891ce909a9cec2d0abaa74797cf83d76",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-QlmgeO2s.js",
+        "path": "/examples/vanilla-ts/assets/index-QlmgeO2s.js",
+        "status": 200,
+        "bytes": 28117,
+        "sha256": "411986d42954efc080adba312f4e342cffaffe2170180ec6a7cede58b627230c",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-DDOKsDr9.js",
+        "path": "/examples/vanilla-ts/assets/lazy-DDOKsDr9.js",
+        "status": 200,
+        "bytes": 1155,
+        "sha256": "aa616af2a382b6d4f4bbf7a88af801b4a99a7dd0a8744d977b72b93e1605b106",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "3024ad702ee7a732fd0d0330a78d3e78bf0b97bca38b2dff8e2661629850f2ca",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "909d481c15c708b5fd8fab5133e4fe8738ee41ac9840eca989324628f2c23973",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 4212,
+        "sha256": "ee8cc11af6239c729c02ef26dcd0dbfb147b7a31809224b72409d0925336858e",
+        "match": true
+      },
+      {
+        "file": "og-demo.png",
+        "path": "/og-demo.png",
+        "status": 200,
+        "bytes": 59822,
+        "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "limits": [
+    "An open DevTools window need not delay a timer; short pauses between deadlines can be missed",
+    "A pause is reportable only after JavaScript resumes; CPU load/sleep may also delay it",
+    "No debugger trap or forced reload; native page response cannot close DevTools or stop console/background code",
+    "DOM snapshots cover selected static light-DOM only; client observers are not a server authorization boundary",
+    "Next16.4.2 AppRouter/Webpack and React19.3.1 are the recorded installed versions, not every framework/runtime",
+    "Next compiled bytes are functional coverage, not performance neutrality; previous server-template receipts are separate foundation evidence"
+  ]
+}
