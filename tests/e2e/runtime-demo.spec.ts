@@ -184,6 +184,17 @@ test("labels synthetic F12 trials honestly and caps then clears the local event 
   await expect(page.locator("#runtime-log")).toContainText("합성");
   for (let index = 0; index < 24; index++) await synthetic.click();
   await expect(entries).toHaveCount(20);
+  const macSynthetic = page.getByRole("button", {
+    name: "⌘+⌥+I 시험 이벤트 실행",
+    exact: true,
+  });
+  await macSynthetic.click();
+  await expect(page.locator("#live-result")).toContainText("⌘+⌥+I");
+  await expect(page.locator("#live-result")).toContainText("차단됨");
+  await expect(page.locator("#live-result")).toContainText("합성");
+  await page.locator("#shortcuts").uncheck();
+  await macSynthetic.click();
+  await expect(page.locator("#live-result")).toContainText("허용됨");
   await clear.click();
   await expect(entries).toHaveCount(0);
 });

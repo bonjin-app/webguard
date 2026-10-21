@@ -1,0 +1,512 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T01:35:50.131Z",
+  "receipt": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/mac-shortcuts-consumer-final.json",
+  "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk",
+  "sourceCommit": "c6ff86367aa943216da06b1d7fb49791d241607c",
+  "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/uulab-webguard-0.3.0.tgz",
+  "tarballIntegrity": "sha512-kT5PUupT6iqM0B06XQFs4Bb+dAz/80DPvNRypRWHdxFhwqhE2BD+a2edlbgDS6oeO0Y7N7k7tHI4UsZlw69SHw==",
+  "installedLock": {
+    "resolved": "file:../../../../../../../Users/uulab/Documents/workspace/uulab/webguard/.npm-release/uulab-webguard-0.3.0.tgz",
+    "integrity": "sha512-kT5PUupT6iqM0B06XQFs4Bb+dAz/80DPvNRypRWHdxFhwqhE2BD+a2edlbgDS6oeO0Y7N7k7tHI4UsZlw69SHw==",
+    "version": "0.3.0"
+  },
+  "installedModules": {
+    "browser": "/private/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk/node_modules/uulab-webguard/dist/browser.js",
+    "server": "/private/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk/node_modules/uulab-webguard/dist/server.js"
+  },
+  "nativeBrowserEvents": [
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "i",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "j",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "c",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "I",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "J",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "C",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "i",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "j",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "c",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "I",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "J",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "chromium",
+      "browserVersion": "156.0.8078.4",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "C",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "i",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "j",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "c",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "I",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "J",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "C",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "i",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "j",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "c",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "I",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "J",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "firefox",
+      "browserVersion": "157.0",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "C",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "i",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "j",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "c",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": true,
+      "key": "I",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": true,
+      "key": "J",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": true,
+      "key": "C",
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "i",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "j",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Meta+Alt",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "c",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyI",
+      "enabled": false,
+      "key": "I",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyJ",
+      "enabled": false,
+      "key": "J",
+      "prevented": false,
+      "trusted": true
+    },
+    {
+      "engine": "webkit",
+      "browserVersion": "27.2",
+      "modifiers": "Control+Shift",
+      "code": "KeyC",
+      "enabled": false,
+      "key": "C",
+      "prevented": false,
+      "trusted": true
+    }
+  ],
+  "syntheticLayoutEvents": [
+    {
+      "key": "Dead",
+      "code": "KeyI",
+      "enabled": true,
+      "editable": false,
+      "trusted": false,
+      "prevented": true
+    },
+    {
+      "key": "Dead",
+      "code": "KeyI",
+      "enabled": true,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ˆ",
+      "code": "KeyI",
+      "enabled": true,
+      "editable": false,
+      "trusted": false,
+      "prevented": true
+    },
+    {
+      "key": "ˆ",
+      "code": "KeyI",
+      "enabled": true,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "∆",
+      "code": "KeyJ",
+      "enabled": true,
+      "editable": false,
+      "trusted": false,
+      "prevented": true
+    },
+    {
+      "key": "∆",
+      "code": "KeyJ",
+      "enabled": true,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ç",
+      "code": "KeyC",
+      "enabled": true,
+      "editable": false,
+      "trusted": false,
+      "prevented": true
+    },
+    {
+      "key": "ç",
+      "code": "KeyC",
+      "enabled": true,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "Dead",
+      "code": "KeyI",
+      "enabled": false,
+      "editable": false,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "Dead",
+      "code": "KeyI",
+      "enabled": false,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ˆ",
+      "code": "KeyI",
+      "enabled": false,
+      "editable": false,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ˆ",
+      "code": "KeyI",
+      "enabled": false,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "∆",
+      "code": "KeyJ",
+      "enabled": false,
+      "editable": false,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "∆",
+      "code": "KeyJ",
+      "enabled": false,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ç",
+      "code": "KeyC",
+      "enabled": false,
+      "editable": false,
+      "trusted": false,
+      "prevented": false
+    },
+    {
+      "key": "ç",
+      "code": "KeyC",
+      "enabled": false,
+      "editable": true,
+      "trusted": false,
+      "prevented": false
+    }
+  ],
+  "scope": "Page-delivered key event cancellation; no assertion about a DevTools window remaining closed",
+  "finishedAt": "2026-10-21T01:35:55.392Z"
+}

@@ -1,0 +1,302 @@
+{
+  "checkedAt": "2026-10-21T01:39:32.877Z",
+  "url": "https://webguard.uulab.co.kr/demo?fix=mac-c6ff863#live-demo",
+  "sourceCommit": "c6ff86367aa943216da06b1d7fb49791d241607c",
+  "rootCause": {
+    "before": "The SDK compared i/j/c characters only. Option/layout variants with key Dead/ˆ/∆/ç and physical code KeyI/J/C were not cancelled.",
+    "redTests": {
+      "failed": 4,
+      "log": ".npm-release/mac-shortcuts-red.log"
+    },
+    "fix": "Recognize the existing inspect shortcuts by either key or the exact physical KeyI/J/C codes; retain modifier combinations, editable/composition exemptions, opt-in defaults and cleanup."
+  },
+  "verification": {
+    "unit": {
+      "passed": 301,
+      "failed": 0,
+      "log": ".npm-release/mac-shortcuts-all-tests.log"
+    },
+    "localBrowser": {
+      "passed": 51,
+      "failed": 0,
+      "engines": ["chromium", "firefox", "webkit"],
+      "log": ".npm-release/mac-shortcuts-e2e.log"
+    },
+    "publicBrowser": {
+      "passed": 51,
+      "failed": 0,
+      "retries": 0,
+      "log": ".npm-release/mac-shortcuts-public.log"
+    },
+    "installedPackage": {
+      "status": "passed",
+      "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/uulab-webguard-0.3.0.tgz",
+      "integrity": "sha512-kT5PUupT6iqM0B06XQFs4Bb+dAz/80DPvNRypRWHdxFhwqhE2BD+a2edlbgDS6oeO0Y7N7k7tHI4UsZlw69SHw==",
+      "sourceCommit": "c6ff86367aa943216da06b1d7fb49791d241607c",
+      "vite": "8.3.4",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk",
+      "hostAndEngineCases": 15,
+      "nativeShortcutInputs": 36,
+      "syntheticLayoutCases": 16,
+      "installedModules": {
+        "browser": "/private/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk/node_modules/uulab-webguard/dist/browser.js",
+        "server": "/private/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-OGjCyk/node_modules/uulab-webguard/dist/server.js"
+      }
+    },
+    "nativeMacInApp": {
+      "combo": "Cmd+Option+I",
+      "restriction": "ON",
+      "focus": "ordinary demo target",
+      "observed": "실제 입력 · 검사 단축키 · 본문 · 차단됨 (페이지 기본 동작 취소)",
+      "screenshot": "docs/evidence/mac-shortcuts-native-public.png",
+      "devtoolsClosedClaim": false
+    },
+    "build": "passed",
+    "rootAndWorkerTypes": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "dryRun": "passed"
+  },
+  "deployment": {
+    "id": "a9bbc15d-dedc-4faf-bd2f-2eb21f7f4127",
+    "version": "7384eec5-eda4-4596-b72e-409e765af5f2",
+    "versions": [
+      {
+        "version_id": "7384eec5-eda4-4596-b72e-409e765af5f2",
+        "percentage": 100
+      }
+    ],
+    "runtimeUnchanged": true,
+    "bindingsUnchanged": true,
+    "assetFiles": 35,
+    "assetMatches": 35,
+    "assets": [
+      {
+        "path": "/assets/index-BQOWM-au.css",
+        "status": 200,
+        "sha256": "1552b5548d453882b5accb13d62caf173296000075cb6bc65dcee89acfc4d09b",
+        "match": true
+      },
+      {
+        "path": "/assets/index-CkvZXEf2.js",
+        "status": 200,
+        "sha256": "a5d58c9792d80943d78f71491ed33d35bc8fae906071ff488f1acc07dc4b76dc",
+        "match": true
+      },
+      {
+        "path": "/assets/index.browser-CtOKMlmK.js",
+        "status": 200,
+        "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+        "match": true
+      },
+      {
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "path": "/assets/transform.worker-CjrfSGER.js",
+        "status": 200,
+        "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+        "match": true
+      },
+      {
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "sha256": "db62e842317c0c145ad602ca8197bfcbbe742ae9f9703b64f55b018a93f514d3",
+        "match": true
+      },
+      {
+        "path": "/docs/assets/index-DmPpgrSY.js",
+        "status": 200,
+        "sha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3",
+        "match": true
+      },
+      {
+        "path": "/docs/assets/index-lg960Ytl.css",
+        "status": 200,
+        "sha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9",
+        "match": true
+      },
+      {
+        "path": "/docs/index.html",
+        "status": 200,
+        "sha256": "0f1c109b10a245a1712ff5397ac87c44227d4dffcc4ebf025b37bc48db565a6d",
+        "match": true
+      },
+      {
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "path": "/examples/react/assets/index-CocqPNBx.js",
+        "status": 200,
+        "sha256": "04a6f63e34dde6bdeff38808be7bef107c940028feb8de972da48164feb0ad3c",
+        "match": true
+      },
+      {
+        "path": "/examples/react/assets/lazy-ikMrtYbc.js",
+        "status": 200,
+        "sha256": "58a6d735434e7b3099e5d96e0aa5e54dcf8038b5ed049fbf6ca577e65748555e",
+        "match": true
+      },
+      {
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "sha256": "fcf6cebfeee663f5c08ad44731a4c434b7a0c29c8743e9674a2a8222d918b1e9",
+        "match": true
+      },
+      {
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "sha256": "78a9519cb5edb0ccac5b88af0783c14346860e9335a8051f2a34a3f375326e4f",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "sha256": "f14ad5821ca696022a3c8b5ba6b657966e8574d3ea1fcd3f6cfd701cf1c68e74",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/about-C1G6RMMO.js",
+        "status": 200,
+        "sha256": "e7ad37a5eb78d34ddbe9ea8f9856f9418673d70d2f95dcef8f8d972ac7cf22dc",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/index-CTcUTPiS.js",
+        "status": 200,
+        "sha256": "02d9c49bf4c0d6c5c5baca186ba14c2ffc894d94c0e92c39a6af840dafb18a16",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/lazy-GIOoT1HL.js",
+        "status": 200,
+        "sha256": "545e4b6865b7759fde53bcd40f60337b7e4e2926f991eb8663fda55e0961934e",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "sha256": "75589bd6ed74c9ecbf140d943c20728e3a035d7f90d987e8e5ccca48cdd8d0d0",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "sha256": "737776c696d1b07193a480b2e4a954c10e672df27dd9cb062e3b38af878e868d",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index-BSkCyLB2.js",
+        "status": 200,
+        "sha256": "26f6c96160be9246ddb06961ca831f2dbf727c79d2468d06b5efc6e21b88a5f5",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/lazy-f5UoJNyT.js",
+        "status": 200,
+        "sha256": "a8a4537c0742d6092ba34824495aa7b1db75e4e0c767f78e10ff868b3fd96a60",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "sha256": "5c2ff668936a0da9d5b5b80dd8b0bc98a6b54e428b3a13c87bf970485c73d3c5",
+        "match": true
+      },
+      {
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "sha256": "dc67e9ebdeec8897a61d4b35c9f3b2523135e66d8cbf1eff759037824e6eb235",
+        "match": true
+      },
+      {
+        "path": "/favicon.ico",
+        "status": 200,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "path": "/favicon.svg",
+        "status": 200,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "path": "/index.html",
+        "status": 200,
+        "sha256": "2e62618193f566fed52f0f2e70b125d4034bf9bbc7692a0769dd2e1bc0802211",
+        "match": true
+      },
+      {
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "npm": {
+    "publicLatest": "0.2.0",
+    "candidatePublished": false,
+    "publishAttempted": false,
+    "localCandidateRepacked": true,
+    "previousCandidateArchive": ".npm-release/history/089a65d08675a7a49232bc9af7ab77f3c7efc014ad5f466c07429d41e4e3346a/"
+  },
+  "boundaries": [
+    "Restriction is opt-in and the demo starts OFF. Click ordinary content after enabling it.",
+    "Editable and composing input remain exempt.",
+    "A page cannot prevent browser-owned menus or shortcuts not delivered to its JavaScript. Event cancellation is not proof that DevTools is closed."
+  ],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code",
+    "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key"
+  ]
+}

@@ -4,7 +4,15 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## SDK-first blue demo (current)
+## Mac inspect shortcut recognition (current)
+
+[Open the corrected demo](https://webguard.uulab.co.kr/demo?fix=mac-c6ff863#live-demo). Enable **단축키 제한**, click the ordinary test area, and try `Cmd+Option+I/J/C`, `Ctrl+Shift+I/J/C` or F12. The SDK now also matches physical `KeyI/J/C` when Option or a keyboard layout changes the reported character to `Dead` or a special character. The optional synthetic Mac button exercises that exact character/code mismatch and explicitly does not claim that a DevTools window stayed closed.
+
+SDK source **`c6ff863`** is deployed as Worker **`7384eec5-eda4-4596-b72e-409e765af5f2`**. All **35** public files matched the prepared output. Unit/integration checks passed **301/301**, local relevant browser checks **51/51**, and deployed relevant browser checks **51/51** across Chromium, Firefox and WebKit. A newly packed, installed local candidate also passed 36 trusted shortcut inputs and 16 synthetic layout/editable cases. Native in-app Mac input confirmed page-level cancellation on the public demo. Input/composition exemptions and opt-in defaults remain unchanged; browser-owned menus and shortcuts not delivered to the document remain outside SDK control.
+
+The local 0.3.0 candidate was rebuilt, with the preceding artifact archived. npm publication remains paused: public **0.2.0**, unpublished **0.3.0**. [Deployment and scope receipt](evidence/mac-shortcuts-deployment.json) · [Installed candidate checks](evidence/mac-shortcuts-packed.json) · [Native Mac observation](evidence/mac-shortcuts-native-public.png).
+
+## SDK-first blue demo (visual design; preceding release)
 
 [Open the blue demo](https://webguard.uulab.co.kr/demo?ui=blue-aede67c). The installable SDK and Vite integration are the product; this website introduces them and demonstrates their behavior. A centered blue hero leads to installation or a spacious experiment. Browser guards, obfuscation, SDK file inspection and advanced scenarios use tabs; advanced runtime options, logs and the longer integration examples start collapsed. Native checkbox switches and keyboard tab navigation remain functional, selections and results survive tab changes, and existing fragment links reveal their target panels and disclosures.
 
