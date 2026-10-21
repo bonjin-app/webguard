@@ -4,7 +4,13 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Shortcut restriction enabled on demo entry (current)
+## WebGuard service branding (current)
+
+[Open the demo](https://webguard.uulab.co.kr/demo?brand=webguard-1bdb29e). The product/service name is **WebGuard**. The hero package illustration now uses that name; `uulab-webguard` remains only the technical npm/install/import identifier. Source **`1bdb29e`** is deployed as Worker **`7630a8ed-93bf-4eab-94fc-28f25e78fc84`**, deployment **`3b49fd3b-cbf7-445f-a663-14efb910fc0e`**, at 100% traffic. All **37** public asset hashes matched. Runtime and bindings are unchanged. Build, types, scoped lint, formatting, dry run and three local navigation cases across Chromium/Firefox/WebKit passed. Native public UI readback confirmed the label. SDK behavior, npm publication and Codex configuration are unchanged.
+
+[Receipt](evidence/webguard-brand-deployment.json) · [Public branding capture](evidence/webguard-brand-public.png).
+
+## Shortcut restriction enabled on demo entry (preceding release)
 
 [Open the updated demo](https://webguard.uulab.co.kr/demo?fix=default-shortcuts-3d2979f#live-demo). The public demo now starts with **단축키 제한 ON**; visitors can turn it off to compare the page's actual input behavior. The SDK already recognized Mac `Cmd+Option+I/J/C`: the preceding demo initialized its switch OFF, and the user's existing in-app tab also retained older page content. Manually enabling the preceding build canceled native `Cmd+Option+I`. No new SDK shortcut-matching defect was reproduced, and this change does not claim a complete diagnosis of an unobserved external browser/focus state.
 

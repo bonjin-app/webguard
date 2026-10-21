@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "1bdb29e",
+  "serviceName": "WebGuard",
+  "url": "https://webguard.uulab.co.kr/demo?brand=webguard-1bdb29e",
+  "workerVersion": "7630a8ed-93bf-4eab-94fc-28f25e78fc84",
+  "deploymentId": "3b49fd3b-cbf7-445f-a663-14efb910fc0e",
+  "trafficPercent": 100,
+  "publicAssetsMatched": 37,
+  "runtimeAndBindingsUnchanged": true,
+  "checks": [
+    "Production build",
+    "Root/Worker types",
+    "Scoped ESLint",
+    "Prettier",
+    "Dry run",
+    "3 local navigation cases across Chromium, Firefox and WebKit",
+    "Native public screenshot and service label readback"
+  ],
+  "packageName": "Technical npm/install/import identifier retained; npm publication paused",
+  "codexConfiguration": "Unchanged",
+  "screenshot": "webguard-brand-public.png"
+}
