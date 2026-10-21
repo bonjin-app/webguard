@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## SDK explanation and social presence (current)
+## SSR environment integration and guides (current)
+
+[Environment integration](https://webguard.uulab.co.kr/docs/?ssr=cff59f4#environments) · [Korean guide](https://webguard.uulab.co.kr/docs/ENVIRONMENTS.ko.txt) · [Runtime verification](https://webguard.uulab.co.kr/docs/SSR_VERIFICATION.txt). Next.js App Router now has a dedicated client-only Webpack adapter and automatic SDK startup; JSP/Java and Python/PHP have runnable server-rendered examples with protected external assets, final-byte SRI and server response policies. The public release presents their setup and measured validation scope. Those application servers were tested locally; this Worker continues serving the existing demo and documentation.
+
+Source **`cff59f4`** is deployed as Worker **`31d4800d-cd46-4cff-95df-8ff61c15e0a5`**, deployment **`7f2829c4-c102-4eeb-a429-f874f1de74e9`**, at 100% traffic. All **40** public files matched prepared SHA-256 values. Runtime settings and bindings are unchanged. npm publication remains paused and the canonical prepared tarball is unchanged.
+
+Fresh checks passed **424/424** unit/integration, **135/135** local site/browser and **77/77** scoped public HTTP/browser cases without retries. Build, root/Worker types, full lint/format and deployment dry run passed. Separate environment checks passed Java/Tomcat **7 JUnit tests and 3 browser scenarios**, Python/PHP-WASM **28 HTTP checks and 6 browser scenarios**, and the exact packed Next **SSR/nonce/hydration/lazy import/navigation matrix in all 3 engines**, including three unsupported-CLI rejection cases. Native PHP is explicitly skipped; PHP 8.4.25 WASM is distinct from PHP-FPM/Apache proof.
+
+Next transforms public browser assets before final hashing and preserves server helpers, existing CSP and server/RSC/API code. App/SDK/mixed/unknown code stays at the requested Strict tier; only complete external-dependency graphs default to Standard. The fixture still grows from 957,531 to 6,930,448 uncompressed bytes, so functional checks do not establish performance neutrality. Next 16 requires `--webpack`; Turbopack, programmatic builds, other versions/routers and physical browsers are outside this recorded validation.
+
+[Deployment receipt](evidence/ssr-environments-deployment.json) · [Environment verification](SSR_VERIFICATION.md) · [Native public-page capture](evidence/ssr-environments-public.png).
+
+## SDK explanation and social presence (preceding release)
 
 [SDK strengths](https://webguard.uulab.co.kr/demo?product=6a00ff6#sdk-strengths) · [Documentation scope](https://webguard.uulab.co.kr/docs/?product=6a00ff6#security-strengths). The demo now introduces code obfuscation, browser policies, live runtime guards and explicit file/deployment checks before the interactive lab. Each capability links to a working demonstration. Integration guidance and FAQ distinguish build-time automation, explicit browser opt-ins, direct file-check calls and host/server responsibilities. Documentation adds the same product context and a responsibility table while preserving existing routes, anchors and controls.
 

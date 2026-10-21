@@ -1,0 +1,375 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T07:17:49.252Z",
+  "sourceCommit": "cff59f4",
+  "origin": "https://webguard.uulab.co.kr",
+  "deployment": {
+    "id": "7f2829c4-c102-4eeb-a429-f874f1de74e9",
+    "version": "31d4800d-cd46-4cff-95df-8ff61c15e0a5",
+    "previousVersion": "e0b8596d-5c56-46e6-bb0e-04cde57cd0ee",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "scope": "Public deployment updates the protected demo documentation and Korean environment/verification guides. Next/JSP/Python/PHP application-server evidence is from separate local real runtime tests, not application servers hosted by this Worker.",
+  "checks": {
+    "build": true,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "unitIntegrationTests": 424,
+    "localSiteBrowserTests": 135,
+    "scopedPublicHttpBrowserTests": 77,
+    "retries": 0,
+    "browserEngines": ["chromium", "firefox", "webkit"],
+    "readOnlyReview": "no blocking findings after final classifier and server-boundary changes"
+  },
+  "environmentReceipts": [
+    "jsp-ssr-verification.json",
+    "jsp-ssr-browser.json",
+    "ssr-template-verification.json",
+    "next-consumer-verification.json",
+    "next-cli-safety-verification.json"
+  ],
+  "publicFiles": {
+    "checkedAt": "2026-10-21T07:15:01.264Z",
+    "total": 40,
+    "matched": 40,
+    "files": [
+      {
+        "file": "assets/index-6orG6HeT.js",
+        "path": "/assets/index-6orG6HeT.js",
+        "status": 200,
+        "bytes": 680695,
+        "sha256": "a432f59ad3f298737fafed613cdfbde6f269d488de21b28526140b5d2be8f6db",
+        "match": true
+      },
+      {
+        "file": "assets/index-CbhBC2Ei.css",
+        "path": "/assets/index-CbhBC2Ei.css",
+        "status": 200,
+        "bytes": 33572,
+        "sha256": "916c0863e28935c9b6be13597e370a30c55c99fb173d7cbbf5b537a17a921bfb",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-hwr-EbVl.js",
+        "path": "/assets/index.browser-hwr-EbVl.js",
+        "status": 200,
+        "bytes": 1758314,
+        "sha256": "9e519de7103df97ffec61aaa3e6760d5d491e2e4ad4f122da5f6acf060080ae5",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-DIh-7H8b.js",
+        "path": "/assets/transform.worker-DIh-7H8b.js",
+        "status": 200,
+        "bytes": 950961,
+        "sha256": "2b72247bab9a612ead8a9c0f1960044fbd147b4fc28c94fd67dce598f34bd0fd",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 14622,
+        "sha256": "c7e2f3893e13ca132b0729773deb2b98dacfb29a6479b689d7b71922550f6b6c",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 31738,
+        "sha256": "2152d9349b1e47915aa0132758b4455a9d6af56d3632e69d3042c46ed621ed4c",
+        "match": true
+      },
+      {
+        "file": "docs/SSR_VERIFICATION.txt",
+        "path": "/docs/SSR_VERIFICATION.txt",
+        "status": 200,
+        "bytes": 6261,
+        "sha256": "4f1393e8c2cc5e7c5c2a91161d4434f05cf39e063c98f39c09f75d0ffa961032",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-BnedzKNt.js",
+        "path": "/docs/assets/index-BnedzKNt.js",
+        "status": 200,
+        "bytes": 219933,
+        "sha256": "4e5c3495ee37fb920cce789dcbad3847ecb1f1fd80934b3d29b4674a7b893b44",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-gal6gU6H.css",
+        "path": "/docs/assets/index-gal6gU6H.css",
+        "status": 200,
+        "bytes": 9377,
+        "sha256": "f6fbdc8f8364f1a58cb696b7ec724e29157f7f531013de39e2ac6f16d43194db",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 4804,
+        "sha256": "b0861e832bc903970619a020f98e16ae4f68019353cd743fa874e868dd8e025a",
+        "match": true
+      },
+      {
+        "file": "docs/og-docs.png",
+        "path": "/docs/og-docs.png",
+        "status": 200,
+        "bytes": 65729,
+        "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-Ba1nt6Ua.js",
+        "path": "/examples/react/assets/index-Ba1nt6Ua.js",
+        "status": 200,
+        "bytes": 1867147,
+        "sha256": "abc9fc2467fc57d6a84bca83c91e1f1e6bbd87c46d813b077ab03815ab5e4d8c",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-gueDfmmf.js",
+        "path": "/examples/react/assets/lazy-gueDfmmf.js",
+        "status": 200,
+        "bytes": 2918,
+        "sha256": "6ef9d1e5f947c00c4cd2e47286b201f188c9d2e3d5d9ffdeedeacf59a0f2f1db",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "4d88e079e8ad1f076b75f673f15a32919055800470353065e5fdfb690c0e6454",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "c2bf9a32900533b91cd9ad53be0d9bacf160bb11cd482d9df42e334e445a2eeb",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "171dbc801390ccda88393b2fa7644d0ba8d87cfb89e4d0675c942e54651afb85",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-BEsI93cw.js",
+        "path": "/examples/vanilla-js/assets/about-BEsI93cw.js",
+        "status": 200,
+        "bytes": 567,
+        "sha256": "1731c069b4e814ecf56b8d597ab7bfef165dca9bc630ddf1047eea10ce9d9df2",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-DlHdwf18.js",
+        "path": "/examples/vanilla-js/assets/index-DlHdwf18.js",
+        "status": 200,
+        "bytes": 16384,
+        "sha256": "16d5f6c64920fd3d7499bf1ce3ae9efd4b64b29cc7872231634f20625c97407a",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-B7UU6h6f.js",
+        "path": "/examples/vanilla-js/assets/lazy-B7UU6h6f.js",
+        "status": 200,
+        "bytes": 618,
+        "sha256": "43825901926cb99f74e9c51a959ad7768fb47b28233115c6d7e930f87e39876b",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "ae2a458f8370c5f8c727597cbe5fa431410f2f5531bbb816fc26bdfd23e7269f",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 962,
+        "sha256": "83a77e5bc681480f54c9059231d5f26c54306a536e5d5fa8f504ab0ca0181e56",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-DtMtDsWz.js",
+        "path": "/examples/vanilla-ts/assets/index-DtMtDsWz.js",
+        "status": 200,
+        "bytes": 17770,
+        "sha256": "708afcdc16c3a92195d7aecae50568d14fc2082bcf04fbc34efdc1b2b5a1d199",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-rZkthphu.js",
+        "path": "/examples/vanilla-ts/assets/lazy-rZkthphu.js",
+        "status": 200,
+        "bytes": 1087,
+        "sha256": "bde5c9bfabd576d9cd0abd3f5a7eef6c489b63bd80e432f5993413351f90cc8d",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "4bc20c510b6376e9fac215e16ac893a7336057b91d7ebd8a433f1f2a622a7548",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "1e16b2a6e465f293d07912d65bd28166f409ef746b087b641932666b0c24f94c",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 4212,
+        "sha256": "c9f43f1b9659db7bec8c6bcdc5d9223568c4ef150fe930e5727a9f32249fe815",
+        "match": true
+      },
+      {
+        "file": "og-demo.png",
+        "path": "/og-demo.png",
+        "status": 200,
+        "bytes": 59822,
+        "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "npm": {
+    "publication": "paused; not attempted",
+    "canonicalTarballUnchanged": true,
+    "canonicalSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+    "testedNextTarballSha512": "5f8ee9327007b10816fb644ab0328e81a0ff8c12670db1706d975ca87f1656504540281dec5a8527598bd04967a067a7d213cfbddf42bd65e9b56e6d93841f38"
+  },
+  "limitations": [
+    "Next 16.4.2 App Router production Webpack was tested; Turbopack and programmatic builds are outside supported scope",
+    "Native PHP unavailable; unchanged PHP router passed with PHP 8.4.25 WASM, not PHP-FPM/Apache",
+    "Strict transformation increases transfer/startup costs; recorded bytes are not a performance benchmark",
+    "Desktop engines are not physical browser/device or production server security proof"
+  ],
+  "capture": "ssr-environments-public.png"
+}
