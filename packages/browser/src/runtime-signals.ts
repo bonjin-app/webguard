@@ -1,5 +1,9 @@
 export interface DebuggingPolicy {
   enabled?: boolean;
+  /** Continuously watch visible-page timer deadlines. Opt-in; does not inject debugger statements. */
+  watch?: boolean;
+  /** Full timer deadline interval; default 1000, inclusive range 250..60000 ms. */
+  intervalMs?: number;
   response?: "report" | "block";
   /** Extra timer delay required for a suspicion; default 1500, ceiling 60000 ms. */
   thresholdMs?: number;
@@ -53,6 +57,160 @@ export function createPauseSampler(document: Document | undefined) {
         );
         cancel = () => finish(false);
       });
+    },
+  };
+}
+
+export interface DebuggingState {
+  state: "off" | "manual" | "watching" | "suspended" | "unavailable";
+  /** Watch samples only, saturating at Number.MAX_SAFE_INTEGER. */
+  samples: number;
+  lastCheckedAt: number | null;
+  /** Extra delay beyond the requested full interval, never proof of debugging. */
+  lastDelayMs: number | null;
+  lastSuspicionAt: number | null;
+}
+
+/** One continuous deadline while visible. A paused browser can only report after resuming. */
+export function createPauseWatcher(
+  document: Document | undefined,
+  initial: DebuggingPolicy,
+  suspicion: () => void,
+) {
+  let policy = initial;
+  let destroyed = false;
+  let pageActive = true;
+  let revision = 0;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let latched = false;
+  let removeListeners: (() => void) | undefined;
+  let removeLifecycle: (() => void) | undefined;
+  const fresh = () => ({
+    samples: 0,
+    lastCheckedAt: null as number | null,
+    lastDelayMs: null as number | null,
+    lastSuspicionAt: null as number | null,
+  });
+  let stats = fresh();
+  const enabled = () =>
+    !destroyed && policy.enabled === true && policy.watch === true;
+  const available = () =>
+    Boolean(
+      document?.defaultView &&
+      typeof performance !== "undefined" &&
+      typeof performance.now === "function",
+    );
+  const visible = () => document?.visibilityState === "visible";
+  const clearTimer = () => {
+    clearTimeout(timer);
+    timer = undefined;
+    revision++;
+  };
+  function schedule() {
+    if (
+      !enabled() ||
+      !available() ||
+      !visible() ||
+      !pageActive ||
+      timer !== undefined
+    )
+      return;
+    const generation = revision;
+    const started = performance.now();
+    const interval = policy.intervalMs ?? 1000;
+    timer = setTimeout(() => {
+      if (destroyed || generation !== revision) return;
+      timer = undefined;
+      if (!enabled() || !visible() || !pageActive) {
+        latched = false;
+        return;
+      }
+      const elapsed = performance.now() - started;
+      if (!Number.isFinite(elapsed)) {
+        schedule();
+        return;
+      }
+      const delay = Math.min(
+        Number.MAX_SAFE_INTEGER,
+        Math.max(0, elapsed - interval),
+      );
+      stats.samples = Math.min(Number.MAX_SAFE_INTEGER, stats.samples + 1);
+      stats.lastCheckedAt = Date.now();
+      stats.lastDelayMs = delay;
+      const late = delay >= (policy.thresholdMs ?? 1500);
+      const notify = late && !latched;
+      latched = late;
+      if (notify) stats.lastSuspicionAt = stats.lastCheckedAt;
+      // Cover host callback execution too. Reentrant update/destroy cancels this next deadline.
+      schedule();
+      if (notify && !destroyed && generation === revision) suspicion();
+    }, interval);
+  }
+  const visibility = () => {
+    clearTimer();
+    latched = false;
+    if (visible() && pageActive) schedule();
+  };
+  const pagehide = () => {
+    pageActive = false;
+    clearTimer();
+    latched = false;
+  };
+  const pageshow = () => {
+    pageActive = true;
+    clearTimer();
+    latched = false;
+    schedule();
+  };
+  function install() {
+    if (!enabled() || !available()) return;
+    const view = document!.defaultView!;
+    document!.addEventListener("visibilitychange", visibility);
+    removeListeners = () =>
+      document!.removeEventListener("visibilitychange", visibility);
+    if (!removeLifecycle) {
+      // Preserve observed page lifecycle through OFF/ON toggles after first activation.
+      // These two passive handlers retain no timer while the watch is disabled.
+      view.addEventListener("pagehide", pagehide);
+      view.addEventListener("pageshow", pageshow);
+      removeLifecycle = () => {
+        view.removeEventListener("pagehide", pagehide);
+        view.removeEventListener("pageshow", pageshow);
+      };
+    }
+    schedule();
+  }
+  install();
+  return {
+    update(next: DebuggingPolicy) {
+      clearTimer();
+      removeListeners?.();
+      removeListeners = undefined;
+      policy = next;
+      latched = false;
+      stats = fresh();
+      install();
+    },
+    getState(): DebuggingState {
+      const state =
+        destroyed || policy.enabled !== true
+          ? "off"
+          : !available()
+            ? "unavailable"
+            : policy.watch !== true
+              ? "manual"
+              : !visible() || !pageActive
+                ? "suspended"
+                : "watching";
+      return { state, ...stats };
+    },
+    destroy() {
+      destroyed = true;
+      clearTimer();
+      removeListeners?.();
+      removeListeners = undefined;
+      removeLifecycle?.();
+      removeLifecycle = undefined;
     },
   };
 }

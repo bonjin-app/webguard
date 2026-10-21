@@ -262,13 +262,13 @@ copy.addEventListener("click", async () => {
       "Clipboard unavailable. Select and copy the protected output manually.";
   }
 });
-const cleanupHardening = initHardeningDemo(guard);
 guard.update({
   onThreat: (event) => {
     reportHardeningThreat(event);
     reportRuntimeThreat(event);
   },
 });
+const cleanupHardening = initHardeningDemo(guard);
 const cleanupRuntime = initRuntimeDemo(guard);
 let currentIntegration: (typeof integrations)[number] = integrations[0];
 function selectedSetup() {

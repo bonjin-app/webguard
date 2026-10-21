@@ -6,13 +6,16 @@ import styles from "./counter.module.css";
 export default function Counter() {
   const [count, setCount] = useState(0);
   const [guard, setGuard] = useState("pending");
+  const [watch, setWatch] = useState("pending");
   const [lazy, setLazy] = useState("pending");
   useEffect(() => {
     setGuard(getWebGuard() ? "active" : "missing");
+    setWatch(getWebGuard()?.getDebuggingState().state ?? "missing");
   }, []);
   return (
     <section>
       <p id="guard-status">{guard}</p>
+      <p id="automatic-watch-state">{watch}</p>
       <button
         className={styles.protectedCounter}
         id="counter"

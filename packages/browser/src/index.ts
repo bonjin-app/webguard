@@ -2,10 +2,16 @@ import { createPageBlocker, type BlockReason } from "./blocker";
 import {
   createDomIntegrityMonitor,
   createPauseSampler,
+  createPauseWatcher,
   type DebuggingPolicy,
+  type DebuggingState,
   type DomIntegrityPolicy,
 } from "./runtime-signals";
-export type { DebuggingPolicy, DomIntegrityPolicy } from "./runtime-signals";
+export type {
+  DebuggingPolicy,
+  DebuggingState,
+  DomIntegrityPolicy,
+} from "./runtime-signals";
 import { abortable, readIntegrityBytes } from "./integrity";
 import type { ThreatEvent } from "@webguard/shared";
 export type { ThreatEvent } from "@webguard/shared";
@@ -29,7 +35,7 @@ export interface WebGuardOptions {
     /** Per-instance in-flight request cap; default 4, ceiling 16. */
     maxConcurrent?: number;
   };
-  /** Explicit one-shot event-loop pause sampling. Disabled by default, never proof of DevTools. */
+  /** Optional manual or automatic visible-page delay sampling. Disabled by default, never proof of DevTools. */
   debugging?: DebuggingPolicy;
   /** Opt-in immutable DOM anchors. Legitimate updates require an explicit rebaseline. */
   domIntegrity?: DomIntegrityPolicy;
@@ -45,6 +51,8 @@ export interface WebGuardInstance {
   checkIntegrity(url: string, expected: string): Promise<boolean>;
   /** One visible-page timer sample, only when debugging.enabled. Never inserts debugger statements. */
   checkDebugging(): Promise<boolean>;
+  /** Detached observability for automatic watch samples; contains no DOM contents. */
+  getDebuggingState(): DebuggingState;
   /** Accepts current selected static-anchor state as the new baseline. No DOM restoration. */
   rebaselineDom(): boolean;
 }
@@ -171,12 +179,34 @@ function validatedOptions(value: unknown): WebGuardOptions {
     const policy = dataObject(
       input[key],
       key === "debugging"
-        ? ["enabled", "response", "thresholdMs", "sampleMs"]
+        ? [
+            "enabled",
+            "watch",
+            "intervalMs",
+            "response",
+            "thresholdMs",
+            "sampleMs",
+          ]
         : ["enabled", "response", "selectors", "maxNodes", "maxBytes"],
       key,
     );
     if (policy.enabled !== undefined && typeof policy.enabled !== "boolean")
       throw new TypeError(`Invalid ${key} enabled`);
+    if (
+      key === "debugging" &&
+      policy.watch !== undefined &&
+      typeof policy.watch !== "boolean"
+    )
+      throw new TypeError("Invalid debugging watch");
+    if (
+      key === "debugging" &&
+      policy.intervalMs !== undefined &&
+      (typeof policy.intervalMs !== "number" ||
+        !Number.isSafeInteger(policy.intervalMs) ||
+        policy.intervalMs < 250 ||
+        policy.intervalMs > 60000)
+    )
+      throw new TypeError("Invalid debugging intervalMs");
     if (
       policy.response !== undefined &&
       policy.response !== "report" &&
@@ -559,6 +589,25 @@ function createGuard(
     }
   }
   const pauseSampler = createPauseSampler(browserDocument);
+  function reportPauseSuspicion() {
+    if (destroyed || options.debugging?.enabled !== true) return;
+    const revision = policyRevision;
+    emit(
+      "execution-pause-suspected",
+      "A visible-page timer resumed late; debugger pause, busy CPU or scheduling may cause this. This is not proof of DevTools.",
+    );
+    if (
+      !destroyed &&
+      revision === policyRevision &&
+      options.debugging?.response === "block"
+    )
+      blockPage("debugging-suspicion");
+  }
+  const pauseWatcher = createPauseWatcher(
+    browserDocument,
+    options.debugging ?? {},
+    reportPauseSuspicion,
+  );
   let domMonitor: ReturnType<typeof createDomIntegrityMonitor> | undefined;
   let runtimeRevision = 0;
   let domBaselineRevision = 0;
@@ -630,6 +679,17 @@ function createGuard(
         );
       const debuggingChanged =
         JSON.stringify(next.debugging) !== JSON.stringify(options.debugging);
+      const watchChanged = [
+        "enabled",
+        "watch",
+        "intervalMs",
+        "thresholdMs",
+        "response",
+      ].some(
+        (key) =>
+          next.debugging?.[key as keyof DebuggingPolicy] !==
+          options.debugging?.[key as keyof DebuggingPolicy],
+      );
       const domChanged = ["enabled", "selectors", "maxNodes", "maxBytes"].some(
         (key) =>
           JSON.stringify(
@@ -662,6 +722,7 @@ function createGuard(
       const revision = ++policyRevision;
       options = next;
       if (debuggingChanged) pauseSampler.cancel();
+      if (watchChanged) pauseWatcher.update(options.debugging ?? {});
       if (domChanged) {
         runtimeRevision++;
         domMonitor?.destroy();
@@ -687,6 +748,7 @@ function createGuard(
       destroyed = true;
       runtimeRevision++;
       pauseSampler.cancel();
+      pauseWatcher.destroy();
       domMonitor?.destroy();
       clearBlock(false);
       abortIntegrityRequests();
@@ -704,18 +766,11 @@ function createGuard(
         options.debugging.enabled !== true
       )
         return false;
-      const revision = policyRevision;
-      emit(
-        "execution-pause-suspected",
-        "A visible-page timer resumed late; debugger pause, busy CPU or scheduling may cause this. This is not proof of DevTools.",
-      );
-      if (
-        !destroyed &&
-        revision === policyRevision &&
-        options.debugging?.response === "block"
-      )
-        blockPage("debugging-suspicion");
+      reportPauseSuspicion();
       return true;
+    },
+    getDebuggingState() {
+      return pauseWatcher.getState();
     },
     rebaselineDom() {
       if (destroyed || options.domIntegrity?.enabled !== true || !domMonitor)
@@ -858,6 +913,7 @@ function registryRecord(host: Window): AutoGuardRecord | undefined {
     "destroy",
     "checkIntegrity",
     "checkDebugging",
+    "getDebuggingState",
     "rebaselineDom",
   ]) {
     const method = Object.getOwnPropertyDescriptor(instance.value, key);

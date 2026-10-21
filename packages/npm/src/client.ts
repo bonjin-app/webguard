@@ -4,5 +4,6 @@ export type {
   WebGuardOptions,
   ThreatEvent,
   DebuggingPolicy,
+  DebuggingState,
   DomIntegrityPolicy,
 } from "@webguard/browser";

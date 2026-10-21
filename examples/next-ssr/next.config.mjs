@@ -21,6 +21,7 @@ export default withWebGuard(
         shortcutScope: "page",
       },
       integrity: { enabled: true },
+      debugging: { enabled: true, watch: true, response: "report" },
     },
   },
 );

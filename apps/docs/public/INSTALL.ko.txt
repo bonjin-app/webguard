@@ -210,13 +210,20 @@ webguardApp({
       shortcutScope: "page",
     },
     integrity: { enabled: true },
+    debugging: {
+      enabled: true,
+      watch: true,
+      intervalMs: 1000,
+      thresholdMs: 1500,
+      response: "report",
+    },
   },
 });
 ```
 
 `headers: false`는 이미 정책을 제공하는 이 사이트의 호스트 설정입니다. 새 앱에서는 필요 없이 복사하지 말고 기본 자동 정책을 사용하세요. 난독화·소스맵 제거·서버 응답 정책은 빌드·배포에서 적용되므로 라이브 SDK 스위치로 해제되지 않습니다. 파일 무결성 검사는 허용 후 검사 버튼 또는 직접 API 호출이 필요합니다.
 
-기본 ON인 것은 페이지 조작 제한입니다. 개발자도구 창 자체를 금지하거나 닫는 기능은 아닙니다. 실제 브라우저 메뉴로 열거나 분리된 개발자도구를 사용하는 경우를 자동 통제한다고 표시하지 않습니다. 창 크기 추정은 브라우저 테두리·확대·내장 브라우저에 오탐이 있어 기본 OFF입니다.
+이 사이트는 페이지 조작 제한과 실행 지연의 자동 관찰을 켜며, 실행 지연 반응은 기본 `report`입니다. 이는 사이트의 명시적인 체험 정책이며 소비자 SDK의 자동 관찰 기본값은 OFF입니다. 개발자도구 창 자체를 금지하거나 닫는 기능은 아닙니다. 실제 브라우저 메뉴로 열거나 분리된 개발자도구를 사용하는 경우를 자동 통제한다고 표시하지 않습니다. 창 크기 추정은 브라우저 테두리·확대·내장 브라우저에 오탐이 있어 기본 OFF입니다.
 
 ## 4. 외부 API와 Trusted Types 호환성 조정
 
@@ -392,7 +399,59 @@ webguardApp({ domIdentifiers: true });
 
 Vite는 PostCSS CSS Modules, Next는 지원되는 Webpack CSS Modules 연결을 사용합니다. Lightning CSS·기존 사용자 정의 클래스 이름 생성기와 충돌하면 오류를 확인하고 한 쪽을 선택하세요. 생성된 클래스 이름에 의존하는 외부 CSS·E2E 선택자는 영향을 받을 수 있으므로 안정적인 `data-*`나 명시적인 ID를 사용하고 실제 SSR hydration·스타일을 확인하세요. 클래스 이름이 불투명해져도 브라우저의 Elements·Styles·CSS 파일은 계속 보입니다.
 
-### 명시적으로 한 번 검사하는 실행 지연 신호
+### 자동 관찰 또는 수동 검사를 선택하는 실행 지연 신호
+
+Vite는 빌드 설정의 `runtime` 한 곳에서 자동 관찰을 켭니다. SDK가 시작된 뒤 보이는 페이지에서 관찰하며 별도 검사 버튼 호출이 필요하지 않습니다.
+
+```ts
+webguardApp({
+  runtime: {
+    debugging: {
+      enabled: true,
+      watch: true,
+      intervalMs: 1000,
+      thresholdMs: 1500,
+      response: "report",
+    },
+  },
+});
+```
+
+Next Webpack 연결에도 같은 브라우저 정책을 전달할 수 있습니다.
+
+```js
+withWebGuard(existingNextConfig, {
+  runtime: {
+    debugging: {
+      enabled: true,
+      watch: true,
+      intervalMs: 1000,
+      thresholdMs: 1500,
+      response: "report",
+    },
+  },
+});
+```
+
+`enabled`와 `watch`를 모두 켜야 자동 관찰합니다. `watch`는 기본 false이며 `intervalMs`는 기본 1,000ms, 허용 범위 250~60,000ms입니다. 관찰 타이머 하나가 지정한 전체 간격의 지연을 확인하고 다음 기한을 이어 잡습니다. 0ms 반복 루프나 `debugger` 트랩을 삽입하지 않습니다. 실제 복귀가 요청 간격에 더해 `thresholdMs` 이상 늦으면 `execution-pause-suspected` 신호를 냅니다. 연속으로 늦는 콜백은 정상 표본이 나오거나 관찰이 다시 시작될 때까지 중복 알림을 억제합니다.
+
+탭이 숨겨지거나 `pagehide`가 발생하면 기한을 취소하고, 다시 보이거나 `pageshow`가 발생하면 새 기한으로 시작합니다. 숨겨진 시간을 실행 지연으로 점수화하지 않습니다. JavaScript가 일시 정지된 동안에는 SDK도 실행되지 않으므로 신호는 **실행을 재개한 뒤**에만 나올 수 있습니다. 개발자도구를 열기만 하고 실행을 멈추지 않으면 관찰할 변화가 없을 수 있습니다. CPU 부하·브라우저 스케줄링도 지연을 만들므로 이 신호가 DevTools 열림을 증명하지 않습니다.
+
+기존 인스턴스에서 관찰 상태를 확인하거나 정책을 즉시 바꿀 수 있습니다.
+
+```ts
+import { getWebGuard } from "uulab-webguard/client";
+
+const guard = getWebGuard();
+const status = guard?.getDebuggingState();
+// state: off | manual | watching | suspended | unavailable
+// samples, lastCheckedAt, lastDelayMs, lastSuspicionAt
+guard?.update({ debugging: { watch: false } });
+```
+
+상태는 관찰 OFF(`off`), 수동 검사만 허용(`manual`), 관찰 중(`watching`), 페이지 숨김·이탈로 대기(`suspended`), 환경 미지원(`unavailable`)을 구분합니다. `samples`와 마지막 시간·추가 지연 값은 **자동 관찰 표본만** 기록하며 아직 표본·신호가 없으면 시간·지연 값은 null입니다. 수동 검사 결과는 이 통계에 합산하지 않습니다. 관찰의 활성화·watch·간격·임계값·반응 정책이 바뀌면 통계를 초기화합니다. getter는 현재 스냅샷이며 자동으로 갱신되는 UI나 보안 판정값이 아닙니다.
+
+자동 관찰 없이 필요한 시점에만 표본 하나를 검사하는 수동 경로도 유지합니다.
 
 자동 통합한 SDK는 기존 인스턴스를 조회해서 설정합니다. 아래 코드는 브라우저에서 실행하세요.
 
@@ -403,6 +462,7 @@ const guard = getWebGuard();
 guard?.update({
   debugging: {
     enabled: true,
+    watch: false,
     response: "report",
     sampleMs: 100,
     thresholdMs: 1500,
@@ -411,9 +471,9 @@ guard?.update({
 const delayed = await guard?.checkDebugging();
 ```
 
-`checkDebugging()`을 호출할 때만 보이는 페이지에서 타이머 표본 하나를 검사합니다. 요청 지연 `sampleMs`에 더해 실제 복귀가 `thresholdMs` 이상 늦으면 `true`와 실행 지연 의심 이벤트를 반환합니다. 디버거 일시 정지뿐 아니라 CPU 부하·브라우저 스케줄링도 원인이므로 개발자도구가 열렸다는 증거가 아닙니다. `false`에는 신호 없음 외에 비활성화·취소·숨겨진 페이지도 포함됩니다. 연속 `debugger` 트랩이나 자동 반복 검사는 삽입하지 않습니다.
+`checkDebugging()`은 호출할 때 보이는 페이지에서 타이머 표본 하나를 검사합니다. 요청 지연 `sampleMs`에 더해 실제 복귀가 `thresholdMs` 이상 늦으면 `true`와 실행 지연 의심 이벤트를 반환합니다. `false`에는 신호 없음 외에 비활성화·취소·숨겨진 페이지도 포함됩니다. 자동 관찰과 별도로 수동 표본은 한 번에 하나만 실행합니다. `watch: false`만으로 수동 검사까지 비활성화되지는 않으며 전체 검사를 해제하려면 `enabled: false`로 설정하세요.
 
-`sampleMs`는 기본 100ms·최대 1,000ms, `thresholdMs`는 기본 1,500ms·최대 60,000ms입니다. 명시적 검사라도 임계값을 지나치게 낮추면 정상 사용을 방해할 수 있습니다. `response: "block"`은 의심 시 페이지 안내로 상호작용을 제한하며 개발자도구·콘솔·네트워크나 실행 중인 코드를 중단하지 않습니다.
+수동 검사의 `sampleMs`는 기본 100ms·최대 1,000ms입니다. 공통 `thresholdMs`는 기본 1,500ms·최대 60,000ms입니다. 기본 반응은 `report`이며 임계값을 지나치게 낮추면 정상 사용도 의심 신호가 될 수 있습니다. 명시적으로 선택한 `response: "block"`은 의심 시 페이지 안내로 상호작용을 제한하며 개발자도구·콘솔·네트워크나 실행 중인 코드를 중단하지 않습니다.
 
 ### 선택한 정적 DOM의 변조 신호
 
@@ -462,3 +522,5 @@ export function StaticNotice() {
 예제는 페이지가 공유하는 가드의 DOM 정책을 이 컴포넌트가 소유한다는 전제입니다. 여러 화면이 같은 정책을 관리한다면 앱 수명주기에 맞춰 한 곳에서 통합하세요. SDK가 마운트 후 시작되는 수동 통합은 가드 초기화가 완료된 뒤 설정해야 합니다.
 
 두 신호 모두 직접 `WebGuard.init()`의 옵션이나 Vite·Next의 `runtime` 옵션으로 전달할 수 있습니다. DOM 감시를 초기 HTML 주입 단계에서 켜면 앱이 아직 마운트되지 않아 오류가 날 수 있으므로 위처럼 켜는 시점을 정하세요. 해제는 `guard.update({ debugging: { enabled: false }, domIntegrity: { enabled: false } })`, 완전한 정리는 `guard.destroy()`입니다. `block`은 관찰한 신호에 대한 클라이언트 UI 반응이며 인증·인가·서버 데이터 무결성을 대신하지 않습니다.
+
+자동 관찰을 한 번 활성화한 뒤 OFF로 바꾸면 타이머와 visibility 수신기는 제거하고, `pagehide`·`pageshow` 수신기 두 개만 `destroy()`까지 유지합니다. OFF 동안의 페이지 복귀도 추적해 잘못 재시작하거나 계속 중지되는 일을 막습니다. 최초부터 비활성 상태인 SDK에는 이 두 수신기도 연결하지 않습니다.

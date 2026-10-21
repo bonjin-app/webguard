@@ -164,7 +164,29 @@ const className = generateName("notice", "/absolute/project/Notice.module.css");
 
 ### SSR 이후의 선택적 런타임 검사
 
-브라우저 SDK의 `debugging`과 `domIntegrity`는 모두 기본 OFF입니다. `debugging: { enabled: true, response: "report" }`를 설정한 뒤 **명시적으로** `await guard.checkDebugging()`을 호출하면 보이는 페이지에서 타이머 지연 표본 하나를 검사합니다. CPU 부하 등으로도 발생할 수 있는 신호이며 개발자도구 탐지·반복 debugger 트랩이 아닙니다. `false`에는 비활성화·취소·숨김 상태도 포함됩니다.
+브라우저 SDK의 `debugging`과 `domIntegrity`는 모두 기본 OFF입니다. 실행 지연은 자동 관찰과 명시적인 한 번 검사 중에서 선택할 수 있습니다. Vite·Next 빌드 설정 한 곳에서 다음 브라우저 정책을 전달하면 SDK 시작 후 관찰합니다.
+
+```js
+const runtime = {
+  debugging: {
+    enabled: true,
+    watch: true,
+    intervalMs: 1000,
+    thresholdMs: 1500,
+    response: "report",
+  },
+};
+// Vite 설정의 플러그인: webguardApp({ runtime })
+// Next 설정: withWebGuard(existingNextConfig, { runtime })
+```
+
+`watch`는 기본 false이고 자동 관찰의 전체 간격 `intervalMs`는 기본 1,000ms·범위 250~60,000ms입니다. 보이는 페이지에서 타이머 하나로 다음 기한을 이어 관찰하며, 늦게 돌아온 시간이 추가 임계값을 넘으면 신호를 냅니다. 페이지 숨김·`pagehide` 시 기한을 취소하고 다시 보이거나 `pageshow` 시 새 기한을 시작하므로 숨겨진 시간을 신호로 계산하지 않습니다. 연속 지연 콜백의 이벤트는 정상 표본 또는 재시작 전까지 중복 억제합니다. `debugger` 트랩이나 0ms 반복 루프를 삽입하지 않습니다.
+
+실행이 정지된 동안에는 SDK도 멈추므로 신호는 재개 후에만 나옵니다. 단순히 DevTools를 열어 둔 상태는 관찰할 수 없을 수 있으며 CPU 부하·브라우저 스케줄링도 원인이 됩니다. 기본 `report`는 신호만 알리고, 선택적인 `block`은 페이지 UI 반응입니다. DevTools를 닫거나 JavaScript 실행을 멈추지 않습니다. 우리 공개 사이트는 체험 정책으로 자동 관찰의 `report`를 켜며, 소비자 SDK의 기본값과 구분합니다.
+
+브라우저에서 `/client`의 `getWebGuard()?.getDebuggingState()`로 `state`, `samples`, `lastCheckedAt`, `lastDelayMs`, `lastSuspicionAt`을 조회합니다. 상태는 `off`·`manual`·`watching`·`suspended`·`unavailable`이며 통계는 자동 관찰 표본에 한정합니다. 관련 관찰 정책 변경 시 초기화되고, 반환된 메타데이터 자체가 보안 판정은 아닙니다. SSR 요청에서 이 브라우저 API를 호출하지 마세요.
+
+`debugging: { enabled: true, watch: false, response: "report" }`는 수동 모드입니다. `await guard.checkDebugging()`을 호출하면 보이는 페이지에서 표본 하나를 검사합니다. 자동 관찰과 독립적으로 한 번에 수동 표본 하나만 실행되며 `false`에는 비활성화·취소·숨김 상태도 포함됩니다. SDK 전체 검사를 끄려면 `enabled: false`로 바꿉니다.
 
 `domIntegrity: { enabled: true, selectors: ["#static-notice"], response: "report" }`는 선택한 첫 일치 정적 앵커의 변경·이동·삭제·교체를 관찰합니다. 서버에서 SDK를 실행하거나 SSR 템플릿을 변경하지 않습니다. 가드가 준비되고 hydration·마운트가 끝난 뒤 정책을 켜고 `guard.rebaselineDom()`으로 현재 정적 내용을 기준으로 잡으세요. 요소 없음은 오류이며 자동으로 마운트 완료를 기다려 성공 처리하지 않습니다. 불일치·오류 후에는 관찰을 멈추므로 신뢰하는 상태에서 명시적으로 새 기준을 잡아야 재개합니다. 동적 폼·카운터·목록에는 연결하지 마세요.
 

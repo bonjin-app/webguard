@@ -37,7 +37,7 @@ const result = {
   checks: {},
   browsers: [],
   scope:
-    "Fresh installed Vite build with one webguardApp configuration; opt-in CSS Modules naming, static DOM monitoring and explicit normal timer sample. Does not prove DevTools detection, closure or resistance to a user controlling the browser.",
+    "Fresh installed Vite build with one webguardApp configuration; opt-in CSS Modules naming, static DOM monitoring, automatic visible-page deadline watch and explicit normal timer sample. Does not prove DevTools detection, closure or resistance to a user controlling the browser.",
 };
 async function save() {
   if (evidence) {
@@ -89,7 +89,7 @@ try {
     join(project, "vite.config.js"),
     `import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
-export default defineConfig({plugins:[webguardApp({domIdentifiers:true,runtime:{devtools:{detect:false},domIntegrity:{enabled:true,selectors:['#static-notice'],response:'report'},debugging:{enabled:true}}})]});\n`,
+export default defineConfig({plugins:[webguardApp({domIdentifiers:true,runtime:{devtools:{detect:false},domIntegrity:{enabled:true,selectors:['#static-notice'],response:'report'},debugging:{enabled:true,watch:true,intervalMs:250}}})]});\n`,
   );
   await mkdir(join(project, "public"));
   await writeFile(
@@ -98,7 +98,7 @@ export default defineConfig({plugins:[webguardApp({domIdentifiers:true,runtime:{
   );
   await writeFile(
     join(project, "index.html"),
-    '<!doctype html><html><head><meta charset="utf-8"><title>Installed runtime guards</title><link rel="icon" href="/favicon.svg"></head><body><div id="notice-parent"><p id="static-notice">Trusted static notice</p></div><p id="style-target">Module style</p><button id="tamper">Change text</button><button id="attribute">Change attribute</button><button id="remove">Remove anchor</button><button id="replace">Replace anchor</button><button id="restore">Restore and rebaseline</button><button id="disable">Disable monitoring</button><button id="enable">Enable monitoring</button><button id="sample">Sample normal timer</button><output id="state"></output><script type="module" src="/main.js"></script></body></html>',
+    '<!doctype html><html><head><meta charset="utf-8"><title>Installed runtime guards</title><link rel="icon" href="/favicon.svg"></head><body><div id="notice-parent"><p id="static-notice">Trusted static notice</p></div><p id="style-target">Module style</p><button id="tamper">Change text</button><button id="attribute">Change attribute</button><button id="remove">Remove anchor</button><button id="replace">Replace anchor</button><button id="restore">Restore and rebaseline</button><button id="disable">Disable monitoring</button><button id="enable">Enable monitoring</button><button id="read-watch">Read automatic watch state</button><button id="sample">Sample normal timer</button><output id="state"></output><script type="module" src="/main.js"></script></body></html>',
   );
   await writeFile(
     join(project, "notice.module.css"),
@@ -111,7 +111,7 @@ import { getWebGuard } from 'uulab-webguard/client';
 const guard=getWebGuard();
 if(!guard)throw new Error('SDK did not start before application');
 const state={automaticBeforeApp:true,sameGuard:true,threats:[],timer:'pending',rebaseline:null};
-const render=()=>{state.sameGuard=getWebGuard()===guard;state.options=guard.getOptions();document.querySelector('#state').textContent=JSON.stringify(state);};
+const render=()=>{state.sameGuard=getWebGuard()===guard;state.options=guard.getOptions();state.watch=guard.getDebuggingState();document.querySelector('#state').textContent=JSON.stringify(state);};
 guard.update({onThreat:event=>{state.threats.push({type:event.type,detail:event.detail});render();}});
 document.querySelector('#style-target').className=styles.confidentialPaymentStatus;
 const anchor=()=>document.querySelector('#static-notice');
@@ -122,6 +122,7 @@ document.querySelector('#replace').onclick=()=>{const replacement=document.creat
 document.querySelector('#restore').onclick=()=>{let node=anchor();if(!node){node=document.createElement('p');node.id='static-notice';document.querySelector('#notice-parent').append(node);}node.textContent='Trusted static notice';node.removeAttribute('data-changed');state.rebaseline=guard.rebaselineDom();render();};
 document.querySelector('#disable').onclick=()=>{guard.update({domIntegrity:{enabled:false}});render();};
 document.querySelector('#enable').onclick=()=>{guard.update({domIntegrity:{enabled:true}});render();};
+document.querySelector('#read-watch').onclick=render;
 document.querySelector('#sample').onclick=async()=>{state.timer=await guard.checkDebugging();render();};
 render();\n`,
   );
@@ -278,6 +279,18 @@ render();\n`,
       assert.deepEqual(initial.threats, []);
       assert.equal(initial.options.domIntegrity.enabled, true);
       assert.equal(initial.options.debugging.enabled, true);
+      assert.equal(initial.options.debugging.watch, true);
+      assert.equal(initial.watch.state, "watching");
+      for (let read = 0; read < 40; read++) {
+        await page.locator("#read-watch").click();
+        if ((await state()).watch.samples > 0) break;
+        await page.waitForTimeout(50);
+      }
+      assert.ok(
+        (await state()).watch.samples > 0,
+        "Automatic SDK watch must run without a manual sample",
+      );
+      record.automaticWatchWithoutManualSample = true;
       const className = await page
         .locator("#style-target")
         .getAttribute("class");

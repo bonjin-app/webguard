@@ -10,4 +10,12 @@ export const siteGuardOptions = {
     shortcutScope: "page",
   },
   integrity: { enabled: true },
+  // The product site observes visible-page stalls by default, with reporting only.
+  debugging: {
+    enabled: true,
+    watch: true,
+    intervalMs: 1000,
+    thresholdMs: 1500,
+    response: "report",
+  },
 } as const;

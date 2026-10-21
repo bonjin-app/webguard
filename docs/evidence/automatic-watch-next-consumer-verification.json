@@ -1,0 +1,388 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T08:41:44.482Z",
+  "tarballSha512": "b50e73be648a6f30cd8822003c369ef5ecb7b4b2e77982fdf79081667c64e78e1157169e58c1d5c2d204c45796b724fc4e585a7b86eb8251965ec2b134b6f7bb",
+  "versions": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "uulab-webguard": "0.3.0"
+  },
+  "checks": {
+    "noViteDependency": true,
+    "nextConfigTypes": true,
+    "unsupportedProductionBundlersRejected": true,
+    "productionBuild": true,
+    "browserChunksTransformed": true,
+    "publicMapsAbsent": true,
+    "requestSpecificSSR": true,
+    "apiUnchanged": true,
+    "cspUnchanged": true,
+    "requestNoncePropagated": true,
+    "productionCSPWithoutUnsafeEvalOrInline": true
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "errors": [],
+      "failedRequests": [],
+      "hydration": true,
+      "opaqueCSSModuleSSR": true,
+      "opaqueCSSModuleStyle": true,
+      "counter": true,
+      "clientNavigation": true,
+      "lazyImport": true,
+      "autoSDK": true,
+      "automaticDebuggingWatch": true,
+      "shortcutPageResponse": true,
+      "fetchedScripts": [
+        "/_next/static/chunks/webpack-9adc5d2c9bc3c6b9.js",
+        "/_next/static/chunks/main-app-bcfc65ba214a950a.js",
+        "/_next/static/chunks/app/page-634d0c64abe3c7c8.js",
+        "/_next/static/chunks/500-6416f8b97f5e5597.js",
+        "/_next/static/chunks/4bd1b696-a31448c1db3a0143.js",
+        "/_next/static/chunks/443-e99d87b740a76e00.js",
+        "/_next/static/chunks/958.a603af82c18106de.js",
+        "/_next/static/chunks/app/about/page-54729e9820756df7.js"
+      ]
+    },
+    {
+      "engine": "firefox",
+      "errors": [],
+      "failedRequests": [],
+      "hydration": true,
+      "opaqueCSSModuleSSR": true,
+      "opaqueCSSModuleStyle": true,
+      "counter": true,
+      "clientNavigation": true,
+      "lazyImport": true,
+      "autoSDK": true,
+      "automaticDebuggingWatch": true,
+      "shortcutPageResponse": true,
+      "fetchedScripts": [
+        "/_next/static/chunks/webpack-9adc5d2c9bc3c6b9.js",
+        "/_next/static/chunks/main-app-bcfc65ba214a950a.js",
+        "/_next/static/chunks/app/page-634d0c64abe3c7c8.js",
+        "/_next/static/chunks/500-6416f8b97f5e5597.js",
+        "/_next/static/chunks/443-e99d87b740a76e00.js",
+        "/_next/static/chunks/4bd1b696-a31448c1db3a0143.js",
+        "/_next/static/chunks/958.a603af82c18106de.js",
+        "/_next/static/chunks/app/about/page-54729e9820756df7.js"
+      ]
+    },
+    {
+      "engine": "webkit",
+      "errors": [],
+      "failedRequests": [],
+      "hydration": true,
+      "opaqueCSSModuleSSR": true,
+      "opaqueCSSModuleStyle": true,
+      "counter": true,
+      "clientNavigation": true,
+      "lazyImport": true,
+      "autoSDK": true,
+      "automaticDebuggingWatch": true,
+      "shortcutPageResponse": true,
+      "fetchedScripts": [
+        "/_next/static/chunks/webpack-9adc5d2c9bc3c6b9.js",
+        "/_next/static/chunks/4bd1b696-a31448c1db3a0143.js",
+        "/_next/static/chunks/main-app-bcfc65ba214a950a.js",
+        "/_next/static/chunks/app/page-634d0c64abe3c7c8.js",
+        "/_next/static/chunks/500-6416f8b97f5e5597.js",
+        "/_next/static/chunks/443-e99d87b740a76e00.js",
+        "/_next/static/chunks/958.a603af82c18106de.js",
+        "/_next/static/chunks/app/about/page-54729e9820756df7.js"
+      ]
+    }
+  ],
+  "scope": "Next App Router production Webpack browser chunks; SSR/RSC/API code and CSP are unchanged; public/ and inline Flight data are not obfuscated",
+  "protectionTiers": {
+    "policy": "Conclusive third-party module graphs use Standard; app, SDK, mixed and unknown chunks keep Strict",
+    "counts": {
+      "strict": 19,
+      "standard": 3,
+      "basic": 0
+    },
+    "inputBytes": 977091,
+    "outputBytes": 7138757,
+    "assets": [
+      {
+        "path": "static/chunks/polyfills-42372ed130431b0a.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 112594,
+        "outputBytes": 1386611
+      },
+      {
+        "path": "static/GhEbhcnBXGkOn6CvTBU7s/_ssgManifest.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 77,
+        "outputBytes": 6014
+      },
+      {
+        "path": "static/GhEbhcnBXGkOn6CvTBU7s/_buildManifest.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 515,
+        "outputBytes": 9224
+      },
+      {
+        "path": "static/chunks/main-f644b3efb39741ce.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 159426,
+        "outputBytes": 1704120
+      },
+      {
+        "path": "static/chunks/main-app-bcfc65ba214a950a.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 519,
+        "outputBytes": 9584
+      },
+      {
+        "path": "static/chunks/app/_not-found/page-7510a7db9ac4f3fe.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 2667,
+        "outputBytes": 34253
+      },
+      {
+        "path": "static/chunks/app/_global-error/page-d4a63d3e9d69f995.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6386
+      },
+      {
+        "path": "static/chunks/next/dist/client/components/builtin/not-found-7bfdc538f69f0d4c.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6872
+      },
+      {
+        "path": "static/chunks/app/layout-c8c1f0482cd9d473.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6063
+      },
+      {
+        "path": "static/chunks/next/dist/client/components/builtin/global-error-2799034b3006d8d6.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 179,
+        "outputBytes": 6967
+      },
+      {
+        "path": "static/chunks/next/dist/client/components/builtin/forbidden-b1b711249ff39adf.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6072
+      },
+      {
+        "path": "static/chunks/next/dist/client/components/builtin/unauthorized-ba10232af0b81290.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6110
+      },
+      {
+        "path": "static/chunks/next/dist/client/components/builtin/app-error-b872eb1e01c13751.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6297
+      },
+      {
+        "path": "static/chunks/app/api/quote/route-1c9b6630a4c753a5.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 154,
+        "outputBytes": 6310
+      },
+      {
+        "path": "static/chunks/app/about/page-54729e9820756df7.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 183,
+        "outputBytes": 6853
+      },
+      {
+        "path": "static/chunks/app/page-634d0c64abe3c7c8.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 1873,
+        "outputBytes": 28881
+      },
+      {
+        "path": "static/chunks/webpack-9adc5d2c9bc3c6b9.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 3204,
+        "outputBytes": 42251
+      },
+      {
+        "path": "static/chunks/958.a603af82c18106de.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 168,
+        "outputBytes": 6623
+      },
+      {
+        "path": "static/chunks/framework-4216e6f11391564d.js",
+        "preset": "standard",
+        "origin": "framework",
+        "inputBytes": 218916,
+        "outputBytes": 473087
+      },
+      {
+        "path": "static/chunks/4bd1b696-a31448c1db3a0143.js",
+        "preset": "standard",
+        "origin": "framework",
+        "inputBytes": 203721,
+        "outputBytes": 441388
+      },
+      {
+        "path": "static/chunks/500-6416f8b97f5e5597.js",
+        "preset": "standard",
+        "origin": "framework",
+        "inputBytes": 7642,
+        "outputBytes": 16526
+      },
+      {
+        "path": "static/chunks/443-e99d87b740a76e00.js",
+        "preset": "strict",
+        "origin": "application-or-unknown",
+        "inputBytes": 264329,
+        "outputBytes": 2922265
+      }
+    ],
+    "measurement": "Uncompressed compiled JavaScript bytes before/after obfuscation; this is not a startup or network performance benchmark"
+  },
+  "chunks": [
+    {
+      "path": "chunks/443-e99d87b740a76e00.js",
+      "bytes": 2922265,
+      "sha384": "1a4e896b370faeadb28a30b80e7c782a2edc2e40835986fcbf282a066ebfd6d1d85762b8de642edd37132d98e6ff1fa1",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/4bd1b696-a31448c1db3a0143.js",
+      "bytes": 441388,
+      "sha384": "776ef354af8514092149dfbc5c697ece45cb2abdb6f99234ba996ceea741e11a8b89e9259123249c24247901edb82b15",
+      "preset": "standard"
+    },
+    {
+      "path": "chunks/500-6416f8b97f5e5597.js",
+      "bytes": 16526,
+      "sha384": "01c8b1ba4454855e529ac1b13df5e5ab33121838907a718fc95cf2e6417526269f30d49465376cfae84ec42f9d669704",
+      "preset": "standard"
+    },
+    {
+      "path": "chunks/958.a603af82c18106de.js",
+      "bytes": 6623,
+      "sha384": "c1b5521af555a4bfcc7752b52a870e569913f9d3328978ee438348a25e295c677dfcb82deda9f5d848e968295311a081",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/_global-error/page-d4a63d3e9d69f995.js",
+      "bytes": 6386,
+      "sha384": "cc27080f7649ddd6c122f8750a7d6fd2282bd7f603f503bd0358bb3470724393be8454a851c8653d4525cc3c2fe7f7e7",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/_not-found/page-7510a7db9ac4f3fe.js",
+      "bytes": 34253,
+      "sha384": "925d1a722fa6363f032af4f5c287f0912b0dc09f8b914eeb3229a959abe274497a6e1c913f5ecb209888a46c21039ad3",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/about/page-54729e9820756df7.js",
+      "bytes": 6853,
+      "sha384": "f81170386b4ae3915591e5f5466d2730c190472634e550388f51d90aba42209916b749988c4aafdb1f6d5c70d791b096",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/api/quote/route-1c9b6630a4c753a5.js",
+      "bytes": 6310,
+      "sha384": "49ed7beacae3f2e09295db90721d4cd018bb5f1d4c6e52e4c49640658147c2aa24ec7418b60a5a7507657ace1f926c8e",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/layout-c8c1f0482cd9d473.js",
+      "bytes": 6063,
+      "sha384": "490fa48db4f6593a0f94512a7206dbfbf9f1ac23fd05aed21d165efe75722933c22c57aaa04f6dbbbed951777d57bcf0",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/app/page-634d0c64abe3c7c8.js",
+      "bytes": 28881,
+      "sha384": "9737c06e84cac992f4d5af39c92c10897bb8a2facd122c605d95fa80b1f492dd0957ef38ff37196f5081ada922af5403",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/framework-4216e6f11391564d.js",
+      "bytes": 473087,
+      "sha384": "50060eda13bb849ae718ec3f09e945a6c62f4ba25c2cd7b2a47ab42259efaf4fb174db28f647dfa6975c61ebcf949ab0",
+      "preset": "standard"
+    },
+    {
+      "path": "chunks/main-app-bcfc65ba214a950a.js",
+      "bytes": 9584,
+      "sha384": "c504f1d5f0da7beeefac42d73ecf09aab739255a034b4948ea5bd1914c23b33007a6837f1b93b9d841432a22287a2c23",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/main-f644b3efb39741ce.js",
+      "bytes": 1704120,
+      "sha384": "2b7002fffcefecce97326c3e9d4d3532c1849420ae5d61fb25498399779604937f7161cbd0d6d5541e3813d36304a457",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/next/dist/client/components/builtin/app-error-b872eb1e01c13751.js",
+      "bytes": 6297,
+      "sha384": "1187efd9f2e4df14a73470fe6582faa6706fff5a974a94880b3a15203f2fa3defb8b18d93902e589d2529bdf8c38bc37",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/next/dist/client/components/builtin/forbidden-b1b711249ff39adf.js",
+      "bytes": 6072,
+      "sha384": "5d36319134e5450beb35926dbf1cd458a107b5c96ac6d67992fb5e3100bab84404b9b5e571effd670c9dcde6a2bfe60a",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/next/dist/client/components/builtin/global-error-2799034b3006d8d6.js",
+      "bytes": 6967,
+      "sha384": "cdc270d54c39865fb10a05e726c153ac7304f0682a82928ea8a383750e7baa7c2a15a2fc6923a8fce9987f494ba3e5a7",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/next/dist/client/components/builtin/not-found-7bfdc538f69f0d4c.js",
+      "bytes": 6872,
+      "sha384": "d020dd5897245212f6d509fcfd7d18e4f5a00a6c0855a1961cc4d1303bb2152ce05a5a46832c6f3938150dc2997b3a6e",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/next/dist/client/components/builtin/unauthorized-ba10232af0b81290.js",
+      "bytes": 6110,
+      "sha384": "78e69ef5d1e57bcdd16a652180444d9f30ed83aef0555dffb1ae188818251532e2d0f3a5a479c8aa293bc187012ea174",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/polyfills-42372ed130431b0a.js",
+      "bytes": 1386611,
+      "sha384": "e9ad2428cd4d25c8db4ba53229570d026c5ae9f068213d6e36e6a18d390eda3cbec99421db0d893bde8933f435b654b3",
+      "preset": "strict"
+    },
+    {
+      "path": "chunks/webpack-9adc5d2c9bc3c6b9.js",
+      "bytes": 42251,
+      "sha384": "aaece651704b28243b0d8876ba2438b6dcbf07e35b15c03f319fc868f2add8118e7703ad9a7b5ac49e710dae7a87726f",
+      "preset": "strict"
+    }
+  ]
+}

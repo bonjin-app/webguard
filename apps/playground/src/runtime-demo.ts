@@ -3,7 +3,7 @@ import { siteGuardOptions } from "../../site-guard-options";
 const inputArt = new URL("./assets/input-try.webp", import.meta.url).href;
 export const runtimeMarkup = `
 <section id="live-demo" class="demo-section runtime-demo" aria-labelledby="runtime-heading">
-<h3 id="runtime-heading" class="sr-only">브라우저 가드 실시간 체험</h3>
+<h3 id="runtime-heading" class="sr-only">브라우저 가드 실시간 체험</h3><p><a class="demo-link" href="#runtime-hardening">자동 감시·DOM 변조 체험 →</a></p>
 <div class="runtime-switches"><label class="switch-label"><span>페이지 보호 모드</span><input id="runtime-page-block" type="checkbox" checked></label><label class="switch-label"><span>단축키 제한<span class="sr-only"> · Restrict F12 / inspect shortcuts</span></span><input id="shortcuts" type="checkbox" checked></label><label class="switch-label"><span>우클릭 제한<span class="sr-only"> · Restrict context menu</span></span><input id="context" type="checkbox" checked></label></div><button id="runtime-defaults" class="text-button" type="button">사이트 기본값으로 되돌리기</button>
 <div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>여기를 클릭하고 단축키를 눌러보세요.</h3><p>Mac ⌘+⌥+I · Windows Ctrl+Shift+I · F12<br>우클릭은 별도 스위치로 켜고 끌 수 있습니다.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div><p id="runtime-state" class="runtime-state" aria-live="polite"></p>
 <p class="runtime-scope">이 페이지 전체에 SDK가 기본 적용됩니다. 페이지 보호 모드·검사 단축키·본문 우클릭 제한이 ON입니다. 위 시험 영역 밖에서도 동작합니다. 스위치로 보호 전후를 비교하세요. 페이지 보호 모드를 끄면 편집 영역의 검사 단축키를 허용합니다. 입력 영역의 우클릭은 항상 허용합니다. 브라우저 메뉴·콘솔 실행은 제어하지 못합니다.</p>
@@ -106,6 +106,7 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
     });
     syncControls();
     configure();
+    window.dispatchEvent(new Event("webguard-demo-defaults"));
   });
   function configure() {
     let threshold = get<HTMLInputElement>("runtime-threshold").valueAsNumber;

@@ -12,6 +12,26 @@ test("the documentation applies its own SDK and controls actual page protection"
   await expect(page.locator("#site-shortcuts")).toBeChecked();
   await expect(page.locator("#site-context")).toBeChecked();
   await expect(page.locator("#site-detect")).not.toBeChecked();
+  await expect(page.locator("#site-pause-watch")).toBeChecked();
+  await expect(page.locator("#site-debugging-state")).toHaveAttribute(
+    "data-state",
+    "watching",
+  );
+  await expect
+    .poll(async () =>
+      Number(
+        await page
+          .locator("#site-debugging-state")
+          .getAttribute("data-samples"),
+      ),
+    )
+    .toBeGreaterThan(0);
+  await page.locator("#site-pause-watch").uncheck();
+  await expect(page.locator("#site-debugging-state")).toHaveAttribute(
+    "data-state",
+    "off",
+  );
+  await page.locator("#site-pause-watch").check();
   await expect(page.locator("[data-webguard-blocker]")).toHaveCount(0);
   await expect(controls).toContainText("콘솔 실행은 통제할 수 없습니다");
 

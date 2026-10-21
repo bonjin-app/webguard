@@ -17,9 +17,9 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <label><input id="site-page-block" type="checkbox" checked>검사 입력에 페이지 보호 안내</label>
       <label><input id="site-shortcuts" type="checkbox" checked>검사 단축키 제한 · 입력 영역 포함</label>
       <label><input id="site-context" type="checkbox" checked>우클릭 제한 · 입력 영역 제외</label>
-      <label><input id="site-detect" type="checkbox">크기 변화 추정 감지 · 오탐 가능</label>
+      <label><input id="site-detect" type="checkbox">크기 변화 추정 감지 · 오탐 가능</label><label><input id="site-pause-watch" type="checkbox" checked>실행 지연 자동 감시 · 보고</label>
     </div>
-    <p id="site-protection-state" role="status" aria-live="polite"></p>
+    <p id="site-debugging-state" aria-live="off"></p><p id="site-protection-state" role="status" aria-live="polite"></p>
     <p id="site-protection-event" role="status" aria-live="polite">아직 관측된 SDK 이벤트가 없습니다.</p>
     <p class="site-protection-limit">브라우저 메뉴로 여는 개발자도구와 콘솔 실행은 통제할 수 없습니다. 보호 안내는 페이지 위에 표시되며 개발자도구 창을 닫지 않습니다. 빌드 난독화·서버 보안 헤더는 이 스위치로 해제되지 않습니다.</p>
     <a href="/demo#live-demo">보호 전후 비교와 전체 데모 →</a>
@@ -95,17 +95,18 @@ guard.destroy();</code></pre><p>탐지는 오탐과 누락이 있는 참고 신�
 <section id="runtime-hardening"><div class="eyebrow">OPTIONAL PROTECTION</div><h2>클래스 식별자와 실행 중 변경을 함께 다루세요</h2><p>미게시 0.3.0 후보의 선택 기능입니다. 기존 앱에 자동으로 전체 DOM 감시를 추가하지 않습니다. <a href="/demo#runtime-hardening">실제 클래스를 보고, 감시를 켜고 끄며 체험하기 →</a></p><h3>CSS Modules 클래스 식별자</h3><pre><code>// Vite
 webguardApp({ domIdentifiers: true });
 // Next.js (운영 Webpack 빌드)
-withWebGuard(nextConfig, { domIdentifiers: true });</code></pre><p>CSS Modules의 클래스 이름을 wg_로 시작하는 불투명 식별자로 바꾸고, JavaScript·CSS·Next SSR이 같은 이름을 사용합니다. Next 내부의 생성 폰트 스타일과 메타데이터는 유지합니다. 전체 ID·전역 CSS·기존 DOM 선택자는 임의로 바꾸지 않습니다. 기존 사용자 지정 클래스 생성기와 충돌하면 빌드가 실패합니다. Elements·HTML·내용을 감추거나 원본 소유권을 증명하는 기능은 아닙니다.</p><h3>정적 DOM 감시와 명시적 실행 지연 검사</h3><pre><code>import { getWebGuard } from 'uulab-webguard/client';
+withWebGuard(nextConfig, { domIdentifiers: true });</code></pre><p>CSS Modules의 클래스 이름을 wg_로 시작하는 불투명 식별자로 바꾸고, JavaScript·CSS·Next SSR이 같은 이름을 사용합니다. Next 내부의 생성 폰트 스타일과 메타데이터는 유지합니다. 전체 ID·전역 CSS·기존 DOM 선택자는 임의로 바꾸지 않습니다. 기존 사용자 지정 클래스 생성기와 충돌하면 빌드가 실패합니다. Elements·HTML·내용을 감추거나 원본 소유권을 증명하는 기능은 아닙니다.</p><h3>정적 DOM 감시와 자동 실행 지연 관찰</h3><pre><code>import { getWebGuard } from 'uulab-webguard/client';
 // SSR hydration/CSR 렌더링이 끝나고 정적 안내가 존재한 뒤 호출
 const guard = getWebGuard();
 guard?.update({
   domIntegrity: {
     enabled: true, selectors: ['#static-notice'], response: 'report',
   },
-  debugging: { enabled: true, response: 'report' },
+  debugging: { enabled: true, watch: true, intervalMs: 1000, response: 'report' },
 });
-await guard?.checkDebugging();
-// 정상 DOM 변경이 완료된 즉시: guard?.rebaselineDom();</code></pre><p>DOM 감시는 선택자마다 첫 번째 정적 light-DOM 영역의 텍스트·속성·삭제·이동·교체를 관찰합니다. 기본 총 1,000노드·64KiB이고 최대 4,096노드·256KiB, 선택자 16개·각 256자입니다. 기준 수집 오류나 불일치 후 관찰을 멈추며, 원문 DOM을 이벤트에 넣지 않습니다. 렌더링 전 선택자가 없으면 오류가 발생하므로 렌더링 후 rebaselineDom()으로 명시적으로 수집하세요. 동적 카운터·폼, input.value 같은 DOM 프로퍼티·canvas·닫힌 ShadowRoot는 이 기능의 보호 대상이 아닙니다.</p><p>checkDebugging()은 보이는 페이지에서 호출마다 타이머를 한 번 측정합니다. 기본 예정 지연 100ms에서 추가로 1,500ms 이상 늦어지면 execution-pause-suspected 이벤트를 냅니다. sampleMs 최대 1,000ms, thresholdMs 최대 60,000ms입니다. false는 비활성·숨김·취소·검사 중에도 반환될 수 있어 정상 인증값이 아닙니다. CPU 부하·절전도 오탐 원인이며, DevTools의 열림·닫힘을 확정하지 않습니다. SDK가 debugger 구문이나 반복 일시정지 코드를 삽입하지 않습니다.</p><p>두 기능은 기본 OFF입니다. response: 'report'가 기본이며 'block'은 페이지 안에 보호 안내를 표시합니다. 안내는 개발자도구·콘솔·스크립트 실행·서버 접근을 차단하는 경계가 아닙니다. update()로 끄거나 destroy()하면 감시와 진행 중인 측정을 정리합니다. 자세한 React 수명주기 예제와 옵션은 <a href="/docs/INSTALL.ko.txt">한국어 가이드 9절</a>을 참고하세요.</p></section>
+console.log(guard?.getDebuggingState()); // 실제 자동 관찰 상태
+await guard?.checkDebugging(); // 별도 수동 검사도 가능
+// 정상 DOM 변경이 완료된 즉시: guard?.rebaselineDom();</code></pre><p>DOM 감시는 선택자마다 첫 번째 정적 light-DOM 영역의 텍스트·속성·삭제·이동·교체를 관찰합니다. 기본 총 1,000노드·64KiB이고 최대 4,096노드·256KiB, 선택자 16개·각 256자입니다. 기준 수집 오류나 불일치 후 관찰을 멈추며, 원문 DOM을 이벤트에 넣지 않습니다. 렌더링 전 선택자가 없으면 오류가 발생하므로 렌더링 후 rebaselineDom()으로 명시적으로 수집하세요. 동적 카운터·폼, input.value 같은 DOM 프로퍼티·canvas·닫힌 ShadowRoot는 이 기능의 보호 대상이 아닙니다.</p><p>debugging.watch: true는 보이는 페이지의 타이머 기한을 자동으로 관찰합니다. intervalMs는 기본 1,000ms, 허용 범위 250~60,000ms입니다. 숨김·pagehide에서 취소하고 복귀 시 새 기한을 잡아 숨겨진 시간을 의심 신호로 계산하지 않습니다. 타이머는 하나이며 수동 검사는 최대 한 개를 별도로 사용합니다. getDebuggingState()는 자동 관찰 상태·완료 횟수·마지막 측정·최근 의심 시각을 반환합니다. 감시 설정 변경 시 통계가 재시작하며 정상 측정이 뒤따라도 최근 의심 시각은 유지됩니다. 이 사이트는 보고 모드로 자동 감시를 기본 켜 두었고 위 실제 설정에서 끌 수 있습니다.</p><p>DevTools가 단순히 열려 있기만 하면 지연이 없을 수 있습니다. 실제 일시정지도 타이머 기한을 충분히 늦추지 않으면 관찰되지 않습니다. JavaScript 자체가 멈춘 동안에는 결과를 처리하지 못하므로 신호는 재개 후에 전달됩니다. 느린 기기·절전도 원인이 될 수 있습니다.</p><p>checkDebugging()은 보이는 페이지에서 호출마다 타이머를 한 번 측정합니다. 기본 예정 지연 100ms에서 추가로 1,500ms 이상 늦어지면 execution-pause-suspected 이벤트를 냅니다. sampleMs 최대 1,000ms, thresholdMs 최대 60,000ms입니다. false는 비활성·숨김·취소·검사 중에도 반환될 수 있어 정상 인증값이 아닙니다. CPU 부하·절전도 오탐 원인이며, DevTools의 열림·닫힘을 확정하지 않습니다. SDK가 debugger 구문이나 반복 일시정지 코드를 삽입하지 않습니다.</p><p>두 기능은 기본 OFF입니다. response: 'report'가 기본이며 'block'은 페이지 안에 보호 안내를 표시합니다. 안내는 개발자도구·콘솔·스크립트 실행·서버 접근을 차단하는 경계가 아닙니다. update()로 끄거나 destroy()하면 감시와 진행 중인 측정을 정리합니다. 자세한 React 수명주기 예제와 옵션은 <a href="/docs/INSTALL.ko.txt">한국어 가이드 9절</a>을 참고하세요.</p></section>
 <section id="integrity-budgets"><h2>파일 검사 요청에도 한도를 적용해요</h2><p>미게시 후보의 checkIntegrity는 검사를 활성화하고 직접 호출할 때 실행됩니다. 파일 전체를 자동 감시하지 않습니다. 쿠키·리퍼러를 보내지 않고 리디렉션을 거부합니다. 기본 10초·압축 해제 후 16MiB·인스턴스당 동시 4개로 제한합니다. 시간 초과나 크기 초과를 변조 탐지 성공으로 계산하지 않습니다.</p><pre><code>webguardApp({ runtime: { integrity: {
   enabled: true,
   timeoutMs: 10_000,
@@ -147,6 +148,7 @@ const pageBlockSwitch = siteSwitch("site-page-block");
 const shortcutSwitch = siteSwitch("site-shortcuts");
 const contextSwitch = siteSwitch("site-context");
 const detectSwitch = siteSwitch("site-detect");
+const pauseWatchSwitch = siteSwitch("site-pause-watch");
 const siteStatus = document.querySelector<HTMLElement>(
   "#site-protection-state",
 )!;
@@ -160,11 +162,19 @@ function renderSiteProtection() {
   shortcutSwitch.checked = options?.blockShortcuts === true;
   contextSwitch.checked = options?.blockContextMenu === true;
   detectSwitch.checked = options?.detect === true;
+  const debugging = siteGuard.getOptions().debugging;
+  pauseWatchSwitch.checked =
+    debugging?.enabled === true && debugging.watch === true;
   siteStatus.textContent = `실제 SDK 상태 · 페이지 보호 안내 ${pageBlockSwitch.checked ? "ON" : "OFF"} · 단축키 ${shortcutSwitch.checked ? "ON" : "OFF"} · 우클릭 ${contextSwitch.checked ? "ON" : "OFF"} · 크기 추정 ${detectSwitch.checked ? "ON" : "OFF"}`;
 }
 
 function updateSiteProtection() {
   siteGuard.update({
+    debugging: {
+      enabled: pauseWatchSwitch.checked,
+      watch: pauseWatchSwitch.checked,
+      response: "report",
+    },
     devtools: {
       detect: detectSwitch.checked,
       blockShortcuts: shortcutSwitch.checked,
@@ -174,6 +184,7 @@ function updateSiteProtection() {
     },
   });
   renderSiteProtection();
+  renderDebuggingState();
 }
 
 siteGuard.update({
@@ -183,6 +194,8 @@ siteGuard.update({
       "shortcut-unavailable": "이 입력은 취소할 수 없습니다.",
       "context-menu-blocked": "페이지의 우클릭 기본 동작을 취소했습니다.",
       "context-menu-unavailable": "이 우클릭 이벤트는 취소할 수 없습니다.",
+      "execution-pause-suspected":
+        "실행 지연 신호를 관측했습니다. 개발자도구 열림을 확정하지 않습니다.",
       "devtools-heuristic":
         "크기 변화 추정 신호입니다. 개발자도구 열림을 확정하지 않습니다.",
       "page-blocked":
@@ -213,9 +226,58 @@ for (const control of [
   shortcutSwitch,
   contextSwitch,
   detectSwitch,
+  pauseWatchSwitch,
 ])
   control.addEventListener("change", updateSiteProtection);
 renderSiteProtection();
+let debuggingStatusTimer: ReturnType<typeof setTimeout> | undefined;
+let debuggingStatusHidden = false;
+function renderDebuggingState() {
+  const state = siteGuard.getDebuggingState();
+  const output = document.querySelector<HTMLElement>("#site-debugging-state")!;
+  output.dataset.state = state.state;
+  output.dataset.samples = String(state.samples);
+  const name = {
+    off: "OFF",
+    manual: "수동 검사 허용",
+    watching: "자동 감시 중",
+    suspended: "페이지 숨김 · 일시 중지",
+    unavailable: "관찰 불가",
+  }[state.state];
+  output.textContent =
+    "실행 지연 · " +
+    name +
+    " · 관찰 " +
+    state.samples +
+    "회" +
+    (state.lastCheckedAt === null
+      ? " · 첫 관찰 대기"
+      : " · 마지막 " + new Date(state.lastCheckedAt).toLocaleTimeString()) +
+    (state.lastSuspicionAt === null
+      ? ""
+      : " · 최근 의심 신호 " +
+        new Date(state.lastSuspicionAt).toLocaleTimeString());
+}
+function scheduleDebuggingStatus() {
+  clearTimeout(debuggingStatusTimer);
+  debuggingStatusTimer = undefined;
+  renderDebuggingState();
+  if (debuggingStatusHidden || document.visibilityState !== "visible") return;
+  debuggingStatusTimer = setTimeout(scheduleDebuggingStatus, 1000);
+}
+const resumeDebuggingStatus = () => {
+  debuggingStatusHidden = false;
+  scheduleDebuggingStatus();
+};
+window.addEventListener("pageshow", resumeDebuggingStatus);
+document.addEventListener("visibilitychange", scheduleDebuggingStatus);
+scheduleDebuggingStatus();
 window.addEventListener("pagehide", (event) => {
-  if (!event.persisted) siteGuard.destroy();
+  debuggingStatusHidden = true;
+  clearTimeout(debuggingStatusTimer);
+  if (!event.persisted) {
+    document.removeEventListener("visibilitychange", scheduleDebuggingStatus);
+    window.removeEventListener("pageshow", resumeDebuggingStatus);
+    siteGuard.destroy();
+  }
 });

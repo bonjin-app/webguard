@@ -346,6 +346,10 @@ void config;
         serverClass,
         "SSR and hydrated CSS class must match",
       );
+      await page
+        .locator("#automatic-watch-state")
+        .filter({ hasText: "watching" })
+        .waitFor();
       assert.equal(
         await page
           .locator("#counter")
@@ -394,6 +398,7 @@ void config;
         clientNavigation: true,
         lazyImport: true,
         autoSDK: true,
+        automaticDebuggingWatch: true,
         shortcutPageResponse: true,
         fetchedScripts: [...scripts],
       });

@@ -45,7 +45,7 @@ node scripts/verify-jsp-artifact.mjs
 
 어댑터는 운영 브라우저 청크에만 연결하며 Next 서버/RSC/API와 기존 CSP를 유지합니다. Next 16은 `next build --webpack`이 필요합니다. 인식 가능한 Next CLI 운영 빌드가 이를 누락하거나 Turbo 플래그를 지정하면 오류로 안내합니다. 프로그램 방식의 빌드 호출을 자동 판별하는 기능은 아닙니다. `.next` 전체 후처리·Turbopack·public/ 원본 JS·인라인 Flight 데이터는 대상이 아닙니다. Pages Router와 다른 Next 버전은 이 App Router 검증에 포함되지 않습니다.
 
-## 선택형 클래스·런타임 가드 후속 검증
+## 선택형 클래스·런타임 가드 후속 검증 (앞선 368e725 소스)
 
 같은 최종 테스트 tarball로 새 Vite 8.3.4와 Next 16.4.2 / React 19.3.1 프로젝트를 각각 설치했습니다. npm 게시는 하지 않았습니다. 앞선 JSP·Python·PHP 기록은 해당 기반 소스의 검증이며 이번 후속 실행으로 대체하지 않습니다.
 
@@ -55,6 +55,17 @@ node scripts/verify-jsp-artifact.mjs
 - 별도 데모 테스트는 Chromium CDP의 실제 일시정지·재개 후 타이머 지연 신호를 확인했습니다. 다른 두 엔진에는 CDP가 없으므로 이 특정 도구 시험은 명시적으로 건너뜁니다. 이는 모든 DevTools 열림을 탐지하거나 닫았다는 결과가 아닙니다.
 
 [새 Vite 설치 기록](evidence/runtime-vite-consumer-verification.json) · [새 Next 설치 기록](evidence/runtime-next-consumer-verification.json). DOM 감시는 선택한 작은 정적 light-DOM에만 적용하며 서버 권한 검증·브라우저 제어 경계가 아닙니다.
+
+## 자동 관찰 추가 후 설치 검증
+
+같은 미게시 후보 tarball을 새 Vite와 Next 프로젝트에 설치해 자동 관찰까지 확인했습니다. SDK 소비자 기본값은 OFF이며, 공개 사이트는 보고 모드의 자동 관찰을 기본 ON으로 설정합니다.
+
+- Vite 8.3.4: 빌드 설정의 debugging.watch: true만으로 자동 시작합니다. Chromium·Firefox·WebKit에서 수동 검사 버튼을 누르기 전 getDebuggingState().samples 증가를 확인했습니다. 기존 CSS 클래스·스타일·CSP/SRI·정적 DOM 감시·수동 검사·단일 SDK 검사도 함께 통과했습니다.
+- Next 16.4.2 / React 19.3.1: 같은 runtime 옵션으로 자동 관찰 상태를 hydration 후 확인했습니다. 세 엔진에서 SSR 클래스와 실제 스타일·요청별 nonce CSP·카운터·지연 로딩·클라이언트 이동을 유지했고 오류·실패 요청은 없었습니다.
+- 별도 Chromium CDP 시험은 수동 검사 호출 없이 실제 디버거 정지·재개 후 자동 신호, 정상 관찰 후에도 유지되는 최근 신호, 선택적 페이지 안내와 종료를 확인했습니다. CDP 전용 시험은 다른 두 엔진에서 명시적으로 건너뜁니다. DevTools가 단지 열려 있는 상황을 모두 알아내는 시험은 아닙니다.
+- Next 공개 JavaScript는 20개이며, 비압축 변환 전 977,091 → 변환 후 7,138,757바이트입니다. 이는 실행·호환성 검증이며 성능 벤치마크가 아닙니다.
+
+[자동 관찰 Vite 설치 기록](evidence/automatic-watch-vite-consumer-verification.json) · [자동 관찰 Next 설치 기록](evidence/automatic-watch-next-consumer-verification.json).
 
 ## 검증 범위
 
