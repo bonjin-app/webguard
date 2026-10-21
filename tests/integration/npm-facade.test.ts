@@ -21,6 +21,7 @@ it("resolves the injected browser entry through the facade factory only when run
 it("keeps original wrapper semantics and does not resolve disabled runtime entries", () => {
   expect(webguardApp().map((plugin) => plugin.name)).toEqual([
     "webguard-app-bootstrap",
+    "webguard-trusted-types-compatibility",
     "webguard",
     "webguard-protected-preview",
   ]);

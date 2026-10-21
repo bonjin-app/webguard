@@ -7,6 +7,11 @@ import { resourceMarkup, initResources } from "./resource-demo";
 import { policyMarkup, initPolicyDemo } from "./policy-demo";
 import { compatMarkup, initCompatDemo } from "./compat-demo";
 import {
+  createViteSetup,
+  setupOptionsMarkup,
+  type SetupProject,
+} from "./setup";
+import {
   runtimeMarkup,
   initRuntimeDemo,
   reportRuntimeThreat,
@@ -28,8 +33,8 @@ ${resourceMarkup}
 <section class="metrics" aria-label="Measured comparison"><article><h2>Code size</h2><strong id="size-change">—</strong><p id="size-detail">UTF-8 bytes, before → after</p></article><article><h2>Execution time</h2><strong id="timing">—</strong><p>Source → protected · one run, not a benchmark</p></article><article><h2>Output comparison</h2><strong id="equivalence">Not run</strong><p>Captured console output and completion status</p></article></section>
 <section class="results"><div><h2>Execution output <span class="badge">ISOLATED</span></h2><pre id="logs">// Console output appears after protection.</pre></div><div><h2>Local protection report</h2><pre id="report">No report yet.</pre></div></section>
 <section id="app-examples" class="demo-section" aria-labelledby="apps-heading"><div class="section-heading"><div><h2 id="apps-heading">보호된 웹앱을 직접 써보세요</h2><p>난독화된 실제 빌드입니다. 폼·카운터·화면 이동·동적 모듈이 동작하는지 확인하세요.</p></div></div><div class="sample-grid"><article class="sample-card"><span class="badge">AUTOMATIC SDK · STRICT</span><h3>React + Vite</h3><p>SDK 자동 시작, 강한 난독화, 서버 헤더와 실시간 제어를 한 앱에서 체험합니다.</p><a class="demo-link" href="/examples/react/">React 데모 열기</a></article><article class="sample-card"><span class="badge">MANUAL SDK · STANDARD</span><h3>JavaScript</h3><p>SDK를 직접 연결한 예제입니다. 단축키 옵션을 켜고 입력·동적 로딩을 시험하세요.</p><a class="demo-link" href="/examples/vanilla-js/">JavaScript 데모 열기</a></article><article class="sample-card"><span class="badge">TYPESCRIPT · STANDARD</span><h3>TypeScript</h3><p>TypeScript를 빌드한 뒤 보호한 예제입니다. 실행 동작과 SDK 옵션을 확인하세요.</p><a class="demo-link" href="/examples/vanilla-ts/">TypeScript 데모 열기</a></article></div></section>
-<section id="setup" class="demo-section" aria-labelledby="setup-heading"><div class="section-heading"><div><h2 id="setup-heading">0.3.0 로컬 후보 적용 방법</h2><p>0.3.0은 미게시 후보이며 현재 npm 공개 버전은 0.2.0입니다. 로컬 tgz 검토 또는 게시 후 설치 절차는 <a href="/docs/#install">한국어 설치 가이드</a>에서 확인하세요. 자동 HTML 정책·HTTP 서버 정책·SDK의 적용 범위는 서로 다릅니다.</p></div></div><pre><code># 0.3.0 배포 후에만 실행 — 현재 미게시
-npm install -D uulab-webguard@0.3.0</code></pre><div class="setup-tabs" role="group" aria-label="적용 코드 선택">${integrations.map((item, index) => `<button data-integration="${item.id}" aria-pressed="${index === 0}">${item.title}</button>`).join("")}</div><p id="setup-hint"></p><div class="code-panel"><pre><code id="setup-code"></code></pre><button id="copy-setup" class="sample-run">적용 코드 복사</button></div><p id="copy-setup-status" aria-live="polite"></p><details><summary>이 데모를 직접 실행하려면</summary><pre><code>pnpm install --frozen-lockfile
+<section id="setup" class="demo-section" aria-labelledby="setup-heading"><div class="section-heading"><div><h2 id="setup-heading">0.3.0 로컬 후보 적용 방법</h2><p>0.3.0은 미게시 후보이며 현재 npm 공개 버전은 0.2.0입니다. 로컬 tgz 검토 또는 게시 후 설치 절차는 <a href="/docs/#install">한국어 설치 가이드</a>에서 확인하세요. 자동 HTML 정책·HTTP 서버 정책·SDK의 적용 범위는 서로 다릅니다.</p></div></div><pre><code id="setup-install"># 미게시 0.3.0 후보 · 검토한 tgz의 실제 경로로 바꾸세요
+npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><div class="setup-tabs" role="group" aria-label="적용 코드 선택">${integrations.map((item, index) => `<button data-integration="${item.id}" aria-pressed="${index === 0}">${item.title}</button>`).join("")}</div><p id="setup-hint"></p>${setupOptionsMarkup}<div class="code-panel"><pre><code id="setup-code"></code></pre><button id="copy-setup" class="sample-run">적용 코드 복사</button></div><p id="copy-setup-status" aria-live="polite"></p><details><summary>이 데모를 직접 실행하려면</summary><pre><code>pnpm install --frozen-lockfile
 pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 웹앱·문서를 제공합니다. JSP는 위 준비 명령으로 WAR를 만든 뒤 별도 Tomcat에서 실행하세요.</p></details></section>
 <footer><strong>Protection has limits.</strong> Delivered JavaScript can still be inspected and modified. Keep secrets and authorization on your server. Execution supports console-based JavaScript, without DOM access; imports and network requests are blocked. Workers are stopped after 1 second. This is a testing aid, not a hostile-code containment service.</footer></main>`;
 const element = <T extends HTMLElement>(id: string) =>
@@ -234,8 +239,22 @@ const guard = WebGuard.init({
 });
 const cleanupRuntime = initRuntimeDemo(guard);
 let currentIntegration: (typeof integrations)[number] = integrations[0];
+function selectedSetup() {
+  return createViteSetup({
+    project: element<HTMLSelectElement>("setup-project").value as SetupProject,
+    blockShortcuts: element<HTMLInputElement>("setup-shortcuts").checked,
+    blockContextMenu: element<HTMLInputElement>("setup-context").checked,
+  });
+}
+function integrationCode() {
+  return currentIntegration.id === "vite"
+    ? selectedSetup().code
+    : currentIntegration.code;
+}
 function showIntegration() {
-  element("setup-code").textContent = currentIntegration.code;
+  element("setup-options").hidden = currentIntegration.id !== "vite";
+  element("setup-policy-note").textContent = selectedSetup().note;
+  element("setup-code").textContent = integrationCode();
   element("setup-hint").textContent = currentIntegration.hint;
   element("copy-setup-status").textContent = "";
   for (const button of document.querySelectorAll<HTMLButtonElement>(
@@ -257,7 +276,7 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(
   });
 element("copy-setup").addEventListener("click", async () => {
   try {
-    await navigator.clipboard.writeText(currentIntegration.code);
+    await navigator.clipboard.writeText(integrationCode());
     element("copy-setup-status").textContent = "적용 코드를 복사했습니다.";
   } catch {
     const selection = window.getSelection();
@@ -269,6 +288,7 @@ element("copy-setup").addEventListener("click", async () => {
       "클립보드 권한이 없어 코드를 선택했습니다. 직접 복사해 주세요.";
   }
 });
+element("setup-options").addEventListener("change", showIntegration);
 showIntegration();
 initLab();
 const cleanupResources = initResources();

@@ -106,6 +106,14 @@ getWebGuard()?.update({
 
 ## 4. 외부 API와 Trusted Types 호환성 조정
 
+### 빈 화면을 배포하기 전에 확인하세요
+
+`webguardApp()`은 Trusted Types 강제 모드에서 앱 소스의 `innerHTML`·`outerHTML` 대입, `insertAdjacentHTML`, 식별 가능한 `document.write/writeln` 호출을 발견하면 빌드에 `WG_TRUSTED_TYPES_SINK` 경고와 상대 파일 위치를 표시합니다. TypeScript 변환 후 검사하며 의존성·가상 모듈은 제외합니다. 경고가 나와도 정책을 자동 완화하지 않습니다.
+
+이는 실행 여부나 입력의 안전성을 증명하는 분석이 아닙니다. 별칭·동적 프로퍼티·해석하지 못하는 문법·다른 삽입 지점은 검사하지 못하며, 경고가 없다고 호환성이 보장되지 않습니다. 빌드 결과를 실제 브라우저에서 확인하세요. 특히 공식 Vite vanilla 원본 템플릿은 `innerHTML`을 사용하므로 기본 강제 모드에서 초기 렌더링이 차단됩니다. 안전한 DOM API로 바꾸거나 아래 관찰 모드를 명시적으로 선택해야 합니다.
+
+공개 데모의 [내 프로젝트에 적용](https://webguard.uulab.co.kr/demo#setup)에서 DOM API 앱·React·vanilla 원본 템플릿과 F12·우클릭 설정을 고르면 해당 Vite 설정을 복사할 수 있습니다. 원본 vanilla 선택은 Trusted Types가 차단 대신 관찰 모드라는 점을 표시합니다. 설정 생성은 현재 데모 페이지의 정책을 바꾸지 않습니다.
+
 외부 API는 필요한 **정확한 출처(origin)**만 추가하세요. URL 경로나 와일드카드 대신 스킴·호스트·필요한 포트를 지정합니다.
 
 ```ts

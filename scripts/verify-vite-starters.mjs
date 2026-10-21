@@ -6,6 +6,7 @@ import { join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { pathToFileURL } from "node:url";
 import { chromium, firefox, webkit } from "@playwright/test";
+import { build } from "esbuild";
 
 const exec = promisify(execFile);
 const root = resolve(new URL("..", import.meta.url).pathname);
@@ -40,13 +41,22 @@ async function files(directory) {
 const directory = await mkdtemp(
   join(tmpdir(), "webguard-official-vite-starters-"),
 );
+const generatorFile = join(directory, "setup-generator.mjs");
+await build({
+  entryPoints: [join(root, "apps/playground/src/setup.ts")],
+  outfile: generatorFile,
+  format: "esm",
+  platform: "node",
+  bundle: true,
+});
+const { createViteSetup } = await import(pathToFileURL(generatorFile).href);
 const evidence = {
   checkedAt: new Date().toISOString(),
   sourceCommit: (
     await command("git", ["rev-parse", "HEAD"], root)
   ).stdout.trim(),
   method:
-    "Official create-vite starters outside repository; local tarball installed with npm; no application source edits or manual SDK initialization",
+    "Official create-vite starters outside repository; local tarball installed with npm; exact configurations from the demo generator; no application source edits or manual SDK initialization",
   tarball,
   tarballIntegrity: `sha512-${createHash("sha512")
     .update(await readFile(tarball))
@@ -112,16 +122,21 @@ try {
     const variants =
       template === "vanilla" ? ["strict", "report-only"] : ["strict"];
     for (const variant of variants) {
-      const options =
-        variant === "report-only"
-          ? "{ headers: { trustedTypes: 'report-only' } }"
-          : "";
-      const config = `import { defineConfig } from 'vite';\n${template === "react" ? "import react from '@vitejs/plugin-react';\n" : ""}import { webguardApp } from 'uulab-webguard';\nexport default defineConfig({ plugins: [${template === "react" ? "react(), " : ""}webguardApp(${options})] });\n`;
+      const { code: config } = createViteSetup({
+        project:
+          variant === "report-only"
+            ? "vanilla-string"
+            : template === "react"
+              ? "react"
+              : "dom",
+        blockShortcuts: true,
+        blockContextMenu: true,
+      });
       const configFile =
         template === "react" ? "vite.config.js" : "vite.config.mjs";
       await writeFile(join(project, configFile), config);
       const dist = join(project, `dist-${variant}`);
-      await command(
+      const built = await command(
         process.execPath,
         [
           join(project, "node_modules/vite/bin/vite.js"),
@@ -140,6 +155,14 @@ try {
         report.preset === "strict" &&
           Object.keys(report.chunkTransforms ?? {}).length > 0,
         "Missing strict obfuscation transforms",
+      );
+      const compatibilityWarning = (built.stdout + built.stderr).includes(
+        "WG_TRUSTED_TYPES_SINK",
+      );
+      check(
+        compatibilityWarning ===
+          (template === "vanilla" && variant === "strict"),
+        "Installed build compatibility warning differs from selected template/policy",
       );
       check(
         (await files(dist)).every((path) => !path.endsWith(".map")),
@@ -166,6 +189,7 @@ try {
         config,
         installedVersion: installed.version,
         obfuscationPreset: report.preset,
+        compatibilityWarning,
         chunkTransforms: report.chunkTransforms,
         publicSourceMaps: false,
         sriAssetsVerified: entries.length,
@@ -233,7 +257,9 @@ try {
               ].instance.getOptions(),
             );
             check(
-              automaticSdk.preset === "strict",
+              automaticSdk.preset === "strict" &&
+                automaticSdk.devtools?.blockShortcuts === true &&
+                automaticSdk.devtools?.blockContextMenu === true,
               "Automatic SDK preset incorrect",
             );
             const trustedTypesSupported = await page.evaluate(

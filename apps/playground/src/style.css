@@ -852,3 +852,28 @@ footer strong {
     grid-template-columns: 1fr;
   }
 }
+.setup-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+  padding: 18px;
+  background: #101c22;
+  border: 1px solid #2a3c44;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.setup-options[hidden] {
+  display: none;
+}
+.setup-options select {
+  width: 100%;
+  min-width: 0;
+}
+.setup-options p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+#setup-policy-note {
+  color: #b4d7cb;
+}

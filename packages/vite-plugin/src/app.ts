@@ -10,6 +10,7 @@ import {
   type DefaultTreeAdapterMap,
 } from "parse5";
 import { protectedPreview } from "./preview.js";
+import { trustedTypesCompatibility } from "./compatibility.js";
 import { WebGuard, type WebGuardOptions } from "@webguard/browser";
 import {
   createSecurityHeaders,
@@ -254,5 +255,17 @@ export function createWebGuardApp(
       },
     },
   };
-  return [bootstrap, webguard(policy), protectedPreview(responseHeaders)];
+  return [
+    bootstrap,
+    trustedTypesCompatibility(
+      responseHeaders !== false &&
+        Boolean(
+          responseHeaders["Content-Security-Policy"]?.includes(
+            "require-trusted-types-for 'script'",
+          ),
+        ),
+    ),
+    webguard(policy),
+    protectedPreview(responseHeaders),
+  ];
 }

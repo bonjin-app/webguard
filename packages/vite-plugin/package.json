@@ -26,12 +26,13 @@
     "build": "tsup src/index.ts src/client.ts --format esm --dts --clean"
   },
   "dependencies": {
-    "parse5": "^8.0.0",
+    "@webguard/browser": "workspace:*",
+    "@webguard/cli": "workspace:*",
     "@webguard/core": "workspace:*",
     "@webguard/obfuscator": "workspace:*",
-    "@webguard/cli": "workspace:*",
-    "picomatch": "^4.0.3",
-    "@webguard/browser": "workspace:*"
+    "acorn": "^8.15.0",
+    "parse5": "^8.0.0",
+    "picomatch": "^4.0.3"
   },
   "engines": {
     "node": ">=22.12.0"

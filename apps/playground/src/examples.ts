@@ -1,3 +1,4 @@
+import { createViteSetup } from "./setup";
 export const examples = [
   {
     id: "cart",
@@ -47,16 +48,11 @@ export const integrations = [
     id: "vite",
     title: "Vite 설정",
     hint: "미게시 0.3.0 로컬 후보 기준입니다. 검토한 tgz를 설치하거나 0.3.0 게시 후 npm으로 설치하세요. 현재 공개 버전은 0.2.0입니다. SDK·초기 CSP 메타가 자동 적용되며 외부 API는 정확한 출처를 허용합니다.",
-    code: `import { defineConfig } from 'vite';
-import { webguardApp } from 'uulab-webguard';
-
-export default defineConfig({
-  plugins: [webguardApp({
-    runtime: {
-      devtools: { blockShortcuts: true, blockContextMenu: true },
-    },
-  })],
-});`,
+    code: createViteSetup({
+      project: "dom",
+      blockShortcuts: true,
+      blockContextMenu: true,
+    }).code,
   },
   {
     id: "live",
