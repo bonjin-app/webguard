@@ -62,7 +62,7 @@ document.querySelector('#status').textContent=guard?'Ready':'Missing SDK';`,
   await writeFile(
     join(root, "vite.config.js"),
     `import {webguardApp} from 'uulab-webguard';
-export default {plugins:[webguardApp({runtime:{devtools:{detect:false,blockShortcuts:true,shortcutScope:'page',response:'block'}}})]};`,
+export default {plugins:[webguardApp({runtime:{devtools:{detect:false,blockShortcuts:true,shortcutScope:'page',response:'block'},integrity:{enabled:true,timeoutMs:10000,maxBytes:1048576,maxConcurrent:2}}})]};`,
   );
   await run("node", [join(root, "node_modules/vite/bin/vite.js"), "build"], {
     cwd: root,
@@ -97,6 +97,15 @@ export default {plugins:[webguardApp({runtime:{devtools:{detect:false,blockShort
     const modal = page.locator("dialog[data-webguard-blocker]");
     try {
       await ready();
+      assert.deepEqual(
+        await page.evaluate(() => globalThis.guard.getOptions().integrity),
+        {
+          enabled: true,
+          timeoutMs: 10000,
+          maxBytes: 1048576,
+          maxConcurrent: 2,
+        },
+      );
       const headers = await (await page.request.get(url)).headers();
       assert.match(
         headers["content-security-policy"],

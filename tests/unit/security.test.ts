@@ -72,3 +72,133 @@ it.each([
     createSecurityHeaders({ allowedOrigins: { script: [value] } }),
   ).toThrow();
 });
+
+it("rejects inherited policy options and origin maps", () => {
+  for (const options of [
+    Object.create({ trustedTypes: "off" }),
+    Object.create({ allowedOrigins: { script: ["https://cdn.example"] } }),
+    { allowedOrigins: Object.create({ script: ["https://cdn.example"] }) },
+  ]) {
+    expect(() => createSecurityHeaders(options)).toThrow(TypeError);
+  }
+});
+it("never invokes policy or allowlist accessors", () => {
+  let reads = 0;
+  const getter = {
+    get() {
+      reads++;
+      return undefined;
+    },
+  };
+  const inputs = [
+    Object.defineProperty({}, "trustedTypes", getter),
+    Object.defineProperty({}, "allowedOrigins", getter),
+    { allowedOrigins: Object.defineProperty({}, "script", getter) },
+    { allowedOrigins: { script: Object.defineProperty([], "0", getter) } },
+  ];
+  for (const options of inputs)
+    expect(() => createSecurityHeaders(options as never)).toThrow(TypeError);
+  expect(reads).toBe(0);
+});
+it("ignores Object.prototype policy pollution and retains enforce defaults", () => {
+  const names = ["trustedTypes", "allowedOrigins", "script"];
+  const previous = names.map((key) =>
+    Object.getOwnPropertyDescriptor(Object.prototype, key),
+  );
+  let headers: Record<string, string>;
+  try {
+    Object.defineProperties(Object.prototype, {
+      trustedTypes: { configurable: true, value: "off" },
+      allowedOrigins: {
+        configurable: true,
+        value: { script: ["https://untrusted.example"] },
+      },
+      script: { configurable: true, value: ["https://untrusted.example"] },
+    });
+    headers = createSecurityHeaders();
+  } finally {
+    names.forEach((key, index) => {
+      const descriptor = previous[index];
+      if (descriptor) Object.defineProperty(Object.prototype, key, descriptor);
+      else Reflect.deleteProperty(Object.prototype, key);
+    });
+  }
+  expect(headers!["Content-Security-Policy"]).toContain(
+    "require-trusted-types-for 'script'",
+  );
+  expect(headers!["Content-Security-Policy"]).not.toContain(
+    "untrusted.example",
+  );
+});
+it("accepts own data on null-prototype records and explicit undefined defaults", () => {
+  const allowed = Object.assign(Object.create(null), {
+    script: ["https://cdn.example:443"],
+    connect: undefined,
+  });
+  const options = Object.assign(Object.create(null), {
+    allowedOrigins: allowed,
+    trustedTypes: undefined,
+  });
+  const csp = createSecurityHeaders(options)["Content-Security-Policy"];
+  expect(csp).toContain("script-src 'self' https://cdn.example;");
+  expect(csp).toContain("require-trusted-types-for 'script'");
+  expect(createSecurityHeaders({ allowedOrigins: undefined })).toEqual(
+    createSecurityHeaders(),
+  );
+});
+it("rejects symbol, hidden unknown, and exotic array policy fields", () => {
+  const symbol = Symbol("policy");
+  const inheritedArray = ["https://cdn.example"];
+  Object.setPrototypeOf(inheritedArray, Object.create(Array.prototype));
+  const sparseArray = new Array(1);
+  const extraArray = Object.assign(["https://cdn.example"], { extra: true });
+  const symbolArray = Object.assign(["https://cdn.example"], {
+    [symbol]: true,
+  });
+  const hidden = Object.defineProperty({}, "unknown", { value: true });
+  for (const options of [
+    { [symbol]: true },
+    hidden,
+    { allowedOrigins: { [symbol]: [] } },
+    { allowedOrigins: hidden },
+    ...[inheritedArray, sparseArray, extraArray, symbolArray].map((script) => ({
+      allowedOrigins: { script },
+    })),
+  ])
+    expect(() => createSecurityHeaders(options as never)).toThrow(TypeError);
+});
+it("does not execute a supplied array iterator or inherited numeric getter", () => {
+  let reads = 0;
+  const iterable = ["https://cdn.example"];
+  Object.defineProperty(iterable, Symbol.iterator, {
+    get() {
+      reads++;
+      return Array.prototype[Symbol.iterator];
+    },
+  });
+  expect(() =>
+    createSecurityHeaders({ allowedOrigins: { script: iterable } }),
+  ).toThrow(TypeError);
+  const sparse = new Array(1);
+  const previous = Object.getOwnPropertyDescriptor(Array.prototype, "0");
+  let rejected = false;
+  try {
+    Object.defineProperty(Array.prototype, "0", {
+      configurable: true,
+      get() {
+        reads++;
+        return "https://untrusted.example";
+      },
+    });
+    try {
+      createSecurityHeaders({ allowedOrigins: { script: sparse } });
+    } catch (error) {
+      rejected = error instanceof TypeError;
+    }
+  } finally {
+    if (previous) Object.defineProperty(Array.prototype, "0", previous);
+    else Reflect.deleteProperty(Array.prototype, "0");
+  }
+  expect(rejected).toBe(true);
+  expect(reads).toBe(0);
+});

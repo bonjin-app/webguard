@@ -54,6 +54,12 @@ const guard = WebGuard.init({
 
 // On application teardown:
 guard.destroy();</code></pre><p>탐지는 오탐과 누락이 있는 참고 신호입니다. 인증이나 권한 판단에 사용하지 마세요. 단축키 제한은 페이지에 전달된 입력에만 적용되고 개발자도구 창 전체를 잠그지 못합니다. 이벤트는 로컬 콜백으로 전달하며 원격 수집을 자동으로 시작하지 않습니다.</p></section>
+<section id="integrity-budgets"><h2>파일 검사 요청에도 한도를 적용해요</h2><p>미게시 후보의 checkIntegrity는 쿠키·리퍼러를 보내지 않고 리디렉션을 거부합니다. 기본 10초·압축 해제 후 16MiB·인스턴스당 동시 4개로 제한합니다. 시간 초과나 크기 초과를 변조 탐지 성공으로 계산하지 않습니다.</p><pre><code>webguardApp({ runtime: { integrity: {
+  enabled: true,
+  timeoutMs: 10_000,
+  maxBytes: 16 * 1024 * 1024,
+  maxConcurrent: 4,
+} } });</code></pre><p>쿠키·HTTP 인증이 필요한 자원은 이 검사 대상이 아닙니다. 공개 배포 파일과 신뢰할 수 있는 기준 해시를 사용하세요. <a href="/docs/INSTALL.ko.txt">한도·취소·호환성 전체 안내</a></p></section>
 <section id="page-block"><h2>페이지 보호 모드를 선택할 수 있어요</h2><pre><code>// 미게시 후보: Vite의 runtime 또는 직접 초기화하는 SDK에 적용
 webguardApp({
   runtime: { devtools: {

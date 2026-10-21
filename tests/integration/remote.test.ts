@@ -19,12 +19,13 @@ afterEach(async () => {
 it("reports network failures per asset and continues checking remaining paths", async () => {
   const request = vi
     .fn()
+    .mockResolvedValueOnce(new Response(null))
     .mockRejectedValueOnce(new TypeError("fetch failed"))
     .mockResolvedValue(new Response(null, { status: 404 }));
   vi.stubGlobal("fetch", request);
   const result = await verifyDeployment("https://example.com/app/", manifest);
   expect(result.valid).toBe(false);
-  expect(result.checked).toBe(2);
+  expect(result.checked).toBe(3);
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
 });
 
@@ -86,6 +87,7 @@ it("cancels an oversized response instead of buffering an unbounded deployment b
     "fetch",
     vi
       .fn()
+      .mockResolvedValueOnce(new Response(null))
       .mockResolvedValueOnce(new Response(stream))
       .mockResolvedValue(new Response(null, { status: 404 })),
   );
@@ -137,12 +139,16 @@ it("records HTTP timeout as a failed check and completes the source probes", asy
     [],
     { timeoutMs: 50 },
   );
-  expect(result).toMatchObject({ valid: false, checked: 2 });
+  expect(result).toMatchObject({ valid: false, checked: 3 });
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
   s.closeAllConnections();
 });
 async function server(fallback = false) {
   const s = createServer((req, res) => {
+    if (req.url === "/app/") {
+      res.end("<html>Deployment entry</html>");
+      return;
+    }
     if (req.url === "/app/main.js") {
       res.end("globalThis.ok=true;");
       return;
@@ -170,7 +176,7 @@ const manifest = {
 };
 it("compares deployed bytes and confirms source-map URL absence", async () => {
   const result = await verifyDeployment(await server(), manifest, ["main.ts"]);
-  expect(result).toEqual({ valid: true, errors: [], checked: 3 });
+  expect(result).toEqual({ valid: true, errors: [], checked: 4 });
 });
 it("does not mistake successful SPA fallback URLs for confirmed source-map absence", async () => {
   const result = await verifyDeployment(await server(true), manifest);
@@ -186,4 +192,74 @@ it("reports byte changes against locally trusted hashes", async () => {
   });
   expect(result.valid).toBe(false);
   expect(result.errors).toContain("Deployed hash mismatch: main.js");
+});
+
+async function entryServer(rootBody: string, rootStatus = 200) {
+  const html = "<html><script src='main.js'></script></html>";
+  const s = createServer((req, res) => {
+    if (req.url === "/app/") {
+      res.statusCode = rootStatus;
+      res.end(rootBody);
+    } else if (req.url === "/app/index.html") res.end(html);
+    else if (req.url === "/app/main.js") res.end("globalThis.ok=true;");
+    else {
+      res.statusCode = 404;
+      res.end();
+    }
+  });
+  servers.push(s);
+  await new Promise<void>((resolve) => s.listen(0, "127.0.0.1", resolve));
+  const address = s.address();
+  if (!address || typeof address === "string") throw Error("Missing port");
+  return {
+    base: `http://127.0.0.1:${address.port}/app/`,
+    manifest: {
+      ...manifest,
+      files: {
+        ...manifest.files,
+        "index.html": {
+          integrity: hashContent(html),
+          size: Buffer.byteLength(html),
+        },
+      },
+    },
+    html,
+  };
+}
+
+it("rejects a tampered mount root even when index.html and assets match without header checks", async () => {
+  const deployed = await entryServer("<html>tampered</html>");
+  const result = await verifyDeployment(deployed.base, deployed.manifest);
+  expect(result.valid).toBe(false);
+  expect(result.errors).toContain("Deployed hash mismatch: /");
+  expect(result.checked).toBe(4);
+});
+
+it("rejects an unsuccessful mount root even when index.html and assets match", async () => {
+  const deployed = await entryServer("failure", 500);
+  const result = await verifyDeployment(deployed.base, deployed.manifest);
+  expect(result.valid).toBe(false);
+  expect(result.errors).toContain(
+    "Deployment entry does not respond successfully (500)",
+  );
+});
+
+it("checks mount root status even when the manifest has no index.html", async () => {
+  const deployed = await entryServer("missing", 404);
+  const result = await verifyDeployment(deployed.base, manifest);
+  expect(result.valid).toBe(false);
+  expect(result.errors).toContain(
+    "Deployment entry does not respond successfully (404)",
+  );
+  expect(result.checked).toBe(3);
+});
+
+it("accepts matching mount root and assets without optional header comparisons", async () => {
+  const html = "<html><script src='main.js'></script></html>";
+  const deployed = await entryServer(html);
+  expect(await verifyDeployment(deployed.base, deployed.manifest)).toEqual({
+    valid: true,
+    errors: [],
+    checked: 4,
+  });
 });

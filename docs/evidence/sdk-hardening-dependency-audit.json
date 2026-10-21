@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-21T05:19:39.047Z",
+  "sourceScope": "pnpm audit --prod, current lockfile",
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 149,
+    "devDependencies": 0,
+    "optionalDependencies": 57,
+    "totalDependencies": 206
+  },
+  "note": "Registry advisory snapshot only; not proof of absence of vulnerabilities, or an independent penetration test."
+}

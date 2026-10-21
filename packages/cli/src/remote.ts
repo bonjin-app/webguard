@@ -134,20 +134,19 @@ export async function verifyDeployment(
     )
       errors.push(`Deployed hash mismatch: ${path}`);
   };
-  if (headers.length) {
-    try {
-      const response = await request(base);
-      checkHeaders(response, "/");
-      if (!response.ok)
-        errors.push(
-          `Deployment entry does not respond successfully (${response.status})`,
-        );
-      const entry = assets.find((asset) => asset.path === "index.html")?.entry;
-      if (response.ok && entry) await compareBody(response, "/", entry);
-      else await response.body?.cancel();
-    } catch {
-      errors.push("Unable to check deployment entry: /");
-    }
+  // Verify the actual mount entry independently of optional header comparisons.
+  try {
+    const response = await request(base);
+    checkHeaders(response, "/");
+    if (!response.ok)
+      errors.push(
+        `Deployment entry does not respond successfully (${response.status})`,
+      );
+    const entry = assets.find((asset) => asset.path === "index.html")?.entry;
+    if (response.ok && entry) await compareBody(response, "/", entry);
+    else await response.body?.cancel();
+  } catch {
+    errors.push("Unable to check deployment entry: /");
   }
   for (const { path, entry, url } of assets) {
     try {

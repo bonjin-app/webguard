@@ -1,4 +1,5 @@
 import { createPageBlocker } from "./blocker";
+import { abortable, readIntegrityBytes } from "./integrity";
 import type { ThreatEvent } from "@webguard/shared";
 export type { ThreatEvent } from "@webguard/shared";
 export interface WebGuardOptions {
@@ -12,7 +13,15 @@ export interface WebGuardOptions {
     shortcutScope?: "non-editable" | "page";
     threshold?: number;
   };
-  integrity?: { enabled?: boolean };
+  integrity?: {
+    enabled?: boolean;
+    /** Deadline for fetch, streaming and digest; default 10000, ceiling 120000 ms. */
+    timeoutMs?: number;
+    /** Maximum decoded bytes per resource; default 16 MiB, ceiling 64 MiB. */
+    maxBytes?: number;
+    /** Per-instance in-flight request cap; default 4, ceiling 16. */
+    maxConcurrent?: number;
+  };
   onThreat?: (event: ThreatEvent) => void;
 }
 export interface WebGuardInstance {
@@ -40,7 +49,7 @@ function dataObject(
     if (typeof key !== "string" || !allowed.includes(key))
       throw new TypeError(`Unknown ${label} field`);
     const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
-    if (!("value" in descriptor))
+    if (!Object.hasOwn(descriptor, "value"))
       throw new TypeError(`Accessors are not supported in ${label}`);
     result[key] = descriptor.value;
   }
@@ -48,7 +57,7 @@ function dataObject(
 }
 function validatedOptions(value: unknown): WebGuardOptions {
   const input = dataObject(value, optionKeys, "WebGuard options");
-  const result: WebGuardOptions = {};
+  const result: WebGuardOptions = Object.create(null);
   if (input.preset !== undefined) {
     if (
       !["basic", "standard", "strict", "custom"].includes(
@@ -95,21 +104,45 @@ function validatedOptions(value: unknown): WebGuardOptions {
         devtools.threshold <= 0)
     )
       throw new TypeError("Invalid devtools threshold");
-    result.devtools = Object.fromEntries(
-      Object.entries(devtools).filter(([, item]) => item !== undefined),
+    result.devtools = Object.assign(
+      Object.create(null),
+      Object.fromEntries(
+        Object.entries(devtools).filter(([, item]) => item !== undefined),
+      ),
     );
   }
   if (input.integrity !== undefined) {
-    const integrity = dataObject(input.integrity, ["enabled"], "integrity");
+    const integrity = dataObject(
+      input.integrity,
+      ["enabled", "timeoutMs", "maxBytes", "maxConcurrent"],
+      "integrity",
+    );
     if (
       integrity.enabled !== undefined &&
       typeof integrity.enabled !== "boolean"
     )
       throw new TypeError("Invalid integrity enabled");
-    result.integrity =
-      integrity.enabled === undefined
-        ? {}
-        : { enabled: integrity.enabled as boolean };
+    for (const [key, ceiling] of [
+      ["timeoutMs", 120000],
+      ["maxBytes", 64 * 1024 * 1024],
+      ["maxConcurrent", 16],
+    ] as const) {
+      const value = integrity[key];
+      if (
+        value !== undefined &&
+        (typeof value !== "number" ||
+          !Number.isSafeInteger(value) ||
+          value < 1 ||
+          value > ceiling)
+      )
+        throw new TypeError(`Invalid integrity ${key}`);
+    }
+    result.integrity = Object.assign(
+      Object.create(null),
+      Object.fromEntries(
+        Object.entries(integrity).filter(([, value]) => value !== undefined),
+      ),
+    );
   }
   if (Object.hasOwn(input, "onThreat")) {
     if (input.onThreat !== undefined && typeof input.onThreat !== "function")
@@ -119,11 +152,12 @@ function validatedOptions(value: unknown): WebGuardOptions {
   return result;
 }
 function snapshot(options: WebGuardOptions): WebGuardOptions {
-  return {
-    ...options,
-    ...(options.devtools ? { devtools: { ...options.devtools } } : {}),
-    ...(options.integrity ? { integrity: { ...options.integrity } } : {}),
-  };
+  const copy: WebGuardOptions = Object.assign(Object.create(null), options);
+  if (options.devtools)
+    copy.devtools = Object.assign(Object.create(null), options.devtools);
+  if (options.integrity)
+    copy.integrity = Object.assign(Object.create(null), options.integrity);
+  return copy;
 }
 function editable(target: EventTarget | null): boolean {
   const element = target as Element | null;
@@ -353,7 +387,11 @@ function createGuard(
         listen(browserDocument, "contextmenu", (event) => {
           if (destroyed || editableEvent(event)) return;
           event.preventDefault();
-          emit("context-menu-blocked");
+          emit(
+            event.defaultPrevented
+              ? "context-menu-blocked"
+              : "context-menu-unavailable",
+          );
         });
       if (options.devtools?.detect === true) {
         listen(browserWindow, "resize", () => measure());
@@ -372,18 +410,38 @@ function createGuard(
     update(patch) {
       if (destroyed) return;
       const validated = validatedOptions(patch);
-      const next = {
-        ...options,
-        ...validated,
-        ...(validated.devtools
-          ? { devtools: { ...options.devtools, ...validated.devtools } }
-          : {}),
-        ...(validated.integrity
-          ? { integrity: { ...options.integrity, ...validated.integrity } }
-          : {}),
-      };
-      if (next.integrity?.enabled !== options.integrity?.enabled)
-        integrityRevision++;
+      const next: WebGuardOptions = Object.assign(
+        Object.create(null),
+        options,
+        validated,
+      );
+      if (validated.devtools)
+        next.devtools = Object.assign(
+          Object.create(null),
+          options.devtools,
+          validated.devtools,
+        );
+      if (validated.integrity)
+        next.integrity = Object.assign(
+          Object.create(null),
+          options.integrity,
+          validated.integrity,
+        );
+      const integrityChanged = [
+        "enabled",
+        "timeoutMs",
+        "maxBytes",
+        "maxConcurrent",
+      ].some(
+        (key) =>
+          next.integrity?.[
+            key as keyof NonNullable<WebGuardOptions["integrity"]>
+          ] !==
+          options.integrity?.[
+            key as keyof NonNullable<WebGuardOptions["integrity"]>
+          ],
+      );
+      if (integrityChanged) integrityRevision++;
       if (
         next.devtools?.detect !== options.devtools?.detect ||
         next.devtools?.threshold !== options.devtools?.threshold
@@ -391,7 +449,8 @@ function createGuard(
         detected = false;
       const revision = ++policyRevision;
       options = next;
-      if (options.integrity?.enabled !== true) abortIntegrityRequests();
+      if (integrityChanged || options.integrity?.enabled !== true)
+        abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
       if (
         (pendingReason === "geometry" && options.devtools?.detect !== true) ||
@@ -431,28 +490,69 @@ function createGuard(
         options.integrity?.enabled === true &&
         revision === integrityRevision;
       let controller: AbortController | undefined;
+      let deadline: ReturnType<typeof setTimeout> | undefined;
+      const policy = options.integrity;
       try {
         if (
+          typeof expected !== "string" ||
           !/^sha384-[A-Za-z0-9+/]{64}$/.test(expected) ||
           typeof crypto === "undefined" ||
           !crypto.subtle ||
           typeof fetch !== "function"
         )
           return false;
+        if (typeof url !== "string" || url !== url.trim()) return false;
+        const resource = new URL(url, browserWindow?.location.href);
+        if (
+          !["http:", "https:"].includes(resource.protocol) ||
+          resource.username ||
+          resource.password
+        )
+          return false;
+        if (integrityRequests.size >= (policy.maxConcurrent ?? 4)) {
+          emit("integrity-error", "Concurrent verification budget exceeded.");
+          return false;
+        }
         controller = new AbortController();
         integrityRequests.add(controller);
-        const response = await fetch(url, { signal: controller.signal });
+        const signal = controller.signal;
+        const expiresAt = performance.now() + (policy.timeoutMs ?? 10000);
+        const checkDeadline = () => {
+          if (signal.aborted || performance.now() >= expiresAt)
+            throw new Error("Integrity verification deadline exceeded");
+        };
+        deadline = setTimeout(
+          () => controller?.abort(),
+          policy.timeoutMs ?? 10000,
+        );
+        const response = await abortable(
+          fetch(resource.href, {
+            signal,
+            credentials: "omit",
+            referrerPolicy: "no-referrer",
+            redirect: "error",
+            cache: "no-store",
+          }),
+          signal,
+        );
         if (!active()) return false;
+        checkDeadline();
         if (!response.ok) {
           emit("integrity-error", "Unable to fetch the requested resource.");
           return false;
         }
-        const bytes = await response.arrayBuffer();
-        if (!active()) return false;
-        const digest = new Uint8Array(
-          await crypto.subtle.digest("SHA-384", bytes),
+        const bytes = await readIntegrityBytes(
+          response,
+          policy.maxBytes ?? 16 * 1024 * 1024,
+          signal,
         );
         if (!active()) return false;
+        checkDeadline();
+        const digest = new Uint8Array(
+          await abortable(crypto.subtle.digest("SHA-384", bytes), signal),
+        );
+        if (!active()) return false;
+        checkDeadline();
         const actual = `sha384-${btoa(String.fromCharCode(...digest))}`;
         if (actual !== expected) {
           emit("integrity-mismatch");
@@ -464,6 +564,7 @@ function createGuard(
         emit("integrity-error", "Unable to verify the requested resource.");
         return false;
       } finally {
+        clearTimeout(deadline);
         if (controller) {
           integrityRequests.delete(controller);
           controller.abort();
@@ -490,7 +591,7 @@ function registryRecord(host: Window): AutoGuardRecord | undefined {
   const slot = Object.getOwnPropertyDescriptor(host, autoGuardKey);
   if (
     !slot ||
-    !("value" in slot) ||
+    !Object.hasOwn(slot, "value") ||
     typeof slot.value !== "object" ||
     slot.value === null
   )
@@ -499,17 +600,21 @@ function registryRecord(host: Window): AutoGuardRecord | undefined {
   const instance = Object.getOwnPropertyDescriptor(slot.value, "instance");
   if (
     !active ||
-    !("value" in active) ||
+    !Object.hasOwn(active, "value") ||
     typeof active.value !== "function" ||
     !instance ||
-    !("value" in instance) ||
+    !Object.hasOwn(instance, "value") ||
     typeof instance.value !== "object" ||
     instance.value === null
   )
     return undefined;
   for (const key of ["update", "getOptions", "destroy", "checkIntegrity"]) {
     const method = Object.getOwnPropertyDescriptor(instance.value, key);
-    if (!method || !("value" in method) || typeof method.value !== "function")
+    if (
+      !method ||
+      !Object.hasOwn(method, "value") ||
+      typeof method.value !== "function"
+    )
       return undefined;
   }
   return slot.value as AutoGuardRecord;
@@ -539,7 +644,7 @@ export function installAutoGuard(options: WebGuardOptions): WebGuardInstance {
     const current = Object.getOwnPropertyDescriptor(host, autoGuardKey);
     if (
       current &&
-      "value" in current &&
+      Object.hasOwn(current, "value") &&
       current.value === next &&
       current.configurable
     )

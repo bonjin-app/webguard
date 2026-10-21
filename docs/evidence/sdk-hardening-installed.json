@@ -1,0 +1,123 @@
+{
+  "checkedAt": "2026-10-21T05:19:39.047Z",
+  "method": "Fresh installed candidate classic SDK in ephemeral native browser contexts; actual local HTTP requests with dummy cookies and query-only fixture data",
+  "sha512": "1e26b5cbf16607c2af13e5ceb00d2d9c8cff8ddb8fd6808462b09e37650ac5772fcb8f3fb762cd2ef94710506de48315b452b626e22ca37c5fe30aca60f552fb",
+  "publish": false,
+  "cases": [
+    {
+      "engine": "chromium",
+      "case": "credential-and-referrer-free-verification",
+      "normalFetchSentDummyCookieAndQuery": true,
+      "sdkSentNeither": true,
+      "exactDigest": true
+    },
+    {
+      "engine": "chromium",
+      "case": "resource-scope",
+      "redirectNotFollowed": true,
+      "nonHttpRejected": true
+    },
+    {
+      "engine": "chromium",
+      "case": "decoded-byte-budget",
+      "compressedExactBoundaryAccepted": true,
+      "decompressionOverflowRejected": true
+    },
+    {
+      "engine": "chromium",
+      "case": "streaming-deadline",
+      "incompleteResponseSettledFalse": true,
+      "connectionCanceled": true,
+      "capacityReclaimed": true
+    },
+    {
+      "engine": "chromium",
+      "case": "concurrency-and-teardown",
+      "excessRequestNeverSent": true,
+      "destructionSettlesPending": true,
+      "actualConnectionCanceled": true,
+      "unexpectedPageErrors": 0,
+      "unhandledDOMErrors": 0,
+      "expectedNativeRedirectDiagnostics": 0,
+      "sdkFreeRedirectControl": true
+    },
+    {
+      "engine": "firefox",
+      "case": "credential-and-referrer-free-verification",
+      "normalFetchSentDummyCookieAndQuery": true,
+      "sdkSentNeither": true,
+      "exactDigest": true
+    },
+    {
+      "engine": "firefox",
+      "case": "resource-scope",
+      "redirectNotFollowed": true,
+      "nonHttpRejected": true
+    },
+    {
+      "engine": "firefox",
+      "case": "decoded-byte-budget",
+      "compressedExactBoundaryAccepted": true,
+      "decompressionOverflowRejected": true
+    },
+    {
+      "engine": "firefox",
+      "case": "streaming-deadline",
+      "incompleteResponseSettledFalse": true,
+      "connectionCanceled": true,
+      "capacityReclaimed": true
+    },
+    {
+      "engine": "firefox",
+      "case": "concurrency-and-teardown",
+      "excessRequestNeverSent": true,
+      "destructionSettlesPending": true,
+      "actualConnectionCanceled": true,
+      "unexpectedPageErrors": 0,
+      "unhandledDOMErrors": 0,
+      "expectedNativeRedirectDiagnostics": 0,
+      "sdkFreeRedirectControl": true
+    },
+    {
+      "engine": "webkit",
+      "case": "credential-and-referrer-free-verification",
+      "normalFetchSentDummyCookieAndQuery": true,
+      "sdkSentNeither": true,
+      "exactDigest": true
+    },
+    {
+      "engine": "webkit",
+      "case": "resource-scope",
+      "redirectNotFollowed": true,
+      "nonHttpRejected": true
+    },
+    {
+      "engine": "webkit",
+      "case": "decoded-byte-budget",
+      "compressedExactBoundaryAccepted": true,
+      "decompressionOverflowRejected": true
+    },
+    {
+      "engine": "webkit",
+      "case": "streaming-deadline",
+      "incompleteResponseSettledFalse": true,
+      "connectionCanceled": true,
+      "capacityReclaimed": true
+    },
+    {
+      "engine": "webkit",
+      "case": "concurrency-and-teardown",
+      "excessRequestNeverSent": true,
+      "destructionSettlesPending": true,
+      "actualConnectionCanceled": true,
+      "unexpectedPageErrors": 0,
+      "unhandledDOMErrors": 0,
+      "expectedNativeRedirectDiagnostics": 2,
+      "sdkFreeRedirectControl": true
+    }
+  ],
+  "status": "passed",
+  "harnessNotes": [
+    "WebKit emits a native access-control pageerror for caught redirect:error fetch; reproduced with SDK-free control and verified zero DOM error/unhandledrejection events. Only the exact control-matching redirect diagnostic is classified as expected."
+  ]
+}

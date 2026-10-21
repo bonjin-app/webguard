@@ -212,6 +212,8 @@ guard.destroy(); // removes listeners; safe to call repeatedly
 
 Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `@webguard/vite-plugin/client`.
 
+The unpublished candidate bounds `checkIntegrity()` with `integrity.timeoutMs` (default 10,000ms), `maxBytes` (16 MiB of decoded bytes), and `maxConcurrent` (four per instance). Requests omit credentials/referrers and reject redirects and non-HTTP(S) URLs; cookie-authenticated files are not supported by this check. Overflow, deadlines and network failures are errors, not hash mismatches. Budget changes and teardown cancel pending work. Policy snapshots use null-prototype data objects; use `Object.hasOwn()` for property checks. See [request budgets and compatibility](docs/INSTALL.ko.md).
+
 The unpublished candidate also supports an optional page interaction block:
 
 ```ts

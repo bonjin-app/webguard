@@ -103,3 +103,15 @@ getWebGuard()?.update({ devtools: { blockShortcuts: "yes" } });
 
 // @ts-expect-error Inspect scope is a closed union.
 WebGuard.init({ devtools: { shortcutScope: "all" } });
+
+WebGuard.init({
+  integrity: {
+    enabled: true,
+    timeoutMs: 10000,
+    maxBytes: 1024,
+    maxConcurrent: 4,
+  },
+});
+// @ts-expect-error Verification budgets are numeric.
+WebGuard.init({ integrity: { timeoutMs: "10000" } });
+webguardApp({ runtime: { integrity: { enabled: true, maxBytes: 1024 } } });

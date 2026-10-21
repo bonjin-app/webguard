@@ -9,7 +9,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 function browser() {
-  const dom = new JSDOM('<input><div contenteditable="true"></div>');
+  const dom = new JSDOM('<input><div contenteditable="true"></div>', {
+    url: "https://app.example/",
+  });
   vi.stubGlobal("window", dom.window);
   vi.stubGlobal("document", dom.window.document);
   cleanup.push(() => dom.window.close());

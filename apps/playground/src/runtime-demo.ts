@@ -30,6 +30,7 @@ export function reportRuntimeThreat(event: ThreatEvent) {
     "shortcut-blocked": "SDK 단축키 제한 이벤트",
     "shortcut-unavailable": "브라우저가 취소를 허용하지 않은 검사 단축키",
     "context-menu-blocked": "SDK 우클릭 제한 이벤트",
+    "context-menu-unavailable": "브라우저가 취소를 허용하지 않은 우클릭 이벤트",
     "devtools-heuristic": "창 크기 추정 신호 · 오탐 가능",
     "integrity-mismatch": "SDK 무결성 불일치 이벤트",
     "integrity-error": "SDK 파일 읽기·검사 오류",

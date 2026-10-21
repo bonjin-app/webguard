@@ -58,3 +58,13 @@ Browser tests verify blocked inline event handlers, blocked unapproved script lo
 Actual service integration should test unauthorized access, cross-user object IDs, modified amounts/roles, replay and requests sent without the SDK. CSRF protection and HttpOnly cookies address specific session risks; they do not make an already authorized user unable to issue requests through their own console.
 
 References: [OWASP frontend security](https://cheatsheetseries.owasp.org/cheatsheets/Web_Frontend_Security_Cheat_Sheet.html), [Trusted Types response directive](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/require-trusted-types-for).
+
+## Bounded SDK resource verification
+
+The unpublished SDK candidate now verifies only explicit HTTP(S) resources without URL userinfo. Relative URLs resolve against the page location rather than a mutable HTML base. Requests omit credentials and referrers, reject redirects and use no-store. Cookie/HTTP-authenticated assets are deliberately unsupported by this check. This is not an SSRF defense or a server proxy.
+
+Integrity budgets default to 10 seconds across fetch/read/digest, 16 MiB of decoded stream bytes, and four concurrent requests per instance. Validated upper bounds are 120 seconds, 64 MiB, and 16 concurrent requests. No unbounded arrayBuffer fallback is used. Overflow/timeouts/network failures produce an error rather than a mismatch or successful protection. Lifecycle or budget changes abort pending work and reject stale results. A monotonic completion check prevents delayed timers from accepting late successes; JavaScript scheduling and noncancelable native digest work remain limits.
+
+Browser policy snapshots use null-prototype data objects. Header policy inputs reject inherited fields, accessors, exotic/sparse origin arrays and unknown keys without invoking user getters. These controls avoid accidental prototype-pollution policy downgrades; they are not a sandbox against arbitrary running JavaScript or Proxy traps.
+
+The low-level deployment verifier always checks the actual mount root, even without expectedHeaders. When a trusted index.html entry exists, its bytes must match the root response as well as its file URL. Build reports/control files remain local deployment inputs and must not be served by an arbitrary static host; use the protected server or equivalent deny rules.
