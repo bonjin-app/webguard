@@ -1070,3 +1070,172 @@ main.sdk-site {
     gap: 12px;
   }
 }
+
+/* Product explanation stays outside the interactive test panels. */
+.sdk-hero .hero-environments {
+  margin: 18px 0 0;
+  color: #3568b1;
+  font-size: 14px;
+}
+.sdk-strengths,
+.sdk-faq {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 104px 0;
+}
+.product-section-heading {
+  max-width: 740px;
+  margin-bottom: 42px;
+}
+.product-section-heading h2 {
+  margin: 14px 0 18px;
+  color: var(--ink);
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.4;
+  letter-spacing: -1.4px;
+}
+.product-section-heading p {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.9;
+}
+.strength-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.strength-grid article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 36px;
+  border-radius: 24px;
+  background: #f5f8fd;
+  border: 1px solid #e8eff8;
+}
+.strength-label {
+  color: #2866dd;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.strength-grid h3 {
+  margin: 18px 0;
+  font-size: 25px;
+  line-height: 1.5;
+  letter-spacing: -0.6px;
+  color: var(--ink);
+}
+.strength-grid p {
+  margin: 0 0 18px;
+  color: #435875;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.strength-grid .strength-detail {
+  color: #63748e;
+  font-size: 13px;
+}
+.strength-grid a,
+.sdk-scope-guide a,
+.candidate-note a,
+.sdk-faq a {
+  color: #1d62dc;
+  font-weight: 650;
+  text-decoration: none;
+}
+.strength-grid a {
+  margin-top: auto;
+  padding-top: 14px;
+  line-height: 1.6;
+}
+.sdk-scope-guide {
+  margin-top: 64px;
+  padding: 36px 0;
+  border-top: 1px solid #e1eaf5;
+  border-bottom: 1px solid #e1eaf5;
+}
+.sdk-scope-guide h3 {
+  font-size: 25px;
+  line-height: 1.6;
+  letter-spacing: -0.7px;
+  margin: 12px 0 28px;
+}
+.scope-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+}
+.scope-steps h4 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  color: var(--ink);
+}
+.scope-steps p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 14px;
+}
+.scope-steps a {
+  font-size: 14px;
+}
+.candidate-note {
+  margin: 24px 0 0;
+  line-height: 1.9;
+  color: #61728d;
+  font-size: 13px;
+}
+.sdk-faq {
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+.sdk-faq details {
+  padding: 24px 0;
+  border-bottom: 1px solid #e2eaf4;
+}
+.sdk-faq summary {
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 650;
+  color: var(--ink);
+}
+.sdk-faq details p {
+  max-width: 880px;
+  margin: 20px 0 0;
+  line-height: 1.95;
+  color: var(--muted);
+  font-size: 15px;
+}
+@media (max-width: 1180px) {
+  .sdk-strengths,
+  .sdk-faq {
+    margin: 0 24px;
+  }
+}
+@media (max-width: 700px) {
+  .sdk-strengths,
+  .sdk-faq {
+    padding-block: 64px;
+  }
+  .strength-grid,
+  .scope-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .strength-grid article {
+    padding: 28px 24px;
+  }
+  .strength-grid h3 {
+    font-size: 23px;
+  }
+  .scope-steps {
+    gap: 28px;
+  }
+  .product-section-heading p {
+    font-size: 15px;
+  }
+  .sdk-scope-guide {
+    margin-top: 40px;
+  }
+}

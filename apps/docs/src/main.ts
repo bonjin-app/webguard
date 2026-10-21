@@ -8,7 +8,7 @@ const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
 <header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
-<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a></nav><main id="main-content" tabindex="-1">
+<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a></nav><main id="main-content" tabindex="-1">
 <aside class="site-protection" aria-label="이 문서의 실제 보호 설정">
   <details id="site-protection-controls">
     <summary><span>이 문서에도 WebGuard 적용 중</span><span class="site-protection-action">실제 설정 바꾸기</span></summary>
@@ -25,7 +25,19 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <a href="/demo#live-demo">보호 전후 비교와 전체 데모 →</a>
   </details>
 </aside>
-<section id="overview" class="docs-intro"><div class="eyebrow">WEBGUARD GUIDE</div><h1>내 웹 앱에,<br><span>WebGuard를 연결하세요.</span></h1><p class="lead">패키지 설치부터 난독화와 브라우저 가드까지.<br>사용하는 환경에 맞춰 차근차근 적용해 보세요.</p><div class="docs-actions"><a class="primary" href="#install">설치부터 시작하기</a><a class="secondary" href="#environments">다른 환경에 적용하기</a></div><p class="docs-meta">Node.js 22.12+ · Vite와 범용 빌드 지원 · 별도 서비스 계정 없이 사용</p><aside>난독화는 코드 분석을 어렵게 합니다. 브라우저에 전달된 파일은 관찰할 수 있으므로 비밀값과 권한 검증은 서버에서 관리하세요.</aside></section>
+<section id="overview" class="docs-intro"><div class="eyebrow">WEBGUARD GUIDE</div><h1>내 웹 앱에,<br><span>WebGuard를 연결하세요.</span></h1><p class="lead">빌드할 때 코드를 난독화하고, 배포할 때 정책을 연결하고,<br>실행 중에는 브라우저 가드를 제어하는 SDK입니다.</p><div class="docs-actions"><a class="primary" href="#install">설치부터 시작하기</a><a class="secondary" href="#environments">다른 환경에 적용하기</a></div><p class="docs-meta">Node.js 22.12+ · Vite와 범용 빌드 지원 · 별도 서비스 계정 없이 사용</p><aside>난독화는 코드 분석을 어렵게 합니다. 브라우저에 전달된 파일은 관찰할 수 있으므로 비밀값과 권한 검증은 서버에서 관리하세요.</aside></section>
+<section id="security-strengths" aria-labelledby="strengths-heading"><div class="eyebrow">WHAT WEBGUARD ADDS</div><h2 id="strengths-heading">코드·실행·배포를 함께 다룹니다</h2><p>WebGuard의 강점은 난독화 결과만 만드는 데서 끝나지 않고, SDK 초기화와 배포 검사를 같은 빌드 흐름에 연결하는 것입니다. 아래 내용은 공개 데모에 적용된 미게시 0.3.0 후보 기준입니다. npm 게시는 보류 중입니다.</p>
+<div class="protection-path">
+<article><span class="protection-phase">BUILD</span><div><h3>읽기 쉬운 코드가 그대로 배포되지 않도록</h3><p>Strict / High는 RC4 문자열 인코딩·문자열 분할·제어 흐름 변환을 적용하고 공개 소스맵을 제거합니다. 앱 코드를 분석하는 비용을 높이며, 문자열은 실행 중 복원됩니다.</p><a href="/demo#try-examples">원본과 난독화 결과 비교 →</a></div></article>
+<article><span class="protection-phase">BROWSER</span><div><h3>허용할 동작과 반응을 실행 중에 조절</h3><p>페이지에 전달된 취소 가능한 검사 입력·우클릭을 제한하고, 검사 입력에 페이지 보호 안내로 반응합니다. 같은 SDK 인스턴스의 설정을 즉시 바꿀 수 있습니다. 개발자도구 창 자체를 닫거나 콘솔 실행을 통제하지는 못합니다.</p><a href="/demo#live-demo">실제 사이트의 보호 설정 바꾸기 →</a></div></article>
+<article><span class="protection-phase">DEPLOY</span><div><h3>만든 보호가 실제 배포에도 남아 있는지 확인</h3><p>SRI 해시와 CSP 정책을 생성하고 배포된 파일·헤더·비공개 경로를 검사합니다. Vite 통합과 범용 빌드 후처리를 제공하므로 Webpack·esbuild·일반 HTML 출력에도 연결할 수 있습니다. 호스트 정책 적용과 서버 권한 검증은 별도로 필요합니다.</p><a href="/demo#resource-exposure">현재 배포 파일과 소스맵 노출 검사 →</a></div></article>
+</div><p class="protection-next"><a href="/demo#policy-lab">CSP·DOM 정책의 보호 전후 비교</a><span aria-hidden="true"> · </span><a href="/demo#sdk-file">SDK 파일 검사 체험</a><span aria-hidden="true"> · </span><a href="/docs/INSTALL.ko.txt">한국어 전체 적용 가이드</a></p></section>
+<section id="integration-scope" aria-labelledby="scope-heading"><h2 id="scope-heading">무엇이 자동이고, 무엇을 직접 정하나요?</h2><p>빌드 통합을 설치하는 것과 브라우저 SDK만 초기화하는 것은 다릅니다. 사이트에서 켜 둔 입력 제한도 패키지의 기본값과 구분하세요.</p><div class="table-scroll" role="region" aria-label="SDK 자동 적용과 선택 설정 비교" tabindex="0"><table><thead><tr><th scope="col">적용 방식</th><th scope="col">제공되는 동작</th><th scope="col">개발자가 확인할 것</th></tr></thead><tbody>
+<tr><th scope="row">빌드 통합 · 자동</th><td>Strict / High 난독화, 공개 소스맵 제거, SDK 시작, SRI·초기 CSP 메타와 정책 파일 생성</td><td><a href="#automatic">Vite 플러그인</a> 또는 <a href="#environments">protect-app 후처리</a>로 빌드하고 앱 호환성 확인</td></tr>
+<tr><th scope="row">실행 가드 · 선택</th><td>검사 단축키·우클릭 제한, 페이지 보호 안내, 크기 변화 추정 감지</td><td>입력 제한은 패키지 기본 OFF. 이 사이트는 명시적으로 ON. 크기 추정은 오탐 가능</td></tr>
+<tr><th scope="row">파일 검사 · 직접 호출</th><td>신뢰하는 기준 해시와 공개 파일 비교. 쿠키·리퍼러 없이 요청하고 리디렉션 거부</td><td><a href="#integrity-budgets">검사 활성화 후 checkIntegrity 호출</a>. 기본 10초·압축 해제 후 16MiB·동시 4개. 자동 전체 파일 감시 아님</td></tr>
+<tr><th scope="row">호스트·서버 · 별도</th><td>보호 서버·Vite preview는 헤더와 비공개 경로 제한 적용</td><td>정적 호스트·CDN은 <a href="#policy">실제 헤더와 경로 거부 규칙</a> 적용. 인증·가격·권한은 앱 서버에서 검증</td></tr>
+</tbody></table></div><p>브라우저가 실행하려고 받은 JavaScript·HTML·CSS와 요청은 관찰할 수 있습니다. 비밀값을 숨기거나 사용자 브라우저를 신뢰하는 방식의 인증을 제공하지 않습니다. <a href="#limits">전체 보호 범위 확인 →</a></p></section>
 <section id="install"><h2>설치하고, 내 앱에 적용하세요</h2><aside>0.3.0은 아직 npm에 게시하지 않았습니다. 현재 공개 버전은 0.2.0입니다. 아래 새 동작은 로컬 후보 기준이며 공개 0.2.0에 동일하게 제공된다고 판단하지 마세요.</aside><p>Node.js 22.12 이상에서 사용합니다. 패키지 하나에 범용 CLI·빌드 API·독립 SDK·Vite 연동·보호 서버가 포함됩니다. Vite가 없어도 범용 빌드 경로를 사용할 수 있습니다. 아래는 Vite 7/8의 ESM 웹 앱 설정입니다.</p><p>검토한 로컬 tgz가 있다면 아래 경로를 실제 파일 경로로 바꿔 시험 앱에 설치합니다.</p><pre><code>npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><details class="future-install"><summary>npm 게시 후 사용할 설치 명령</summary><pre><code># 0.3.0 배포 후에만 실행 — 현재는 미게시
 npm install -D uulab-webguard@0.3.0</code></pre></details><pre><code>import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
@@ -75,7 +87,7 @@ const guard = WebGuard.init({
 
 // On application teardown:
 guard.destroy();</code></pre><p>탐지는 오탐과 누락이 있는 참고 신호입니다. 인증이나 권한 판단에 사용하지 마세요. 단축키 제한은 페이지에 전달된 입력에만 적용되고 개발자도구 창 전체를 잠그지 못합니다. 이벤트는 로컬 콜백으로 전달하며 원격 수집을 자동으로 시작하지 않습니다.</p></section>
-<section id="integrity-budgets"><h2>파일 검사 요청에도 한도를 적용해요</h2><p>미게시 후보의 checkIntegrity는 쿠키·리퍼러를 보내지 않고 리디렉션을 거부합니다. 기본 10초·압축 해제 후 16MiB·인스턴스당 동시 4개로 제한합니다. 시간 초과나 크기 초과를 변조 탐지 성공으로 계산하지 않습니다.</p><pre><code>webguardApp({ runtime: { integrity: {
+<section id="integrity-budgets"><h2>파일 검사 요청에도 한도를 적용해요</h2><p>미게시 후보의 checkIntegrity는 검사를 활성화하고 직접 호출할 때 실행됩니다. 파일 전체를 자동 감시하지 않습니다. 쿠키·리퍼러를 보내지 않고 리디렉션을 거부합니다. 기본 10초·압축 해제 후 16MiB·인스턴스당 동시 4개로 제한합니다. 시간 초과나 크기 초과를 변조 탐지 성공으로 계산하지 않습니다.</p><pre><code>webguardApp({ runtime: { integrity: {
   enabled: true,
   timeoutMs: 10_000,
   maxBytes: 16 * 1024 * 1024,

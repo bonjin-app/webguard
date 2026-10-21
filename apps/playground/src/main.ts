@@ -5,6 +5,7 @@ import { examples, integrations } from "./examples";
 import "./style.css";
 import "./sky.css";
 import { initDemoNavigation } from "./navigation";
+import { productStoryMarkup, productFaqMarkup } from "./product-story";
 import {
   protectionOverviewMarkup,
   initProtectionOverview,
@@ -30,15 +31,16 @@ const webArt = new URL("./assets/web-app.webp", import.meta.url).href;
 const guard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-<header class="site-header"><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
+<header class="site-header"><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-strengths">SDK 강점</a><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
 <main class="sdk-site">
 <aside id="site-protection-status" class="site-protection-strip" aria-label="이 페이지의 실제 보호 상태"><div><strong>이 페이지에도 WebGuard가 적용되어 있습니다.</strong><p id="site-protection-summary" aria-live="polite"></p></div><a href="#live-demo">이 페이지의 보호 설정 <span aria-hidden="true">↗</span></a></aside>
-<section class="sdk-hero" aria-labelledby="hero-heading"><div class="hero-content"><div class="eyebrow">WEB PROTECTION SDK</div><h1 id="hero-heading">작은 설정으로,<br><span>코드 보호를</span> 한 단계 더.</h1><p>Vite 앱에 난독화와 브라우저 가드를 연결하세요.</p><div class="hero-actions"><a class="primary" href="#sdk-install">SDK 적용하기</a><a class="demo-link" href="#sdk-demo">데모 체험하기</a></div><div class="hero-flow"><div class="flow-art"><img src="${cubeArt}" alt="WebGuard SDK 패키지" width="180" height="180"><strong>WebGuard</strong><p class="flow-caption">내 앱에 설치하는 개발자 SDK</p></div><div class="hero-code-block"><div class="hero-code"><div class="code-filename">vite.config.ts</div><pre><code>import { defineConfig } from 'vite';
+<section class="sdk-hero" aria-labelledby="hero-heading"><div class="hero-content"><div class="eyebrow">WEB PROTECTION SDK</div><h1 id="hero-heading">웹 코드 보호를,<br><span>빌드부터 런타임까지.</span></h1><p>JavaScript 난독화부터 실행 가드·배포 검증까지.<br>내 프로젝트의 빌드 흐름에 연결하는 웹 보호 SDK입니다.</p><p class="hero-environments">Vite 자동 통합 · Webpack / esbuild 후처리 · HTML SDK</p><div class="hero-actions"><a class="primary" href="#sdk-install">SDK 적용하기</a><a class="demo-link" href="#sdk-demo">데모 체험하기</a></div><div class="hero-flow"><div class="flow-art"><img src="${cubeArt}" alt="WebGuard SDK 패키지" width="180" height="180"><strong>WebGuard</strong><p class="flow-caption">내 앱에 설치하는 개발자 SDK</p></div><div class="hero-code-block"><div class="hero-code"><div class="code-filename">vite.config.ts</div><pre><code>import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
 
 export default defineConfig({
   plugins: [webguardApp()],
 });</code></pre></div><p class="flow-caption">패키지 설치 · Vite 설정 · 빌드</p></div><div class="flow-art"><img src="${webArt}" alt="보호 설정을 적용한 웹 앱" width="220" height="180"><strong>내 웹 앱</strong><p class="flow-caption">보호한 빌드 결과로 배포</p></div></div></div></section>
+${productStoryMarkup}
 ${protectionOverviewMarkup}
 <section id="sdk-demo" class="demo-hub" aria-labelledby="demo-heading"><div class="demo-heading"><div class="eyebrow">INTERACTIVE DEMO</div><h2 id="demo-heading">가드를 켜고, 직접 확인하세요.</h2><p>내 앱에 연결할 SDK의 동작을 먼저 체험해 보세요.</p></div><div class="demo-tabs" role="tablist" aria-label="SDK 체험 선택"><button id="tab-runtime" role="tab" data-demo-tab="runtime" aria-controls="runtime-view" aria-selected="true">브라우저 가드</button><button id="tab-obfuscation" role="tab" data-demo-tab="obfuscation" aria-controls="obfuscation-view" aria-selected="false" tabindex="-1">코드 난독화</button><button id="tab-integrity" role="tab" data-demo-tab="integrity" aria-controls="integrity-view" aria-selected="false" tabindex="-1">파일 검사</button><button id="tab-advanced" role="tab" data-demo-tab="advanced" aria-controls="advanced-view" aria-selected="false" tabindex="-1">고급 검사</button></div>
 <div id="runtime-view" class="demo-view" role="tabpanel" aria-labelledby="tab-runtime" tabindex="0">${runtimeMarkup}</div>
@@ -57,6 +59,7 @@ npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><div class
 pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 웹앱·문서를 제공합니다. JSP는 위 준비 명령으로 WAR를 만든 뒤 별도 Tomcat에서 실행하세요.</p></details></section>
 <section id="app-examples" class="demo-section" aria-labelledby="apps-heading"><div class="section-heading"><div><h2 id="apps-heading">보호된 웹앱을 직접 써보세요</h2><p>난독화된 실제 빌드입니다. 폼·카운터·화면 이동·동적 모듈이 동작하는지 확인하세요.</p></div></div><div class="sample-grid"><article class="sample-card"><span class="badge">AUTOMATIC SDK · STRICT</span><h3>React + Vite</h3><p>SDK 자동 시작, 강한 난독화, 서버 헤더와 실시간 제어를 한 앱에서 체험합니다.</p><a class="demo-link" href="/examples/react/">React 데모 열기</a></article><article class="sample-card"><span class="badge">MANUAL SDK · STANDARD</span><h3>JavaScript</h3><p>SDK를 직접 연결한 예제입니다. 단축키 옵션을 켜고 입력·동적 로딩을 시험하세요.</p><a class="demo-link" href="/examples/vanilla-js/">JavaScript 데모 열기</a></article><article class="sample-card"><span class="badge">TYPESCRIPT · STANDARD</span><h3>TypeScript</h3><p>TypeScript를 빌드한 뒤 보호한 예제입니다. 실행 동작과 SDK 옵션을 확인하세요.</p><a class="demo-link" href="/examples/vanilla-ts/">TypeScript 데모 열기</a></article></div></section>
 </details></div></section>
+${productFaqMarkup}
 <footer class="site-footer"><strong>WebGuard</strong><p>난독화는 분석을 어렵게 합니다. 권한 검증은 서버에서 처리하세요.</p><details><summary>보호 범위와 실행 제한</summary> Delivered JavaScript can still be inspected and modified. Keep secrets and authorization on your server. Execution supports console-based JavaScript, without DOM access; imports and network requests are blocked. Workers are stopped after 1 second. This is a testing aid, not a hostile-code containment service.</details></footer></main>`;
 initDemoNavigation();
 const element = <T extends HTMLElement>(id: string) =>

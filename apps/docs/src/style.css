@@ -397,6 +397,47 @@ td code {
   font-size: 0.86em;
 }
 
+.protection-path {
+  margin-top: 28px;
+}
+
+.protection-path article {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 20px;
+  padding-block: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.protection-phase {
+  padding-top: 5px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1px;
+}
+
+.protection-path h3 {
+  margin: 0 0 10px;
+}
+
+.protection-path p {
+  margin: 0 0 12px;
+}
+
+.protection-path a,
+.protection-next {
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+@media (max-width: 600px) {
+  .protection-path article {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

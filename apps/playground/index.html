@@ -1,20 +1,97 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#edf7ff" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>WebGuard — 웹 코드 보호 SDK · 난독화와 브라우저 가드</title>
     <meta
       name="description"
-      content="Vite 앱에 연결하는 WebGuard SDK. 난독화·브라우저 가드·파일 검사를 직접 체험하고 적용 방법을 확인하세요."
+      content="JavaScript 난독화, 브라우저 가드, SRI·CSP와 배포 검증을 연결하는 WebGuard SDK. 보호 전후를 직접 비교하고 Vite·Webpack·esbuild·HTML 적용 방법을 확인하세요."
     />
-    <title>WebGuard — Playground</title>
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://webguard.uulab.co.kr/demo" />
+    <meta property="og:site_name" content="WebGuard" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta
+      property="og:title"
+      content="WebGuard — 웹 코드 보호 SDK · 난독화와 브라우저 가드"
+    />
+    <meta
+      property="og:description"
+      content="JavaScript 난독화, 브라우저 가드, SRI·CSP와 배포 검증을 연결하는 WebGuard SDK. 보호 전후를 직접 비교하고 Vite·Webpack·esbuild·HTML 적용 방법을 확인하세요."
+    />
+    <meta property="og:url" content="https://webguard.uulab.co.kr/demo" />
+    <meta
+      property="og:image"
+      content="https://webguard.uulab.co.kr/og-demo.png"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://webguard.uulab.co.kr/og-demo.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="WebGuard — 웹 코드 보호를, 빌드부터 런타임까지. 난독화·브라우저 가드·배포 검증"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="WebGuard — 웹 코드 보호 SDK · 난독화와 브라우저 가드"
+    />
+    <meta
+      name="twitter:description"
+      content="JavaScript 난독화, 브라우저 가드, SRI·CSP와 배포 검증을 연결하는 WebGuard SDK. 보호 전후를 직접 비교하고 Vite·Webpack·esbuild·HTML 적용 방법을 확인하세요."
+    />
+    <meta
+      name="twitter:image"
+      content="https://webguard.uulab.co.kr/og-demo.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="WebGuard — 웹 코드 보호를, 빌드부터 런타임까지. 난독화·브라우저 가드·배포 검증"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="canonical" href="https://webguard.uulab.co.kr/demo" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://webguard.uulab.co.kr/#website",
+            "name": "WebGuard",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "inLanguage": "ko-KR"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://webguard.uulab.co.kr/#sdk",
+            "name": "WebGuard",
+            "description": "빌드 난독화·브라우저 가드·배포 검증을 연결하는 웹 코드 보호 SDK",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "softwareHelp": {
+              "@type": "WebPage",
+              "url": "https://webguard.uulab.co.kr/docs/"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
+    <noscript
+      >WebGuard는 난독화·브라우저 가드·배포 검증을 연결하는 웹 코드 보호
+      SDK입니다. 실시간 체험과 문서를 읽으려면 JavaScript를 활성화해 주세요.
+      개발자도구 자체를 잠그거나 서버의 권한 검증을 대신하지 않습니다.</noscript
+    >
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
