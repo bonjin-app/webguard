@@ -18,9 +18,9 @@ import {
 } from "./runtime-demo";
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-<header><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard<span class="badge">PLAYGROUND</span></a><a class="docs-link" href="/docs/">Documentation ↗</a></header>
-<main><div class="intro"><div><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>직접 조작하고, 보호 결과를 확인하세요.</h1><p>스크립트·DOM 삽입, 네트워크 전송, 파일·가격 변조와 배포 리소스 보호를 직접 시험하세요.</p></div><span class="local"><span></span> 0.3.0 후보 체험 · npm 게시 보류</span></div>
-<nav class="demo-nav" aria-label="체험 안내"><a href="#policy-lab">정책 켜기·끄기</a><a href="#compatibility-lab">배포 호환성</a><a href="#security-lab">방어 시나리오 체험</a><a href="#resource-exposure">리소스 공개 검사</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#live-demo">실시간 SDK 체험</a><a href="#setup">내 프로젝트에 적용</a></nav>
+<header><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard<span class="badge">PLAYGROUND</span></a><a class="docs-link" href="/docs/">사용 가이드 ↗</a></header>
+<main><div class="intro"><div class="intro-copy"><div class="eyebrow">WEBGUARD · INTERACTIVE DEMO</div><h1>웹 보호를 직접 켜고,<br>차이를 확인하세요.</h1><p>가드를 켜고 끄며 보호 전후를 비교하세요.<br>난독화부터 스크립트·파일 변조까지, 실제 결과로 확인하고 프로젝트에 적용합니다.</p><div class="hero-actions"><a class="primary" href="#live-demo">보호 기능 체험하기 <span aria-hidden="true">↗</span></a><a class="demo-link" href="#setup">Vite 설정 만들기</a></div><span class="local"><span></span> 0.3.0 후보 체험 · npm 게시 보류</span></div><ol class="hero-steps" aria-label="데모 사용 순서"><li><span>01</span><div><strong>가드를 선택하세요</strong><p>필요한 보호 옵션을 켜고 끄기</p></div></li><li><span>02</span><div><strong>결과를 비교하세요</strong><p>실제 실행·요청으로 전후 확인</p></div></li><li><span>03</span><div><strong>프로젝트에 적용하세요</strong><p>내 앱에 맞는 Vite 설정 복사</p></div></li></ol></div>
+<nav class="demo-nav" aria-label="체험 안내"><a href="#live-demo">실시간 가드</a><a href="#policy-lab">보호 전후 비교</a><a href="#security-lab">삽입·변조 체험</a><a href="#try-examples">난독화 예제</a><a href="#app-examples">보호된 웹앱</a><a href="#setup">프로젝트에 적용</a><a href="#compatibility-lab">배포 호환성</a><a href="#resource-exposure">리소스 공개 검사</a></nav>
 ${runtimeMarkup}
 ${policyMarkup}
 ${compatMarkup}

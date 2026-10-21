@@ -97,9 +97,7 @@ test("opens working protected examples and documentation through same-origin lin
     await expect(page.locator("#lazy-result")).toContainText("42");
   }
   await page.goto("/");
-  await page
-    .getByRole("link", { name: "Documentation ↗", exact: true })
-    .click();
+  await page.getByRole("link", { name: "사용 가이드 ↗", exact: true }).click();
   expect(page.url()).toBe(origin + "/docs/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
