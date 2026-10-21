@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## SDK security hardening (current)
+## Own-site default SDK protection (current)
+
+[Try the actual page controls](https://webguard.uulab.co.kr/demo?guard=9fc09df#live-demo) · [Protected documentation](https://webguard.uulab.co.kr/docs/?guard=9fc09df#overview). The demo and documentation now start the SDK automatically and reuse that same instance for their live controls. Inspection shortcuts apply across the page, including editors, with a native page-protection modal response. Context-menu cancellation is on outside editors. Geometry detection is independently selectable and defaults OFF to avoid false-positive startup lockouts. The demo has an explicit modal exit and a restore-defaults control; refresh resets the current page's choices. Static obfuscation, source-map removal and existing server policies are independent of these runtime switches. SDK consumer defaults remain opt-in.
+
+Source **`9fc09df`** is deployed as Worker **`e9524b29-1b4c-4c31-b106-f5c5dc24bc08`**, deployment **`4b9855a4-1adc-41ab-ac9d-5d85ab8c39ab`**, at 100% traffic. All **37** public files matched prepared SHA-256 values, including obfuscated demo and docs entry points. Runtime settings and bindings are unchanged. npm publication remains paused and the canonical prepared npm artifact is unchanged.
+
+Fresh checks passed **398/398** unit/integration, **117/117** local browser and **227/227** full public HTTP/browser cases, with no retries. Build, root/Worker types, scoped lint, formatting and deployment dry run passed. Coverage includes actual trusted inputs outside the illustrated test area, native modal/background behavior, live OFF results without a hidden second instance, optional geometry, restore defaults, documentation controls and existing policy/resource/transform scenarios. Native in-app macOS Cmd+Option+I also showed the SDK modal on the public page; demo exit and default restoration were observed.
+
+These results do **not** establish that DevTools itself is forbidden or forcibly closed, console execution is stopped, or delivered resources are secret. The modal limits page interaction and is not an authorization boundary. Geometry fixtures are not proof of actual DevTools detection. New own-site persisted-bfcache behavior was reviewed statically, not proven in a real bfcache matrix.
+
+[Deployment receipt](evidence/site-default-deployment.json) · [Demo controls](evidence/site-default-public-demo.png) · [Actual shortcut modal](evidence/site-default-public-modal.png) · [Documentation controls](evidence/site-default-public-docs.png) · [Korean integration settings](INSTALL.ko.md).
+
+## SDK security hardening (preceding release)
 
 [Updated SDK guide](https://webguard.uulab.co.kr/docs/?sdk=f647a0d#integrity-budgets) · [Latest demo](https://webguard.uulab.co.kr/demo?sdk=f647a0d#live-demo). Explicit SDK integrity checks now omit credentials/referrers, reject redirects and non-HTTP(S)/userinfo URLs, and enforce validated time, decoded-byte and concurrency budgets. Policy validation rejects inherited/accessor inputs, and the low-level deployment verifier checks the actual root independently of optional headers. The existing obfuscated demo build and opt-in page protection remain available.
 

@@ -1,0 +1,405 @@
+{
+  "checkedAt": "2026-10-21T05:42:43.200Z",
+  "source": "9fc09df",
+  "workerVersion": "e9524b29-1b4c-4c31-b106-f5c5dc24bc08",
+  "deployment": "4b9855a4-1adc-41ab-ac9d-5d85ab8c39ab",
+  "previousWorkerVersion": "091fa762-aaf3-4f2e-9225-3a6c341a1f81",
+  "trafficPercent": 100,
+  "runtimeAndBindingsUnchanged": true,
+  "npmPublication": "paused",
+  "canonicalPreparedArtifactUnchanged": true,
+  "canonicalPreparedArtifactSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+  "ownSiteDefaults": {
+    "applications": ["/demo", "/docs/"],
+    "devtools": {
+      "detect": false,
+      "blockShortcuts": true,
+      "blockContextMenu": true,
+      "response": "block",
+      "shortcutScope": "page"
+    },
+    "integrity": {
+      "enabled": true
+    },
+    "sdkConsumerDefaultsChanged": false,
+    "sharedAutomaticInstance": true,
+    "settingsPersistence": "Current page only; reload restores site defaults",
+    "staticBuildAndServerPolicyAffectedByRuntimeToggles": false
+  },
+  "verification": {
+    "unitIntegration": {
+      "passed": 398,
+      "total": 398
+    },
+    "localBrowsers": {
+      "passed": 117,
+      "total": 117,
+      "engines": ["chromium", "firefox", "webkit"],
+      "retries": 0
+    },
+    "publicMatrix": {
+      "passed": 227,
+      "total": 227,
+      "engines": ["chromium", "firefox", "webkit"],
+      "includesHttp": true,
+      "retries": 0
+    },
+    "build": true,
+    "rootTypes": true,
+    "workerTypes": true,
+    "scopedLint": true,
+    "formatting": true,
+    "deployDryRun": true,
+    "readonlyReview": "No blocking findings; restore defaults and allowed right-click verification added following review"
+  },
+  "nativeBrowser": {
+    "environment": "Codex in-app browser on macOS",
+    "url": "https://webguard.uulab.co.kr/demo?guard=9fc09df#live-demo",
+    "actualKey": "Cmd+Option+I",
+    "observed": "Native SDK modal appeared; demo exit removed it; site defaults restored",
+    "devtoolsWindowClosedOrProhibited": false,
+    "screenshots": [
+      "site-default-public-demo.png",
+      "site-default-public-modal.png",
+      "site-default-public-docs.png"
+    ]
+  },
+  "publicAssets": {
+    "checkedAt": "2026-10-21T05:38:40.010Z",
+    "total": 37,
+    "matched": 37,
+    "files": [
+      {
+        "file": "assets/index-CiSYhAZR.css",
+        "path": "/assets/index-CiSYhAZR.css",
+        "status": 200,
+        "bytes": 31207,
+        "sha256": "d37a365e11c6cc64e291d5623c74b75ea6f8adba49801d24035c138b73f7857b",
+        "match": true
+      },
+      {
+        "file": "assets/index-DKR6Tt0Y.js",
+        "path": "/assets/index-DKR6Tt0Y.js",
+        "status": 200,
+        "bytes": 659746,
+        "sha256": "bf72f04731f7928aa6f62746569cba0025241acdb0e2d3ada27de3de5713080b",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-DbZZVwG6.js",
+        "path": "/assets/index.browser-DbZZVwG6.js",
+        "status": 200,
+        "bytes": 1759601,
+        "sha256": "6be11b609c56a17c16a45e4171fca4f59f5c8d0bc8a21e6a8a88ad388f46b0e4",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-M54gc9Pz.js",
+        "path": "/assets/transform.worker-M54gc9Pz.js",
+        "status": 200,
+        "bytes": 949767,
+        "sha256": "66a59f890fc4cfb7fb8f6df2ec1fdded1b9c12d1ac9cdef0a36e1a303b19541c",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 6956,
+        "sha256": "6511cd5b6a3f3eb7e88d3c4af8821e0fe9dedb0b5f68b37e1af3bc31733d475c",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 30138,
+        "sha256": "b131c893d0b16bf0cea2f7f56abe589ed5554db0da8346611b4d5742dfa9a062",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-C0XrA1wd.css",
+        "path": "/docs/assets/index-C0XrA1wd.css",
+        "status": 200,
+        "bytes": 8880,
+        "sha256": "9122e0e06882bd33e2641ba869be2b8418e7c89efbb306681c9e04b894e9027f",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-CvsfU7Cy.js",
+        "path": "/docs/assets/index-CvsfU7Cy.js",
+        "status": 200,
+        "bytes": 194980,
+        "sha256": "ca77b8e176156da633007c28dc69870f338728af93b419dd96054f7107ebefc4",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 915,
+        "sha256": "acf6f48928eec2dc00c979ea0f9ffdd5152fe65f50c867a69dbf4bffdda8295a",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-uK7MaN92.js",
+        "path": "/examples/react/assets/index-uK7MaN92.js",
+        "status": 200,
+        "bytes": 1846345,
+        "sha256": "0628b2e1f580868271a98b361e992f5dbe864a1cc223278ce597fd3010c2f10f",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-BXF1txzd.js",
+        "path": "/examples/react/assets/lazy-BXF1txzd.js",
+        "status": 200,
+        "bytes": 2949,
+        "sha256": "19ac4c1fbf8651da475f89db1cc63f82ed8e7a14b0f38d830ca9d4d76eccaca5",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "54c754e3994cea156f73745b2dc75f1226cd13492e5a5ef43958cae5c42dcd52",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "4bb11a0186bec6f543e056dfd43a00bc8d0b0d3afc45cc16bb78f2166ac527ab",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "755b4947fea4640f764d9f816446408e8d752426d22ab368ff4050a63641e4bf",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-CKVdGyiP.js",
+        "path": "/examples/vanilla-js/assets/about-CKVdGyiP.js",
+        "status": 200,
+        "bytes": 636,
+        "sha256": "99c458f4c82379f43f135be12b4c1c47f5c1342b8fda3f7657d1ca10dd212ffe",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-vWQ8GwRk.js",
+        "path": "/examples/vanilla-js/assets/index-vWQ8GwRk.js",
+        "status": 200,
+        "bytes": 16330,
+        "sha256": "e0b53748acf12724b54b97dbaf246e4b37748db2bd73daaaee56d3e756eb44c4",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-DDcX893t.js",
+        "path": "/examples/vanilla-js/assets/lazy-DDcX893t.js",
+        "status": 200,
+        "bytes": 617,
+        "sha256": "c031b84e95329650a96a041544555aa2a05de7105d337bf9721943030a4f7108",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "1619eb0336fb56f32ced91e5af1b2c908807f80000382d4f6115a6eb5ff3c337",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 962,
+        "sha256": "b8260eeb17a8435d32341206e407a711100178d39bd1c468176ef00403560afc",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-DhU2fGis.js",
+        "path": "/examples/vanilla-ts/assets/index-DhU2fGis.js",
+        "status": 200,
+        "bytes": 17771,
+        "sha256": "c3b987881ac22b2f392fa914dfa7257efdf2015b3d42e642f50cab33654da714",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-0VekPCrC.js",
+        "path": "/examples/vanilla-ts/assets/lazy-0VekPCrC.js",
+        "status": 200,
+        "bytes": 1225,
+        "sha256": "b47c54923475743e1fa304374d4daa67cd340b332d93ff65210fbfa0e5e78f39",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "b790aeb4a1c7b14ae309e3077fabaf59e2cd97253467abc0dc0ea37c756cfacb",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "8462bbae225dcc804e232253fcef8f34e8a330e041380418ef894eab7e2d68ac",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 1005,
+        "sha256": "4a2f0c837e2730bb34011d784afb3df15fbe067ccd3f72f7e57729cac6364b60",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "entryPoints": [
+    {
+      "app": "playground",
+      "path": "/assets/index-DKR6Tt0Y.js",
+      "bytes": 659746,
+      "sha256": "bf72f04731f7928aa6f62746569cba0025241acdb0e2d3ada27de3de5713080b",
+      "hexIdentifierReferences": 22902,
+      "sourceMapReference": false,
+      "buildPreset": "strict",
+      "note": "Syntactic obfuscation observations, not a reverse-engineering resistance measurement."
+    },
+    {
+      "app": "docs",
+      "path": "/docs/assets/index-CvsfU7Cy.js",
+      "bytes": 194980,
+      "sha256": "ca77b8e176156da633007c28dc69870f338728af93b419dd96054f7107ebefc4",
+      "hexIdentifierReferences": 5683,
+      "sourceMapReference": false,
+      "buildPreset": "strict",
+      "note": "Syntactic obfuscation observations, not a reverse-engineering resistance measurement."
+    }
+  ],
+  "limitations": [
+    "A normal web SDK cannot reliably forbid or forcibly close browser DevTools, suppress console execution, or hide delivered resources.",
+    "Only inspection inputs delivered to the page can be canceled; browser-owned menus and noncancelable inputs remain outside the SDK.",
+    "Window geometry detection is optional and disabled on these sites by default because it can false-positive or miss detached tools.",
+    "The modal restricts background page interaction; it does not enforce server authorization or stop background code.",
+    "Browser automation and in-app native input checks do not establish identical behavior in every browser, keyboard layout, or physical device.",
+    "bfcache guard preservation was reviewed statically; a new own-site real persisted-bfcache matrix was not performed."
+  ],
+  "reproduction": {
+    "local": "pnpm exec playwright test tests/e2e/site-guard.spec.ts tests/e2e/docs-site-guard.spec.ts tests/e2e/runtime-demo.spec.ts tests/e2e/diagnostics.spec.ts tests/e2e/navigation.spec.ts tests/e2e/setup.spec.ts tests/e2e/playground.spec.ts --workers=2",
+    "localAdditional": "pnpm exec playwright test tests/e2e/demo.spec.ts --workers=2",
+    "public": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts --workers=2"
+  }
+}
