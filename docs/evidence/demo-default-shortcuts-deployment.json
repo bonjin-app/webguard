@@ -1,0 +1,352 @@
+{
+  "sourceCommit": "3d2979f",
+  "url": "https://webguard.uulab.co.kr/demo?fix=default-shortcuts-3d2979f#live-demo",
+  "workerVersion": "e1dd73f4-fa59-45f4-8254-04caeaa9eb36",
+  "previousWorkerVersion": "ac5ce945-2b8f-4b20-9fda-488342f8da3c",
+  "deploymentId": "b4c02220-0d4b-4d46-995f-396b73ecf0f9",
+  "trafficPercent": 100,
+  "runtimeSettingsUnchanged": true,
+  "bindingsUnchanged": true,
+  "investigation": {
+    "reportedShortcut": "Cmd+Option+I",
+    "existingInAppTab": "Older loaded page text, shortcut switch OFF. Fresh navigation loaded current text but was also OFF by design.",
+    "baselineObservation": "With the existing SDK manually enabled, native in-app Cmd+Option+I canceled the page event. No new SDK matching bug was reproduced.",
+    "rootCauseScope": "Observed demo default/configuration mismatch with expected protection. The exact external user browser path/focus was not observed."
+  },
+  "change": "Public demo starts with shortcut restriction enabled; switches still support ON/OFF comparison. Context-menu restriction remains opt-in.",
+  "sdkDefaults": "Unchanged; input restriction still opt-in for installed SDK consumers.",
+  "verification": {
+    "regressionRed": "New default-on browser assertion failed against preceding build because the shortcut checkbox was unchecked.",
+    "unitIntegrationPassed": 347,
+    "localBrowserPassed": 51,
+    "publicBrowserPassed": 51,
+    "browserRetries": 0,
+    "engines": ["Chromium", "Firefox", "WebKit"],
+    "browserCoverage": "Initial trusted Cmd+Option+I cancellation without opt-in, Mac I/J/C and Windows I/J/C ON/OFF, F12, editor exceptions, runtime integrity, full tour and navigation.",
+    "nativeInApp": {
+      "initialOn": true,
+      "cmdOptionIOn": "defaultPrevented true",
+      "cmdOptionIOff": "defaultPrevented false",
+      "cmdOptionJOn": "defaultPrevented true",
+      "cmdOptionC": "Native automation backend rejected chord as clipboard shortcut; not counted as native verification. Automated browser C checks passed."
+    },
+    "checks": [
+      "Production build",
+      "Root and Worker types",
+      "Scoped ESLint",
+      "Prettier",
+      "Deployment dry run"
+    ],
+    "limits": "Event cancellation does not prove a DevTools window stayed closed. Browser menus, existing DevTools, editable targets, browser-owned input and remote debugging are outside this guard. No external native Chrome/Safari window state or physical device verification claimed."
+  },
+  "assets": {
+    "checkedAt": "2026-10-21T02:46:00.984Z",
+    "total": 37,
+    "matched": 37,
+    "files": [
+      {
+        "file": "assets/index-BGzW4Tb3.js",
+        "path": "/assets/index-BGzW4Tb3.js",
+        "status": 200,
+        "bytes": 546136,
+        "sha256": "9d9cbab7ff620aac987706d6a6b1395be56cc473fbddd11f18eee9de8ef75bbd",
+        "match": true
+      },
+      {
+        "file": "assets/index-BQOWM-au.css",
+        "path": "/assets/index-BQOWM-au.css",
+        "status": 200,
+        "bytes": 28789,
+        "sha256": "1552b5548d453882b5accb13d62caf173296000075cb6bc65dcee89acfc4d09b",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-CVhVKDLD.js",
+        "path": "/assets/index.browser-CVhVKDLD.js",
+        "status": 200,
+        "bytes": 1761763,
+        "sha256": "99cf3bf2b9afbe547acd0f3bf5d3d853f868d6eb914f8ccd7df9fbf96faf700e",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-9-7S34EQ.js",
+        "path": "/assets/transform.worker-9-7S34EQ.js",
+        "status": 200,
+        "bytes": 951937,
+        "sha256": "d610c5177c40b6754365c38a0736cec6aee51e62b555e6836185545360c52604",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 6956,
+        "sha256": "6511cd5b6a3f3eb7e88d3c4af8821e0fe9dedb0b5f68b37e1af3bc31733d475c",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 22192,
+        "sha256": "6691e259eda0a5cb917d6738b63aa60667e2eb8a0c5aa4b22df4cd3f2054595b",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-BaUYvjVJ.js",
+        "path": "/docs/assets/index-BaUYvjVJ.js",
+        "status": 200,
+        "bytes": 70390,
+        "sha256": "31b3f6fa9378d8271bb957a48ca3598a94a42995af243ab27c6e2aea464f11a8",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-CyAxhKqI.css",
+        "path": "/docs/assets/index-CyAxhKqI.css",
+        "status": 200,
+        "bytes": 7576,
+        "sha256": "ddb21bd8320687efae2c1af699729288f1047c9db24d34fd415daae376f3f458",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 914,
+        "sha256": "692e57a5bb5a4b78262f243c53157eda5afcae92437a637eb9d46e3be07c4bed",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-COTfHffq.js",
+        "path": "/examples/react/assets/index-COTfHffq.js",
+        "status": 200,
+        "bytes": 1822872,
+        "sha256": "b47f202362d903acecb78ec3af4c460665fddc10becb10010d895d5c297128f0",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-FQmIVn7C.js",
+        "path": "/examples/react/assets/lazy-FQmIVn7C.js",
+        "status": 200,
+        "bytes": 3036,
+        "sha256": "d3e6277192fb5a2a1623e52fd4f0a9d8965bd70b2a1dc9c39df8f505714a88a5",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "9447a7d0a123a03c2743f6da8f7cb83745c897d30749ae3de6f34ff3dd34f58a",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "f9d3506dd9b243532c293a0a6ad1d5ab4ec2d7523377310ad34cdd588b9fc4ba",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "fd693f3cfa754433def78fc94d1f0fd48d95ea09fe79f95544a827784b008030",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-Dq0PrjZ0.js",
+        "path": "/examples/vanilla-js/assets/about-Dq0PrjZ0.js",
+        "status": 200,
+        "bytes": 534,
+        "sha256": "4e04d4a8e5f29a7412dc69a4d70b582b1f5573348306e46bdfb4a130f60261bf",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-BKqvMXMN.js",
+        "path": "/examples/vanilla-js/assets/index-BKqvMXMN.js",
+        "status": 200,
+        "bytes": 9879,
+        "sha256": "3d1580e5e25f21edb5c7c05102f8ab4601ae590dbdd9a4f973eaeaf9a7e2e3e0",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-C2WBrAIr.js",
+        "path": "/examples/vanilla-js/assets/lazy-C2WBrAIr.js",
+        "status": 200,
+        "bytes": 638,
+        "sha256": "732af096689e4100e7c96f9766ab8cfecba99bce6faeb8668a491207f3d64d68",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "296d305a1940a002e87cf6cd95df9de85ca62489c9c25bb1dca4de58133f71fd",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 961,
+        "sha256": "d614c574cc0b368b5c64225e30e61c5850e77267b63536a8872c4e72dd15d99c",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BaGqMjsP.js",
+        "path": "/examples/vanilla-ts/assets/index-BaGqMjsP.js",
+        "status": 200,
+        "bytes": 10573,
+        "sha256": "711221c0b550debd3b135dfd50ce05f6f9370b24a406fd2572fd455592ede7ce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-rDnw-VeF.js",
+        "path": "/examples/vanilla-ts/assets/lazy-rDnw-VeF.js",
+        "status": 200,
+        "bytes": 1271,
+        "sha256": "2c2bccdd4c4397ea507c2014cdeb76a8e33cfbfbad0c746a51d105faf71def86",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "dd62fb9dcc614e1a7329f24cc1a213077d2cf27284d32e51b2e6db9455e7d2b1",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "eafa8caea7f80b479bc770bc87d321020ca7b58a071bd06e2c3ee719a16c3d31",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 1004,
+        "sha256": "1891bcbf6addd684a864fa11b8933388d07d86684ddb6407bc4b09cc0e0854f7",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "npmPublication": "Remains paused; no package publish or release artifact changes",
+  "codexConfiguration": "Unchanged",
+  "screenshot": "demo-shortcuts-default-on-native.png",
+  "references": [
+    "https://developer.chrome.com/docs/devtools/shortcuts/",
+    "https://developer.chrome.com/docs/devtools/open/"
+  ]
+}

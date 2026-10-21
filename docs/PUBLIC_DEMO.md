@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Blue developer guide (current)
+## Shortcut restriction enabled on demo entry (current)
+
+[Open the updated demo](https://webguard.uulab.co.kr/demo?fix=default-shortcuts-3d2979f#live-demo). The public demo now starts with **단축키 제한 ON**; visitors can turn it off to compare the page's actual input behavior. The SDK already recognized Mac `Cmd+Option+I/J/C`: the preceding demo initialized its switch OFF, and the user's existing in-app tab also retained older page content. Manually enabling the preceding build canceled native `Cmd+Option+I`. No new SDK shortcut-matching defect was reproduced, and this change does not claim a complete diagnosis of an unobserved external browser/focus state.
+
+Source **`3d2979f`** is deployed as Worker **`e1dd73f4-fa59-45f4-8254-04caeaa9eb36`**, deployment **`b4c02220-0d4b-4d46-995f-396b73ecf0f9`**, serving 100% of traffic. All **37** public files matched prepared SHA-256 values. Runtime settings and bindings match the preceding deployment. Installed SDK defaults, npm publication and Codex configuration are unchanged.
+
+The new default-on regression failed against the preceding build, then passed with the change. Unit/integration checks passed **347/347**; related local and public browser matrices each passed **51/51** across Chromium, Firefox and WebKit without retries. They cover trusted Mac/Windows I/J/C ON/OFF, initial cancellation before an opt-in click, F12, editable exemptions, runtime integrity, navigation and the complete tour. Build, root/Worker types, scoped lint, formatting and dry run passed. Native in-app input confirmed initial ON, `Cmd+Option+I` cancellation, OFF allowance and `Cmd+Option+J` cancellation. The native automation backend refused `Cmd+Option+C` as a clipboard chord; only automated browser evidence covers C.
+
+These observations verify page event cancellation, not a locked DevTools window. Browser menus, existing tools, editable fields, input not delivered to the page and remote debugging remain outside this guard. No native external Chrome/Safari window-state proof is claimed. The earlier historical runtime screenshot is preserved.
+
+[Deployment receipt](evidence/demo-default-shortcuts-deployment.json) · [Native input result](evidence/demo-shortcuts-default-on-native.png) · [Korean demo instructions](DEMO_GUARDS.ko.md).
+
+## Blue developer guide (preceding release)
 
 [Open the guide](https://webguard.uulab.co.kr/docs/?theme=blue-242422c). Documentation now matches the approved blue SDK demo: the same logo, blue/navy palette, typography, header, buttons and light surfaces. Korean navigation, headings and explanatory text use a consistent tone. Reading width and section spacing stay generous; mobile navigation scrolls within its own row, while long code and the policy table have their own overflow areas. Existing section fragments and integration links are preserved. The npm instructions still distinguish published 0.2.0 from unpublished 0.3.0.
 
