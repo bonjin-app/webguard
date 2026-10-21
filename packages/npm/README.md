@@ -1,8 +1,8 @@
 # uulab-webguard
 
-개발자의 웹 앱에 설치하는 보호 SDK와 Vite 빌드 통합 패키지입니다. 웹사이트는 SDK 동작과 보호 전후를 확인하는 데모이며, 운영 앱의 보호는 설치한 패키지와 배포 설정에서 수행합니다.
+개발자의 웹 앱에 설치하는 보호 SDK와 빌드 도구 통합 패키지입니다. 웹사이트는 SDK 동작과 보호 전후를 확인하는 데모이며, 운영 앱의 보호는 설치한 패키지와 배포 설정에서 수행합니다.
 
-Vite 설정 한 번으로 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 연결합니다. Node.js 22.12 이상, Vite 7/8의 ESM 웹 앱을 지원합니다.
+Vite 설정 또는 기존 빌드 후처리 한 번으로 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 연결합니다. Node.js 22.12 이상이 필요합니다. Vite 통합은 Vite 7/8의 ESM 웹 앱용이며 범용 `/build` API·CLI는 Vite 설치를 요구하지 않습니다.
 
 [데모 체험](https://webguard.uulab.co.kr/demo) · [한국어 전체 가이드](INSTALL.ko.md) · [온라인 가이드](https://webguard.uulab.co.kr/docs/#install)
 
@@ -13,6 +13,36 @@ Vite 설정 한 번으로 Strict/High 난독화·RC4 문자열 인코딩, 자동
 npm install -D uulab-webguard@0.3.0
 ```
 
+## 한 번 연결하는 후처리
+
+```js
+// scripts/protect.mjs — Node에서 실행
+import { protectAppDirectory } from "uulab-webguard/build";
+
+await protectAppDirectory("dist", {
+  output: "dist-protected",
+  config: { preset: "strict" },
+  runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+  headers: { trustedTypes: "report-only" },
+});
+```
+
+기존 빌드 명령 다음에 `node scripts/protect.mjs`를 실행하고 `dist-protected`만 배포합니다. `/build` 진입점은 Vite 설치를 요구하지 않습니다. 목적지가 이미 있으면 실패하므로 빌드별 새 출력 경로를 쓰거나 이전 결과를 보관하세요. 실패한 실행이 기존 출력과 원본 입력을 덮어쓰지 않습니다.
+
+범용 후처리는 빌드 도구가 만든 파일명을 유지합니다. 파일명의 `[contenthash]`는 보호 전 바이트를 가리킬 수 있으며, 난독화 시드나 엔진 버전이 바뀌면 같은 파일명에 다른 보호 코드가 생길 수 있습니다. 같은 자산 URL에 장기 `immutable` 캐시를 적용하지 마세요. 릴리스별 배포 경로를 사용하거나 재검증·`no-store` 정책을 적용하고, 최종 해시 이름이 필요하면 빌드 파이프라인에서 참조·매니페스트까지 함께 갱신해야 합니다.
+
+CLI도 제공합니다.
+
+```sh
+npx --no-install webguard protect-app dist --output dist-protected --preset strict --restrict-shortcuts --restrict-context-menu --trusted-types report-only
+npx --no-install webguard-serve dist-protected --port 4173
+npx --no-install webguard-check dist-protected --url http://127.0.0.1:4173/
+```
+
+기본은 Strict이며 입력 제한은 별도로 켜야 합니다. `--no-runtime`은 자동 SDK만, `--no-headers`는 정책 생성만 끕니다. `webguard protect`·`protectDirectory()`는 SDK·정책 자동 통합을 하지 않는 빌드 보호 경로입니다.
+
+### Vite 설정
+
 ```ts
 // vite.config.ts — 기존 플러그인·설정은 유지하세요.
 import { defineConfig } from "vite";
@@ -21,7 +51,7 @@ import { webguardApp } from "uulab-webguard";
 export default defineConfig({ plugins: [webguardApp()] });
 ```
 
-SDK를 따로 설치하거나 앱에서 초기화하지 않습니다. 0.3.0은 앱 리소스보다 앞에 CSP 메타 정책도 넣어, 호스트 헤더가 없어도 기본 `connect-src 'self'`와 지원 브라우저의 Trusted Types 강제를 적용합니다. `frame-ancestors`, report-only와 MIME 보호는 실제 HTTP 헤더가 필요합니다. Trusted Types 미지원 환경은 보호된 것으로 판단하지 마세요. 개발/HMR에는 적용하지 않습니다.
+위 자동 통합을 쓰면 SDK를 따로 설치하거나 앱에서 초기화하지 않습니다. 0.3.0은 앱 리소스보다 앞에 CSP 메타 정책도 넣어, 호스트 헤더가 없어도 기본 `connect-src 'self'`와 지원 브라우저의 Trusted Types 강제를 적용합니다. `frame-ancestors`, report-only와 MIME 보호는 실제 HTTP 헤더가 필요합니다. Trusted Types 미지원 환경은 보호된 것으로 판단하지 마세요. 개발/HMR에는 적용하지 않습니다.
 
 ```sh
 npm run build && npx webguard-serve dist --port 4173
@@ -61,6 +91,14 @@ import { getWebGuard } from "uulab-webguard/client";
 getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 ```
 
+### 환경별 적용 범위
+
+Webpack·esbuild·일반 HTML은 기존 빌드 뒤에 범용 후처리를 연결합니다. PHP·JSP·ASP.NET은 서버 템플릿 대신 정적 자산만 보호하고 외부 SDK와 서버 헤더를 직접 연결합니다. Next.js·Nuxt·Angular의 정적 출력은 프레임워크별 호환성 검토가 필요하며 네이티브 SSR·nonce·hydration 자동 통합은 제공한다고 주장하지 않습니다. 자체 서비스 워커·해시·프리캐시·서명 매니페스트는 최종 보호 바이트로 갱신해야 합니다.
+
+정적 HTML의 인라인 스크립트·이벤트 속성은 외부화하세요. 기존 CSP가 있으면 정책 소유자를 정하고 충돌을 해결해야 합니다. Trusted Types 관찰 모드도 CSP의 인라인 실행 제한을 풀지 않습니다. 서버별 레시피와 실제 브라우저 검증 범위는 저장소의 `docs/ENVIRONMENTS.ko.md`를 참고하세요. 서버 레시피 제공은 실제 PHP·ASP.NET·Nginx 서버 실행 검증을 뜻하지 않습니다.
+
+범용 자동 통합의 인스턴스는 `WebGuardSDK.getAutoGuard()`로 조회합니다. 독립 `/browser.global.js` 파일은 로드만으로 시작되지 않으므로 외부 초기화 파일에서 `WebGuardSDK.WebGuard.init()`을 호출하세요. 자동 SDK와 수동 초기화를 중복하지 마세요.
+
 ### SDK 직접 연결
 
 Vite 자동 통합을 쓰면 위 `/client`로 기존 인스턴스를 조회하세요. 자동 SDK 없이 직접 수명 주기를 관리할 때만 `/browser`를 사용하며, 중복 초기화하지 않습니다.
@@ -79,7 +117,7 @@ guard.update({ devtools: { blockShortcuts: false } });
 
 앱 종료·기능 해제 시 `guard.destroy()`를 호출하면 이벤트 리스너와 진행 중인 명시적 파일 검사를 정리합니다. 해제한 인스턴스에 `update()`를 호출해도 다시 시작하지 않습니다. `getOptions()`는 현재 옵션의 분리된 스냅샷을 반환합니다.
 
-직접 연결한 브라우저 SDK는 빌드 난독화·SRI·CSP·HTTP 헤더를 자동 생성하지 않습니다. 난독화와 자동 연결이 필요하면 `webguardApp()`을 사용하세요. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 사이트 전체 자동 검사나 서버 권한 검증 기능이 아닙니다.
+직접 연결한 브라우저 SDK는 빌드 난독화·SRI·CSP·HTTP 헤더를 자동 생성하지 않습니다. 난독화와 자동 연결이 필요하면 `webguardApp()` 또는 `protectAppDirectory()`를 사용하세요. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 사이트 전체 자동 검사나 서버 권한 검증 기능이 아닙니다.
 
 Node 서버 API도 제공합니다. 브라우저 번들에 가져오지 마세요.
 
@@ -97,7 +135,9 @@ npx --no-install webguard-check dist --url https://YOUR-SITE.example/
 ```
 
 - `uulab-webguard`: Vite `webguardApp()` / 빌드 전용 `webguard()`
-- `/client`: 자동 SDK 조회·실시간 변경
+- `/build`: Vite와 독립적인 `protectAppDirectory()`·`protectDirectory()`·정책/무결성 API
+- `/browser.global.js`: 번들러 없는 페이지용 `WebGuardSDK.WebGuard` (명시적 초기화 필요)
+- `/client`: Vite 자동 SDK 조회·실시간 변경
 - `/browser`: 수동 SDK 사용
 - `/headers`: 서버 정책 생성
 - `/server`: Node 보호 서버 `createProtectedServer(directory)`

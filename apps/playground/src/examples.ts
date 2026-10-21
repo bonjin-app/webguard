@@ -55,6 +55,34 @@ export const integrations = [
     }).code,
   },
   {
+    id: "generic",
+    title: "범용 빌드",
+    hint: "Webpack·esbuild·일반 정적 HTML에서 기존 빌드 다음에 실행합니다. Vite 설치가 필요 없습니다. 출력은 새 경로를 사용하고, 서버 헤더를 실제 적용하세요. Next.js·Nuxt SSR 자동 통합은 포함하지 않습니다.",
+    code: `# 검토한 미게시 0.3.0 tgz 설치 후 · 기존 빌드는 유지
+npm run build:raw
+npx --no-install webguard protect-app dist --output dist-protected \\
+  --restrict-shortcuts --restrict-context-menu --trusted-types report-only
+npx --no-install webguard-serve dist-protected --port 4173
+
+# Node API: import { protectAppDirectory } from 'uulab-webguard/build'
+# report-only는 Trusted Types 관찰 모드이며 실제 HTTP 헤더가 필요`,
+  },
+  {
+    id: "classic",
+    title: "일반 HTML SDK",
+    hint: "HTML·JSP·PHP·ASP.NET에서 독립 SDK를 외부 스크립트로 연결합니다. SDK만 붙이면 난독화는 되지 않으므로 정적 JS 보호는 범용 빌드 경로를 사용하세요. 서버 템플릿 예제는 실행 미검증 레시피입니다.",
+    code: `<!-- 패키지의 browser.global.js를 /assets/webguard.global.js로 복사 -->
+<script src="/assets/webguard.global.js"></script>
+<script src="/assets/guard-init.js"></script>
+<script src="/assets/app.js" defer></script>
+
+// 별도 파일 /assets/guard-init.js
+const guard = WebGuardSDK.WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+});
+// 종료 시 guard.destroy();`,
+  },
+  {
     id: "live",
     title: "실시간 변경 코드",
     hint: "자동 SDK가 시작된 앱에서 즉시 켜고 끕니다. 새로고침하면 빌드 설정으로 돌아갑니다.",

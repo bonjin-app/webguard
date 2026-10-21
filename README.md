@@ -6,7 +6,7 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 **Browser-delivered HTML, CSS, JavaScript and network traffic remain observable. Obfuscation is not encryption. F12 interception cannot disable browser menus, external debuggers or user-controlled JavaScript. Never ship credentials or rely on this SDK for authorization.**
 
-## Install in a Vite application
+## Install in your web application
 
 The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
 
@@ -79,7 +79,37 @@ The Playground transforms code locally in a worker; it does not upload it. Its i
 
 `@webguard/*` remain **internal local workspace names**, not public distribution names. `@webguard/core` belongs to another registry publisher. The public facade is `uulab-webguard`; do not install an unrelated package expecting this implementation. The workspace examples below use their internal links.
 
-## Protect an existing application
+## Protect an existing application without Vite
+
+The candidate public package exposes a build-tool independent API. Build browser assets using your existing toolchain, then protect the static output:
+
+```js
+// protect.mjs — run in Node
+import { protectAppDirectory } from "uulab-webguard/build";
+await protectAppDirectory("dist", {
+  output: "dist-protected",
+  config: { preset: "strict" },
+  runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+  headers: { trustedTypes: "report-only" },
+});
+```
+
+```sh
+npx --no-install webguard protect-app dist --output dist-protected --preset strict
+npx --no-install webguard-serve dist-protected --port 4173
+```
+
+Generic postprocessing preserves toolchain filenames. A `[contenthash]` filename can describe pre-protection bytes: changing the obfuscation seed or engine version can change final bytes without changing the URL. Avoid long-lived `immutable` caching on reused asset URLs. Use versioned deployment paths or revalidation/`no-store`, unless your pipeline also updates final hash names, references and manifests.
+
+Connect this after the existing build command and deploy only the protected output. This API and CLI do not require Vite. The wrapper injects an external SDK before application scripts, obfuscates selected JavaScript, removes public source maps, calculates final SRI/manifest records and emits policies. Shortcut/context restrictions default off. Existing destinations are refused, so preserve the previous build or use a new output directory. `runtime: false` / `--no-runtime` omits auto startup; `headers: false` / `--no-headers` omits automatic policies.
+
+Webpack, esbuild and plain HTML have dedicated consumer fixtures. PHP/JSP/ASP.NET templates use protected static assets, an external SDK initialization file and server-applied response headers; server templates are never obfuscated. [한국어 환경별 가이드](docs/ENVIRONMENTS.ko.md) and [server recipes](examples/server-templates/README.md). Server recipes are not executed server verification.
+
+Externalize inline scripts and event handlers before injecting strict CSP. Resolve existing CSP ownership explicitly; report-only Trusted Types does not permit inline execution. Update framework-owned hashes, precache lists and signatures against final protected bytes. Next.js/Nuxt/Angular static output requires separate compatibility assessment: no native SSR, middleware, nonce or hydration adapter is claimed.
+
+The original `protectDirectory()` API is also available from `/build`, and `webguard protect` retains build-only behavior without automatic runtime/header integration.
+
+### Internal workspace CLI
 
 Build your TypeScript/React/JSP assets using your existing toolchain, then run the local CLI from this checkout:
 
@@ -182,7 +212,7 @@ guard.destroy(); // removes listeners; safe to call repeatedly
 
 Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `@webguard/vite-plugin/client`.
 
-All intrusive controls are opt-in, including Strict. Detection is event-driven; there is no continuous polling, debugger loop, forced navigation or remote collection. Hints are advisory and not proof that developer tools are open. The standalone IIFE is `packages/browser/dist/webguard.global.js`, global `WebGuardSDK.WebGuard`.
+All intrusive controls are opt-in, including Strict. Detection is event-driven; there is no continuous polling, debugger loop, forced navigation or remote collection. Hints are advisory and not proof that developer tools are open. The public standalone IIFE is `uulab-webguard/browser.global.js`, global `WebGuardSDK.WebGuard`; loading it does not initialize a guard. Call `WebGuardSDK.WebGuard.init()` from an external initialization file. The generic wrapper emits `assets/webguard-runtime.js` and initializes one guard; retrieve it with `WebGuardSDK.getAutoGuard()` instead of initializing twice. The internal workspace IIFE remains `packages/browser/dist/webguard.global.js`.
 
 ## Policies
 
@@ -213,7 +243,7 @@ This explicitly fetches deployment resources and compares them to your **local**
 | JSP + Servlet      | See [JSP setup](examples/jsp-servlet/README.md)                  |
 | Documentation      | `pnpm --filter @webguard/docs preview --port 4175`               |
 
-Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Next.js, Webpack, Nuxt and Angular adapters are future work; use the generic static-output CLI where appropriate.
+Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Webpack/esbuild/plain HTML use the generic application-protection pipeline, with real consumer fixtures. Next.js, Nuxt and Angular native adapters are not provided; assess static-output compatibility separately. See the environment guide for the distinction between toolchain tests and unexecuted server recipes.
 
 `pnpm benchmark` writes real fixture measurements to [Node benchmark evidence](docs/evidence/benchmark-node.json). Measurements are environment-dependent, not performance promises. [Demo verification](docs/DEMO_VERIFICATION.md) records the runnable hub checks. [Foundation verification](docs/VERIFICATION.md) separates automated tests, builds and external/device limitations.
 

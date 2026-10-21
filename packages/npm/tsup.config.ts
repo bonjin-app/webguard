@@ -18,6 +18,8 @@ export default defineConfig([
       check: "src/check.ts",
       server: "src/server.ts",
       serve: "src/serve.ts",
+      build: "src/build.ts",
+      cli: "src/cli.ts",
     },
     platform: "node",
   },
@@ -25,5 +27,14 @@ export default defineConfig([
     ...common,
     entry: { browser: "src/browser.ts", client: "src/client.ts" },
     platform: "browser",
+  },
+  {
+    ...common,
+    entry: { "browser.global": "src/browser.ts" },
+    format: ["iife"],
+    globalName: "WebGuardSDK",
+    platform: "browser",
+    dts: false,
+    outExtension: () => ({ js: ".js" }),
   },
 ]);

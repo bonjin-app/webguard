@@ -10,7 +10,7 @@
 
 ## 1. 설치
 
-Node.js **22.12 이상**, Vite **7 또는 8**, ESM 방식의 Vite 웹 앱이 필요합니다. React·JavaScript·TypeScript 앱에 적용할 수 있습니다. SSR·라이브러리 빌드는 지원하지 않습니다.
+Node.js **22.12 이상**이 필요합니다. Vite 통합은 **Vite 7 또는 8의 ESM 웹 앱**에 적용합니다. Vite가 없는 환경은 범용 빌드 API·CLI를 사용합니다. 브라우저용 정적 산출물이 대상이며 SSR 서버 코드·라이브러리 빌드 자동 보호는 지원하지 않습니다.
 
 검토된 0.3.0 로컬 패키지 파일을 전달받았다면 별도 시험 앱에서 설치할 수 있습니다. 아래 경로는 실제 파일의 절대 경로로 바꾸세요.
 
@@ -25,7 +25,37 @@ npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz
 npm install -D uulab-webguard@0.3.0
 ```
 
-게시 후 pnpm은 `pnpm add -D uulab-webguard@0.3.0`으로 설치합니다. SDK는 포함되어 있으며 앱에서 따로 초기화하지 않습니다. 빌드 환경에는 개발 의존성도 설치되어 있어야 합니다.
+게시 후 pnpm은 `pnpm add -D uulab-webguard@0.3.0`으로 설치합니다. SDK는 포함됩니다. Vite·범용 자동 통합은 앱에서 따로 초기화하지 않습니다. 수동 SDK는 명시적으로 시작합니다. 빌드 환경에는 개발 의존성도 설치되어 있어야 합니다.
+
+## 한 번 연결하는 후처리
+
+```js
+// scripts/protect.mjs — Node에서 실행
+import { protectAppDirectory } from "uulab-webguard/build";
+
+await protectAppDirectory("dist", {
+  output: "dist-protected",
+  config: { preset: "strict" },
+  runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
+  headers: { trustedTypes: "report-only" },
+});
+```
+
+기존 빌드 명령 다음에 `node scripts/protect.mjs`를 실행하고 `dist-protected`만 배포합니다. `/build` 진입점은 Vite 설치를 요구하지 않습니다. 목적지가 이미 있으면 실패하므로 빌드별 새 출력 경로를 쓰거나 이전 결과를 보관하세요. 실패한 실행이 기존 출력과 원본 입력을 덮어쓰지 않습니다.
+
+범용 후처리는 빌드 도구가 만든 파일명을 유지합니다. 파일명의 `[contenthash]`는 보호 전 바이트를 가리킬 수 있으며, 난독화 시드나 엔진 버전이 바뀌면 같은 파일명에 다른 보호 코드가 생길 수 있습니다. 같은 자산 URL에 장기 `immutable` 캐시를 적용하지 마세요. 릴리스별 배포 경로를 사용하거나 재검증·`no-store` 정책을 적용하고, 최종 해시 이름이 필요하면 빌드 파이프라인에서 참조·매니페스트까지 함께 갱신해야 합니다.
+
+CLI도 제공합니다.
+
+```sh
+npx --no-install webguard protect-app dist --output dist-protected --preset strict --restrict-shortcuts --restrict-context-menu --trusted-types report-only
+npx --no-install webguard-serve dist-protected --port 4173
+npx --no-install webguard-check dist-protected --url http://127.0.0.1:4173/
+```
+
+기본은 Strict이며 입력 제한은 별도로 켜야 합니다. `--no-runtime`은 자동 SDK만, `--no-headers`는 정책 생성만 끕니다. `webguard protect`·`protectDirectory()`는 SDK·정책 자동 통합을 하지 않는 빌드 보호 경로입니다.
+
+[환경별 적용과 번들러 없는 HTML·JSP·PHP·ASP.NET 안내](ENVIRONMENTS.ko.md).
 
 ## 2. Vite 플러그인 하나로 적용
 
@@ -228,7 +258,9 @@ guard.update({ devtools: { blockContextMenu: true } });
 
 앱/화면 종료·기능 해제 시 `guard.destroy()`를 호출하세요. 이벤트 리스너와 진행 중인 명시적 파일 검사를 정리하며, 이후 `update()`로 다시 시작되지 않습니다. `getOptions()`는 내부 상태와 분리된 옵션 스냅샷을 반환합니다. 자동 통합을 쓰는 앱은 새 인스턴스 대신 `/client`의 `getWebGuard()`로 기존 SDK를 조회하세요.
 
-수동 브라우저 SDK만 연결하면 빌드 난독화·SRI·CSP·HTTP 헤더가 자동 생성되지 않습니다. 이 기능과 자동 SDK 시작은 `webguardApp()` 빌드 통합으로 적용합니다. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 웹 데모는 이런 동작을 확인하는 체험 공간이며 운영 앱을 대신 보호하는 서비스가 아닙니다.
+수동 브라우저 SDK만 연결하면 빌드 난독화·SRI·CSP·HTTP 헤더가 자동 생성되지 않습니다. 이 기능과 자동 SDK 시작은 `webguardApp()` 또는 `protectAppDirectory()` 빌드 통합으로 적용합니다. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 웹 데모는 이런 동작을 확인하는 체험 공간이며 운영 앱을 대신 보호하는 서비스가 아닙니다.
+
+Vite 외 자동 통합의 SDK는 `WebGuardSDK.getAutoGuard()`로 조회합니다. 독립 파일 `uulab-webguard/browser.global.js`는 로드만으로 시작되지 않으며 외부 초기화 파일에서 `WebGuardSDK.WebGuard.init()`을 호출해야 합니다. [수동 연결·서버 템플릿 예제](../examples/server-templates/README.md)를 참고하세요.
 
 서버용 정책 생성은 `createSecurityHeaders`를 `uulab-webguard/headers`에서 가져옵니다. 브라우저 코드에는 `/client`·`/browser`를 사용하며 루트 빌드 진입점과 `/server`·`/verify`를 넣지 마세요.
 

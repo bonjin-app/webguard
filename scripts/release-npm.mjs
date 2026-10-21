@@ -97,7 +97,7 @@ async function prepare() {
     if (
       paths.some(
         (path) =>
-          !/^(?:package\.json|README\.md|INSTALL\.ko\.md|LICENSE|THIRD_PARTY_NOTICES\.md|examples\/server\.mjs|dist\/[A-Za-z0-9_./-]+\.(?:js|ts))$/.test(
+          !/^(?:package\.json|README\.md|INSTALL\.ko\.md|ENVIRONMENTS\.ko\.md|LICENSE|THIRD_PARTY_NOTICES\.md|examples\/server\.mjs|dist\/[A-Za-z0-9_./-]+\.(?:js|ts))$/.test(
             path,
           ) ||
           path.endsWith(".map") ||
@@ -108,6 +108,7 @@ async function prepare() {
     for (const path of [
       "README.md",
       "INSTALL.ko.md",
+      "ENVIRONMENTS.ko.md",
       "LICENSE",
       "THIRD_PARTY_NOTICES.md",
       "examples/server.mjs",
@@ -115,6 +116,10 @@ async function prepare() {
       "dist/index.d.ts",
       "dist/client.js",
       "dist/browser.js",
+      "dist/browser.global.js",
+      "dist/build.js",
+      "dist/build.d.ts",
+      "dist/cli.js",
       "dist/headers.js",
       "dist/verify.js",
       "dist/verify.d.ts",

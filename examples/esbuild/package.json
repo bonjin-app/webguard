@@ -1,0 +1,13 @@
+{
+  "name": "webguard-esbuild-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:raw": "node build.mjs",
+    "build": "npm run build:raw && webguard protect-app dist --output dist-protected --trusted-types report-only",
+    "preview": "webguard-serve dist-protected"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

@@ -2,7 +2,7 @@
 
 WebGuard's original code is MIT licensed. The transformation engine javascript-obfuscator 5.9.0 is an external BSD-2-Clause dependency, Copyright (c) 2016-2026 Timofei Kachalov. Its full license text follows below. The engine runs during builds; protected browser applications do not require the transformation engine at runtime.
 
-Other runtime dependencies are Acorn (MIT), picomatch (MIT), and parse5 (MIT), plus their dependencies. Vite is an MIT-licensed peer dependency. Installed dependencies retain their own license files; preserve the applicable notices when redistributing them.
+Other runtime dependencies are Acorn (MIT), picomatch (MIT), and parse5 (MIT), plus their dependencies. Vite is an optional MIT-licensed peer dependency, required only by the Vite integration. Installed dependencies retain their own license files; preserve the applicable notices when redistributing them.
 
 ## javascript-obfuscator — BSD-2-Clause
 

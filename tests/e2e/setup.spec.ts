@@ -1,5 +1,36 @@
 import { expect, test } from "@playwright/test";
 
+test("offers generic builds and classic SDK integration without Vite", async ({
+  page,
+}) => {
+  await page.goto("/#setup");
+  await page.getByRole("button", { name: "범용 빌드", exact: true }).click();
+  await expect(page.locator("#setup-options")).toBeHidden();
+  await expect(page.locator("#setup-code")).toContainText(
+    "webguard protect-app",
+  );
+  await expect(page.locator("#setup-hint")).toContainText("Webpack");
+  await expect(page.locator("#setup-code")).not.toContainText("from 'vite'");
+  await page
+    .getByRole("button", { name: "일반 HTML SDK", exact: true })
+    .click();
+  await expect(page.locator("#setup-code")).toContainText(
+    "WebGuardSDK.WebGuard.init",
+  );
+  await expect(page.locator("#setup-hint")).toContainText("JSP");
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.goto("/docs/#environments");
+  await expect(page.locator("#environments")).toContainText("Webpack");
+  await expect(page.locator("#environments")).toContainText(
+    "uulab-webguard/build",
+  );
+});
+
 test("generates one Vite configuration for strict React and explicit vanilla compatibility", async ({
   page,
 }) => {

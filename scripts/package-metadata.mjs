@@ -35,3 +35,7 @@ console.log(
 await prepareNpmPackageMetadata();
 await mkdir("apps/docs/public", { recursive: true });
 await copyFile("docs/INSTALL.ko.md", "apps/docs/public/INSTALL.ko.txt");
+await copyFile(
+  "docs/ENVIRONMENTS.ko.md",
+  "apps/docs/public/ENVIRONMENTS.ko.txt",
+);

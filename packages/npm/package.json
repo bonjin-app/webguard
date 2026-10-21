@@ -1,7 +1,7 @@
 {
   "name": "uulab-webguard",
   "version": "0.3.0",
-  "description": "Vite application protection, automatic browser advisory controls, and deployment header policies.",
+  "description": "Build-tool independent browser application protection, advisory SDK controls, and deployment header policies.",
   "type": "module",
   "license": "MIT",
   "sideEffects": false,
@@ -9,6 +9,7 @@
     "dist",
     "README.md",
     "INSTALL.ko.md",
+    "ENVIRONMENTS.ko.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "examples/server.mjs"
@@ -39,7 +40,12 @@
     "./server": {
       "types": "./dist/server.d.ts",
       "import": "./dist/server.js"
-    }
+    },
+    "./build": {
+      "types": "./dist/build.d.ts",
+      "import": "./dist/build.js"
+    },
+    "./browser.global.js": "./dist/browser.global.js"
   },
   "scripts": {
     "build": "node build.mjs"
@@ -68,6 +74,12 @@
   "homepage": "https://webguard.uulab.co.kr/docs/#install",
   "bin": {
     "webguard-check": "./dist/check.js",
-    "webguard-serve": "./dist/serve.js"
+    "webguard-serve": "./dist/serve.js",
+    "webguard": "./dist/cli.js"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   }
 }

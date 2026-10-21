@@ -195,6 +195,7 @@ try {
     "package.json",
     "README.md",
     "INSTALL.ko.md",
+    "ENVIRONMENTS.ko.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
   ]);
@@ -212,9 +213,10 @@ try {
     }
     check(
       allowedRoot.has(local) ||
-        /^dist\/(?:index|browser|client|headers|verify|check|server|serve)\.(?:js|d\.ts)$/.test(
+        /^dist\/(?:index|browser|browser\.global|client|headers|verify|check|server|serve|build|cli)\.(?:js|d\.ts)$/.test(
           local,
         ) ||
+        /^dist\/(?:index|remote)-[A-Za-z0-9_-]+\.d\.ts$/.test(local) ||
         local === "examples/server.mjs",
       `Unexpected public package file: ${local}`,
     );
@@ -238,7 +240,7 @@ try {
   const nodeImport = new RegExp(
     `(?:\\bfrom\\s*|\\bimport\\s*(?:\\(\\s*)?|\\brequire\\s*\\(\\s*)["'](?:node:|(?:${escapedBuiltins}|vite|javascript-obfuscator)["'])`,
   );
-  for (const name of ["browser.js", "client.js"]) {
+  for (const name of ["browser.js", "client.js", "browser.global.js"]) {
     const text = await readFile(join(packageRoot, "dist", name), "utf8");
     check(!nodeImport.test(text), `Node dependency in ${name}`);
   }

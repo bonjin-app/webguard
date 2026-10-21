@@ -10,6 +10,10 @@ export async function prepareNpmPackageMetadata() {
     new URL("docs/INSTALL.ko.md", source),
     new URL("INSTALL.ko.md", target),
   );
+  await copyFile(
+    new URL("docs/ENVIRONMENTS.ko.md", source),
+    new URL("ENVIRONMENTS.ko.md", target),
+  );
   await writeFile(
     new URL("examples/server.mjs", target),
     (
@@ -28,6 +32,6 @@ export async function prepareNpmPackageMetadata() {
   );
   await writeFile(
     new URL("THIRD_PARTY_NOTICES.md", target),
-    `# Third-party notices\n\nWebGuard's original code is MIT licensed. The transformation engine javascript-obfuscator 5.9.0 is an external BSD-2-Clause dependency, Copyright (c) 2016-2026 Timofei Kachalov. Its full license text follows below. The engine runs during builds; protected browser applications do not require the transformation engine at runtime.\n\nOther runtime dependencies are Acorn (MIT), picomatch (MIT), and parse5 (MIT), plus their dependencies. Vite is an MIT-licensed peer dependency. Installed dependencies retain their own license files; preserve the applicable notices when redistributing them.\n\n## javascript-obfuscator — BSD-2-Clause\n\nCopyright (c) 2016-2026 Timofei Kachalov\n\n\`\`\`text\n${license.trim()}\n\`\`\`\n`,
+    `# Third-party notices\n\nWebGuard's original code is MIT licensed. The transformation engine javascript-obfuscator 5.9.0 is an external BSD-2-Clause dependency, Copyright (c) 2016-2026 Timofei Kachalov. Its full license text follows below. The engine runs during builds; protected browser applications do not require the transformation engine at runtime.\n\nOther runtime dependencies are Acorn (MIT), picomatch (MIT), and parse5 (MIT), plus their dependencies. Vite is an optional MIT-licensed peer dependency, required only by the Vite integration. Installed dependencies retain their own license files; preserve the applicable notices when redistributing them.\n\n## javascript-obfuscator — BSD-2-Clause\n\nCopyright (c) 2016-2026 Timofei Kachalov\n\n\`\`\`text\n${license.trim()}\n\`\`\`\n`,
   );
 }
