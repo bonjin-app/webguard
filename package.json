@@ -36,6 +36,8 @@
     "test:npm": "node scripts/verify-npm-consumer.mjs --prepared",
     "test:npm:registry": "node scripts/verify-npm-consumer.mjs --registry",
     "test:generic": "node scripts/verify-generic-consumer.mjs",
+    "test:ssr": "node scripts/verify-ssr-templates.mjs",
+    "test:next": "node scripts/verify-next-consumer.mjs",
     "test:meta": "node scripts/verify-meta-guards.mjs"
   },
   "devDependencies": {

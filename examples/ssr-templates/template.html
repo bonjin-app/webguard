@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebGuard · {{runtime}} SSR</title>
+    {{assets}}
+  </head>
+  <body>
+    <main>
+      <h1>WebGuard · {{runtime}} SSR</h1>
+      <p>서버에서 렌더링한 인사: <strong id="greeting">{{greeting}}</strong></p>
+      <p>요청마다 서버가 만든 ID: <code id="request-id">{{requestId}}</code></p>
+      <p>브라우저 초기화: <span id="client-status">loading</span></p>
+      <section>
+        <button id="counter" type="button">카운터</button>
+        <span id="count">0</span>
+      </section>
+      <section>
+        <label
+          ><input id="guard-toggle" type="checkbox" checked /> 검사
+          단축키·우클릭 제한</label
+        >
+        <p>가드: <span id="guard-status">on</span></p>
+        <p>
+          페이지가 전달받는 입력만 제한합니다. 브라우저 메뉴나 이미 열린
+          개발자도구를 닫지는 않습니다.
+        </p>
+      </section>
+      <section>
+        <button id="load-api" type="button" data-url="{{apiUrl}}">
+          서버 API 확인
+        </button>
+        <p id="api-result">대기 중</p>
+      </section>
+    </main>
+  </body>
+</html>

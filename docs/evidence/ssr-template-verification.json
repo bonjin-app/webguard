@@ -1,0 +1,261 @@
+{
+  "checkedAt": "2026-10-21T06:48:00.260Z",
+  "http": [
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "api/status",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/app.js",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "missing",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/app.js.map",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "private/policy.json",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "template.html",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/webguard-report.json",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/../template.html",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": ".env",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "router.php",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "server.py",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "method": "POST",
+      "status": 405
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "/",
+      "status": 200
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "api/status",
+      "status": 200
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "assets/app.js",
+      "status": 200
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "missing",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "assets/app.js.map",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "private/policy.json",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "template.html",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "assets/webguard-report.json",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "assets/../template.html",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": ".env",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "router.php",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "server.py",
+      "status": 404
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "/",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "path": "/",
+      "method": "POST",
+      "status": 405
+    }
+  ],
+  "browsers": [
+    {
+      "runtime": "Python WSGI",
+      "engine": "chromium",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "Python WSGI",
+      "engine": "firefox",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "Python WSGI",
+      "engine": "webkit",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "engine": "chromium",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "engine": "firefox",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "PHP 8.4 WASM (not native PHP-FPM)",
+      "engine": "webkit",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "runtime": "PHP",
+      "reason": "Runtime executable unavailable; not verified"
+    }
+  ],
+  "status": "passed-with-skips",
+  "versions": {
+    "nodeVerifier": "22.23.2",
+    "nodePhpWasmAdapter": "24.19.0",
+    "python": "3.9.6",
+    "phpWasm": "8.4.25",
+    "phpWasmPackages": "3.1.60",
+    "playwright": "1.64.1"
+  },
+  "summary": {
+    "httpChecks": 28,
+    "browserCases": 6,
+    "engines": ["chromium", "firefox", "webkit"],
+    "build": "Strict protection of external SDK, init.js and app.js; SHA-384 final-byte SRI checked for all four assets; all JavaScript report entries transformed; no public sourceMappingURL",
+    "rendering": "Actual request-time server output: escaped user greeting, literal template delimiters preserved, distinct generated request IDs",
+    "scope": "Local Python stdlib WSGI and unchanged PHP router executed by real PHP 8.4 WebAssembly, exposed through a test-only HTTP adapter. Native PHP-FPM/Apache was not verified.",
+    "routing": "/app/ deployment prefix; exact asset allowlist; success/API/assets/404/HEAD/405 use the configured response headers",
+    "sourcePrivacy": "Reports, maps, policies, server files and template stay outside public/assets and are denied by explicit router allowlist",
+    "cleanup": "Owned server processes stopped; generated test output removed; optional PHP-WASM tooling installed only in an isolated temporary directory",
+    "npmPublication": "Not attempted; remains paused"
+  },
+  "commands": [
+    "node scripts/verify-ssr-templates.mjs --evidence <output.json>",
+    "WEBGUARD_PHP_WASM_MODULES=<isolated node_modules> WEBGUARD_PHP_WASM_NODE=<node24 executable> node scripts/verify-ssr-templates.mjs --evidence <output.json>",
+    "pnpm exec eslint scripts/prepare-ssr-templates.mjs scripts/verify-ssr-templates.mjs examples/ssr-templates/assets-src/*.js examples/ssr-templates/php/wasm-test-server.mjs"
+  ]
+}

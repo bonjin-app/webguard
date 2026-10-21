@@ -20,12 +20,17 @@ export default defineConfig([
       serve: "src/serve.ts",
       build: "src/build.ts",
       cli: "src/cli.ts",
+      next: "src/next.ts",
     },
     platform: "node",
   },
   {
     ...common,
-    entry: { browser: "src/browser.ts", client: "src/client.ts" },
+    entry: {
+      browser: "src/browser.ts",
+      client: "src/client.ts",
+      "next-runtime": "src/next-runtime.ts",
+    },
     platform: "browser",
   },
   {

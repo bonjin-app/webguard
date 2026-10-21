@@ -105,7 +105,7 @@ Connect this after the existing build command and deploy only the protected outp
 
 Webpack, esbuild and plain HTML have dedicated consumer fixtures. PHP/JSP/ASP.NET templates use protected static assets, an external SDK initialization file and server-applied response headers; server templates are never obfuscated. [한국어 환경별 가이드](docs/ENVIRONMENTS.ko.md) and [server recipes](examples/server-templates/README.md). Server recipes are not executed server verification.
 
-Externalize inline scripts and event handlers before injecting strict CSP. Resolve existing CSP ownership explicitly; report-only Trusted Types does not permit inline execution. Update framework-owned hashes, precache lists and signatures against final protected bytes. Next.js/Nuxt/Angular static output requires separate compatibility assessment: no native SSR, middleware, nonce or hydration adapter is claimed.
+Externalize inline scripts and event handlers before injecting strict CSP. Resolve existing CSP ownership explicitly; report-only Trusted Types does not permit inline execution. Update framework-owned hashes, precache lists and signatures against final protected bytes. Next.js App Router has a dedicated client-only Webpack adapter (`uulab-webguard/next`); use `next build --webpack` on Next 16. It preserves server/RSC/API code and existing CSP; nonce, SRI and HTTP header generation are not part of that adapter. Nuxt/Angular native SSR adapters are not provided.
 
 The original `protectDirectory()` API is also available from `/build`, and `webguard protect` retains build-only behavior without automatic runtime/header integration.
 
@@ -260,8 +260,16 @@ This explicitly fetches deployment resources and compares them to your **local**
 | JSP + Servlet      | See [JSP setup](examples/jsp-servlet/README.md)                  |
 | Documentation      | `pnpm --filter @webguard/docs preview --port 4175`               |
 
-Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Webpack/esbuild/plain HTML use the generic application-protection pipeline, with real consumer fixtures. Next.js, Nuxt and Angular native adapters are not provided; assess static-output compatibility separately. See the environment guide for the distinction between toolchain tests and unexecuted server recipes.
+Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Webpack/esbuild/plain HTML use the generic application-protection pipeline, with real consumer fixtures. Next.js App Router production Webpack integration has a dedicated packed-consumer SSR/hydration test. Nuxt and Angular native adapters are not provided. Python WSGI, PHP and JSP/Servlet have runnable server examples; distinguish native/WASM/HTTP/browser evidence in the SSR report. See the environment guide for the distinction between toolchain tests and unexecuted server recipes.
 
 `pnpm benchmark` writes real fixture measurements to [Node benchmark evidence](docs/evidence/benchmark-node.json). Measurements are environment-dependent, not performance promises. [Demo verification](docs/DEMO_VERIFICATION.md) records the runnable hub checks. [Foundation verification](docs/VERIFICATION.md) separates automated tests, builds and external/device limitations.
 
 See [architecture](ARCHITECTURE.md), [threat model](THREAT_MODEL.md), [security policy](SECURITY.md), [contributing](CONTRIBUTING.md) and [third-party licenses](THIRD_PARTY_NOTICES.md). Original WebGuard code is MIT licensed; javascript-obfuscator is BSD-2-Clause.
+
+## Server rendering integrations
+
+- [Next.js App Router](examples/next-ssr/README.md): `withWebGuard()` transforms only production browser chunks and starts the SDK. Existing server code, API routes and CSP stay under Next's control. Turbopack is unsupported; use `next build --webpack`.
+- [JSP + Java Servlet](examples/jsp-servlet/README.md): protected external scripts, final-byte SRI in a private JSP include, server response headers and public-path allowlist.
+- [Python WSGI / PHP](examples/ssr-templates/README.md): real per-request template rendering, isolated browser assets, SRI, server headers, live SDK controls and automated browser checks.
+
+Java/Python/PHP source is never input to the JavaScript obfuscator. Inline scripts in server templates are not automatically transformed. See [한국어 적용 가이드](docs/ENVIRONMENTS.ko.md) and [runtime-specific verification](docs/SSR_VERIFICATION.md). All new APIs remain local candidates; npm publication is paused.

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T07:06:31.359Z",
+  "tarballSha512": "5f8ee9327007b10816fb644ab0328e81a0ff8c12670db1706d975ca87f1656504540281dec5a8527598bd04967a067a7d213cfbddf42bd65e9b56e6d93841f38",
+  "checks": [
+    {
+      "flags": ["--turbopack"],
+      "rejectedBeforeCompilation": true
+    },
+    {
+      "flags": ["--turbo"],
+      "rejectedBeforeCompilation": true
+    },
+    {
+      "flags": [],
+      "rejectedBeforeCompilation": true
+    }
+  ],
+  "browserVerification": "next-consumer-verification.json",
+  "scope": "The exact same final tarball passed the negative CLI checks and the production SSR/nonce/browser matrix in one consumer run."
+}

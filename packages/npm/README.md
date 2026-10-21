@@ -93,7 +93,7 @@ getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 
 ### 환경별 적용 범위
 
-Webpack·esbuild·일반 HTML은 기존 빌드 뒤에 범용 후처리를 연결합니다. PHP·JSP·ASP.NET은 서버 템플릿 대신 정적 자산만 보호하고 외부 SDK와 서버 헤더를 직접 연결합니다. Next.js·Nuxt·Angular의 정적 출력은 프레임워크별 호환성 검토가 필요하며 네이티브 SSR·nonce·hydration 자동 통합은 제공한다고 주장하지 않습니다. 자체 서비스 워커·해시·프리캐시·서명 매니페스트는 최종 보호 바이트로 갱신해야 합니다.
+Webpack·esbuild·일반 HTML은 기존 빌드 뒤에 범용 후처리를 연결합니다. PHP·JSP·ASP.NET은 서버 템플릿 대신 정적 자산만 보호하고 외부 SDK와 서버 헤더를 직접 연결합니다. Next.js App Router + Webpack에는 `uulab-webguard/next`의 `withWebGuard()`를 연결합니다. 운영 클라이언트 청크만 난독화하고 SDK를 자동 시작하며 서버/RSC/API·개발 빌드는 유지합니다. Next 16은 `next build --webpack`이 필요하고 Turbopack은 지원하지 않습니다. Next의 기존 CSP를 유지하며 nonce·SRI·HTTP 정책은 자동 생성하지 않습니다. Nuxt·Angular 네이티브 SSR 어댑터는 제공하지 않습니다. 자체 서비스 워커·해시·프리캐시·서명 매니페스트는 최종 보호 바이트로 갱신해야 합니다.
 
 정적 HTML의 인라인 스크립트·이벤트 속성은 외부화하세요. 기존 CSP가 있으면 정책 소유자를 정하고 충돌을 해결해야 합니다. Trusted Types 관찰 모드도 CSP의 인라인 실행 제한을 풀지 않습니다. 서버별 레시피와 실제 브라우저 검증 범위는 저장소의 `docs/ENVIRONMENTS.ko.md`를 참고하세요. 서버 레시피 제공은 실제 PHP·ASP.NET·Nginx 서버 실행 검증을 뜻하지 않습니다.
 
@@ -148,3 +148,22 @@ Vite preview의 명시적인 `preview.proxy` 경로는 백엔드가 응답 헤�
 난독화와 RC4 문자열 인코딩은 전달된 HTML·CSS·JavaScript나 네트워크 요청을 숨기지 않습니다. 브라우저 메뉴·콘솔·이미 열린 개발자도구는 통제하지 못합니다. 비밀키·가격 재계산·권한 검증은 서버에 두세요. 서버 검증은 SDK의 자동 기능이 아닙니다. 원격 수집·무한 디버거 루프를 추가하지 않습니다.
 
 MIT · 난독화 엔진 javascript-obfuscator의 BSD-2-Clause 고지 포함.
+
+### Next.js와 서버 렌더링
+
+```js
+// next.config.mjs — 미게시 로컬 후보 API
+import { withWebGuard } from "uulab-webguard/next";
+export default withWebGuard(
+  { reactStrictMode: true },
+  {
+    preset: "strict",
+    runtime: { devtools: { detect: false, blockShortcuts: true } },
+  },
+);
+// next build --webpack && next start
+```
+
+JSP·Java·Python·PHP는 서버 템플릿 대신 외부 브라우저 자산을 보호합니다. 최종 JS의 SRI를 서버 HTML에 연결하고 HTTP 정책은 서버에서 적용합니다. 정적 자산 디렉터리만 입력으로 지정하며 `.next`·서버 소스·WAR 전체를 후처리하지 마세요. React SSR/hydration, 서버 API, 동적 import·라우팅과 SDK 변경은 실제 프로젝트에서 검증해야 합니다. [한국어 환경별 가이드](https://webguard.uulab.co.kr/docs/#environments).
+
+Next는 앱/혼합/출처 불명 청크에 선택한 프리셋을 적용합니다. 전체 모듈 그래프가 외부 의존성인 청크는 기본 최대 Standard이며 Basic은 그대로 Basic입니다. `frameworkPreset: "inherit"`는 외부 의존성에도 선택한 프리셋을 적용합니다. 모든 프레임워크 코드를 Strict로 변환하면 전송량·초기 실행 비용이 크게 늘 수 있습니다.

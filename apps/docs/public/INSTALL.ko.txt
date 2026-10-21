@@ -355,3 +355,25 @@ Vite 외 자동 통합의 SDK는 `WebGuardSDK.getAutoGuard()`로 조회합니다
 - 패키지 상태 확인: `npm view uulab-webguard@0.3.0 version --registry=https://registry.npmjs.org`
 
 공개 소스는 MIT이며 난독화 엔진의 BSD-2-Clause 고지를 함께 제공합니다. 설치 패키지의 `LICENSE`와 `THIRD_PARTY_NOTICES.md`를 확인하세요.
+
+## 8. React·Next.js와 JSP·Java·Python·PHP
+
+Vite 브라우저 앱에는 `webguardApp()`을 유지합니다. SSR 서버 빌드에는 Vite 보호 플러그인을 넣지 않습니다. Next.js App Router는 전용 클라이언트 Webpack 연결을 사용합니다.
+
+```js
+// next.config.mjs — 미게시 후보
+import { withWebGuard } from "uulab-webguard/next";
+export default withWebGuard(
+  { reactStrictMode: true },
+  {
+    preset: "strict",
+    runtime: { devtools: { detect: false, blockShortcuts: true } },
+  },
+);
+```
+
+Next 16에서는 `next build --webpack`으로 빌드합니다. 서버/RSC/API와 개발 모드는 변환하지 않고 운영 브라우저 청크를 보호합니다. Next의 CSP·요청별 nonce·SRI·HTTP 정책을 자동 생성하지 않으므로 기존 정책과 hydration을 함께 검증하세요. Turbopack은 지원하지 않습니다.
+
+JSP·Java·Python·PHP는 브라우저 자산만 별도로 빌드·보호한 뒤 외부 SDK·초기화 파일·앱 JS와 최종 SRI를 서버 템플릿에 연결합니다. 템플릿·서버 언어 자체와 인라인 스크립트를 자동 난독화하지 않습니다. 서버 공개 루트에는 허용 자산만 배치하고 정책·보고서·매니페스트·소스맵은 밖에 보관하세요.
+
+[환경별 전체 적용법](ENVIRONMENTS.ko.md), [Next 실행 예제](../examples/next-ssr/README.md), [JSP 실행 예제](../examples/jsp-servlet/README.md), [Python·PHP 실행 예제](../examples/ssr-templates/README.md)를 참고하세요. 현재 미게시 로컬 후보에서 검증하며 npm 배포는 보류합니다.

@@ -9,6 +9,7 @@ test-results/
 .superpowers/
 *.tgz
 examples/jsp-servlet/src/main/webapp/assets/
+examples/jsp-servlet/src/main/webapp/WEB-INF/webguard-assets.jspf
 examples/jsp-servlet/target/
 .playwright-cli/
 

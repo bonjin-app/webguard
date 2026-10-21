@@ -39,3 +39,7 @@ await copyFile(
   "docs/ENVIRONMENTS.ko.md",
   "apps/docs/public/ENVIRONMENTS.ko.txt",
 );
+await copyFile(
+  "docs/SSR_VERIFICATION.md",
+  "apps/docs/public/SSR_VERIFICATION.txt",
+);

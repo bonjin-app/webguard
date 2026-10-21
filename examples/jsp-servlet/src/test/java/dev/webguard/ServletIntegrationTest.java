@@ -9,12 +9,15 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.Comparator;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 /** Exercises the real JSP compiler, HTTP servlet and public assets on loopback. */
 class ServletIntegrationTest {
@@ -112,8 +115,48 @@ class ServletIntegrationTest {
         assertEquals(404, get("assets/webguard.global.js.map").statusCode());
         assertEquals(404, get("assets-src/app.js").statusCode());
         assertEquals(404, get("src/main/java/dev/webguard/StatusServlet.java").statusCode());
+        assertEquals(404, get("assets/webguard-manifest.json").statusCode());
+        assertEquals(404, get("assets/webguard-report.json").statusCode());
+        assertEquals(404, get("WEB-INF/webguard-assets.jspf").statusCode());
         try (var files = Files.walk(WEBAPP)) {
             assertFalse(files.anyMatch(path -> path.toString().endsWith(".map")), "Public webapp must contain no source maps");
+        }
+    }
+
+    @Test
+    void jspReferencesFinalBytesWithSubresourceIntegrity() throws Exception {
+        var html = get("").body();
+        for (String file : new String[]{"webguard.global.js", "app.js"}) {
+            byte[] bytes = CLIENT.send(HttpRequest.newBuilder(base.resolve("assets/" + file)).GET().build(),
+                    HttpResponse.BodyHandlers.ofByteArray()).body();
+            String integrity = "sha384-" + Base64.getEncoder().encodeToString(
+                    MessageDigest.getInstance("SHA-384").digest(bytes));
+            assertTrue(html.contains("integrity=\"" + integrity + "\""), file + " must use its final protected hash");
+        }
+        assertTrue(html.contains("data-testid=\"server-time\""));
+    }
+
+    @Test
+    void policiesCoverAssetsApiAndMissingPaths() throws Exception {
+        for (String path : new String[]{"assets/app.js", "api/status", "missing"}) {
+            var response = get(path);
+            assertEquals("nosniff", response.headers().firstValue("X-Content-Type-Options").orElseThrow());
+            assertTrue(response.headers().firstValue("Content-Security-Policy").orElseThrow().contains("object-src 'none'"));
+            assertEquals("no-store", response.headers().firstValue("Cache-Control").orElseThrow());
+        }
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "webguard.browser", matches = "true")
+    void browserSdkAndServletWorkInAllThreeEngines() throws Exception {
+        var browser = new ProcessBuilder("node", "../../scripts/verify-jsp-browser.mjs", base.toString())
+                .redirectErrorStream(true).start();
+        try {
+            assertTrue(browser.waitFor(90, java.util.concurrent.TimeUnit.SECONDS), "Browser verification timed out");
+            String report = new String(browser.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            assertEquals(0, browser.exitValue(), report);
+        } finally {
+            if (browser.isAlive()) browser.destroyForcibly();
         }
     }
 }

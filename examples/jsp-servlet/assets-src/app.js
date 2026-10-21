@@ -1,8 +1,10 @@
 /* global WebGuardSDK */
-const guard = WebGuardSDK.WebGuard.init({
-  devtools: { detect: true, blockShortcuts: false },
+const guard = WebGuardSDK.installAutoGuard({
+  devtools: { detect: false, blockShortcuts: true, blockContextMenu: true },
 });
-window.addEventListener("pagehide", () => guard.destroy(), { once: true });
+window.addEventListener("pagehide", (event) => {
+  if (!event.persisted) guard.destroy();
+});
 document.querySelector("#status").addEventListener("click", async () => {
   const output = document.querySelector("#result");
   try {

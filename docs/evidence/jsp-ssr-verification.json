@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T07:00:51.939Z",
+  "runtime": {
+    "java": "17.0.20",
+    "maven": "3.9.11",
+    "tomcat": "10.1.61",
+    "servlet": "6.0.0"
+  },
+  "junit": {
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "browserReceipt": "jsp-ssr-browser.json",
+  "war": {
+    "bytes": 71258,
+    "sha256": "5ca80e72a30fba7abe89bb2eb07ea2107096d73580487b4bf02ab0e3d23b94fd",
+    "publicFiles": ["assets/app.js", "assets/webguard.global.js", "index.jsp"],
+    "artifactCheck": "node scripts/verify-jsp-artifact.mjs passed; reports/manifests/maps absent from public archive paths"
+  },
+  "regressions": [
+    "Public report/manifest served from old asset copy",
+    "Missing final-byte SRI in JSP",
+    "Incremental WAR packaging retained old public report/manifest"
+  ],
+  "scope": "Local real JSP compiler, embedded Tomcat, actual Servlet API and three desktop browser engines; not production container or physical device proof",
+  "npmPublication": "paused; not attempted"
+}

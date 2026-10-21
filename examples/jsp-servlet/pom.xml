@@ -47,6 +47,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.4.0</version>
+        <configuration>
+          <!-- Incremental packaging may retain old staging files. Allow only the
+               two protected scripts, rendered JSP, and private container files. -->
+          <packagingIncludes>index.jsp,assets/app.js,assets/webguard.global.js,WEB-INF/**,META-INF/**</packagingIncludes>
+          <packagingExcludes>**/*.map</packagingExcludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

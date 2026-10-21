@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-21T06:56:33.888Z",
+  "runtime": "Java 17 / embedded Tomcat 10.1.61",
+  "engines": [
+    {
+      "engine": "chromium",
+      "serverApi": true,
+      "sdk": true,
+      "trustedShortcut": true,
+      "pageErrors": []
+    },
+    {
+      "engine": "firefox",
+      "serverApi": true,
+      "sdk": true,
+      "trustedShortcut": true,
+      "pageErrors": []
+    },
+    {
+      "engine": "webkit",
+      "serverApi": true,
+      "sdk": true,
+      "trustedShortcut": true,
+      "pageErrors": []
+    }
+  ]
+}

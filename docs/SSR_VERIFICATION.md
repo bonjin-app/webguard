@@ -1,0 +1,50 @@
+# SSR와 환경별 보호 검증
+
+2026-10-21 로컬 후보 소스 기준입니다. npm 게시와 레지스트리 설치 검증은 하지 않았습니다. 기존 배포 후보 tarball은 보존하며 새 Next 연결은 현재 소스로 만든 별도 테스트 패키지를 사용합니다.
+
+## 서버와 브라우저의 역할
+
+브라우저로 전달할 JavaScript를 빌드 때 난독화하고, 서버는 원래의 JSP·Java·Python·PHP·React 서버 코드를 실행합니다. 템플릿이나 서버 실행 파일 전체를 JavaScript 변환기에 넣지 않습니다. 브라우저 SDK 연결만으로 난독화·서버 CSP·권한 검증이 생기지 않습니다.
+
+## JSP + Java Servlet
+
+- Java 17.0.20 / embedded Tomcat 10.1.61 / Jakarta Servlet 6.
+- 실제 JSP 컴파일·Servlet API·응답 정책·소스/보고서/매니페스트 비공개·최종 SRI를 포함한 **JUnit 7개 통과**. 그중 한 테스트가 세 브라우저 엔진을 실행합니다.
+- Chromium·Firefox·WebKit **3개 브라우저 시나리오 통과**: 실제 보호 JS 실행, Servlet 호출, SDK 자동 인스턴스, trusted F12 페이지 이벤트 취소, 처리되지 않은 페이지 예외 없음.
+- 회귀 테스트에서 공개 보고서/매니페스트와 누락된 SRI를 먼저 재현한 뒤 수정했습니다. 이제 SDK와 앱 JS 모두 Strict 변환하며 SRI include는 `WEB-INF`에 생성합니다.
+- 증분 WAR 패키징의 이전 보고서 파일 잔존도 최종 아카이브에서 재현했습니다. Maven의 패키징 허용 목록과 별도 WAR 파일 검사로 공개 파일을 보호 JS 두 개와 JSP 진입점으로 제한합니다.
+- [JUnit·WAR 기록](evidence/jsp-ssr-verification.json), [브라우저 실행 기록](evidence/jsp-ssr-browser.json). 실제 WAR를 생성했으며 운영 Tomcat·물리 기기 테스트는 별도입니다.
+
+```sh
+pnpm build
+node scripts/prepare-jsp.mjs
+mvn -B -f examples/jsp-servlet/pom.xml -Dwebguard.browser=true package
+node scripts/verify-jsp-artifact.mjs
+```
+
+## Python WSGI + PHP 인터프리터
+
+- Python 3.9.6 표준 WSGI 서버와 PHP 8.4.25 WASM의 실제 인터프리터 실행.
+- **HTTP 검사 28개**, 두 런타임 × Chromium·Firefox·WebKit의 **브라우저 시나리오 6개 통과**.
+- 요청별 HTML 렌더링·사용자 입력 이스케이프·새 요청 ID·API·하위 `/app/` 배포 경로·응답 헤더·비공개 경로 404·HEAD·405를 확인했습니다.
+- 브라우저에서 카운터·API·trusted Cmd+Option+I 가드 ON/OFF, CSP의 인라인 삽입 거부와 실제 JS 변조 시 SRI 거부를 확인했습니다.
+- **네이티브 PHP는 실행 파일 부재로 건너뛰었습니다.** WASM 테스트는 같은 PHP 라우터를 실행하지만 PHP-FPM·Apache·네이티브 확장 모듈 검증을 대신하지 않습니다.
+- [버전·검사·건너뜀 기록](evidence/ssr-template-verification.json), [실행 예제와 재현 명령](../examples/ssr-templates/README.md).
+
+## Next.js + React SSR
+
+- Next.js **16.4.2** / React·React DOM **19.3.1**, 별도 임시 앱에 실제 로컬 패키지를 설치한 운영 빌드입니다. Vite가 설치되지 않은 것도 확인했습니다.
+- Chromium·Firefox·WebKit **3개 브라우저 시나리오 통과**: 요청별 SSR, hydration·카운터·동적 import·클라이언트 페이지 이동·SDK 자동 시작·페이지 보호 안내. 콘솔/런타임/네트워크 오류가 없었습니다.
+- 공개 JS **22개**의 실제 변환과 공개 소스맵 부재를 확인했습니다. Webpack 최종 해시 이후의 lazy 청크 URL도 실제 요청으로 확인했습니다.
+- 앱이 소유하는 요청별 nonce CSP를 유지했습니다. 모든 초기 스크립트의 nonce 일치·매 요청 nonce 변경·운영 unsafe-inline/eval 부재·SDK/청크 실행을 함께 검사했습니다. 어댑터 자체가 CSP를 주입한 결과는 아닙니다.
+- 앱·SDK·혼합·출처 불명 코드 19개는 Strict, 전체가 외부 의존성인 코드 3개는 Standard로 변환했습니다. 최종 합계 6,930,448바이트입니다. 변환 전 minified 출력 957,531바이트보다 여전히 크므로 초기 실행·모바일 성능 무영향을 주장하지 않습니다. 전체 Strict 시도보다 크기를 줄인 것이며 벤치마크 결과는 아닙니다. `frameworkPreset: "inherit"`로 외부 코드도 같은 강도를 선택할 수 있습니다.
+- 기존 NextConfig의 엄격한 TypeScript 타입 연결과 기존 동기 Webpack 설정 유지도 검사했습니다. 같은 최종 테스트 tarball로 세 가지 미지원 CLI 빌드 거부까지 확인했습니다.
+- 클라이언트 컴파일에서 생성되는 `server/*.js` 보조 파일도 변환하지 않습니다. 해당 경계를 회귀 테스트로 확인하며 공개 `static/*.js`만 변환합니다.
+- 비동기 Webpack 콜백 오류와 난독화 이후 lazy 청크 해시 참조 실패를 실제 빌드/브라우저에서 재현한 뒤 수정했습니다. 최종 해시에 필요한 Webpack 문자열을 보존하며 서버 번들과 HTML 데이터를 후처리하지 않습니다.
+- [실제 패키지 소비자 기록](evidence/next-consumer-verification.json), [실행 예제](../examples/next-ssr/README.md).
+
+어댑터는 운영 브라우저 청크에만 연결하며 Next 서버/RSC/API와 기존 CSP를 유지합니다. Next 16은 `next build --webpack`이 필요합니다. 인식 가능한 Next CLI 운영 빌드가 이를 누락하거나 Turbo 플래그를 지정하면 오류로 안내합니다. 프로그램 방식의 빌드 호출을 자동 판별하는 기능은 아닙니다. `.next` 전체 후처리·Turbopack·public/ 원본 JS·인라인 Flight 데이터는 대상이 아닙니다. Pages Router와 다른 Next 버전은 이 App Router 검증에 포함되지 않습니다.
+
+## 검증 범위
+
+데스크톱 브라우저 엔진의 로컬 자동 실행 결과입니다. 모든 프레임워크 버전·Pages Router·CDN·서버 플랫폼·물리 Safari/Chrome·운영 인증·부하까지 보증하지 않습니다. Django·Flask·Laravel·Spring Boot·ASP.NET·Nginx 전용 자동 연결이나 서버 언어 자체의 난독화를 제공한다는 주장도 하지 않습니다. [환경별 적용법](ENVIRONMENTS.ko.md)을 확인하세요.
