@@ -1,0 +1,435 @@
+{
+  "sourceCommit": "22a196a",
+  "url": "https://webguard.uulab.co.kr/demo?proof=22a196a#deployment-proof",
+  "workerVersion": "5211b025-e854-4eef-99eb-cd03de65e6eb",
+  "previousWorkerVersion": "7630a8ed-93bf-4eab-94fc-28f25e78fc84",
+  "deploymentId": "26471a32-2232-4a57-8598-9f8248bf1abf",
+  "trafficPercent": 100,
+  "runtimeAndBindingsUnchanged": true,
+  "changes": [
+    "Visible three-step protection overview using existing real checks",
+    "One-click actual entry inspection and five security comparisons",
+    "Downloaded entry preview: SHA-384 match required, first 900 characters rendered with textContent, stale preview removed on new/failed/cancelled runs"
+  ],
+  "buildProtection": {
+    "checkedAt": "2026-10-21T03:12:50.589Z",
+    "builds": [
+      {
+        "name": "playground",
+        "preset": "strict",
+        "chunkTransforms": {
+          "index": {
+            "inputBytes": 117237,
+            "outputBytes": 825897,
+            "durationMs": 3437.536500000002
+          }
+        },
+        "finalManifestValid": true,
+        "sourceMaps": 0
+      },
+      {
+        "name": "docs",
+        "preset": "strict",
+        "chunkTransforms": {
+          "index": {
+            "inputBytes": 20254,
+            "outputBytes": 95913,
+            "durationMs": 1042.841625
+          }
+        },
+        "finalManifestValid": true,
+        "sourceMaps": 0
+      }
+    ],
+    "workerPolicy": {
+      "application": "strict",
+      "thirdPartyTransformEngine": "standard",
+      "evidence": "apps/playground/vite.config.ts"
+    }
+  },
+  "verification": {
+    "regressionRed": "Both new flow/preview cases failed against the preceding app because their UI was absent.",
+    "unitInitial": {
+      "passed": 343,
+      "failed": 4,
+      "scope": "Full 347 cases overlapped with the obfuscation build",
+      "failures": [
+        "cli-process: generated init config 30-second test timeout",
+        "demo-obfuscation: actual docs build 30-second test timeout",
+        "deployment-check: FIFO CLI process exceeded its existing deadline",
+        "npm-generic: CLI symlink help process failed to complete"
+      ],
+      "interpretation": "Overlap and elapsed timing observed; not reported as a proven product root-cause fix."
+    },
+    "unitFinal": {
+      "passed": 347,
+      "failed": 0,
+      "workers": 2,
+      "scope": "Complete suite after build completion; deadlines unchanged"
+    },
+    "localBrowser": {
+      "passed": 77,
+      "failed": 1,
+      "workers": 3,
+      "total": 78,
+      "failure": "Firefox eval/handler/reset case exhausted the overall 30-second test budget while clicking the price request button; both preceding CSP comparisons had passed."
+    },
+    "localFailureFollowup": {
+      "passed": 3,
+      "failed": 0,
+      "engine": "Firefox",
+      "workers": 1,
+      "scope": "Same unchanged failed case, three separate repetitions, same 30-second budget; initial trace retained locally"
+    },
+    "publicBrowser": {
+      "passed": 78,
+      "failed": 0,
+      "workers": 2,
+      "retries": 0,
+      "engines": ["Chromium", "Firefox", "WebKit"],
+      "scope": [
+        "Navigation and new overview flows",
+        "Resource/SRI verification, actual byte preview, inert HTML-like text, stale mismatch preview",
+        "Policy/tamper/network/Trusted Types probes and unsupported/failure distinctions",
+        "Mac/Windows/F12 SDK controls, runtime integrity and complete feature tour"
+      ]
+    },
+    "nativeInApp": {
+      "publicEntry": "/assets/index-DLOwsL-y.js",
+      "publicEntryBytes": 568573,
+      "previewCharacters": 900,
+      "SRI": "Matched",
+      "fixedPrivateAndMapPaths": "HTTP 404",
+      "fiveScenarioTrial": "5 completed / 5 verified in the in-app browser",
+      "localViewportWidths": [390, 768, 1280],
+      "publicViewportWidths": [390, 1280],
+      "pageHorizontalOverflow": false,
+      "physicalDeviceTesting": false
+    },
+    "checks": [
+      "Production build",
+      "Root/Worker types",
+      "Scoped ESLint",
+      "Prettier",
+      "Deployment dry run",
+      "Strict report transforms and final manifests for demo/docs",
+      "No .map files in demo/docs outputs"
+    ]
+  },
+  "assets": {
+    "checkedAt": "2026-10-21T03:18:18.889Z",
+    "total": 37,
+    "matched": 37,
+    "files": [
+      {
+        "file": "assets/index-CGwJdvdK.css",
+        "path": "/assets/index-CGwJdvdK.css",
+        "status": 200,
+        "bytes": 30636,
+        "sha256": "c3ee1410ca704863eedf8d0d59488025773ccecda2fa093b3239bc1b6b8dbae2",
+        "match": true
+      },
+      {
+        "file": "assets/index-DLOwsL-y.js",
+        "path": "/assets/index-DLOwsL-y.js",
+        "status": 200,
+        "bytes": 568573,
+        "sha256": "8659bc1f8ae323c71cb80b15f663acfa916943d859323a3e70cd23cf9c140c0e",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-D0AXgRap.js",
+        "path": "/assets/index.browser-D0AXgRap.js",
+        "status": 200,
+        "bytes": 1762308,
+        "sha256": "e7f33b6f78d374f896896921416e6d89348b72242163b65ebfcc643b7c6b0b09",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-XFuQJq3b.js",
+        "path": "/assets/transform.worker-XFuQJq3b.js",
+        "status": 200,
+        "bytes": 951108,
+        "sha256": "f0c753024b2c271a9655fe113e1c016959f88ba9ea0b9cf5bc4394e39d8b5dd1",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 6956,
+        "sha256": "6511cd5b6a3f3eb7e88d3c4af8821e0fe9dedb0b5f68b37e1af3bc31733d475c",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 22192,
+        "sha256": "6691e259eda0a5cb917d6738b63aa60667e2eb8a0c5aa4b22df4cd3f2054595b",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-CyAxhKqI.css",
+        "path": "/docs/assets/index-CyAxhKqI.css",
+        "status": 200,
+        "bytes": 7576,
+        "sha256": "ddb21bd8320687efae2c1af699729288f1047c9db24d34fd415daae376f3f458",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-gZy3h20I.js",
+        "path": "/docs/assets/index-gZy3h20I.js",
+        "status": 200,
+        "bytes": 70432,
+        "sha256": "e4304ae90cd42dd9ae39e097f3fd4c11c83ad017f4446fa58bd85ad738bae240",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 914,
+        "sha256": "30bd98bc8d4a72b69ab4294e57d0ae22a3a467f78d6d994abae3abaceb450ba3",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-CIG1a576.js",
+        "path": "/examples/react/assets/index-CIG1a576.js",
+        "status": 200,
+        "bytes": 1815607,
+        "sha256": "930d788428f3f4658a3fcc0384fa3cf0acb4faed7988a0ab8ec6edea75971758",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-CYwZ1Qa4.js",
+        "path": "/examples/react/assets/lazy-CYwZ1Qa4.js",
+        "status": 200,
+        "bytes": 2900,
+        "sha256": "88f0740f142927ebb6f683a5db1e8a9668032a52ec90f73a4772092a34c2bc79",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "882a504fad282369109be5bc245724c6a89e4bd9e3909c6b8321263cb189bfc3",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "dd81155843c280336662092cea9da328d9e3415e0753b0a9688904d92359c896",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "d9d59e003bde0ae4fa145dbdd4e0c3d430b72add07ce3e8de74c4929d5afbfe1",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-D5KCXed3.js",
+        "path": "/examples/vanilla-js/assets/about-D5KCXed3.js",
+        "status": 200,
+        "bytes": 632,
+        "sha256": "68de59b1649a62a94fa324b10097b5d18052bdb35f97d6b60a1181d9a67053aa",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-nj-7JC_L.js",
+        "path": "/examples/vanilla-js/assets/index-nj-7JC_L.js",
+        "status": 200,
+        "bytes": 9773,
+        "sha256": "201cacffabff77c8540aea0eedc9306d90cd9396d815dfc7b64f0a244db315ca",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-DOG58YgP.js",
+        "path": "/examples/vanilla-js/assets/lazy-DOG58YgP.js",
+        "status": 200,
+        "bytes": 686,
+        "sha256": "3ae106152de30f0580121f4b2924bc5b041e511e69a1c6699fbba72b785a781e",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "ebe0b33faf29862aae8c96316e08247cf7f650c2ecaf19e27ffccba8b8a08fc2",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 961,
+        "sha256": "a2a558b17bfa653a80dc685a8010b9e291f18e835588f19c8cdca1be10d7fe2e",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-CHH6XyYU.js",
+        "path": "/examples/vanilla-ts/assets/index-CHH6XyYU.js",
+        "status": 200,
+        "bytes": 10550,
+        "sha256": "24f72bb1f92fdb11ef6a376b6c5567b8b55261771ed5c9facfa20aec96fe6dcd",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-DuuAW9XV.js",
+        "path": "/examples/vanilla-ts/assets/lazy-DuuAW9XV.js",
+        "status": 200,
+        "bytes": 1159,
+        "sha256": "07cadf9ac4e77343d79b6cbbd0b93f00520e26abd909ab9a8f259b8723a13dce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "4f5af4159e5887dbd6c1b64886c8ef8cbab136eaaf58381df6786b47d6375e65",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "49d43664e33a2bc68d88b064688beb88f7d41424091c4704cbc85280f251b960",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 1004,
+        "sha256": "7784399d194947837291dad5b0a27bfa5900ee06e37e1293175d99e32e50115c",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "limits": [
+    "SRI compares delivered bytes with this HTML reference; it does not independently authenticate attacker-controlled HTML.",
+    "A code preview is not an automatic obfuscation-strength detector.",
+    "Browser-delivered JS/CSS remain observable; DevTools windows are not locked.",
+    "Policy trials run in isolated frames; server validation is an example rather than an SDK-only authorization feature."
+  ],
+  "npmPublication": "Paused; SDK code, package identity and canonical release artifacts unchanged",
+  "codexConfiguration": "Unchanged",
+  "screenshots": [
+    "protection-overview-public.png",
+    "protection-overview-public-mobile.png",
+    "protected-code-public.png"
+  ]
+}

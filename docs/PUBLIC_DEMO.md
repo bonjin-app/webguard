@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## WebGuard service branding (current)
+## Actual deployed code and security overview (current)
+
+[Open the protection overview](https://webguard.uulab.co.kr/demo?proof=22a196a#deployment-proof). The demo now visibly explains its own protected build and offers direct links that start the existing real entry audit or five security scenarios. The entry audit reads the current HTML's module URL, fetches those bytes and compares SHA-384 SRI. Only a matching entry is previewed as inert text, limited to 900 characters; new, failed or interrupted checks remove stale previews. Fixed private/source-map paths remain status-only probes. No source-pattern heuristic is presented as proof of obfuscation strength.
+
+Source **`22a196a`** is deployed as Worker **`5211b025-e854-4eef-99eb-cd03de65e6eb`**, deployment **`26471a32-2232-4a57-8598-9f8248bf1abf`**, serving 100% of traffic. All **37** deployed public files matched prepared SHA-256 values. Runtime settings and bindings are unchanged. Fresh demo/docs reports contain Strict chunk transforms; their final manifests validate and their outputs contain no source maps. Application/SDK/worker code remains Strict, with the large third-party transformation engine deliberately Standard. Browser-delivered files remain observable.
+
+The final complete unit/integration suite passed **347/347** after building, with two workers and unchanged deadlines. The first overlapping run had 343 passes and four CLI/build deadline failures. The local browser matrix passed **77/78**; one Firefox multi-step case exhausted its overall 30-second budget after both CSP comparisons passed. That same unchanged case passed **three consecutive isolated runs**. These initial failures remain recorded; no product root-cause fix is inferred from reruns. The final public matrix passed **78/78** across Chromium, Firefox and WebKit with no retries, covering the new flows, preview injection/mismatch cases, existing policies, SDK controls and full tour. Build, root/Worker types, scoped lint, formatting and dry run passed.
+
+Native in-app public verification read the 568,573-byte deployed entry, confirmed SRI and a 900-character preview, observed the fixed private/map paths return 404, and completed all five security scenarios. Viewport checks covered mobile/tablet/desktop widths, not physical devices. SDK code, npm publication, canonical release artifacts and Codex configuration are unchanged. Historical test-generated screenshots are preserved.
+
+[Complete receipt](evidence/deployment-proof-deployment.json) · [Actual protected code](evidence/protected-code-public.png) · [Overview](evidence/protection-overview-public.png) · [Mobile](evidence/protection-overview-public-mobile.png) · [Korean instructions](DEMO_GUARDS.ko.md).
+
+## WebGuard service branding (preceding release)
 
 [Open the demo](https://webguard.uulab.co.kr/demo?brand=webguard-1bdb29e). The product/service name is **WebGuard**. The hero package illustration now uses that name; `uulab-webguard` remains only the technical npm/install/import identifier. Source **`1bdb29e`** is deployed as Worker **`7630a8ed-93bf-4eab-94fc-28f25e78fc84`**, deployment **`3b49fd3b-cbf7-445f-a663-14efb910fc0e`**, at 100% traffic. All **37** public asset hashes matched. Runtime and bindings are unchanged. Build, types, scoped lint, formatting, dry run and three local navigation cases across Chromium/Firefox/WebKit passed. Native public UI readback confirmed the label. SDK behavior, npm publication and Codex configuration are unchanged.
 
