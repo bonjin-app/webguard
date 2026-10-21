@@ -43,6 +43,23 @@ export async function createDemoServer(outputDirectory) {
     const queryIndex = raw.indexOf("?");
     const path = queryIndex < 0 ? raw : raw.slice(0, queryIndex);
     const query = queryIndex < 0 ? "" : raw.slice(queryIndex);
+    // Match the public Worker's exact alias without enabling an SPA fallback.
+    if (path === "/demo/") {
+      for (const [name, value] of Object.entries(mounts[0].headers))
+        response.setHeader(name, value);
+      response.writeHead(308, {
+        Location: "/demo" + query,
+        "Content-Length": "0",
+        "X-Content-Type-Options": "nosniff",
+      });
+      response.end();
+      return;
+    }
+    if (path === "/demo") {
+      request.url = "/" + query;
+      playground.emit("request", request, response);
+      return;
+    }
     if (["/api/demo/quote", "/api/demo/network-probe"].includes(path)) {
       try {
         const target = new URL(raw, `http://${request.headers.host}`);

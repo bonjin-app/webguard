@@ -263,6 +263,61 @@ it("cancels automatic work on watch off, enabled off and destroy", async () => {
   expect(vi.getTimerCount()).toBe(0);
   expect(events).toEqual([]);
 });
+it("preserves the active deadline and signal history when only response changes", async () => {
+  const win = browser();
+  dialogs(win);
+  const time = clock();
+  const events: ThreatEvent[] = [];
+  const instance = guard({
+    debugging: {
+      enabled: true,
+      watch: true,
+      intervalMs: 1000,
+      thresholdMs: 100,
+      response: "report",
+    },
+    onThreat: (event) => events.push(event),
+  });
+  time.mockReturnValue(1500);
+  await vi.advanceTimersByTimeAsync(1000);
+  const observed = instance.getDebuggingState();
+  expect(observed.samples).toBe(1);
+  expect(observed.lastSuspicionAt).not.toBeNull();
+  time.mockReturnValue(2000);
+  await vi.advanceTimersByTimeAsync(500);
+  instance.update({ debugging: { response: "block" } });
+  expect(instance.getDebuggingState()).toEqual(observed);
+  expect(vi.getTimerCount()).toBe(1);
+  time.mockReturnValue(2500);
+  await vi.advanceTimersByTimeAsync(500);
+  expect(instance.getDebuggingState()).toMatchObject({
+    samples: 2,
+    lastDelayMs: 0,
+    lastSuspicionAt: observed.lastSuspicionAt,
+  });
+  time.mockReturnValue(4500);
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(instance.getDebuggingState().samples).toBe(3);
+  expect(events.map((event) => event.type)).toEqual([
+    "execution-pause-suspected",
+    "execution-pause-suspected",
+    "page-blocked",
+  ]);
+  expect(win.document.querySelector("dialog[open]")).not.toBeNull();
+  const blocked = instance.getDebuggingState();
+  instance.update({ debugging: { response: "report" } });
+  expect(instance.getDebuggingState()).toEqual(blocked);
+  expect(win.document.querySelector("dialog")).toBeNull();
+  time.mockReturnValue(5500);
+  await vi.advanceTimersByTimeAsync(1000);
+  time.mockReturnValue(7500);
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(instance.getDebuggingState().samples).toBe(5);
+  expect(
+    events.filter((event) => event.type === "execution-pause-suspected"),
+  ).toHaveLength(3);
+  expect(win.document.querySelector("dialog")).toBeNull();
+});
 it.each(["off", "destroy"])(
   "does not rearm or block after a suspicion callback performs %s",
   async (action) => {
@@ -310,6 +365,72 @@ it("keeps the manual sampler independent and uses at most two pending timers", a
   await vi.advanceTimersByTimeAsync(900);
   expect(instance.getDebuggingState().samples).toBe(1);
 });
+it.each(["report", "block"] as const)(
+  "preserves a pending manual sample and applies the latest %s response",
+  async (response) => {
+    const win = browser();
+    dialogs(win);
+    const time = clock();
+    const events: ThreatEvent[] = [];
+    const instance = guard({
+      debugging: {
+        enabled: true,
+        sampleMs: 100,
+        thresholdMs: 100,
+        response: response === "report" ? "block" : "report",
+      },
+      onThreat: (event) => events.push(event),
+    });
+    const manual = instance.checkDebugging();
+    instance.update({ debugging: { response } });
+    expect(vi.getTimerCount()).toBe(1);
+    time.mockReturnValue(500);
+    await vi.advanceTimersByTimeAsync(100);
+    expect(await manual).toBe(true);
+    expect(events.map((event) => event.type)).toEqual(
+      response === "block"
+        ? ["execution-pause-suspected", "page-blocked"]
+        : ["execution-pause-suspected"],
+    );
+    expect(Boolean(win.document.querySelector("dialog[open]"))).toBe(
+      response === "block",
+    );
+  },
+);
+it("keeps a pending manual sample through automatic-watch-only and no-op updates", async () => {
+  browser();
+  const time = clock();
+  const instance = guard({
+    debugging: { enabled: true, sampleMs: 100, thresholdMs: 100 },
+  });
+  const manual = instance.checkDebugging();
+  instance.update({ debugging: { watch: true, intervalMs: 500 } });
+  instance.update({ debugging: { sampleMs: 100, thresholdMs: 100 } });
+  expect(vi.getTimerCount()).toBe(2);
+  time.mockReturnValue(500);
+  await vi.advanceTimersByTimeAsync(100);
+  expect(await manual).toBe(true);
+  expect(instance.getDebuggingState().samples).toBe(0);
+});
+it.each([{ enabled: false }, { sampleMs: 200 }, { thresholdMs: 200 }])(
+  "cancels a pending manual sample for relevant policy change %o",
+  async (patch) => {
+    browser();
+    const time = clock();
+    const events: ThreatEvent[] = [];
+    const instance = guard({
+      debugging: { enabled: true, sampleMs: 100, thresholdMs: 100 },
+      onThreat: (event) => events.push(event),
+    });
+    const manual = instance.checkDebugging();
+    instance.update({ debugging: patch });
+    expect(await manual).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
+    time.mockReturnValue(500);
+    await vi.advanceTimersByTimeAsync(100);
+    expect(events).toEqual([]);
+  },
+);
 it("validates interval and watch atomically without accessing getter policies", () => {
   browser();
   clock();

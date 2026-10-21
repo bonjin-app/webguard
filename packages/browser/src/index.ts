@@ -589,6 +589,7 @@ function createGuard(
     }
   }
   const pauseSampler = createPauseSampler(browserDocument);
+  let sampleRevision = 0;
   function reportPauseSuspicion() {
     if (destroyed || options.debugging?.enabled !== true) return;
     const revision = policyRevision;
@@ -677,14 +678,16 @@ function createGuard(
           options.domIntegrity,
           validated.domIntegrity,
         );
-      const debuggingChanged =
-        JSON.stringify(next.debugging) !== JSON.stringify(options.debugging);
+      const sampleChanged = ["enabled", "sampleMs", "thresholdMs"].some(
+        (key) =>
+          next.debugging?.[key as keyof DebuggingPolicy] !==
+          options.debugging?.[key as keyof DebuggingPolicy],
+      );
       const watchChanged = [
         "enabled",
         "watch",
         "intervalMs",
         "thresholdMs",
-        "response",
       ].some(
         (key) =>
           next.debugging?.[key as keyof DebuggingPolicy] !==
@@ -721,7 +724,12 @@ function createGuard(
         detected = false;
       const revision = ++policyRevision;
       options = next;
-      if (debuggingChanged) pauseSampler.cancel();
+      if (sampleChanged) {
+        sampleRevision++;
+        pauseSampler.cancel();
+      }
+      // A response change affects the next signal, not the observation deadline or history.
+      // reportPauseSuspicion reads the current options when a signal arrives.
       if (watchChanged) pauseWatcher.update(options.debugging ?? {});
       if (domChanged) {
         runtimeRevision++;
@@ -757,13 +765,13 @@ function createGuard(
     },
     async checkDebugging() {
       if (destroyed || options.debugging?.enabled !== true) return false;
-      const policy = options.debugging;
-      const suspected = await pauseSampler.sample(policy);
+      const revision = sampleRevision;
+      const suspected = await pauseSampler.sample(options.debugging);
       if (
         !suspected ||
         destroyed ||
-        options.debugging !== policy ||
-        options.debugging.enabled !== true
+        sampleRevision !== revision ||
+        options.debugging?.enabled !== true
       )
         return false;
       reportPauseSuspicion();

@@ -524,3 +524,7 @@ export function StaticNotice() {
 두 신호 모두 직접 `WebGuard.init()`의 옵션이나 Vite·Next의 `runtime` 옵션으로 전달할 수 있습니다. DOM 감시를 초기 HTML 주입 단계에서 켜면 앱이 아직 마운트되지 않아 오류가 날 수 있으므로 위처럼 켜는 시점을 정하세요. 해제는 `guard.update({ debugging: { enabled: false }, domIntegrity: { enabled: false } })`, 완전한 정리는 `guard.destroy()`입니다. `block`은 관찰한 신호에 대한 클라이언트 UI 반응이며 인증·인가·서버 데이터 무결성을 대신하지 않습니다.
 
 자동 관찰을 한 번 활성화한 뒤 OFF로 바꾸면 타이머와 visibility 수신기는 제거하고, `pagehide`·`pageshow` 수신기 두 개만 `destroy()`까지 유지합니다. OFF 동안의 페이지 복귀도 추적해 잘못 재시작하거나 계속 중지되는 일을 막습니다. 최초부터 비활성 상태인 SDK에는 이 두 수신기도 연결하지 않습니다.
+
+`debugging.response`만 바꾸면 자동 측정 횟수·마지막 감지 기록·다음 측정 시점과 진행 중인 수동 검사를 유지합니다. 완료된 검사는 그때의 최신 대응 방식을 따릅니다. `enabled`·`sampleMs`·`thresholdMs` 변경은 진행 중인 수동 검사를 취소하며, 자동 관찰의 `watch`·`intervalMs` 변경은 수동 검사와 독립적입니다.
+
+공개 데모의 페이지 보호 안내·단축키 제한·본문 우클릭은 각각 독립적으로 켜고 끌 수 있습니다. 보호 안내만 켠다고 단축키 제한이 자동으로 켜지지 않습니다. DOM 감시를 다시 켜는 데모 동작은 공식 안내를 복구한 뒤 기준을 수집합니다. SDK 자체의 `rebaselineDom()`은 현재 DOM을 승인하므로 앱에서 복구 여부를 결정해야 합니다. 버튼의 합성 입력 시험과 실제 브라우저 입력, 자동 실행 지연 측정 결과는 화면에서 구분합니다.

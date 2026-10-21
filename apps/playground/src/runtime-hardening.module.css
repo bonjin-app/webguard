@@ -21,7 +21,7 @@
   margin-top: 32px;
 }
 .card {
-  padding: 32px;
+  padding: 36px;
   border: 1px solid #e0eafa;
   border-radius: 24px;
   background: #fff;
@@ -52,19 +52,94 @@
   font-weight: 700;
   margin: 24px 0;
 }
+.controls {
+  margin: 24px 0;
+  padding: 8px 16px;
+  border: 1px solid #e5edfa;
+  border-radius: 18px;
+  background: #fafcff;
+}
 .toggle {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  min-height: 52px;
+  min-height: 56px;
   color: #243c5e;
+  cursor: pointer;
 }
 .toggle input {
+  appearance: none;
+  position: relative;
+  width: 48px;
+  height: 28px;
+  margin: 0;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: #bcc8da;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+.toggle input::after {
+  content: "";
+  display: block;
   width: 20px;
   height: 20px;
-  accent-color: #2563eb;
-  flex-shrink: 0;
+  border-radius: 50%;
+  background: #fff;
+  margin: 2px;
+  box-shadow: 0 1px 3px #102e551f;
+  transition: transform 150ms ease;
+}
+.toggle input:checked {
+  background: #2563eb;
+}
+.toggle input:checked::after {
+  transform: translateX(20px);
+}
+.toggle input:focus-visible {
+  outline: 3px solid #93b9ff;
+  outline-offset: 3px;
+}
+.toggle input:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.card .caption {
+  font-size: 12px;
+  color: #627794;
+  margin: 8px 0 12px;
+}
+.instructions {
+  padding-left: 22px;
+  margin: 24px 0;
+  color: #536986;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.instructions li + li {
+  margin-top: 8px;
+}
+.card .signal {
+  color: #315883;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.details {
+  border-top: 1px solid #e5edfa;
+  margin-top: 24px;
+  padding-top: 20px;
+}
+.details summary {
+  min-height: 28px;
+  color: #345887;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.details p {
+  font-size: 13px;
 }
 .actions {
   display: flex;
@@ -87,16 +162,6 @@
   color: #6d7d96;
   margin-top: 24px;
 }
-.wide {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 40px;
-  align-items: start;
-}
-.wide button {
-  margin-top: 20px;
-}
 .code {
   margin-top: 32px;
   padding: 24px;
@@ -118,18 +183,21 @@
   color: #29456d;
 }
 @media (max-width: 760px) {
-  .grid,
-  .wide {
+  .grid {
     grid-template-columns: 1fr;
   }
   .card {
     padding: 24px;
   }
-  .wide {
-    gap: 20px;
-  }
 }
 .section > .note {
   font-size: 13px;
   color: #6d7d96;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle input,
+  .toggle input::after {
+    transition: none;
+  }
 }

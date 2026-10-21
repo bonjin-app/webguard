@@ -1,5 +1,40 @@
 import { expect, test } from "@playwright/test";
 
+test("opens /demo directly on operable controls and preserves the home introduction", async ({
+  page,
+}) => {
+  await page.goto("/demo");
+  await expect(page.locator("#demo-heading")).toHaveJSProperty("tagName", "H1");
+  await expect(page.locator("#demo-heading")).toBeInViewport();
+  await expect(page.locator("#shortcuts")).toBeInViewport();
+  await expect(page.locator("#shortcuts")).toBeEnabled();
+  expect(
+    await page
+      .locator("#sdk-demo")
+      .evaluate((node) =>
+        Boolean(
+          node.compareDocumentPosition(document.querySelector(".sdk-hero")!) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+        ),
+      ),
+  ).toBe(true);
+  await page.locator("#runtime-page-block").uncheck();
+  await page.locator("#shortcuts").uncheck();
+  await page.locator("#test-mac-inspect").click();
+  await expect(page.locator("#live-result")).toContainText("허용됨");
+  await page.goto("/");
+  if (new URL(page.url()).pathname === "/demo") {
+    // Production canonically redirects / to /demo; the local server also exposes the SDK home.
+    await expect(page.locator("#demo-heading")).toBeInViewport();
+  } else {
+    await expect(page.locator("#hero-heading")).toHaveJSProperty(
+      "tagName",
+      "H1",
+    );
+    await expect(page.locator("#hero-heading")).toBeInViewport();
+  }
+});
+
 const tabs = ["브라우저 가드", "코드 난독화", "파일 검사", "고급 검사"];
 
 test("opens public code inspection and real security comparisons directly from the protection overview", async ({
@@ -46,7 +81,13 @@ test("starts with a quiet browser guard surface and preserves choices across key
   await expect(page.getByRole("tab")).toHaveCount(4);
   await expect(runtime).toHaveAttribute("aria-selected", "true");
   await expect(runtime).toHaveJSProperty("tabIndex", 0);
-  await expect(page.locator("#hero-heading")).toBeInViewport();
+  await expect(
+    page.locator(
+      new URL(page.url()).pathname === "/demo"
+        ? "#demo-heading"
+        : "#hero-heading",
+    ),
+  ).toBeInViewport();
   await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
   await expect(page.locator("#live-demo")).toBeInViewport();
   await expect(page.locator("#runtime-target")).toBeVisible();

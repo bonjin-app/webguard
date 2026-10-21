@@ -66,6 +66,25 @@ pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 �
 </details></div></section>
 ${productFaqMarkup}
 <footer class="site-footer"><strong>WebGuard</strong><p>난독화는 분석을 어렵게 합니다. 권한 검증은 서버에서 처리하세요.</p><details><summary>보호 범위와 실행 제한</summary> Delivered JavaScript can still be inspected and modified. Keep secrets and authorization on your server. Execution supports console-based JavaScript, without DOM access; imports and network requests are blocked. Workers are stopped after 1 second. This is a testing aid, not a hostile-code containment service.</details></footer></main>`;
+// /demo leads with the workbench; the home page retains the SDK introduction.
+if (/^\/demo\/?$/.test(location.pathname)) {
+  const main = document.querySelector<HTMLElement>("main.sdk-site")!;
+  main.classList.add("is-demo-page");
+  main.insertBefore(
+    document.getElementById("sdk-demo")!,
+    main.querySelector(".sdk-hero"),
+  );
+  const title = document.getElementById("demo-heading")!;
+  const heading = document.createElement("h1");
+  heading.id = title.id;
+  heading.textContent = "내 브라우저에서, 보호 전후를 확인하세요.";
+  title.replaceWith(heading);
+  const heroTitle = document.getElementById("hero-heading")!;
+  const subheading = document.createElement("h2");
+  subheading.id = heroTitle.id;
+  subheading.innerHTML = heroTitle.innerHTML;
+  heroTitle.replaceWith(subheading);
+}
 initDemoNavigation();
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -327,7 +346,10 @@ const cleanupResources = initResources();
 const cleanupPolicy = initPolicyDemo();
 const cleanupCompat = initCompatDemo();
 const cleanupOverview = initProtectionOverview();
-element("runtime-tour").addEventListener("click", () => {
+let tourRunning = false;
+const tourLifetime = new AbortController();
+element("runtime-tour").addEventListener("click", async () => {
+  if (tourRunning) return;
   if (
     protect.disabled ||
     element<HTMLButtonElement>("lab-all").disabled ||
@@ -340,36 +362,76 @@ element("runtime-tour").addEventListener("click", () => {
       "진행 중인 시험이 있습니다. 결과가 나온 뒤 다시 시작하세요.";
     return;
   }
-  if (!element<HTMLInputElement>("runtime-threshold").checkValidity()) {
-    element("runtime-tour-status").textContent =
-      "감지 기준을 40~1000 사이 정수로 입력한 뒤 시작하세요.";
-    return;
+  tourRunning = true;
+  const tourButton = element<HTMLButtonElement>("runtime-tour");
+  const tourStatus = element("runtime-tour-status");
+  tourButton.disabled = true;
+  tourButton.setAttribute("aria-busy", "true");
+  const waitForAction = async (id: string) => {
+    const button = element<HTMLButtonElement>(id);
+    if (button.disabled) throw new Error("해당 시험이 이미 진행 중입니다.");
+    button.click();
+    const started = performance.now();
+    while (button.disabled) {
+      if (tourLifetime.signal.aborted)
+        throw new Error("페이지 이동으로 중단됨");
+      if (performance.now() - started > 45000)
+        throw new Error(
+          "검사 응답 시간이 초과되었습니다. 해당 결과를 확인하세요.",
+        );
+      await new Promise((resolve) => setTimeout(resolve, 80));
+    }
+  };
+  try {
+    element<HTMLInputElement>("sdk-integrity").checked = true;
+    element("sdk-integrity").dispatchEvent(new Event("change"));
+    element<HTMLButtonElement>("runtime-enable").click();
+    for (const id of ["dom-block", "pause-block"]) {
+      element<HTMLInputElement>(id).checked = false;
+      element(id).dispatchEvent(new Event("change"));
+    }
+    element<HTMLButtonElement>("dom-restore").click();
+    for (const id of ["dom-monitor", "pause-monitor"]) {
+      element<HTMLInputElement>(id).checked = true;
+      element(id).dispatchEvent(new Event("change"));
+    }
+    element<HTMLButtonElement>("dom-tamper").click();
+    const steps = [
+      ["실행 지연 단일 측정", "pause-check"],
+      ["SDK 파일 무결성", "runtime-integrity"],
+      ["스크립트 삽입·요청 변조", "lab-all"],
+      ["실제 배포 리소스", "resource-audit"],
+      ["브라우저 보안 정책", "policy-run"],
+      ["배포 호환성", "compat-run"],
+      ["High 난독화와 실행 비교", "protect"],
+    ] as const;
+    for (const [index, [label, id]] of steps.entries()) {
+      if (tourLifetime.signal.aborted) return;
+      tourStatus.dataset.step = String(index + 1);
+      tourStatus.dataset.state = "running";
+      tourStatus.textContent = `${index + 1}/${steps.length} · ${label} 검사 중… 다른 검사는 이 결과 이후에 시작합니다.`;
+      if (id === "policy-run")
+        element<HTMLButtonElement>("policy-enable-all").click();
+      if (id === "protect") selectPreset("high");
+      await waitForAction(id);
+    }
+    tourStatus.dataset.state = "complete";
+    tourStatus.textContent =
+      "7/7 단계 완료 · 각 탭의 실제 결과와 미지원·실패 항목을 확인하세요. 실행 지연 측정 완료가 디버깅 감지를 뜻하지는 않습니다. 키·우클릭은 본문 시험 영역에서 직접 비교하세요.";
+  } catch (error) {
+    if (!tourLifetime.signal.aborted) {
+      tourStatus.dataset.state = "error";
+      tourStatus.textContent = `체험 중단 · ${error instanceof Error ? error.message : "결과를 확인할 수 없습니다."}`;
+    }
+  } finally {
+    tourRunning = false;
+    tourButton.disabled = false;
+    tourButton.removeAttribute("aria-busy");
   }
-  element<HTMLInputElement>("sdk-integrity").checked = true;
-  element("sdk-integrity").dispatchEvent(new Event("change"));
-  element<HTMLButtonElement>("runtime-enable").click();
-  for (const id of ["dom-block", "pause-block"])
-    element<HTMLInputElement>(id).checked = false;
-  element<HTMLButtonElement>("dom-restore").click();
-  for (const id of ["dom-monitor", "pause-monitor"]) {
-    element<HTMLInputElement>(id).checked = true;
-    element(id).dispatchEvent(new Event("change"));
-  }
-  element<HTMLButtonElement>("dom-tamper").click();
-  element<HTMLButtonElement>("pause-check").click();
-  element<HTMLButtonElement>("runtime-integrity").click();
-  element<HTMLButtonElement>("lab-all").click();
-  element<HTMLButtonElement>("resource-audit").click();
-  element<HTMLButtonElement>("policy-enable-all").click();
-  element<HTMLButtonElement>("policy-run").click();
-  element<HTMLButtonElement>("compat-run").click();
-  selectPreset("high");
-  protect.click();
-  element("runtime-tour-status").textContent =
-    "전체 기능 시험을 시작했습니다. 각 영역의 실제 결과를 확인하고, 본문 시험 영역에서 키·우클릭을 직접 시험하세요. 개발자도구 창 자체를 잠그는 기능은 아닙니다.";
 });
 window.addEventListener("pagehide", (event) => {
   if (event.persisted) return;
+  tourLifetime.abort();
   cleanupRuntime();
   cleanupHardening();
   cleanupResources();

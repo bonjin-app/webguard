@@ -39,7 +39,7 @@ test("the site starts protected outside the demo test area and offers a modal-on
   await page.goto("/");
   await expect(page.locator("#runtime-page-block")).toBeChecked();
   await expect(page.locator("#shortcuts")).toBeChecked();
-  await expect(page.locator("#shortcuts")).toBeDisabled();
+  await expect(page.locator("#shortcuts")).toBeEnabled();
   await expect(page.locator("#context")).toBeChecked();
   await expect(page.locator("#site-protection-status")).toBeVisible();
   await expect(

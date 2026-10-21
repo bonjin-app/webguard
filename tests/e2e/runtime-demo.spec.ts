@@ -73,6 +73,7 @@ test("reaches live SDK controls from the hero and applies both policy buttons", 
   await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
   await expect(page.locator("#live-demo")).toBeInViewport();
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#context")).toBeChecked();
   await expect(page.locator("#sdk-integrity")).toBeChecked();
@@ -105,6 +106,7 @@ test("blocks actual F12 and right-click input outside an editor while preserving
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
     .click();
@@ -152,6 +154,7 @@ for (const [platform, modifiers] of [
   }) => {
     await openBasicDemo(page, "/#live-demo");
     await page.locator("#runtime-advanced > summary").click();
+    await page.locator("#runtime-events > summary").click();
     const target = page.getByLabel("본문 시험 영역", { exact: true });
     const result = page.locator("#runtime-input-result");
     const log = page.locator("#runtime-log");
@@ -188,6 +191,7 @@ test("labels synthetic F12 trials honestly and caps then clears the local event 
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
     .click();
@@ -223,6 +227,7 @@ test("checks a real manifest and file through the SDK with matching and differen
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   // Pass through unchanged bytes, while disabling browser HTTP caching for this
   // network-observation assertion. Cached SDK reads are valid product behavior.
   await page.route(`**${examplePath}**`, (route) => route.continue());
@@ -262,6 +267,7 @@ test("reports a real mismatch when the manifest-listed SDK file response is chan
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   let changedFiles = 0;
   await page.route(`**${examplePath}**`, async (route) => {
     if (new URL(route.request().url()).pathname === manifestPath) {
@@ -296,6 +302,7 @@ test("does not request application resources when the SDK integrity policy is di
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await page.locator("#sdk-integrity").uncheck();
   const requests: string[] = [];
   page.on("request", (request) => {
@@ -326,9 +333,31 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
 }) => {
   await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
+  for (const id of ["dom-block", "pause-block"])
+    await page.locator(`#${id}`).check();
   await page
     .getByRole("button", { name: "전체 기능 체험 시작", exact: true })
     .click();
+  await expect(page.locator("#runtime-tour")).toBeDisabled();
+  await expect(page.locator("#dom-block")).not.toBeChecked();
+  await expect(page.locator("#pause-block")).not.toBeChecked();
+  await expect(page.locator("#dom-response-caption")).toContainText(
+    "기록 모드",
+  );
+  await expect(page.locator("#pause-response-caption")).toContainText(
+    "기록 모드",
+  );
+  await expect(page.locator("#runtime-tour-status")).toHaveAttribute(
+    "data-state",
+    "running",
+  );
+  // Re-entry from scripts or another listener must not start a second run.
+  await page
+    .locator("#runtime-tour")
+    .evaluate((node) =>
+      node.dispatchEvent(new MouseEvent("click", { bubbles: true })),
+    );
   await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#context")).toBeChecked();
   await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
@@ -354,6 +383,12 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
   await expect(
     page.getByRole("button", { name: "High", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#runtime-tour-status")).toHaveAttribute(
+    "data-state",
+    "complete",
+    { timeout: 15000 },
+  );
+  await expect(page.locator("#runtime-tour")).toBeEnabled();
   if (process.env.WEBGUARD_PUBLIC_URL && browserName === "chromium") {
     await page.getByRole("tab", { name: "브라우저 가드", exact: true }).click();
     await page
@@ -384,9 +419,10 @@ test("default page protection cancels trusted Mac inspection input inside an edi
   const mode = page.locator("#runtime-page-block");
   await expect(mode).toBeChecked();
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await mode.check();
   await expect(page.locator("#shortcuts")).toBeChecked();
-  await expect(page.locator("#shortcuts")).toBeDisabled();
+  await expect(page.locator("#shortcuts")).toBeEnabled();
   await expect(page.locator("#runtime-detect")).not.toBeChecked();
   await expect(page.locator("#runtime-detect")).toBeEnabled();
   await expect(page.locator("#runtime-warn")).toBeDisabled();
@@ -426,6 +462,7 @@ test("demo-only exit disables page protection and cleans up its modal without di
   await useUndockedGeometry(page);
   await page.goto("/#live-demo");
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await page.locator("#runtime-page-block").check();
   await page.locator("#runtime-editor").focus();
   await page.keyboard.press("Meta+Alt+KeyI");
@@ -461,6 +498,7 @@ test("simulated docked-window geometry opens the page dialog and recheck waits f
   await page.goto("/#live-demo");
   await page.locator("#runtime-page-block").check();
   await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-events > summary").click();
   await page.locator("#runtime-detect").check();
   // An explicit fixture for the heuristic, not an opened browser DevTools window.
   await page.evaluate(() => {
@@ -485,4 +523,87 @@ test("simulated docked-window geometry opens the page dialog and recheck waits f
   await expect(blocker).not.toBeVisible();
   await page.locator("#runtime-page-block").uncheck();
   await expect(blocker).toHaveCount(0);
+});
+
+test("default protection switches remain independent and repeatable with real input", async ({
+  page,
+}) => {
+  await useUndockedGeometry(page);
+  await page.goto("/#live-demo");
+  const mode = page.locator("#runtime-page-block");
+  const shortcuts = page.locator("#shortcuts");
+  const context = page.locator("#context");
+  const target = page.locator("#runtime-target");
+  await expect(shortcuts).toBeEnabled();
+  for (const enabled of [false, true, false, true]) {
+    await shortcuts.setChecked(enabled);
+    await expect(mode).toBeChecked();
+    await expect(context).toBeChecked();
+    await page.locator("#test-f12").click();
+    await expect(page.locator("#live-result")).toContainText(
+      enabled ? "차단됨" : "허용됨",
+    );
+    const blocker = page.locator("dialog[data-webguard-blocker]");
+    if (enabled) {
+      await expect(blocker).toBeVisible();
+      await blocker.locator("[data-webguard-recheck]").click();
+    }
+    await target.focus();
+    await observeNextInput(page, "keydown", "KeyI");
+    await page.keyboard.press("Meta+Alt+KeyI");
+    await expect
+      .poll(() => inputObservation(page))
+      .toEqual({ trusted: true, prevented: enabled });
+    if (enabled) {
+      await expect(blocker).toBeVisible();
+      await blocker.locator("[data-webguard-recheck]").click();
+    }
+    await expect(page.locator("#site-protection-summary")).toContainText(
+      `검사 단축키 ${enabled ? "ON" : "OFF"}`,
+    );
+  }
+  await context.uncheck();
+  await expect(shortcuts).toBeChecked();
+  await target.focus();
+  await observeNextInput(page, "contextmenu");
+  await target.click({ button: "right" });
+  await expect
+    .poll(() => inputObservation(page))
+    .toEqual({ trusted: true, prevented: false });
+});
+
+test("invalid advanced threshold preserves actual threshold without blocking basic toggles", async ({
+  page,
+}) => {
+  await useUndockedGeometry(page);
+  await page.goto("/#live-demo");
+  await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-threshold").fill("5");
+  await page.locator("#context").uncheck();
+  await expect(page.locator("#runtime-config-error")).toContainText(
+    "실제 기준 160px을 유지",
+  );
+  await expect(page.locator("#runtime-threshold")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"threshold": 160',
+  );
+  await expect(page.locator("#site-protection-summary")).toContainText(
+    "본문 우클릭 OFF",
+  );
+  await page.locator("#shortcuts").uncheck();
+  await page.locator("#test-mac-inspect").click();
+  await expect(page.locator("#live-result")).toContainText("허용됨");
+  await page.locator("#runtime-page-block").uncheck();
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"response": "monitor"',
+  );
+  await page.locator("#runtime-threshold").fill("200");
+  await page.locator("#runtime-threshold").blur();
+  await expect(page.locator("#runtime-config-error")).toBeEmpty();
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"threshold": 200',
+  );
 });

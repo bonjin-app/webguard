@@ -3,17 +3,18 @@ import { siteGuardOptions } from "../../site-guard-options";
 const inputArt = new URL("./assets/input-try.webp", import.meta.url).href;
 export const runtimeMarkup = `
 <section id="live-demo" class="demo-section runtime-demo" aria-labelledby="runtime-heading">
-<h3 id="runtime-heading" class="sr-only">브라우저 가드 실시간 체험</h3><p><a class="demo-link" href="#runtime-hardening">자동 감시·DOM 변조 체험 →</a></p>
-<div class="runtime-switches"><label class="switch-label"><span>페이지 보호 모드</span><input id="runtime-page-block" type="checkbox" checked></label><label class="switch-label"><span>단축키 제한<span class="sr-only"> · Restrict F12 / inspect shortcuts</span></span><input id="shortcuts" type="checkbox" checked></label><label class="switch-label"><span>우클릭 제한<span class="sr-only"> · Restrict context menu</span></span><input id="context" type="checkbox" checked></label></div><button id="runtime-defaults" class="text-button" type="button">사이트 기본값으로 되돌리기</button>
-<div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>여기를 클릭하고 단축키를 눌러보세요.</h3><p>Mac ⌘+⌥+I · Windows Ctrl+Shift+I · F12<br>우클릭은 별도 스위치로 켜고 끌 수 있습니다.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div><p id="runtime-state" class="runtime-state" aria-live="polite"></p>
-<p class="runtime-scope">이 페이지 전체에 SDK가 기본 적용됩니다. 페이지 보호 모드·검사 단축키·본문 우클릭 제한이 ON입니다. 위 시험 영역 밖에서도 동작합니다. 스위치로 보호 전후를 비교하세요. 페이지 보호 모드를 끄면 편집 영역의 검사 단축키를 허용합니다. 입력 영역의 우클릭은 항상 허용합니다. 브라우저 메뉴·콘솔 실행은 제어하지 못합니다.</p>
-<details id="runtime-advanced" class="runtime-advanced"><summary>고급 옵션과 실행 기록 보기</summary>
-<div class="runtime-limit"><strong>페이지 보호 모드는 개발자도구를 닫는 기능이 아닙니다.</strong><p>검사 단축키나 도킹 크기 추정 신호에 반응해 페이지에 차단 안내를 표시합니다. 분리된 도구는 놓칠 수 있고 창 테두리·확대 설정으로 오탐할 수 있습니다. DOM·백그라운드 작업·콘솔 실행·서버 권한은 통제하지 못합니다. 창 크기 추정 감지는 오탐을 줄이기 위해 기본 OFF입니다. 필요하면 아래에서 직접 켜세요. 새로고침하면 이 페이지의 기본 설정으로 돌아갑니다. 난독화·소스맵 제거·서버 헤더는 빌드·배포에 적용되며 이 스위치로 해제되지 않습니다.</p></div>
+<div class="runtime-intro"><h3 id="runtime-heading">입력 제한을 켜고, 바로 비교하세요.</h3><p>각 스위치는 독립적으로 적용됩니다. 실제 키 입력과 버튼 시험의 결과를 아래에서 확인하세요.</p><a class="demo-link" href="#runtime-hardening">자동 감시·DOM 변조 체험 →</a></div>
+<div class="runtime-workbench"><div class="runtime-control-panel"><div class="runtime-switches"><label class="switch-label"><span>페이지 보호 안내<small>제한된 검사 단축키에 안내 화면 표시</small></span><input id="runtime-page-block" type="checkbox" checked></label><label class="switch-label"><span>단축키 제한<span class="sr-only"> · Restrict F12 / inspect shortcuts</span><small>Mac·Windows 검사 키의 페이지 기본 동작 취소</small></span><input id="shortcuts" type="checkbox" checked></label><label class="switch-label"><span>우클릭 제한<span class="sr-only"> · Restrict context menu</span><small>본문에서만 적용 · 편집 입력은 허용</small></span><input id="context" type="checkbox" checked></label></div><button id="runtime-defaults" class="text-button" type="button">사이트 기본값으로 되돌리기</button><p id="runtime-state" class="runtime-state" aria-live="polite"></p></div>
+<div class="runtime-stage"><div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>이 영역을 클릭하고 직접 눌러보세요.</h3><p>Mac ⌘+⌥+I · Windows Ctrl+Shift+I · F12<br>우클릭도 시험할 수 있습니다.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div>
+<div class="runtime-synthetic"><h4>버튼으로 빠르게 비교</h4><div class="lab-actions"><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-mac-inspect" class="sample-run">⌘+⌥+I 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p class="lab-limit">버튼은 합성 이벤트의 취소 여부를 검사합니다. 실제 개발자도구 열림을 검사하지 않습니다.</p></div></div></div>
+<p class="runtime-scope">스위치 설정은 이 페이지 전체에 즉시 적용됩니다. 보호 안내만 켜도 단축키 제한이 자동으로 켜지지 않습니다. 보호 안내를 끄면 편집 영역의 검사 단축키를 허용합니다. 브라우저 메뉴에서 개발자도구를 여는 동작과 콘솔 실행은 제어하지 못합니다.</p>
+<details id="runtime-events" class="runtime-advanced"><summary>로컬 이벤트 기록 <span id="runtime-latest-event">아직 기록된 이벤트가 없습니다.</span></summary><div class="lab-actions"><button id="runtime-clear" class="text-button">기록 지우기</button></div><ul id="runtime-log" class="runtime-log" aria-live="polite" aria-label="로컬 이벤트 기록"></ul><p>최근 20건만 기록합니다. 입력 내용은 수집하지 않고 기록을 서버로 보내지 않습니다.</p></details>
+<details id="runtime-advanced" class="runtime-advanced"><summary>고급 설정과 편집 영역 시험</summary>
+<div class="runtime-limit"><strong>페이지 보호 안내는 개발자도구를 닫는 기능이 아닙니다.</strong><p>제한된 검사 단축키나 창 크기 추정 신호에 반응해 페이지 안내를 표시합니다. 창 크기 감지는 오탐 가능성이 있어 기본 OFF입니다. 새로고침하면 기본 설정으로 돌아갑니다. 난독화·소스맵 제거·서버 헤더는 빌드·배포에 적용되며 이 스위치로 해제되지 않습니다.</p></div>
 <div class="lab-actions"><button id="runtime-enable" class="primary">입력 제한 켜기</button><button id="runtime-disable" class="sample-run">입력 제한 끄기</button><button id="runtime-tour" class="sample-run">전체 기능 체험 시작</button></div><p id="runtime-tour-status" aria-live="polite">입력 제한·정책 스위치 → 배포 호환성·파일 검사 → 삽입·변조 5종 → High 난독화를 시작합니다. 실제 키 입력은 위 영역에서 직접 시험하세요.</p>
 <div class="runtime-grid"><article class="sample-card"><h3>SDK 설정</h3><div class="toggles">
-<label><input id="runtime-detect" type="checkbox"> 창 크기 추정 감지</label><label><input id="runtime-warn" type="checkbox"> SDK 경고를 콘솔에도 출력</label><label><input id="sdk-integrity" type="checkbox" checked> 명시적 SDK 파일 검사 허용</label><label for="runtime-threshold">감지 기준 차이 (픽셀)<input id="runtime-threshold" type="number" min="40" max="1000" step="1" value="160"></label></div><p id="runtime-config-error" aria-live="polite"></p><details><summary>지금 적용된 update 코드</summary><pre id="runtime-config"></pre></details><p id="detection">감지된 추정 신호 없음 · 실제 개발자도구 열림 상태는 판정하지 않습니다.</p></article>
-<article class="sample-card"><h3>편집·합성 이벤트 비교</h3><label for="runtime-editor">편집 허용 시험 입력</label><input id="runtime-editor" placeholder="페이지 보호 모드를 끄면 편집 영역의 검사 단축키를 허용합니다."><div class="lab-actions"><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-mac-inspect" class="sample-run">⌘+⌥+I 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p>합성 이벤트는 SDK의 이벤트 취소만 시험합니다. 실제 개발자도구 열림 여부를 검사하지 않습니다.</p></article>
-<article class="sample-card"><div class="lab-actions"><h3>로컬 이벤트 기록</h3><button id="runtime-clear" class="text-button">기록 지우기</button></div><ul id="runtime-log" class="runtime-log" aria-live="polite" aria-label="로컬 이벤트 기록"></ul><p>최근 20건만 이 화면에 기록합니다. 입력 내용은 수집하지 않고 기록을 서버로 보내지 않습니다.</p></article></div></details></section>`;
+<label><input id="runtime-detect" type="checkbox"> 창 크기 추정 감지</label><label><input id="runtime-warn" type="checkbox"> SDK 경고를 콘솔에도 출력 <small>페이지 보호 안내 ON일 때 선택 불가</small></label><label><input id="sdk-integrity" type="checkbox" checked> 명시적 SDK 파일 검사 허용</label><label for="runtime-threshold">감지 기준 차이 (픽셀)<input id="runtime-threshold" type="number" min="40" max="1000" step="1" value="160" aria-describedby="runtime-config-error"></label></div><p id="runtime-config-error" aria-live="polite"></p><details><summary>지금 적용된 update 코드</summary><pre id="runtime-config"></pre></details><p id="detection">감지된 추정 신호 없음 · 실제 개발자도구 열림 상태는 판정하지 않습니다.</p></article>
+<article class="sample-card"><h3>편집 영역 비교</h3><label for="runtime-editor">편집 허용 시험 입력</label><input id="runtime-editor" placeholder="페이지 보호 안내를 끄면 편집 영역의 검사 단축키를 허용합니다."><p>입력 영역의 우클릭은 항상 허용합니다. 보호 안내 ON과 단축키 제한 ON을 함께 선택하면 입력 영역에도 검사 키 제한을 적용합니다.</p></article></div></details></section>`;
 export const sdkIntegrityMarkup = `<section id="sdk-file" class="demo-section integrity-demo" aria-labelledby="integrity-heading"><div class="section-heading"><div><h3 id="integrity-heading">SDK로 실제 파일을 검사하세요.</h3><p>보호된 예제 파일을 checkIntegrity()로 읽고, 정상 해시와 한 글자 다른 기대 해시를 비교합니다.</p></div></div><button id="runtime-integrity" class="primary">SDK 파일 검사</button><pre id="runtime-integrity-result" class="lab-result" aria-live="polite">아직 검사하지 않았습니다.</pre><p class="lab-limit">공개 manifest를 기준으로 한 SDK 검사 체험입니다. 변조한 파일을 배포하거나 실행하지 않습니다. 신뢰할 수 있는 기준 해시의 배포는 별도 책임입니다.</p><a href="#sdk-integrity">SDK 검사 허용 옵션 확인</a></section>`;
 const get = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -23,6 +24,7 @@ function log(message: string) {
   const row = document.createElement("li");
   row.textContent = `${new Date().toLocaleTimeString()} · ${message}`;
   list.prepend(row);
+  get("runtime-latest-event").textContent = row.textContent;
   while (list.children.length > 20) list.lastElementChild?.remove();
 }
 export function reportRuntimeThreat(event: ThreatEvent) {
@@ -109,29 +111,20 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
     window.dispatchEvent(new Event("webguard-demo-defaults"));
   });
   function configure() {
-    let threshold = get<HTMLInputElement>("runtime-threshold").valueAsNumber;
-    if (!Number.isInteger(threshold) || threshold < 40 || threshold > 1000) {
-      if (
-        !check("runtime-page-block") &&
-        guard.getOptions().devtools?.response === "block"
-      ) {
-        // Invalid advanced input must never strand the demo inside its modal.
-        threshold = guard.getOptions().devtools?.threshold ?? 160;
-        get<HTMLInputElement>("runtime-threshold").value = String(threshold);
-      } else {
-        get<HTMLInputElement>("runtime-page-block").checked =
-          guard.getOptions().devtools?.response === "block";
-        get("runtime-config-error").textContent =
-          "감지 기준은 40~1000 사이 정수로 입력하세요. 기존 설정을 유지합니다.";
-        return;
-      }
-    }
+    const thresholdInput = get<HTMLInputElement>("runtime-threshold");
+    const requestedThreshold = thresholdInput.valueAsNumber;
+    const validThreshold =
+      Number.isInteger(requestedThreshold) &&
+      requestedThreshold >= 40 &&
+      requestedThreshold <= 1000;
+    const threshold = validThreshold
+      ? requestedThreshold
+      : (guard.getOptions().devtools?.threshold ?? 160);
+    thresholdInput.setAttribute("aria-invalid", String(!validThreshold));
     const pageBlock = check("runtime-page-block");
-    for (const id of ["shortcuts", "runtime-warn"]) {
-      const control = get<HTMLInputElement>(id);
-      control.disabled = pageBlock;
-      if (pageBlock && id === "shortcuts") control.checked = true;
-    }
+    const warn = get<HTMLInputElement>("runtime-warn");
+    warn.disabled = pageBlock;
+    if (pageBlock) warn.checked = false;
     revision++;
     if (checking) guard.update({ integrity: { enabled: false } });
     guard.update({
@@ -149,10 +142,12 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
       },
       integrity: { enabled: check("sdk-integrity") },
     });
-    get("runtime-config-error").textContent = "";
+    get("runtime-config-error").textContent = validThreshold
+      ? ""
+      : `감지 기준은 40~1000 사이 정수로 입력하세요. 실제 기준 ${threshold}px을 유지하고 나머지 설정은 적용했습니다.`;
     const options = guard.getOptions();
     get("runtime-state").textContent =
-      `현재 적용: 페이지 보호 모드 ${pageBlock ? "ON · 페이지 안내로 사용 제한" : "OFF"} · 단축키 ${options.devtools?.blockShortcuts ? "ON (⌘+⌥+I/J/C · Ctrl+Shift+I/J/C · F12)" : "OFF (스위치를 켜야 제한됩니다)"} · 우클릭 ${options.devtools?.blockContextMenu ? "ON" : "OFF"}`;
+      `현재 적용: 페이지 보호 안내 ${pageBlock ? "ON · 제한된 검사 키에 반응" : "OFF"} · 단축키 ${options.devtools?.blockShortcuts ? "ON (⌘+⌥+I/J/C · Ctrl+Shift+I/J/C · F12)" : "OFF (스위치를 켜야 제한됩니다)"} · 우클릭 ${options.devtools?.blockContextMenu ? "ON" : "OFF"}`;
     get("site-protection-summary").textContent =
       `페이지 보호 ${pageBlock ? "ON" : "OFF"} · 검사 단축키 ${options.devtools?.blockShortcuts ? "ON" : "OFF"} · 본문 우클릭 ${options.devtools?.blockContextMenu ? "ON" : "OFF"} · 창 크기 추정 ${options.devtools?.detect ? "ON (오탐 가능)" : "OFF"}`;
     get("runtime-config").textContent =
@@ -188,9 +183,10 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
         log(`설정 변경 · 입력 제한 ${enabled ? "ON" : "OFF"}`);
       },
     );
-  get("runtime-clear").addEventListener("click", () =>
-    get("runtime-log").replaceChildren(),
-  );
+  get("runtime-clear").addEventListener("click", () => {
+    get("runtime-log").replaceChildren();
+    get("runtime-latest-event").textContent = "기록을 지웠습니다.";
+  });
   function observe(event: Event) {
     if (event instanceof KeyboardEvent) {
       const key = event.key.toLowerCase();

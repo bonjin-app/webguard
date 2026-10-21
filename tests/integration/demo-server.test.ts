@@ -73,6 +73,21 @@ it("keeps nested page redirects within the application mount", async () => {
     "한글 보안 체험",
   );
 });
+it("serves the exact /demo alias with the playground policy and rejects child fallbacks", async () => {
+  const port = await start(await fixture());
+  const demo = await get(port, "/demo?view=guards");
+  expect(demo.status).toBe(200);
+  expect(demo.body).toContain("<title>playground</title>");
+  expect(demo.headers["x-demo-app"]).toBe("playground");
+  expect(demo.headers["content-security-policy"]).toContain(
+    "report-to playground",
+  );
+  const slash = await get(port, "/demo/?view=guards");
+  expect(slash.status).toBe(308);
+  expect(slash.headers.location).toBe("/demo?view=guards");
+  expect((await get(port, "/demo/private")).status).toBe(404);
+  expect((await get(port, "/demo%2f")).status).toBe(404);
+});
 function get(
   port: number,
   path: string,

@@ -49,6 +49,12 @@ test("compares OFF and ON without accepting a response-only baseline change", as
   await page.locator("#dom-tamper").click();
   await expect(page.locator("#dom-integrity-status")).toContainText("OFF");
   await page.locator("#dom-monitor").check();
+  await expect(page.locator("#dom-protected-notice")).toHaveText(
+    "공식 안내 · WebGuard",
+  );
+  await expect(page.locator("#dom-integrity-status")).toContainText(
+    "공식 안내 복구됨",
+  );
   await page.locator("#dom-tamper").click();
   await expect(page.locator("#dom-integrity-status")).toContainText(
     "변경 감지",
@@ -111,7 +117,110 @@ test("keeps manual timer results separate from automatic observation and cancels
     "data-watch-state",
     "off",
   );
+  await expect(page.locator("#pause-check")).toBeDisabled();
+});
+
+test("response switches preserve watch progress and an active manual sample", async ({
+  page,
+}) => {
+  await page.goto("/#runtime-hardening");
+  const status = page.locator("#pause-status");
+  await expect
+    .poll(async () => Number(await status.getAttribute("data-samples")))
+    .toBeGreaterThan(1);
+  const before = Number(await status.getAttribute("data-samples"));
+  await page.locator("#pause-check").click();
+  await expect(page.locator("#pause-check")).toBeDisabled();
+  await page.locator("#pause-block").check();
+  await expect(page.locator("#pause-check")).toBeDisabled();
+  await expect(page.locator("#pause-manual-status")).toContainText(
+    "수동 검사 중",
+  );
+  await expect
+    .poll(async () => Number(await status.getAttribute("data-samples")))
+    .toBeGreaterThanOrEqual(before);
+  await expect(page.locator("#pause-manual-status")).toContainText("이번 검사");
   await expect(page.locator("#pause-check")).toBeEnabled();
+  await expect(page.locator("dialog[data-webguard-blocker]")).toHaveCount(0);
+  await page.locator("#pause-block").uncheck();
+  await expect
+    .poll(async () => Number(await status.getAttribute("data-samples")))
+    .toBeGreaterThanOrEqual(before);
+});
+
+test("repeatedly restores canonical content when DOM monitoring is enabled after tampering", async ({
+  page,
+}) => {
+  await page.goto("/#runtime-hardening");
+  for (let index = 0; index < 2; index++) {
+    await page.locator("#dom-monitor").uncheck();
+    await page.locator("#dom-tamper").click();
+    await expect(page.locator("#dom-protected-notice")).toContainText(
+      "승인되지 않은 내용",
+    );
+    await page.locator("#dom-monitor").check();
+    await expect(page.locator("#dom-protected-notice")).toHaveText(
+      "공식 안내 · WebGuard",
+    );
+    await expect(page.locator("#dom-integrity-status")).toContainText(
+      "공식 안내 복구됨",
+    );
+    await page.locator("#dom-tamper").click();
+    await expect(page.locator("#dom-integrity-status")).toContainText(
+      "변경 감지",
+    );
+    await expect(page.locator("#dom-monitor")).not.toBeChecked();
+    await page.locator("#dom-monitor").check();
+    await expect(page.locator("#dom-protected-notice")).toHaveText(
+      "공식 안내 · WebGuard",
+    );
+  }
+});
+
+test("restores the connected canonical notice after Elements replacement, removal, and movement", async ({
+  page,
+}) => {
+  await page.goto("/#runtime-hardening");
+  const notice = page.locator("#dom-protected-notice");
+  const canonicalClass = await notice.getAttribute("class");
+  for (const mutation of ["replace", "remove", "move"] as const) {
+    await notice.evaluate((element, kind) => {
+      if (kind === "replace") {
+        const replacement = document.createElement("aside");
+        replacement.id = element.id;
+        replacement.className = "untrusted";
+        replacement.setAttribute("data-injected", "true");
+        replacement.textContent = "승인되지 않은 교체 안내";
+        element.replaceWith(replacement);
+      } else if (kind === "remove") element.remove();
+      else document.body.append(element);
+    }, mutation);
+    await expect(page.locator("#dom-monitor")).not.toBeChecked();
+    if (mutation === "remove") await page.locator("#dom-restore").click();
+    else await page.locator("#dom-monitor").check();
+    await expect(
+      page.locator("#dom-notice-slot > #dom-protected-notice"),
+    ).toHaveCount(1);
+    await expect(notice).toHaveCount(1);
+    await expect(notice).toHaveText("공식 안내 · WebGuard");
+    await expect(notice).toHaveAttribute("class", canonicalClass ?? "missing");
+    await expect(notice).not.toHaveAttribute("data-injected");
+    await expect(notice).toHaveJSProperty("tagName", "DIV");
+    await page.locator("#dom-tamper").click();
+    await expect(page.locator("#dom-monitor")).not.toBeChecked();
+    await expect(page.locator("#dom-integrity-status")).toContainText(
+      "변경 감지",
+    );
+    await page.locator("#dom-restore").click();
+  }
+  await page.locator("#dom-monitor").uncheck();
+  await notice.evaluate((element) => element.remove());
+  await page.locator("#dom-tamper").click();
+  await expect(
+    page.locator("#dom-notice-slot > #dom-protected-notice"),
+  ).toContainText("승인되지 않은 내용");
+  await page.locator("#dom-monitor").check();
+  await expect(notice).toHaveText("공식 안내 · WebGuard");
 });
 
 test("automatic watch reports an actual debugger pause without manual sampling and latches the signal", async ({
