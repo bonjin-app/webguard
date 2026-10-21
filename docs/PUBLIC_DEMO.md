@@ -4,7 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Actual deployed code and security overview (current)
+## Optional native page protection (current)
+
+[Try page protection](https://webguard.uulab.co.kr/demo?guard=6d8e941#live-demo). Turn on **페이지 보호 모드**. The SDK then cancels inspection shortcuts even inside editors, observes docked-window size hints, and opens a native modal asking the visitor to close DevTools and recheck. The modal makes the background page inert. The demo offers an explicit exit; SDK teardown and response changes remove the owned UI. Original opt-in SDK defaults and IME composition remain preserved.
+
+Source **`6d8e941`** is deployed as Worker **`336a0b80-4f20-49da-bcc3-914f38a31db1`**, deployment **`64f373d2-8aa7-4dd5-8559-643ccc6aad5c`**, at 100% traffic. All **37** public files matched prepared SHA-256 values. Runtime settings and bindings are unchanged. The demo remains obfuscated; npm publication is paused and the canonical prepared release artifact is unchanged. A separate tarball was packed solely for installed-consumer verification.
+
+Fresh installed-package verification passed **15/15** native-browser cases in Chromium, Firefox and WebKit under generated HTTP CSP and enforced Trusted Types. It covers actual trusted Mac inputs in an editor, native modal status, Escape retention, background inertness, recheck, and synchronous host focus callbacks that destroy or reconfigure the SDK. Unit/integration checks passed **359/359**; the scoped local browser matrix passed **96/96** without retries. Root/Worker types, scoped lint, formatting and deployment dry run passed.
+
+The initial complete public matrix passed **200/209**; the remaining nine failures were three existing assertions per engine that still expected the former default-off shortcut policy. Those expectations now match the documented default-on policy. The final focused rerun passed **9/9** without retries or product changes; this is combined coverage rather than a single all-green full run.
+
+Native in-app public input also opened the modal from `Cmd+Option+I` and rechecking removed it. The in-app host reports outer dimensions larger than its viewport even without DevTools, demonstrating a real false-positive boundary; this key-input observation used the exposed 1000px threshold to separate it from the size hint, then restored default settings. Automated geometry tests explicitly simulate size differences and do not establish reliable DevTools detection.
+
+This mode cannot close DevTools, conceal resources/DOM, stop background code or control the console. Undocked tools and browser-owned opening paths may evade detection; window chrome/zoom can produce false positives. Native modal failure emits an unavailable result, never a blocking success. It is not a server authorization boundary.
+
+[Installed consumer receipt](evidence/page-block-installed.json) · [Deployment receipt](evidence/page-block-deployment.json) · [Native public capture](evidence/page-block-public-native.png) · [Korean usage and options](INSTALL.ko.md).
+
+## Actual deployed code and security overview (preceding release)
 
 [Open the protection overview](https://webguard.uulab.co.kr/demo?proof=22a196a#deployment-proof). The demo now visibly explains its own protected build and offers direct links that start the existing real entry audit or five security scenarios. The entry audit reads the current HTML's module URL, fetches those bytes and compares SHA-384 SRI. Only a matching entry is previewed as inert text, limited to 900 characters; new, failed or interrupted checks remove stale previews. Fixed private/source-map paths remain status-only probes. No source-pattern heuristic is presented as proof of obfuscation strength.
 

@@ -10,7 +10,10 @@ test("loads valid brand icons and starts without application or resource errors"
     if (message.type() === "error") errors.push(message.text());
   });
   await page.goto("/");
-  await expect(page.locator("#runtime-state")).toContainText("단축키 OFF");
+  await expect(page.locator("#runtime-state")).toContainText(
+    "페이지 보호 모드 OFF",
+  );
+  await expect(page.locator("#runtime-state")).toContainText("단축키 ON");
   for (const [path, mime] of [
     ["/favicon.ico", "image/x-icon"],
     ["/favicon.svg", "image/svg+xml"],

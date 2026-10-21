@@ -31,7 +31,7 @@ test("protects locally, compares real output, and creates a local integrity repo
   await expect(page.getByLabel("Restrict context menu")).not.toBeChecked();
   await expect(
     page.getByLabel("Restrict F12 / inspect shortcuts"),
-  ).not.toBeChecked();
+  ).toBeChecked();
 });
 
 test("rejects invalid JavaScript without executing it", async ({ page }) => {

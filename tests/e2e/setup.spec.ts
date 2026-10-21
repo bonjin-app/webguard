@@ -71,7 +71,8 @@ test("generates one Vite configuration for strict React and explicit vanilla com
   await expect(page.locator("#setup-install")).not.toContainText(
     "uulab-webguard@0.3.0",
   );
-  await expect(page.locator("#runtime-state")).toContainText("단축키 OFF");
+  // Editing generated configuration must not change the live demo's default-on policy.
+  await expect(page.locator("#runtime-state")).toContainText("단축키 ON");
   expect(errors).toEqual([]);
 });
 
