@@ -1,0 +1,1175 @@
+{
+  "checkedAt": "2026-10-21T00:29:34.608Z",
+  "sourceCommit": "e459d5e0e9f1df1c1728d78ccce4743d6eac1083",
+  "url": "https://webguard.uulab.co.kr/demo?ui=light-e459d5e",
+  "changes": [
+    "Light page/surface tokens with dark ink, mint accents, pale code fields and visible keyboard focus",
+    "Hero quick actions and three-step journey; reordered mobile-scrollable feature navigation",
+    "Readable white inputs/selects, native WebKit select appearance reset with measured 46px controls",
+    "Matching documentation and three protected example themes; Korean line breaking and preserved disclosure markers"
+  ],
+  "deployment": {
+    "worker": "webguard-demo",
+    "version": "f24eed3c-98ed-4b44-91de-3e81716d2b75",
+    "id": "19d8eb18-025e-4c4c-8f79-e066f30a090a",
+    "trafficPercent": 100,
+    "previousVersion": "15c15398-3cd8-4280-8d34-291f1faa3cc4",
+    "sameBindings": true,
+    "sameRuntime": true,
+    "keepVars": true,
+    "assets": {
+      "checkedAt": "2026-10-21T00:27:33.022Z",
+      "files": [
+        {
+          "path": "/assets/index-BCnRRyAn.css",
+          "status": 200,
+          "sha256": "58198f0a9da59db0c12afbe23999b6d977baa568cc7af60681626fe9ae4fd8c6",
+          "remoteSha256": "58198f0a9da59db0c12afbe23999b6d977baa568cc7af60681626fe9ae4fd8c6",
+          "matches": true
+        },
+        {
+          "path": "/assets/index-IYCuLW-K.js",
+          "status": 200,
+          "sha256": "f4691348aa35f66286eeb3bb06ea20e9f52c1292aae67a11c03209edf5ea643d",
+          "remoteSha256": "f4691348aa35f66286eeb3bb06ea20e9f52c1292aae67a11c03209edf5ea643d",
+          "matches": true
+        },
+        {
+          "path": "/assets/index.browser-CtOKMlmK.js",
+          "status": 200,
+          "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "remoteSha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f",
+          "matches": true
+        },
+        {
+          "path": "/assets/transform.worker-CjrfSGER.js",
+          "status": 200,
+          "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "remoteSha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f",
+          "matches": true
+        },
+        {
+          "path": "/docs/assets/index-DmPpgrSY.js",
+          "status": 200,
+          "sha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3",
+          "remoteSha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3",
+          "matches": true
+        },
+        {
+          "path": "/docs/assets/index-lg960Ytl.css",
+          "status": 200,
+          "sha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9",
+          "remoteSha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9",
+          "matches": true
+        },
+        {
+          "path": "/docs/index.html",
+          "status": 200,
+          "sha256": "0f1c109b10a245a1712ff5397ac87c44227d4dffcc4ebf025b37bc48db565a6d",
+          "remoteSha256": "0f1c109b10a245a1712ff5397ac87c44227d4dffcc4ebf025b37bc48db565a6d",
+          "matches": true
+        },
+        {
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "sha256": "496b1d6cc945d4a182242a9d823bb2a24029966cfc9538b55ae6d45e57f30a15",
+          "remoteSha256": "496b1d6cc945d4a182242a9d823bb2a24029966cfc9538b55ae6d45e57f30a15",
+          "matches": true
+        },
+        {
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "remoteSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/index-65KBRBiT.css",
+          "status": 200,
+          "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "remoteSha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/index-BtzJ3rGl.js",
+          "status": 200,
+          "sha256": "39503e224d41b07be2c308d4f60631cc7259cbe05264d11ebd13faa2dea3cbbc",
+          "remoteSha256": "39503e224d41b07be2c308d4f60631cc7259cbe05264d11ebd13faa2dea3cbbc",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/assets/lazy-DEzzBEHc.js",
+          "status": 200,
+          "sha256": "e4893233d0be55bc2c7207e6872df68c94817b93bf19f5195db56e726b391c41",
+          "remoteSha256": "e4893233d0be55bc2c7207e6872df68c94817b93bf19f5195db56e726b391c41",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "sha256": "9fe1205f26562aef759c80bf63b926873090ced460670f7f150fdeaa48dbb347",
+          "remoteSha256": "9fe1205f26562aef759c80bf63b926873090ced460670f7f150fdeaa48dbb347",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "remoteSha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "matches": true
+        },
+        {
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "sha256": "bbcc69c7f11e537f158085019bda6a25e4fdf04e723ed3f397a2d966ffa9b1e1",
+          "remoteSha256": "bbcc69c7f11e537f158085019bda6a25e4fdf04e723ed3f397a2d966ffa9b1e1",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "sha256": "02248753c1e97269c79e0f4733a7faec55ae3dde509f63913b6a8d8bb2484d81",
+          "remoteSha256": "02248753c1e97269c79e0f4733a7faec55ae3dde509f63913b6a8d8bb2484d81",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/about-BSphYXKe.js",
+          "status": 200,
+          "sha256": "3138c9b07fbf611d50979a2f5bff02fb21ebe8b2cd9ab62fa9eba41f9527bf57",
+          "remoteSha256": "3138c9b07fbf611d50979a2f5bff02fb21ebe8b2cd9ab62fa9eba41f9527bf57",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/index-nTrsrDB8.js",
+          "status": 200,
+          "sha256": "4f6e7f5d649a616773eb143be7e55f865b8ca7977bcb7ffba5210509351e1bc5",
+          "remoteSha256": "4f6e7f5d649a616773eb143be7e55f865b8ca7977bcb7ffba5210509351e1bc5",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/lazy-DeeVP_kj.js",
+          "status": 200,
+          "sha256": "4839d4e522acf9ebba236bddc728826ee25eebce06a8af90382304e16af4d082",
+          "remoteSha256": "4839d4e522acf9ebba236bddc728826ee25eebce06a8af90382304e16af4d082",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+          "status": 200,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "remoteSha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "sha256": "12c1486e1c64455ff920dfcc53c129507e6b932646e0ce6e2dd9e6b7f9d19e91",
+          "remoteSha256": "12c1486e1c64455ff920dfcc53c129507e6b932646e0ce6e2dd9e6b7f9d19e91",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "sha256": "59271eaf7f60ec3013af055a6f4c9b661da4ca97d109364364c4c5df430674ac",
+          "remoteSha256": "59271eaf7f60ec3013af055a6f4c9b661da4ca97d109364364c4c5df430674ac",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+          "status": 200,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "remoteSha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/index-D8bK7Q9s.js",
+          "status": 200,
+          "sha256": "9c4db62742be795c73e64210672b777b56ea33ba1e5eb6264ab97c917c428ac5",
+          "remoteSha256": "9c4db62742be795c73e64210672b777b56ea33ba1e5eb6264ab97c917c428ac5",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/assets/lazy-ZJUkXSyP.js",
+          "status": 200,
+          "sha256": "22cccfe9a69e52675953a4f3a615d920617a9f5ed5bda0f5e198512a2398897e",
+          "remoteSha256": "22cccfe9a69e52675953a4f3a615d920617a9f5ed5bda0f5e198512a2398897e",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "sha256": "23ed0a025c77d2f107eab08ff7e0819624aa6d4f961634adc88fea8f9650970a",
+          "remoteSha256": "23ed0a025c77d2f107eab08ff7e0819624aa6d4f961634adc88fea8f9650970a",
+          "matches": true
+        },
+        {
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "sha256": "e780c4fa13e3c72945cd738b15009c2c5dbb36070a7d5c088b37f345a6fa1ae2",
+          "remoteSha256": "e780c4fa13e3c72945cd738b15009c2c5dbb36070a7d5c088b37f345a6fa1ae2",
+          "matches": true
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200,
+          "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "remoteSha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "matches": true
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "sha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "remoteSha256": "8ce5fa3d0811d7b91001b9f70c89eabaa24618f688a66c2dfc8a8e9324039153",
+          "matches": true
+        },
+        {
+          "path": "/index.html",
+          "status": 200,
+          "sha256": "0731bb4b61dd3f8d078fef3637e9fd23821b5ed45b6714451506d73e88a3ef84",
+          "remoteSha256": "0731bb4b61dd3f8d078fef3637e9fd23821b5ed45b6714451506d73e88a3ef84",
+          "matches": true
+        },
+        {
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "remoteSha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "matches": true
+        }
+      ],
+      "matched": 31,
+      "total": 31
+    }
+  },
+  "verification": {
+    "buildTasks": 13,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "localUi": {
+      "initialChecks": 39,
+      "updatedKoreanNavigation": 3,
+      "nativeControlFollowup": 6
+    },
+    "publicFull": {
+      "version": "b9b6d2bc-9a01-4f5f-a501-4e5cda115c9c",
+      "source": "8c05324",
+      "passed": 176,
+      "failed": 0,
+      "duration": "2.9m",
+      "retries": 0,
+      "logSha256": "9c22e7e3b15c43f4f97d2b96e1785f8401debf5e1099b6e2d95e3462d0af0406"
+    },
+    "publicFinal": {
+      "version": "f24eed3c-98ed-4b44-91de-3e81716d2b75",
+      "source": "e459d5e",
+      "scope": "Demo navigation, protected examples, documentation, setup generator, transform and isolated execution regressions after CSS-only native select followup",
+      "passed": 39,
+      "failed": 0,
+      "duration": "1.4m",
+      "retries": 0,
+      "logSha256": "116db68bfd614b16453968c5b29529fd3efaf910e5c5d427d8f6b503802ea466"
+    },
+    "responsive": {
+      "passed": 39,
+      "widths": [360, 390, 768, 1440],
+      "engines": ["chromium", "firefox", "webkit"],
+      "minSampledBodyContrast": 13.630858720548412,
+      "minSampledParagraphContrast": 4.637311923249833,
+      "minSampledButtonContrast": 4.9458677366563455,
+      "observations": [
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/",
+          "width": 1440,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 46
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/docs/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/react/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/vanilla-js/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/vanilla-ts/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/",
+          "width": 768,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 46
+          },
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/docs/",
+          "width": 768,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/",
+          "width": 390,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 46
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/docs/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/react/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/vanilla-js/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/examples/vanilla-ts/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "path": "/",
+          "width": 360,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 46
+          },
+          "scrollWidth": 360,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/",
+          "width": 1440,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 47
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/docs/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/react/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/vanilla-js/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/vanilla-ts/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/",
+          "width": 768,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 47
+          },
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/docs/",
+          "width": 768,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/",
+          "width": 390,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 47
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/docs/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/react/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/vanilla-js/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/examples/vanilla-ts/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "path": "/",
+          "width": 360,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 47
+          },
+          "scrollWidth": 360,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/",
+          "width": 1440,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 45
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/docs/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/react/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/vanilla-js/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/vanilla-ts/",
+          "width": 1440,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 1440,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/",
+          "width": 768,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 45
+          },
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/docs/",
+          "width": 768,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 768,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/",
+          "width": 390,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 45
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/docs/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": null,
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": null
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/react/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(8, 127, 104)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 4.637311923249833,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/vanilla-js/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/examples/vanilla-ts/",
+          "width": 390,
+          "selectHeights": [],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 44
+          },
+          "scrollWidth": 390,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "path": "/",
+          "width": 360,
+          "selectHeights": [46, 46],
+          "colorScheme": "light",
+          "foreground": "rgb(23, 44, 51)",
+          "background": "rgb(245, 248, 250)",
+          "paragraph": "rgb(82, 102, 111)",
+          "button": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 127, 104)",
+            "height": 45
+          },
+          "scrollWidth": 360,
+          "contrast": {
+            "body": 13.630858720548412,
+            "paragraph": 5.64365054986838,
+            "button": 4.9458677366563455
+          },
+          "pageErrors": 0
+        }
+      ]
+    }
+  },
+  "auditHistory": {
+    "nativeSelect": "Visual review found WebKit native menu sizing ignored the CSS min-height; resetting appearance produced measured 46px controls in all three engines and all four demo widths.",
+    "initialNetworkIdleAudit": {
+      "completedObservations": 20,
+      "error": "page.waitForLoadState: Timeout 30000ms exceeded.\n    at /Users/uulab/Documents/workspace/uulab/webguard/.npm-release/check-light-ui.mjs:19:68"
+    },
+    "visualAuditReadiness": "The ad hoc audit used heading visibility, applied light color scheme and document.fonts.ready instead of transport networkidle. Application page errors and explicit geometry/contrast assertions remain checked. No SDK or isolated runner time budget changed."
+  },
+  "screenshots": [
+    "light-public-desktop.png",
+    "light-public-mobile.png",
+    "light-setup.png",
+    "light-docs-1440.png",
+    "light-react-1440.png"
+  ],
+  "npm": {
+    "status": "publication remains paused",
+    "published": false,
+    "checkedAt": "2026-10-21T00:29:00.493Z",
+    "latest": "0.2.0",
+    "candidatePublished": false
+  },
+  "limits": [
+    "Contrast checks sample foreground pairs; they are not a complete accessibility certification.",
+    "Automated desktop engines and viewport resizing are separate from physical-device Safari validation.",
+    "Product security policies, SDK/runtime logic, npm artifact and Codex settings were not changed."
+  ]
+}

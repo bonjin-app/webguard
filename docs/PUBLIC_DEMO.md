@@ -4,7 +4,17 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Project setup and compatibility diagnostics (current)
+## Light interface and clearer navigation (current)
+
+[Open the updated demo](https://webguard.uulab.co.kr/demo?ui=light-e459d5e). The demo, documentation and three protected examples now use light page backgrounds, white cards, dark text, mint accents, pale code areas and visible focus outlines. The first screen explains the three-step journey and offers direct links to live protection and the Vite setup generator. Mobile feature navigation scrolls within its own row, and Korean text avoids awkward word breaks. Native WebKit selects now render at the same measured 46px height as the other engines; disclosure markers remain visible.
+
+Current Worker version **`f24eed3c-98ed-4b44-91de-3e81716d2b75`**, deployment **`19d8eb18-025e-4c4c-8f79-e066f30a090a`**, serves 100% of traffic. Interface source: `8c05324`; native-select CSS follow-up: `e459d5e`. All **31** prepared public files matched the deployed SHA-256 values. Bindings/runtime readback matched the previous release. Security policy and SDK/runner logic were not changed. npm publication remains paused: latest 0.2.0; 0.3.0 unpublished.
+
+The initial light release passed all **176** public functional/HTTP checks with retries disabled. After the CSS-only native-select follow-up, the final version passed **39** scoped public UI checks across Chromium, Firefox and WebKit. Another **39** rendered layout/contrast observations covered the demo, docs and examples at relevant 360/390/768/1440 widths, without horizontal page overflow. Sampled foreground contrast stayed above 4.5:1; this sampling is not a complete accessibility certification. Build, root/Worker types, lint, formatting and dry run passed. No implementation-mirroring unit tests were added for this visual change.
+
+[Deployment, scope and observations](evidence/light-ui-deployment.json) · [Desktop](evidence/light-public-desktop.png) · [Mobile](evidence/light-public-mobile.png) · [Setup generator](evidence/light-setup.png) · [Documentation](evidence/light-docs-1440.png).
+
+## Project setup and compatibility diagnostics (historical)
 
 [Open the project setup generator](https://webguard.uulab.co.kr/demo#setup). Select a DOM API app, React, or the original vanilla Vite template, then choose shortcut and context-menu restrictions. The copied Vite configuration follows the selections and survives integration-tab changes. The choices edit the setup example; they do not silently change the main demo's live SDK or CSP. Installation shows a reviewed local tgz path because **0.3.0 remains unpublished; npm latest remains 0.2.0**.
 
