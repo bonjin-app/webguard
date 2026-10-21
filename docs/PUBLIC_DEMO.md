@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Actual demo source obfuscation (current)
+## Multi-environment SDK and build integration (current)
+
+[Open the integration choices](https://webguard.uulab.co.kr/demo?environments=ec2f66b#setup) · [Public environment guide](https://webguard.uulab.co.kr/docs/#environments). The SDK now provides a Vite-independent build API, generic `webguard protect-app` CLI and standalone classic browser script. The demo offers generic build and HTML SDK instructions alongside Vite. Korean installation/environment guides describe actual support, server-template recipes and SSR boundaries.
+
+Source **`ec2f66b`** is deployed as Worker **`fcb7d6c8-9032-4a74-9cc7-8225d6798c63`**, deployment **`0ede887d-e852-414b-a959-fde333be391c`**, serving 100% of traffic. All **36** public files matched prepared SHA-256 values; runtime settings and bindings are unchanged. The actual demo remains obfuscated with no public source maps. npm publication and the canonical prepared release artifact remain untouched.
+
+Fresh installed-package tests passed **12** generic cases across Chromium, Firefox and WebKit: real Webpack, esbuild, HTML/jQuery and manually initialized classic SDK. The generic consumer had no Vite installed and passed TypeScript declaration checking. Existing Vite consumers passed **15** host/engine/tamper combinations. Unit/integration checks passed **347/347**, related release guards **33/33**, local relevant browser checks **75/75**, and the final public full matrix **194/194** with no retries. Build, root/Worker types, lint, formatting and deployment dry run passed. Initial observer/inventory test corrections are retained in the receipt.
+
+Generic postprocessing retains toolchain filenames: deploy using release paths or revalidating cache policies when pre-protection contenthash names do not describe final bytes. Templates/servers and full Next/Nuxt/Angular SSR integration are not reported as verified runtime support.
+
+[Installed verification and scope](MULTI_ENVIRONMENT_VERIFICATION.ko.md) · [Complete deployment receipt](evidence/multienvironment-deployment.json) · [Public setup capture](evidence/multienvironment-public-setup.png).
+
+## Actual demo source obfuscation (preceding release)
 
 [Open the protected demo](https://webguard.uulab.co.kr/demo?protection=480dc2a#try-examples). The actual main application, its SDK bundle, transformation Worker and documentation app are protected at build time. Application code uses Strict/High; the large third-party transformation engine uses Standard to avoid excessive expansion. Production Worker plugins are configured separately from main application plugins. This protects delivered JavaScript, including the demo implementation itself; HTML/CSS and downloadable resources remain observable.
 

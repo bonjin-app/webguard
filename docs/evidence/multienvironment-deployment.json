@@ -1,0 +1,830 @@
+{
+  "checkedAt": "2026-10-21T02:27:43.297Z",
+  "sourceCommit": "ec2f66b58108a460439a38249e65c04b05fe6808",
+  "url": "https://webguard.uulab.co.kr/demo?environments=ec2f66b#setup",
+  "scope": {
+    "newExports": ["uulab-webguard/build", "uulab-webguard/browser.global.js"],
+    "cli": ["protect-app", "protect", "scan", "verify", "report", "headers"],
+    "vitePeer": "optional",
+    "automaticProtection": "External early SDK + Strict by default + final SRI/manifest + CSP/header files",
+    "templateRecipes": ["JSP", "PHP", "ASP.NET", "Nginx"],
+    "unsupportedClaims": [
+      "Native Next/Nuxt/Angular SSR adapters",
+      "Framework nonce/hydration/service-worker/signature automation",
+      "Executed PHP/ASP.NET/Nginx/Tomcat server proof",
+      "Physical browser proof"
+    ]
+  },
+  "package": {
+    "sourceCommit": "ec2f66b58108a460439a38249e65c04b05fe6808",
+    "integrity": "sha512-8x1mOBzBOQ2RC8DwW3hCPBSboeiry5X9Gv/gjxWB94MX0fHzwD7u6cXXsPpSrPfYRTudrDPgBVi1kbjcIE3Dew==",
+    "byteIdenticalToVerifiedArtifact": true,
+    "artifact": ".npm-release/multi-environment-final/uulab-webguard-0.3.0.tgz",
+    "canonicalReleaseUnchanged": true,
+    "published": false,
+    "sourceBaseDuringInitialConsumerRun": "6035d7b606a50ac2a8d830d59b297ee513e66805",
+    "initialRunUsedDirtyWorkingTree": true,
+    "note": "Post-commit package is byte-identical to the installed verified artifact. The initial verifier sourceCommit records the old base, not the feature implementation.",
+    "canonicalPreparedArtifactReplaced": false,
+    "loginOrPublishAttempted": false
+  },
+  "verification": {
+    "unitIntegration": {
+      "passed": 347,
+      "failed": 0,
+      "files": 28,
+      "log": ".npm-release/multienv-final-unit.log"
+    },
+    "relatedReleaseGuards": {
+      "passed": 33,
+      "failed": 0,
+      "log": ".npm-release/multienv-release-guards.log"
+    },
+    "localBrowser": {
+      "passed": 75,
+      "failed": 0,
+      "engines": ["Chromium", "Firefox", "WebKit"],
+      "log": ".npm-release/multienv-local-e2e.log"
+    },
+    "publicBrowser": {
+      "passed": 194,
+      "failed": 0,
+      "retries": 0,
+      "log": ".npm-release/multienv-public-e2e.log"
+    },
+    "installedGeneric": {
+      "status": "passed",
+      "checkedAt": "2026-10-21T02:15:50.286Z",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-generic-consumer-E95SJ6",
+      "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/multi-environment/uulab-webguard-0.3.0.tgz",
+      "integrity": "sha512-8x1mOBzBOQ2RC8DwW3hCPBSboeiry5X9Gv/gjxWB94MX0fHzwD7u6cXXsPpSrPfYRTudrDPgBVi1kbjcIE3Dew==",
+      "versions": {
+        "webpack": "5.112.0",
+        "esbuild": "0.28.2",
+        "jquery": "4.0.0"
+      },
+      "viteInstalled": false,
+      "builds": [
+        {
+          "name": "webpack",
+          "url": "http://127.0.0.1:61301",
+          "jsFiles": 3,
+          "transformed": true,
+          "manifestValid": true,
+          "inputPreserved": true,
+          "sourceMapsPublic": false
+        },
+        {
+          "name": "esbuild",
+          "url": "http://127.0.0.1:61310",
+          "jsFiles": 3,
+          "transformed": true,
+          "manifestValid": true,
+          "inputPreserved": true,
+          "sourceMapsPublic": false
+        },
+        {
+          "name": "plain-html",
+          "url": "http://127.0.0.1:61348",
+          "jsFiles": 3,
+          "transformed": true,
+          "manifestValid": true,
+          "inputPreserved": true,
+          "sourceMapsPublic": false
+        }
+      ],
+      "browserCases": [
+        {
+          "engine": "chromium",
+          "tool": "webpack",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "chromium",
+          "tool": "esbuild",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "chromium",
+          "tool": "plain-html",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": false,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "chromium",
+          "tool": "manual-classic-script",
+          "noAutomaticStartup": true,
+          "explicitInitialization": true,
+          "trustedShortcutBlocked": true
+        },
+        {
+          "engine": "firefox",
+          "tool": "webpack",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "firefox",
+          "tool": "esbuild",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "firefox",
+          "tool": "plain-html",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": false,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "firefox",
+          "tool": "manual-classic-script",
+          "noAutomaticStartup": true,
+          "explicitInitialization": true,
+          "trustedShortcutBlocked": true
+        },
+        {
+          "engine": "webkit",
+          "tool": "webpack",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "webkit",
+          "tool": "esbuild",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": true,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "webkit",
+          "tool": "plain-html",
+          "sdkBeforeApp": true,
+          "calculation": true,
+          "dynamicImport": false,
+          "defaultOff": true,
+          "trustedInputs": 5,
+          "contextRestriction": true,
+          "sriTamperRejected": true
+        },
+        {
+          "engine": "webkit",
+          "tool": "manual-classic-script",
+          "noAutomaticStartup": true,
+          "explicitInitialization": true,
+          "trustedShortcutBlocked": true
+        }
+      ],
+      "typesWithoutVite": true
+    },
+    "installedVite": {
+      "status": "passed",
+      "checkedAt": "2026-10-21T02:19:57.828Z",
+      "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-rVc7Fn",
+      "retained": true,
+      "source": "tarball",
+      "sourceCommit": "6035d7b606a50ac2a8d830d59b297ee513e66805",
+      "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/.npm-release/multi-environment/uulab-webguard-0.3.0.tgz",
+      "tarballIntegrity": "sha512-8x1mOBzBOQ2RC8DwW3hCPBSboeiry5X9Gv/gjxWB94MX0fHzwD7u6cXXsPpSrPfYRTudrDPgBVi1kbjcIE3Dew==",
+      "package": "uulab-webguard",
+      "version": "0.3.0",
+      "vite": "8.3.4",
+      "automaticSdk": true,
+      "liveControls": true,
+      "strictHeaders": true,
+      "deploymentCheck": true,
+      "publicServerApi": true,
+      "installedServerCli": true,
+      "protectedPreview": true,
+      "cspMeta": true,
+      "headerOptOut": true,
+      "reportOnlyMeta": true,
+      "browserErrors": 0,
+      "artifacts": {
+        "transformedChunks": 2,
+        "manifestFiles": 4,
+        "manifestVerified": true,
+        "sriResources": 1,
+        "publicSourceMaps": 0,
+        "literalEncoded": true,
+        "entry": "assets/index-EeP8sBcZ.js"
+      },
+      "browserMatrix": [
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "host": "unprotected-static",
+          "automaticBeforeApp": false,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "executed",
+          "eval": "executed",
+          "externalRequests": 1,
+          "trustedTypes": "supported",
+          "htmlSink": "accepted",
+          "trustedKeyboardAndContext": false,
+          "editableExemptions": false,
+          "runtimeIntegrity": false,
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "host": "strict-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "host": "opt-in-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "host": "protected-preview",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "chromium",
+          "version": "156.0.8078.4",
+          "host": "tampered-entry",
+          "sriRejected": true,
+          "automaticSdkRan": false
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "host": "unprotected-static",
+          "automaticBeforeApp": false,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "executed",
+          "eval": "executed",
+          "externalRequests": 1,
+          "trustedTypes": "supported",
+          "htmlSink": "accepted",
+          "trustedKeyboardAndContext": false,
+          "editableExemptions": false,
+          "runtimeIntegrity": false,
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "host": "strict-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "host": "opt-in-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "host": "protected-preview",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "firefox",
+          "version": "157.0",
+          "host": "tampered-entry",
+          "sriRejected": true,
+          "automaticSdkRan": false
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "host": "unprotected-static",
+          "automaticBeforeApp": false,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "executed",
+          "eval": "executed",
+          "externalRequests": 1,
+          "trustedTypes": "supported",
+          "htmlSink": "accepted",
+          "trustedKeyboardAndContext": false,
+          "editableExemptions": false,
+          "runtimeIntegrity": false,
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "host": "strict-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "host": "opt-in-meta-only",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "host": "protected-preview",
+          "automaticBeforeApp": true,
+          "counter": true,
+          "lazyModule": true,
+          "sameOriginFetch": true,
+          "inline": "blocked",
+          "eval": "blocked",
+          "externalRequests": 0,
+          "trustedTypes": "supported",
+          "htmlSink": "blocked",
+          "trustedKeyboardAndContext": true,
+          "editableExemptions": true,
+          "runtimeIntegrity": true,
+          "pageErrors": 0
+        },
+        {
+          "engine": "webkit",
+          "version": "27.2",
+          "host": "tampered-entry",
+          "sriRejected": true,
+          "automaticSdkRan": false
+        }
+      ]
+    },
+    "inAppBrowser": {
+      "observed": "Generic build selection reveals installed CLI and independent Node API instructions",
+      "screenshot": "docs/evidence/multienvironment-public-setup.png"
+    },
+    "build": "passed",
+    "rootAndWorkerTypes": "passed",
+    "lint": "passed",
+    "formatting": "passed",
+    "deploymentDryRun": "passed",
+    "independentSourceSecurityReview": "No actionable P1/P2 findings; read-only review"
+  },
+  "deployment": {
+    "id": "0ede887d-e852-414b-a959-fde333be391c",
+    "version": "fcb7d6c8-9032-4a74-9cc7-8225d6798c63",
+    "versions": [
+      {
+        "version_id": "fcb7d6c8-9032-4a74-9cc7-8225d6798c63",
+        "percentage": 100
+      }
+    ],
+    "runtimeUnchanged": true,
+    "bindingsUnchanged": true,
+    "readback": {
+      "checkedAt": "2026-10-21T02:23:00.523Z",
+      "total": 36,
+      "matched": 36,
+      "files": [
+        {
+          "file": "assets/index-BQOWM-au.css",
+          "path": "/assets/index-BQOWM-au.css",
+          "status": 200,
+          "bytes": 28789,
+          "sha256": "1552b5548d453882b5accb13d62caf173296000075cb6bc65dcee89acfc4d09b",
+          "match": true
+        },
+        {
+          "file": "assets/index-BlK742sF.js",
+          "path": "/assets/index-BlK742sF.js",
+          "status": 200,
+          "bytes": 553831,
+          "sha256": "36b13742cf615603957fdef5529fa4ec529b5468e5de8753db8072e041dd78fd",
+          "match": true
+        },
+        {
+          "file": "assets/index.browser-S0OhfW5I.js",
+          "path": "/assets/index.browser-S0OhfW5I.js",
+          "status": 200,
+          "bytes": 1761234,
+          "sha256": "e79902275e71359cc73e0266b12369b86be83715e55c8b45121237513392f0e5",
+          "match": true
+        },
+        {
+          "file": "assets/input-try-C8omM10O.webp",
+          "path": "/assets/input-try-C8omM10O.webp",
+          "status": 200,
+          "bytes": 57156,
+          "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+          "match": true
+        },
+        {
+          "file": "assets/sdk-cube-BfW27hof.webp",
+          "path": "/assets/sdk-cube-BfW27hof.webp",
+          "status": 200,
+          "bytes": 48932,
+          "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+          "match": true
+        },
+        {
+          "file": "assets/sky-background-BT0G8_Wo.webp",
+          "path": "/assets/sky-background-BT0G8_Wo.webp",
+          "status": 200,
+          "bytes": 11068,
+          "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+          "match": true
+        },
+        {
+          "file": "assets/transform.worker-BaKcbqQ8.js",
+          "path": "/assets/transform.worker-BaKcbqQ8.js",
+          "status": 200,
+          "bytes": 962553,
+          "sha256": "12a1a19e9e4dd04d459f69708241845000d810e70f7e4b32af9f14bcfd6005cb",
+          "match": true
+        },
+        {
+          "file": "assets/web-app-B46Mgxd8.webp",
+          "path": "/assets/web-app-B46Mgxd8.webp",
+          "status": 200,
+          "bytes": 96138,
+          "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+          "match": true
+        },
+        {
+          "file": "docs/ENVIRONMENTS.ko.txt",
+          "path": "/docs/ENVIRONMENTS.ko.txt",
+          "status": 200,
+          "bytes": 6956,
+          "sha256": "6511cd5b6a3f3eb7e88d3c4af8821e0fe9dedb0b5f68b37e1af3bc31733d475c",
+          "match": true
+        },
+        {
+          "file": "docs/INSTALL.ko.txt",
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "bytes": 22192,
+          "sha256": "6691e259eda0a5cb917d6738b63aa60667e2eb8a0c5aa4b22df4cd3f2054595b",
+          "match": true
+        },
+        {
+          "file": "docs/assets/index-C1UOBjT7.js",
+          "path": "/docs/assets/index-C1UOBjT7.js",
+          "status": 200,
+          "bytes": 74275,
+          "sha256": "f650e115e639da13f4db24863b4c35ea1f03b76a6c05af84f225d4b1d5941a2b",
+          "match": true
+        },
+        {
+          "file": "docs/assets/index-lg960Ytl.css",
+          "path": "/docs/assets/index-lg960Ytl.css",
+          "status": 200,
+          "bytes": 3553,
+          "sha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9",
+          "match": true
+        },
+        {
+          "file": "docs/index.html",
+          "path": "/docs/index.html",
+          "status": 200,
+          "bytes": 730,
+          "sha256": "2772636f95afbaed65b2c29e00087e681fd86b91f4359c1c54c2867b136222c6",
+          "match": true
+        },
+        {
+          "file": "docs/third-party-licenses.md",
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/index-65KBRBiT.css",
+          "path": "/examples/react/assets/index-65KBRBiT.css",
+          "status": 200,
+          "bytes": 1851,
+          "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/index-BDvGILbJ.js",
+          "path": "/examples/react/assets/index-BDvGILbJ.js",
+          "status": 200,
+          "bytes": 1803486,
+          "sha256": "df27c04bdf0da0c6c7708c2ba278f3ffa89a81121e9e9b637779f11a2790ac4a",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/lazy-DtcqkLtA.js",
+          "path": "/examples/react/assets/lazy-DtcqkLtA.js",
+          "status": 200,
+          "bytes": 3241,
+          "sha256": "05ef44c253eb15c212c50532947679777f1a2fc4effdb0a6c2e5b762fce1d495",
+          "match": true
+        },
+        {
+          "file": "examples/react/index.html",
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "bytes": 899,
+          "sha256": "aac3a0298a03901bef6189999d98552d43d5619c66453b4245491eba42d4c0b5",
+          "match": true
+        },
+        {
+          "file": "examples/react/third-party-licenses.md",
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "bytes": 3429,
+          "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "match": true
+        },
+        {
+          "file": "examples/react/webguard-manifest.json",
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "bytes": 818,
+          "sha256": "6a9b0a197dc20c5da5a1b38fd6a2e4c1542ff0efedc4c55abbe35753a46e3733",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/about/index.html",
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "bytes": 1676,
+          "sha256": "9b72142b567471979e6217f5f137b0b175e72ec94cdfb578f7d5cf8dde88c22f",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/about-C6c0f7g_.js",
+          "path": "/examples/vanilla-js/assets/about-C6c0f7g_.js",
+          "status": 200,
+          "bytes": 503,
+          "sha256": "90e36b5fb82c65ab4f8182353f4d187c862255fd34d136a7f0a777ba30796c47",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/index-Bnr7YIkE.js",
+          "path": "/examples/vanilla-js/assets/index-Bnr7YIkE.js",
+          "status": 200,
+          "bytes": 9567,
+          "sha256": "a37a53cf2511644fc882fa6521d6fa0d527037ab79d7195aed964e8dc684e7f2",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/lazy-B8Un0xYW.js",
+          "path": "/examples/vanilla-js/assets/lazy-B8Un0xYW.js",
+          "status": 200,
+          "bytes": 687,
+          "sha256": "27d54d2af569a82cfc5c571aa96261d097893747f59edc1cc3f9c57826e93325",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+          "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+          "status": 200,
+          "bytes": 1848,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/index.html",
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "5abf058981e6527244b4f9ac5aae801c4152804e357ac22a4a70c06000c4e635",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/webguard-manifest.json",
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "bytes": 961,
+          "sha256": "101814f5ebcbce64a42f4666aae9d6cc273d0cc8ec5b14e90ad20511d889d9f0",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+          "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+          "status": 200,
+          "bytes": 1848,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/index-RlN6443U.js",
+          "path": "/examples/vanilla-ts/assets/index-RlN6443U.js",
+          "status": 200,
+          "bytes": 10466,
+          "sha256": "5b1ff8f5ae449836124e070b417011fa09d5e29f6007467215c3043c17a227d9",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/lazy-CswdjZvS.js",
+          "path": "/examples/vanilla-ts/assets/lazy-CswdjZvS.js",
+          "status": 200,
+          "bytes": 1233,
+          "sha256": "88df098181bdaaa5470f7bcf03277a0e6a4da4e5bbc705b408fb87fde83a67f2",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/index.html",
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "49701a55c51b56bb765e1a8d389c22759ca83b39b9f201e73f3bfb34f2c531ae",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/webguard-manifest.json",
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "bytes": 664,
+          "sha256": "6c97c391cc9b59c5ed3283d5ea9518968ac71593ff47928615e75a6880e3f514",
+          "match": true
+        },
+        {
+          "file": "favicon.ico",
+          "path": "/favicon.ico",
+          "status": 200,
+          "bytes": 4286,
+          "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "match": true
+        },
+        {
+          "file": "favicon.svg",
+          "path": "/favicon.svg",
+          "status": 200,
+          "bytes": 301,
+          "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+          "match": true
+        },
+        {
+          "file": "index.html",
+          "path": "/demo",
+          "status": 200,
+          "bytes": 1004,
+          "sha256": "b7c2b94a6b6cce1bf14fd7a5aa590f34c15b71c158ebcd5add0c1dd4858b3ecc",
+          "match": true
+        },
+        {
+          "file": "third-party-licenses.md",
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        }
+      ]
+    }
+  },
+  "initialVerificationFailures": [
+    {
+      "kind": "new test observer",
+      "detail": "Compound shortcut observer captured Control/Meta modifier before KeyI. Filtered exact expected event.code; corrected run passed all twelve combinations.",
+      "log": ".npm-release/multi-environment/consumer-initial.log"
+    },
+    {
+      "kind": "stale expected package inventory",
+      "detail": "Previous Vite verification allowlist did not include new environment guide, entrypoints and shared declaration files; explicit expected files updated, installed checks passed.",
+      "log": ".npm-release/multi-environment/vite-initial.log"
+    }
+  ],
+  "limitations": [
+    "Generic postprocessing retains input filenames; pre-protection contenthash is not a final-byte hash. Use versioned deployment paths or revalidate/no-store and update external signatures/precache/SRI.",
+    "Generic Webpack/esbuild/jQuery samples explicitly use Trusted Types report-only for compatibility; this does not sanitize HTML or block those DOM sinks.",
+    "Automatic strict CSP rejects incompatible inline HTML rather than silently weakening policy.",
+    "Browser resources remain observable; input cancellation is not a DevTools lock."
+  ],
+  "npmPublication": "paused",
+  "codexConfigurationChanged": false
+}
