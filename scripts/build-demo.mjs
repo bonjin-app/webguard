@@ -49,7 +49,13 @@ export async function buildDemo() {
       });
     }
     // Reports describe the published demo, not the temporary staging paths.
-    for (const name of ["react", "vanilla-js", "vanilla-ts"]) {
+    for (const name of [
+      "playground",
+      "docs",
+      "react",
+      "vanilla-js",
+      "vanilla-ts",
+    ]) {
       const path = join(stage, name, "webguard-report.json");
       const report = JSON.parse(await readFile(path, "utf8"));
       report.output = join(output, name);

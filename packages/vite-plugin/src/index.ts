@@ -77,6 +77,9 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
     },
     configResolved(config) {
       vite = config;
+      // Vite generates workers in memory, then emits them as main-build assets.
+      // Their output options do not designate a directory for us to replace.
+      if (config.isWorker) return;
       if (config.build.lib || config.build.ssr || config.build.write === false)
         throw new Error(
           "WebGuard Vite plugin currently supports written browser application builds only",
@@ -102,6 +105,7 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
     outputOptions: {
       order: "post",
       handler(output) {
+        if (vite.isWorker) return null;
         const bundler = vite.build.rolldownOptions ?? vite.build.rollupOptions;
         validateOutputDirectory(
           output,
@@ -158,7 +162,7 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
       order: "post",
       sequential: true,
       async handler() {
-        if (!written) return;
+        if (vite.isWorker || !written) return;
         const output = resolve(vite.root, vite.build.outDir),
           id = randomUUID();
         const staged = join(dirname(output), `.webguard-output-${id}`),

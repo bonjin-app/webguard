@@ -9,6 +9,7 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "devDependencies": {
+    "@webguard/vite-plugin": "workspace:*",
     "vite": "8.3.4"
   }
 }
