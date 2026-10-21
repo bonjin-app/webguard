@@ -1,0 +1,23 @@
+[
+  {
+    "headerBottom": 72,
+    "scrollWidth": 360,
+    "tableOwnOverflow": true,
+    "unwrappedOverflow": [],
+    "width": 360
+  },
+  {
+    "headerBottom": 72,
+    "scrollWidth": 768,
+    "tableOwnOverflow": false,
+    "unwrappedOverflow": [],
+    "width": 768
+  },
+  {
+    "headerBottom": 80,
+    "scrollWidth": 1440,
+    "tableOwnOverflow": false,
+    "unwrappedOverflow": [],
+    "width": 1440
+  }
+]

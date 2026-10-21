@@ -4,7 +4,17 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Multi-environment SDK and build integration (current)
+## Blue developer guide (current)
+
+[Open the guide](https://webguard.uulab.co.kr/docs/?theme=blue-242422c). Documentation now matches the approved blue SDK demo: the same logo, blue/navy palette, typography, header, buttons and light surfaces. Korean navigation, headings and explanatory text use a consistent tone. Reading width and section spacing stay generous; mobile navigation scrolls within its own row, while long code and the policy table have their own overflow areas. Existing section fragments and integration links are preserved. The npm instructions still distinguish published 0.2.0 from unpublished 0.3.0.
+
+Source **`242422c`** is deployed as Worker **`ac5ce945-2b8f-4b20-9fda-488342f8da3c`**, deployment **`2c88cfbc-93fa-4755-8c9c-fb35de977a02`**, serving 100% of traffic. All **37** prepared public files matched deployed SHA-256 values. Runtime configuration and bindings are unchanged. SDK behavior, npm publication and Codex configuration are unchanged.
+
+Scoped existing browser regressions passed **9/9 locally** and **6/6 publicly** across Chromium, Firefox and WebKit, with no retries. The docs obfuscation integration check, production build, root/Worker types, scoped lint, formatting and dry run passed. Native in-app checks covered 360/390/768/1440px locally and 390/1440px publicly, including anchor navigation, the install disclosure and overflow behavior. These are browser viewport checks, not physical-device testing; the full SDK matrix was not rerun for this documentation-only change.
+
+[Deployment receipt](evidence/docs-theme-deployment.json) · [Desktop](evidence/docs-theme-public-desktop.png) · [Mobile](evidence/docs-theme-public-mobile.png).
+
+## Multi-environment SDK and build integration (preceding release)
 
 [Open the integration choices](https://webguard.uulab.co.kr/demo?environments=ec2f66b#setup) · [Public environment guide](https://webguard.uulab.co.kr/docs/#environments). The SDK now provides a Vite-independent build API, generic `webguard protect-app` CLI and standalone classic browser script. The demo offers generic build and HTML SDK instructions alongside Vite. Korean installation/environment guides describe actual support, server-template recipes and SSR boundaries.
 
