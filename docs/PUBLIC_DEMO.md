@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Mac inspect shortcut recognition (current)
+## Actual demo source obfuscation (current)
+
+[Open the protected demo](https://webguard.uulab.co.kr/demo?protection=480dc2a#try-examples). The actual main application, its SDK bundle, transformation Worker and documentation app are protected at build time. Application code uses Strict/High; the large third-party transformation engine uses Standard to avoid excessive expansion. Production Worker plugins are configured separately from main application plugins. This protects delivered JavaScript, including the demo implementation itself; HTML/CSS and downloadable resources remain observable.
+
+Source **`480dc2a`** is deployed as Worker **`f4f39797-f30c-45c3-866f-158568a0f5db`**, deployment **`ad5f6885-162e-4bb3-881b-5b84ec01565e`**, serving 100% of traffic. All **35** public files matched the prepared SHA-256 values. Runtime configuration and bindings match the preceding version. Public source maps and internal build reports remain unavailable. npm publication remains paused.
+
+Unit/integration checks passed **305/305**. The first local three-engine matrix passed **206/207**; one Chromium network policy probe timed out after a six-second gap in parent-page polling. The baseline HTTP request and protected CSP denial both occurred; the transformation Worker was never loaded in that scenario. Hidden-frame timer throttling versus process scheduling cannot be distinguished from that trace. The same case then passed **9/9** across three runs per engine, without changing application/test deadlines or adding retries. The failure remains recorded rather than described as a proven root-cause fix.
+
+The final public matrix passed **191/191** across Chromium, Firefox, WebKit and HTTP checks, with retries disabled. Native in-app verification loaded the new SRI-bearing main entry and completed a High transformation with matching output. Build, root/Worker types, lint, formatting and deployment dry run passed.
+
+[Korean protection scope and build explanation](DEMO_OBFUSCATION.ko.md) · [Deployment and full verification receipt](evidence/demo-obfuscation-deployment.json) · [Protected application's execution result](evidence/demo-obfuscated-public.png).
+
+## Mac inspect shortcut recognition (preceding release)
 
 [Open the corrected demo](https://webguard.uulab.co.kr/demo?fix=mac-c6ff863#live-demo). Enable **단축키 제한**, click the ordinary test area, and try `Cmd+Option+I/J/C`, `Ctrl+Shift+I/J/C` or F12. The SDK now also matches physical `KeyI/J/C` when Option or a keyboard layout changes the reported character to `Dead` or a special character. The optional synthetic Mac button exercises that exact character/code mismatch and explicitly does not claim that a DevTools window stayed closed.
 

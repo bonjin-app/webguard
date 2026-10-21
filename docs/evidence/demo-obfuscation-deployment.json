@@ -1,0 +1,368 @@
+{
+  "checkedAt": "2026-10-21T01:59:12.799Z",
+  "sourceCommit": "480dc2aedf0aa8ccbcccb7805fa596a10096f34f",
+  "url": "https://webguard.uulab.co.kr/demo?protection=480dc2a#try-examples",
+  "rootCause": "Main app was already Strict, but production worker.plugins and docs protection were absent. Vite worker builds have a separate plugin pipeline.",
+  "policy": {
+    "mainApplication": "Strict / High",
+    "transformationWorker": "Strict / High",
+    "thirdPartyTransformationEngine": "Standard",
+    "documentationApplication": "Strict / High",
+    "publicSourceMaps": false
+  },
+  "measurements": {
+    "highTrialVendorBytes": 18272824,
+    "finalVendorBytes": 1760378,
+    "finalWorkerBytes": 952276,
+    "finalMainBytes": 545783,
+    "finalDocsBytes": 66183,
+    "note": "Transfer sizes, not runtime benchmark scores. External vendor uses Standard to avoid High expansion."
+  },
+  "verification": {
+    "unitIntegration": {
+      "passed": 305,
+      "failed": 0,
+      "files": 26,
+      "log": ".npm-release/obfuscation-all-tests.log"
+    },
+    "localInitial": {
+      "passed": 206,
+      "failed": 1,
+      "total": 207,
+      "log": ".npm-release/obfuscation-local-e2e.log",
+      "failure": "Chromium lab.spec.ts:141 protected network probe timed out. Baseline HTTP200 completed in 4.861ms and protected CSP denial occurred. Parent polling paused for 6.015 seconds; no transform worker was loaded. Hidden-frame timer throttling versus process scheduling remains unproven."
+    },
+    "localFocusedRepeat": {
+      "passed": 9,
+      "failed": 0,
+      "runsPerEngine": 3,
+      "workers": 1,
+      "log": ".npm-release/obfuscation-network-repeat.log",
+      "deadlinesChanged": false
+    },
+    "public": {
+      "passed": 191,
+      "failed": 0,
+      "retries": 0,
+      "engines": ["Chromium", "Firefox", "WebKit"],
+      "log": ".npm-release/obfuscation-public-e2e.log"
+    },
+    "inAppBrowser": {
+      "loadedEntry": "/assets/index-185e-ZFG.js",
+      "sri": "sha384-2Go/xjOvlzGHy4bFEfOKJKRvShplwspIuMYMwnGJ8sKTM2Lem05xCOa5xfe5yR12",
+      "highExample": "Outputs match",
+      "screenshot": "docs/evidence/demo-obfuscated-public.png"
+    },
+    "build": "passed",
+    "types": "passed",
+    "lint": "passed",
+    "formatting": "passed",
+    "deploymentDryRun": "passed"
+  },
+  "deployment": {
+    "id": "ad5f6885-162e-4bb3-881b-5b84ec01565e",
+    "version": "f4f39797-f30c-45c3-866f-158568a0f5db",
+    "versions": [
+      {
+        "version_id": "f4f39797-f30c-45c3-866f-158568a0f5db",
+        "percentage": 100
+      }
+    ],
+    "runtimeUnchanged": true,
+    "bindingsUnchanged": true,
+    "readback": {
+      "checkedAt": "2026-10-21T01:54:42.899Z",
+      "total": 35,
+      "matched": 35,
+      "files": [
+        {
+          "file": "assets/index-185e-ZFG.js",
+          "path": "/assets/index-185e-ZFG.js",
+          "status": 200,
+          "bytes": 545783,
+          "sha256": "63431b11b4fc67c905926fdcee0ce1e20bb8aa7d9d11ef7ca6fc1f2dba396c0e",
+          "match": true
+        },
+        {
+          "file": "assets/index-BQOWM-au.css",
+          "path": "/assets/index-BQOWM-au.css",
+          "status": 200,
+          "bytes": 28789,
+          "sha256": "1552b5548d453882b5accb13d62caf173296000075cb6bc65dcee89acfc4d09b",
+          "match": true
+        },
+        {
+          "file": "assets/index.browser-Bd7U5hUo.js",
+          "path": "/assets/index.browser-Bd7U5hUo.js",
+          "status": 200,
+          "bytes": 1760378,
+          "sha256": "82ffb3aacac4d59f30f0913a63c354ca2c05461d1d370d546bc82dd4198f2763",
+          "match": true
+        },
+        {
+          "file": "assets/input-try-C8omM10O.webp",
+          "path": "/assets/input-try-C8omM10O.webp",
+          "status": 200,
+          "bytes": 57156,
+          "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+          "match": true
+        },
+        {
+          "file": "assets/sdk-cube-BfW27hof.webp",
+          "path": "/assets/sdk-cube-BfW27hof.webp",
+          "status": 200,
+          "bytes": 48932,
+          "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+          "match": true
+        },
+        {
+          "file": "assets/sky-background-BT0G8_Wo.webp",
+          "path": "/assets/sky-background-BT0G8_Wo.webp",
+          "status": 200,
+          "bytes": 11068,
+          "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+          "match": true
+        },
+        {
+          "file": "assets/transform.worker-ZlwFvKuK.js",
+          "path": "/assets/transform.worker-ZlwFvKuK.js",
+          "status": 200,
+          "bytes": 952276,
+          "sha256": "4042a1a8c098b4ea12852d60b09f718157073cb73ebfd6305f09003086588c12",
+          "match": true
+        },
+        {
+          "file": "assets/web-app-B46Mgxd8.webp",
+          "path": "/assets/web-app-B46Mgxd8.webp",
+          "status": 200,
+          "bytes": 96138,
+          "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+          "match": true
+        },
+        {
+          "file": "docs/INSTALL.ko.txt",
+          "path": "/docs/INSTALL.ko.txt",
+          "status": 200,
+          "bytes": 19628,
+          "sha256": "db62e842317c0c145ad602ca8197bfcbbe742ae9f9703b64f55b018a93f514d3",
+          "match": true
+        },
+        {
+          "file": "docs/assets/index-BOC61iWU.js",
+          "path": "/docs/assets/index-BOC61iWU.js",
+          "status": 200,
+          "bytes": 66183,
+          "sha256": "3e4e92f904f41becde2b1124ca02428668e39c58abf7ff3fb100ecb8c5eca28a",
+          "match": true
+        },
+        {
+          "file": "docs/assets/index-lg960Ytl.css",
+          "path": "/docs/assets/index-lg960Ytl.css",
+          "status": 200,
+          "bytes": 3553,
+          "sha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9",
+          "match": true
+        },
+        {
+          "file": "docs/index.html",
+          "path": "/docs/index.html",
+          "status": 200,
+          "bytes": 730,
+          "sha256": "b99d9afa47193b5629b875f6ff681a40d45e0f6896bb2cc79d169e8569a464d3",
+          "match": true
+        },
+        {
+          "file": "docs/third-party-licenses.md",
+          "path": "/docs/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/index-65KBRBiT.css",
+          "path": "/examples/react/assets/index-65KBRBiT.css",
+          "status": 200,
+          "bytes": 1851,
+          "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/index-BMQgvK5B.js",
+          "path": "/examples/react/assets/index-BMQgvK5B.js",
+          "status": 200,
+          "bytes": 1818186,
+          "sha256": "00a56501b45b03b668803c9c2d7d907332cabc7861b645068b304be03cd80bd3",
+          "match": true
+        },
+        {
+          "file": "examples/react/assets/lazy-BOrjUqFf.js",
+          "path": "/examples/react/assets/lazy-BOrjUqFf.js",
+          "status": 200,
+          "bytes": 3005,
+          "sha256": "0788376a803ca0f6061816211ffce433e76441b6f4a4a21241ff7331dfb84277",
+          "match": true
+        },
+        {
+          "file": "examples/react/index.html",
+          "path": "/examples/react/index.html",
+          "status": 200,
+          "bytes": 899,
+          "sha256": "e2f5ac98ae2e65a3f5c2d5975811f4dacdb9367ca0ee9ef5a21ae8f5b1e73edb",
+          "match": true
+        },
+        {
+          "file": "examples/react/third-party-licenses.md",
+          "path": "/examples/react/third-party-licenses.md",
+          "status": 200,
+          "bytes": 3429,
+          "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+          "match": true
+        },
+        {
+          "file": "examples/react/webguard-manifest.json",
+          "path": "/examples/react/webguard-manifest.json",
+          "status": 200,
+          "bytes": 818,
+          "sha256": "647173fc323833dae6afba7a70b91d5da10ff63a01f449a16a8fa496ff805de1",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/about/index.html",
+          "path": "/examples/vanilla-js/about/index.html",
+          "status": 200,
+          "bytes": 1676,
+          "sha256": "dc22435a549227ad434d090adf3a2e05aacab3f5ebcfa89ddcb9fcc960821c55",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/about-2jmMrdQ0.js",
+          "path": "/examples/vanilla-js/assets/about-2jmMrdQ0.js",
+          "status": 200,
+          "bytes": 535,
+          "sha256": "7698360a7b7a1e5b3fea4def4d479caf7385e5a47a0ea592a1442ed5bc7eef52",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/index-DUOoKfky.js",
+          "path": "/examples/vanilla-js/assets/index-DUOoKfky.js",
+          "status": 200,
+          "bytes": 9515,
+          "sha256": "013d7be426bd643359d42718397027ce7d078cf82a5753a34097fb63c050e6ec",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/lazy-5l1KyTq7.js",
+          "path": "/examples/vanilla-js/assets/lazy-5l1KyTq7.js",
+          "status": 200,
+          "bytes": 679,
+          "sha256": "60e75e39bdb95112e4dac550f1a48d83465be39ce4a6f23ce6bdfbe70a2dedd5",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+          "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+          "status": 200,
+          "bytes": 1848,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/index.html",
+          "path": "/examples/vanilla-js/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "169ce5ee7bf66354741470e3df7a66e34da19b52f547ed1e71560e5d20fd592f",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-js/webguard-manifest.json",
+          "path": "/examples/vanilla-js/webguard-manifest.json",
+          "status": 200,
+          "bytes": 961,
+          "sha256": "6ae1ff5e9999a746aaa30030a62b4f9b8144c6263fddf718f39c8b3440f992a5",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+          "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+          "status": 200,
+          "bytes": 1848,
+          "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/index-C0yBrrQ2.js",
+          "path": "/examples/vanilla-ts/assets/index-C0yBrrQ2.js",
+          "status": 200,
+          "bytes": 10500,
+          "sha256": "75eb5ca9f90e8465ae2ae2ef88c22f6811b17eb0245bc7abc5582785288b9880",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/assets/lazy-BFKnkNql.js",
+          "path": "/examples/vanilla-ts/assets/lazy-BFKnkNql.js",
+          "status": 200,
+          "bytes": 1224,
+          "sha256": "69274d53b53f09384b3f8fd54f2beb020de69b4c2053fb893b6e71eea64f22b5",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/index.html",
+          "path": "/examples/vanilla-ts/index.html",
+          "status": 200,
+          "bytes": 2661,
+          "sha256": "c15b4b076dce81c9beb9c152b78cbeba2285d8f072ba2ed8e645665fb2037835",
+          "match": true
+        },
+        {
+          "file": "examples/vanilla-ts/webguard-manifest.json",
+          "path": "/examples/vanilla-ts/webguard-manifest.json",
+          "status": 200,
+          "bytes": 664,
+          "sha256": "93478808db0fcba5d6b82683d0d5f3fe3b894d002e102deb70e6c31c2d8c771a",
+          "match": true
+        },
+        {
+          "file": "favicon.ico",
+          "path": "/favicon.ico",
+          "status": 200,
+          "bytes": 4286,
+          "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+          "match": true
+        },
+        {
+          "file": "favicon.svg",
+          "path": "/favicon.svg",
+          "status": 200,
+          "bytes": 301,
+          "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+          "match": true
+        },
+        {
+          "file": "index.html",
+          "path": "/demo",
+          "status": 200,
+          "bytes": 1004,
+          "sha256": "40c527913fefd3674e1d3765904397f97ad0811f803857f795b84fde3cf82315",
+          "match": true
+        },
+        {
+          "file": "third-party-licenses.md",
+          "path": "/third-party-licenses.md",
+          "status": 200,
+          "bytes": 68,
+          "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+          "match": true
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "JavaScript delivery/download and HTML/CSS remain visible. Obfuscation raises analysis cost; it does not replace server authorization.",
+    "Main chunkTransforms excludes separate Worker build metrics. Worker execution is verified by real emitted ESM integration tests and browser scenarios.",
+    "The isolated local timeout was not reproduced in nine focused repeats or the complete public matrix; exact scheduling cause is unresolved."
+  ],
+  "npmPublication": "paused; no publish/login/authentication or tarball replacement was performed",
+  "codexConfigurationChanged": false
+}
