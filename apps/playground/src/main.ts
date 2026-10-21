@@ -4,6 +4,10 @@ import { examples, integrations } from "./examples";
 import "./style.css";
 import "./sky.css";
 import { initDemoNavigation } from "./navigation";
+import {
+  protectionOverviewMarkup,
+  initProtectionOverview,
+} from "./protection-overview";
 import { labMarkup, initLab } from "./lab";
 import { resourceMarkup, initResources } from "./resource-demo";
 import { policyMarkup, initPolicyDemo } from "./policy-demo";
@@ -31,6 +35,7 @@ import { webguardApp } from 'uulab-webguard';
 export default defineConfig({
   plugins: [webguardApp()],
 });</code></pre></div><p class="flow-caption">패키지 설치 · Vite 설정 · 빌드</p></div><div class="flow-art"><img src="${webArt}" alt="보호 설정을 적용한 웹 앱" width="220" height="180"><strong>내 웹 앱</strong><p class="flow-caption">보호한 빌드 결과로 배포</p></div></div></div></section>
+${protectionOverviewMarkup}
 <section id="sdk-demo" class="demo-hub" aria-labelledby="demo-heading"><div class="demo-heading"><div class="eyebrow">INTERACTIVE DEMO</div><h2 id="demo-heading">가드를 켜고, 직접 확인하세요.</h2><p>내 앱에 연결할 SDK의 동작을 먼저 체험해 보세요.</p></div><div class="demo-tabs" role="tablist" aria-label="SDK 체험 선택"><button id="tab-runtime" role="tab" data-demo-tab="runtime" aria-controls="runtime-view" aria-selected="true">브라우저 가드</button><button id="tab-obfuscation" role="tab" data-demo-tab="obfuscation" aria-controls="obfuscation-view" aria-selected="false" tabindex="-1">코드 난독화</button><button id="tab-integrity" role="tab" data-demo-tab="integrity" aria-controls="integrity-view" aria-selected="false" tabindex="-1">파일 검사</button><button id="tab-advanced" role="tab" data-demo-tab="advanced" aria-controls="advanced-view" aria-selected="false" tabindex="-1">고급 검사</button></div>
 <div id="runtime-view" class="demo-view" role="tabpanel" aria-labelledby="tab-runtime" tabindex="0">${runtimeMarkup}</div>
 <div id="integrity-view" class="demo-view" role="tabpanel" aria-labelledby="tab-integrity" tabindex="0" hidden>${sdkIntegrityMarkup}</div>
@@ -307,6 +312,7 @@ initLab();
 const cleanupResources = initResources();
 const cleanupPolicy = initPolicyDemo();
 const cleanupCompat = initCompatDemo();
+const cleanupOverview = initProtectionOverview();
 element("runtime-tour").addEventListener("click", () => {
   if (
     protect.disabled ||
@@ -345,5 +351,6 @@ window.addEventListener("pagehide", (event) => {
   cleanupResources();
   cleanupPolicy();
   cleanupCompat();
+  cleanupOverview();
   guard.destroy();
 });

@@ -13,6 +13,7 @@ const fixturePath = "/assets/resource-fixture.js";
 async function fixture(page: Page) {
   const source = await readFile("apps/playground/src/resource-demo.ts", "utf8");
   const code =
+    '/* <img data-preview-trap src=x onerror="alert(1)"> */\n' +
     ts.transpileModule(source, {
       compilerOptions: {
         target: ts.ScriptTarget.ES2022,
@@ -39,8 +40,36 @@ async function fixture(page: Page) {
   });
   await page.goto("/resources-fixture.html");
   await expect(page.locator("#resource-audit")).toBeVisible();
-  return integrity;
+  return { integrity, code };
 }
+test("previews verified downloaded bytes as inert text and removes stale code after a mismatch", async ({
+  page,
+}) => {
+  const { code } = await fixture(page);
+  await page.locator("#resource-audit").click();
+  await expect(page.locator("#resource-summary")).toHaveAttribute(
+    "data-result",
+    "pass",
+  );
+  const preview = page.locator("#resource-code");
+  await expect(preview).toHaveAttribute("data-result", "pass");
+  await expect(preview).toHaveText(code.slice(0, 900));
+  await expect(page.locator("[data-preview-trap]")).toHaveCount(0);
+  await page.route("**/assets/resource-fixture.js", (route) =>
+    route.fulfill({
+      contentType: "application/javascript",
+      body: "/* changed response */",
+    }),
+  );
+  await page.locator("#resource-audit").click();
+  await expect(page.locator("#resource-summary")).toHaveAttribute(
+    "data-result",
+    "fail",
+  );
+  await expect(preview).toHaveAttribute("data-result", "fail");
+  await expect(preview).not.toContainText("data-preview-trap");
+  await expect(preview).not.toContainText("changed response");
+});
 test("audits actual deployed source URLs and matches the document entry SRI against fetched bytes", async ({
   page,
   browserName,

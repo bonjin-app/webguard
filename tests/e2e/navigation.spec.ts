@@ -2,6 +2,42 @@ import { expect, test } from "@playwright/test";
 
 const tabs = ["브라우저 가드", "코드 난독화", "파일 검사", "고급 검사"];
 
+test("opens public code inspection and real security comparisons directly from the protection overview", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("link", { name: "이 데모 코드 검사", exact: true })
+    .click();
+  await expect(
+    page.getByRole("tab", { name: "고급 검사", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#resource-summary")).toHaveAttribute(
+    "data-result",
+    "pass",
+  );
+  const entry = await page
+    .locator('script[type="module"][src]')
+    .first()
+    .getAttribute("src");
+  const response = await page.request.get(new URL(entry!, page.url()).href);
+  expect(response.ok()).toBe(true);
+  await expect(page.locator("#resource-code")).toHaveText(
+    (await response.text()).slice(0, 900),
+  );
+  await page.goto("/#deployment-proof");
+  await page
+    .getByRole("link", { name: "삽입·변조 비교 실행", exact: true })
+    .click();
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료");
+  await expect(page.locator("#lab-policy-result")).toContainText(
+    "보호 적용: 차단 확인",
+  );
+  await expect(page.locator("#lab-api-result")).toContainText(
+    "변조 요청: HTTP 409",
+  );
+});
+
 test("starts with a quiet browser guard surface and preserves choices across keyboard navigation", async ({
   page,
 }) => {
