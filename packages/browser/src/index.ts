@@ -1,3 +1,4 @@
+import { createPageBlocker } from "./blocker";
 import type { ThreatEvent } from "@webguard/shared";
 export type { ThreatEvent } from "@webguard/shared";
 export interface WebGuardOptions {
@@ -6,7 +7,9 @@ export interface WebGuardOptions {
     detect?: boolean;
     blockShortcuts?: boolean;
     blockContextMenu?: boolean;
-    response?: "monitor" | "warn";
+    response?: "monitor" | "warn" | "block";
+    /** Whole-page inspect interception is opt-in; IME composition remains exempt. */
+    shortcutScope?: "non-editable" | "page";
     threshold?: number;
   };
   integrity?: { enabled?: boolean };
@@ -58,7 +61,14 @@ function validatedOptions(value: unknown): WebGuardOptions {
   if (input.devtools !== undefined) {
     const devtools = dataObject(
       input.devtools,
-      ["detect", "blockShortcuts", "blockContextMenu", "response", "threshold"],
+      [
+        "detect",
+        "blockShortcuts",
+        "blockContextMenu",
+        "response",
+        "shortcutScope",
+        "threshold",
+      ],
       "devtools",
     );
     for (const key of ["detect", "blockShortcuts", "blockContextMenu"]) {
@@ -68,9 +78,16 @@ function validatedOptions(value: unknown): WebGuardOptions {
     if (
       devtools.response !== undefined &&
       devtools.response !== "monitor" &&
-      devtools.response !== "warn"
+      devtools.response !== "warn" &&
+      devtools.response !== "block"
     )
       throw new TypeError("Invalid devtools response");
+    if (
+      devtools.shortcutScope !== undefined &&
+      devtools.shortcutScope !== "non-editable" &&
+      devtools.shortcutScope !== "page"
+    )
+      throw new TypeError("Invalid devtools shortcut scope");
     if (
       devtools.threshold !== undefined &&
       (typeof devtools.threshold !== "number" ||
@@ -160,43 +177,178 @@ function createGuard(
       }
     }
   };
+  let policyRevision = 0;
+  let blocked = false;
+  let blockedReason: "shortcut" | "geometry" | undefined;
+  let unavailableReported = false;
+  let pendingReason: "shortcut" | "geometry" | undefined;
+  let removeReady: (() => void) | undefined;
+  const blocker = browserDocument
+    ? createPageBlocker(browserDocument, () => measure(true))
+    : undefined;
+  function clearBlock(notify = true) {
+    const revision = policyRevision;
+    const wasBlocked = blocked;
+    blocked = false;
+    blockedReason = undefined;
+    pendingReason = undefined;
+    removeReady?.();
+    removeReady = undefined;
+    unavailableReported = false;
+    blocker?.clear();
+    if (wasBlocked && notify && !destroyed && revision === policyRevision)
+      emit("page-unblocked");
+  }
+  function sizeSignal() {
+    const threshold = options.devtools?.threshold ?? 160;
+    return Boolean(
+      browserWindow &&
+      (browserWindow.outerWidth - browserWindow.innerWidth > threshold ||
+        browserWindow.outerHeight - browserWindow.innerHeight > threshold),
+    );
+  }
+  function blockPage(reason: "shortcut" | "geometry") {
+    if (
+      destroyed ||
+      options.devtools?.response !== "block" ||
+      !browserDocument ||
+      !blocker
+    )
+      return;
+    if (!browserDocument.body) {
+      pendingReason = reason;
+      if (!removeReady) {
+        const ready = () => {
+          const pending = pendingReason;
+          pendingReason = undefined;
+          removeReady?.();
+          removeReady = undefined;
+          if (pending === "geometry" && !sizeSignal()) return;
+          if (pending) blockPage(pending);
+        };
+        browserDocument.addEventListener("DOMContentLoaded", ready);
+        removeReady = () =>
+          browserDocument.removeEventListener("DOMContentLoaded", ready);
+      }
+      return;
+    }
+    const revision = policyRevision;
+    const result = blocker.show(reason);
+    if (destroyed) return;
+    if (revision !== policyRevision) {
+      // A focus handler may have changed an unrelated option while the modal opened.
+      if (
+        result !== "unavailable" &&
+        options.devtools?.response === "block" &&
+        (reason === "geometry"
+          ? options.devtools.detect
+          : options.devtools.blockShortcuts)
+      )
+        blockPage(reason);
+      return;
+    }
+    if (result === "shown" || (result === "existing" && !blocked)) {
+      blocked = true;
+      blockedReason = reason;
+      unavailableReported = false;
+      emit(
+        "page-blocked",
+        reason === "shortcut"
+          ? "Inspection shortcut observed; background page interaction is restricted."
+          : "Window-size heuristic; background page interaction is restricted. False positives are possible.",
+      );
+    } else if (result === "unavailable" && !unavailableReported) {
+      blocked = false;
+      unavailableReported = true;
+      emit(
+        "page-block-unavailable",
+        "The native modal could not be opened; page interaction is not restricted.",
+      );
+    }
+  }
+  function measure(recheck = false, initial = false) {
+    if (destroyed) return;
+    const revision = policyRevision;
+    const next = options.devtools?.detect === true && sizeSignal();
+    const entering = next && !detected;
+    detected = next;
+    if (entering)
+      emit(
+        "devtools-heuristic",
+        "Window dimensions suggest a docked panel; this signal can be inaccurate.",
+      );
+    if (destroyed || revision !== policyRevision) return;
+    if (options.devtools?.response === "block") {
+      if (next) blockPage("geometry");
+      else if (
+        initial
+          ? blockedReason === "geometry" || pendingReason === "geometry"
+          : recheck || blocked || pendingReason
+      )
+        clearBlock();
+    }
+  }
   function installListeners() {
     if (browserWindow && browserDocument) {
       function listen(
         target: EventTarget,
         type: string,
         callback: EventListener,
+        capture = false,
       ) {
-        target.addEventListener(type, callback);
-        remove.push(() => target.removeEventListener(type, callback));
+        target.addEventListener(type, callback, capture);
+        remove.push(() => target.removeEventListener(type, callback, capture));
       }
       if (options.devtools?.blockShortcuts === true)
-        listen(browserDocument, "keydown", (raw) => {
-          const event = raw as KeyboardEvent;
-          if (destroyed || editableEvent(event) || event.isComposing) return;
-          const key = event.key.toLowerCase();
-          // Option/layout transformations can report "Dead", "ˆ", "∆" or "ç".
-          // Match the physical inspect key as well as the unmodified character.
-          const inspectKey = ["i", "j", "c"].includes(key)
-            ? key
-            : ["KeyI", "KeyJ", "KeyC"].includes(event.code)
-              ? event.code.slice(3).toLowerCase()
-              : undefined;
-          const shortcut =
-            key === "f12" ||
-            (Boolean(inspectKey) &&
-              ((event.ctrlKey &&
-                event.shiftKey &&
-                !event.altKey &&
-                !event.metaKey) ||
-                (event.metaKey &&
-                  event.altKey &&
-                  !event.ctrlKey &&
-                  !event.shiftKey)));
-          if (!shortcut) return;
-          event.preventDefault();
-          if (!event.repeat) emit("shortcut-blocked", inspectKey ?? key);
-        });
+        listen(
+          browserWindow,
+          "keydown",
+          (raw) => {
+            const event = raw as KeyboardEvent;
+            if (
+              destroyed ||
+              event.isComposing ||
+              (options.devtools?.shortcutScope !== "page" &&
+                editableEvent(event))
+            )
+              return;
+            const key = event.key.toLowerCase();
+            // Option/layout transformations can report "Dead", "ˆ", "∆" or "ç".
+            const inspectKey = ["i", "j", "c"].includes(key)
+              ? key
+              : ["KeyI", "KeyJ", "KeyC"].includes(event.code)
+                ? event.code.slice(3).toLowerCase()
+                : undefined;
+            const shortcut =
+              key === "f12" ||
+              (Boolean(inspectKey) &&
+                ((event.ctrlKey &&
+                  event.shiftKey &&
+                  !event.altKey &&
+                  !event.metaKey) ||
+                  (event.metaKey &&
+                    event.altKey &&
+                    !event.ctrlKey &&
+                    !event.shiftKey)));
+            if (!shortcut) return;
+            const revision = policyRevision;
+            event.preventDefault();
+            if (!event.repeat)
+              emit(
+                event.defaultPrevented
+                  ? "shortcut-blocked"
+                  : "shortcut-unavailable",
+                inspectKey ?? key,
+              );
+            if (
+              !destroyed &&
+              revision === policyRevision &&
+              options.devtools?.response === "block"
+            )
+              blockPage("shortcut");
+          },
+          true,
+        );
       if (options.devtools?.blockContextMenu === true)
         listen(browserDocument, "contextmenu", (event) => {
           if (destroyed || editableEvent(event)) return;
@@ -204,27 +356,15 @@ function createGuard(
           emit("context-menu-blocked");
         });
       if (options.devtools?.detect === true) {
-        const threshold =
-          Number.isFinite(options.devtools.threshold) &&
-          (options.devtools.threshold ?? 0) > 0
-            ? options.devtools.threshold!
-            : 160;
-        const measure = () => {
-          if (destroyed) return;
-          const next =
-            browserWindow.outerWidth - browserWindow.innerWidth > threshold ||
-            browserWindow.outerHeight - browserWindow.innerHeight > threshold;
-          const entering = next && !detected;
-          detected = next;
-          if (entering)
-            emit(
-              "devtools-heuristic",
-              "Window dimensions suggest a docked panel; this signal can be inaccurate.",
-            );
-        };
-        listen(browserWindow, "resize", measure);
-        listen(browserWindow, "orientationchange", measure);
+        listen(browserWindow, "resize", () => measure());
+        listen(browserWindow, "orientationchange", () => measure());
       }
+      // Preserve advisory mode's event-only behavior. Block mode also checks already docked panels.
+      if (
+        options.devtools?.response === "block" &&
+        options.devtools.detect === true
+      )
+        measure(false, true);
     }
   }
   installListeners();
@@ -249,9 +389,27 @@ function createGuard(
         next.devtools?.threshold !== options.devtools?.threshold
       )
         detected = false;
+      const revision = ++policyRevision;
       options = next;
       if (options.integrity?.enabled !== true) abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
+      if (
+        (pendingReason === "geometry" && options.devtools?.detect !== true) ||
+        (pendingReason === "shortcut" &&
+          options.devtools?.blockShortcuts !== true)
+      ) {
+        pendingReason = undefined;
+        removeReady?.();
+        removeReady = undefined;
+      }
+      if (
+        options.devtools?.response !== "block" ||
+        (blockedReason === "geometry" && options.devtools.detect !== true) ||
+        (blockedReason === "shortcut" &&
+          options.devtools.blockShortcuts !== true)
+      )
+        clearBlock();
+      if (destroyed || revision !== policyRevision) return;
       installListeners();
     },
     getOptions() {
@@ -260,6 +418,7 @@ function createGuard(
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      clearBlock(false);
       abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
       onDestroy?.();

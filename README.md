@@ -212,6 +212,21 @@ guard.destroy(); // removes listeners; safe to call repeatedly
 
 Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `@webguard/vite-plugin/client`.
 
+The unpublished candidate also supports an optional page interaction block:
+
+```ts
+guard.update({
+  devtools: {
+    detect: true,
+    blockShortcuts: true,
+    shortcutScope: "page",
+    response: "block",
+  },
+});
+```
+
+This uses a native modal after an observed inspection shortcut or a docked-window size hint. Page scope includes editors while preserving ordinary typing, copy/paste and IME composition. The modal asks visitors to close DevTools and recheck; it cannot close DevTools, conceal the DOM, stop background execution or enforce authorization. Window sizing can produce false positives and miss undocked tools. Unsupported/failed modals emit `page-block-unavailable`, never `page-blocked`. Turning off the response or destroying the guard removes its UI. See the [Korean options guide](docs/INSTALL.ko.md) and [interactive demo](https://webguard.uulab.co.kr/demo#live-demo). npm publication remains paused.
+
 All intrusive controls are opt-in, including Strict. Detection is event-driven; there is no continuous polling, debugger loop, forced navigation or remote collection. Hints are advisory and not proof that developer tools are open. The public standalone IIFE is `uulab-webguard/browser.global.js`, global `WebGuardSDK.WebGuard`; loading it does not initialize a guard. Call `WebGuardSDK.WebGuard.init()` from an external initialization file. The generic wrapper emits `assets/webguard-runtime.js` and initializes one guard; retrieve it with `WebGuardSDK.getAutoGuard()` instead of initializing twice. The internal workspace IIFE remains `packages/browser/dist/webguard.global.js`.
 
 ## Policies

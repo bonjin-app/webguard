@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-10-21T04:51:41.556Z",
+  "method": "Fresh installed tarball in unrelated Vite 8.3.4 project, native browser modal under generated HTTP CSP/Trusted Types policies",
+  "sha512": "04f6cac029f0e89430300f5ceac722ac769b6187e05176a07a021a88a047b641ea6d64726719c93ca9ef30bceff95082f4c01f2ef9d047649e5b91874dcbadde",
+  "publish": false,
+  "cases": [
+    {
+      "engine": "chromium",
+      "case": "installed-vite-native-modal",
+      "trustedInspectFromEditor": true,
+      "nativeModal": true,
+      "escapeRetained": true,
+      "backgroundInert": true,
+      "recheckCleared": true,
+      "enforcedTrustedTypes": true
+    },
+    {
+      "engine": "chromium",
+      "case": "native-show-focus-destroy",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "chromium",
+      "case": "native-show-focus-monitor",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "chromium",
+      "case": "native-show-focus-integrity",
+      "expectedModalState": "retained",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "chromium",
+      "case": "native-close-focus-policy-update",
+      "explicitSimulatedGeometry": true,
+      "newModalTracked": true,
+      "signalClearRemoved": true
+    },
+    {
+      "engine": "firefox",
+      "case": "installed-vite-native-modal",
+      "trustedInspectFromEditor": true,
+      "nativeModal": true,
+      "escapeRetained": true,
+      "backgroundInert": true,
+      "recheckCleared": true,
+      "enforcedTrustedTypes": true
+    },
+    {
+      "engine": "firefox",
+      "case": "native-show-focus-destroy",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "firefox",
+      "case": "native-show-focus-monitor",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "firefox",
+      "case": "native-show-focus-integrity",
+      "expectedModalState": "retained",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "firefox",
+      "case": "native-close-focus-policy-update",
+      "explicitSimulatedGeometry": true,
+      "newModalTracked": true,
+      "signalClearRemoved": true
+    },
+    {
+      "engine": "webkit",
+      "case": "installed-vite-native-modal",
+      "trustedInspectFromEditor": true,
+      "nativeModal": true,
+      "escapeRetained": true,
+      "backgroundInert": true,
+      "recheckCleared": true,
+      "enforcedTrustedTypes": true
+    },
+    {
+      "engine": "webkit",
+      "case": "native-show-focus-destroy",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "webkit",
+      "case": "native-show-focus-monitor",
+      "expectedModalState": "removed",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "webkit",
+      "case": "native-show-focus-integrity",
+      "expectedModalState": "retained",
+      "truthfulBlockedEvent": true
+    },
+    {
+      "engine": "webkit",
+      "case": "native-close-focus-policy-update",
+      "explicitSimulatedGeometry": true,
+      "newModalTracked": true,
+      "signalClearRemoved": true
+    }
+  ],
+  "status": "passed",
+  "harnessCorrections": [
+    "APIResponse headers are read with headers(), not Response.allHeaders().",
+    "The unrelated-integrity-update case expects a retained modal, unlike destroy/monitor; assertion corrected before final successful run."
+  ]
+}

@@ -62,7 +62,7 @@ defineConfig({ obfuscation: { level: "strict" } });
 resolveConfig({ obfuscation: { reservedProperties: [42] } });
 // @ts-expect-error Browser settings live in the nested devtools object.
 WebGuard.init({ blockShortcuts: true });
-// @ts-expect-error Browser responses are advisory modes only.
+// @ts-expect-error Browser responses are a closed union; freezing is unsupported.
 WebGuard.init({ devtools: { response: "freeze" } });
 // @ts-expect-error Callbacks receive the exported event shape.
 WebGuard.init({ onThreat: (threat: { type: number }) => void threat });
@@ -91,7 +91,7 @@ webguardApp({
   headers: { trustedTypes: "report-only" },
 });
 getWebGuard()?.update({
-  devtools: { blockShortcuts: false },
+  devtools: { blockShortcuts: false, response: "block", shortcutScope: "page" },
   onThreat: (e) => void e.type,
 });
 const livePolicy = getWebGuard()?.getOptions();
@@ -100,3 +100,6 @@ void livePolicy;
 webguardApp({ runtime: { onThreat: () => {} } });
 // @ts-expect-error Live options retain typed boolean fields.
 getWebGuard()?.update({ devtools: { blockShortcuts: "yes" } });
+
+// @ts-expect-error Inspect scope is a closed union.
+WebGuard.init({ devtools: { shortcutScope: "all" } });

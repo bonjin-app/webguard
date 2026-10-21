@@ -354,3 +354,126 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
       .screenshot({ path: "docs/evidence/runtime-demo.png" });
   }
 });
+
+/** Simulate window geometry only; this is not evidence of real DevTools detection. */
+async function useUndockedGeometry(page: Page) {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "outerWidth", {
+      configurable: true,
+      get: () => window.innerWidth,
+    });
+    Object.defineProperty(window, "outerHeight", {
+      configurable: true,
+      get: () => window.innerHeight,
+    });
+  });
+}
+
+test("opt-in page protection cancels trusted Mac inspection input inside an editor and permits rechecking", async ({
+  page,
+}) => {
+  await useUndockedGeometry(page);
+  await page.goto("/#live-demo");
+  const mode = page.locator("#runtime-page-block");
+  await expect(mode).not.toBeChecked();
+  await page.locator("#runtime-advanced > summary").click();
+  await mode.check();
+  await expect(page.locator("#shortcuts")).toBeChecked();
+  await expect(page.locator("#shortcuts")).toBeDisabled();
+  await expect(page.locator("#runtime-detect")).toBeChecked();
+  await expect(page.locator("#runtime-detect")).toBeDisabled();
+  await expect(page.locator("#runtime-warn")).toBeDisabled();
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"shortcutScope": "page"',
+  );
+  await page
+    .locator("#runtime-editor")
+    .fill("페이지 보호 모드에서도 일반 편집은 가능합니다.");
+  await observeNextInput(page, "keydown", "KeyI");
+  await page.keyboard.press("Meta+Alt+KeyI");
+  await expect
+    .poll(() => inputObservation(page))
+    .toEqual({ trusted: true, prevented: true });
+  const blocker = page.locator("dialog[data-webguard-blocker]");
+  await expect(blocker).toBeVisible();
+  await expect(blocker).toContainText("개발자도구를 닫아 주세요");
+  await expect(blocker).toHaveJSProperty("open", true);
+  expect(await blocker.evaluate((node) => node.matches(":modal"))).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(blocker).toBeVisible();
+  // Native modal owns focus and makes the application behind it inert.
+  await page.locator("#runtime-editor").evaluate((node) => node.focus());
+  await expect(page.locator("#runtime-editor")).not.toBeFocused();
+  await expect(blocker.locator("[data-demo-block-exit]")).toHaveCount(1);
+  await blocker.locator("[data-webguard-recheck]").click();
+  await expect(blocker).not.toBeVisible();
+  await expect(mode).toBeChecked();
+  await expect(page.locator("#runtime-log")).toContainText(
+    "페이지 보호 안내 해제",
+  );
+});
+
+test("demo-only exit disables page protection and cleans up its modal without disabling explicit shortcut restrictions", async ({
+  page,
+}) => {
+  await useUndockedGeometry(page);
+  await page.goto("/#live-demo");
+  await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-page-block").check();
+  await page.locator("#runtime-editor").focus();
+  await page.keyboard.press("Meta+Alt+KeyI");
+  const blocker = page.locator("dialog[data-webguard-blocker]");
+  await expect(blocker).toBeVisible();
+  await blocker
+    .getByRole("button", { name: "이 데모의 보호 모드 끄기", exact: true })
+    .click();
+  await expect(page.locator("#runtime-page-block")).not.toBeChecked();
+  await expect(blocker).toHaveCount(0);
+  await expect(page.locator("#shortcuts")).toBeEnabled();
+  await expect(page.locator("#shortcuts")).toBeChecked();
+  await expect(page.locator("#runtime-detect")).toBeEnabled();
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"shortcutScope": "non-editable"',
+  );
+  await expect(page.locator("#runtime-config")).toContainText(
+    '"response": "monitor"',
+  );
+  await page.locator("#runtime-editor").focus();
+  await observeNextInput(page, "keydown", "KeyI");
+  await page.keyboard.press("Meta+Alt+KeyI");
+  await expect
+    .poll(() => inputObservation(page))
+    .toEqual({ trusted: true, prevented: false });
+  await expect(blocker).toHaveCount(0);
+});
+
+test("simulated docked-window geometry opens the page dialog and recheck waits for the signal to clear", async ({
+  page,
+}) => {
+  await useUndockedGeometry(page);
+  await page.goto("/#live-demo");
+  await page.locator("#runtime-page-block").check();
+  // An explicit fixture for the heuristic, not an opened browser DevTools window.
+  await page.evaluate(() => {
+    Object.defineProperty(window, "outerWidth", {
+      configurable: true,
+      get: () => window.innerWidth + 240,
+    });
+    window.dispatchEvent(new Event("resize"));
+  });
+  const blocker = page.locator("dialog[data-webguard-blocker]");
+  await expect(blocker).toBeVisible();
+  await blocker.locator("[data-webguard-recheck]").click();
+  await expect(blocker).toBeVisible();
+  await expect(blocker.locator("[data-demo-block-exit]")).toHaveCount(1);
+  await page.evaluate(() => {
+    Object.defineProperty(window, "outerWidth", {
+      configurable: true,
+      get: () => window.innerWidth,
+    });
+    window.dispatchEvent(new Event("resize"));
+  });
+  await expect(blocker).not.toBeVisible();
+  await page.locator("#runtime-page-block").uncheck();
+  await expect(blocker).toHaveCount(0);
+});
