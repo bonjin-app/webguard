@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { WebGuard, type WebGuardOptions } from "@webguard/browser";
 import { resolveConfig, type Preset } from "@webguard/core";
+import { createDomIdentifierGenerator } from "../../cli/src/dom-identifiers.js";
 import JavaScriptObfuscator from "javascript-obfuscator";
 import {
   createObfuscatorOptions,
@@ -14,6 +15,8 @@ import {
 } from "./next-classification";
 
 export interface WebGuardNextOptions {
+  /** Opaque CSS Modules names shared by server and client compilers. */
+  domIdentifiers?: boolean;
   preset?: Preset;
   /** Pure third-party module graphs use Standard at most by default; app/SDK/unknown chunks keep preset. */
   frameworkPreset?: "standard" | "inherit";
@@ -32,6 +35,7 @@ interface WebpackContext {
   dev: boolean;
   isServer: boolean;
   nextRuntime?: string;
+  dir?: string;
 }
 interface Asset {
   name: string;
@@ -91,6 +95,87 @@ interface Compiler {
 }
 
 const name = "WebGuardNext";
+
+/** Copy rule containers instead of modifying the host's loader options. */
+function withDomIdentifiers(
+  config: WebpackConfig,
+  root: string,
+): WebpackConfig {
+  const generate = createDomIdentifierGenerator({ root });
+  let matched = 0;
+  let visited = 0;
+  const ancestors = new Set<object>();
+  const visit = (value: unknown): unknown => {
+    if (!value || typeof value !== "object" || value instanceof RegExp)
+      return value;
+    if (++visited > 10000 || ancestors.has(value))
+      throw new Error(
+        "WebGuard domIdentifiers encountered unsupported cyclic or oversized Webpack CSS rules",
+      );
+    ancestors.add(value);
+    try {
+      if (Array.isArray(value)) return value.map(visit);
+      const rule = value as Record<string, unknown>;
+      let result = { ...rule };
+      if (
+        typeof rule.loader === "string" &&
+        /[/\\]css-loader[/\\]/.test(rule.loader)
+      ) {
+        const options = rule.options as Record<string, unknown> | undefined;
+        const modules = options?.modules;
+        // Next's built-in next/font pipeline also uses css-loader's modules
+        // options, but its generated selectors are coupled to font metadata.
+        // It is not a user CSS Module: retain that compiler-owned naming.
+        if (
+          options?.fontLoader !== true &&
+          modules &&
+          typeof modules === "object" &&
+          !Array.isArray(modules)
+        ) {
+          const settings = modules as Record<string, unknown>;
+          const existing = settings.getLocalIdent;
+          if (
+            existing !== undefined &&
+            (typeof existing !== "function" ||
+              existing.name !== "getCssModuleLocalIdent")
+          )
+            throw new Error(
+              "WebGuard domIdentifiers conflicts with a custom CSS Modules getLocalIdent; remove it or configure createDomIdentifierGenerator explicitly in both compilers",
+            );
+          matched++;
+          result = {
+            ...rule,
+            options: {
+              ...options,
+              modules: {
+                ...settings,
+                getLocalIdent(
+                  context: { resourcePath: string },
+                  _template: string,
+                  localName: string,
+                ) {
+                  return generate(localName, context.resourcePath);
+                },
+              },
+            },
+          };
+        }
+      }
+      for (const key of ["rules", "oneOf", "use"])
+        if (Object.hasOwn(result, key)) result[key] = visit(result[key]);
+      return result;
+    } finally {
+      ancestors.delete(value);
+    }
+  };
+  const module = config.module as Record<string, unknown> | undefined;
+  const rules = visit(module?.rules);
+  if (!matched)
+    throw new Error(
+      "WebGuard domIdentifiers could not locate supported Next CSS Modules loaders; use a supported Next Webpack configuration (not Turbopack or experimental Lightning CSS)",
+    );
+  return { ...config, module: { ...module, rules } };
+}
 
 function entryWithRuntime(
   entry: unknown,
@@ -330,7 +415,9 @@ export function withWebGuard<T extends object>(
   if (!options || typeof options !== "object" || Array.isArray(options))
     throw new TypeError("WebGuard Next options must be an object");
   for (const key of Object.keys(options))
-    if (!["preset", "runtime", "frameworkPreset"].includes(key))
+    if (
+      !["preset", "runtime", "frameworkPreset", "domIdentifiers"].includes(key)
+    )
       throw new TypeError(`Unknown WebGuard Next option: ${key}`);
   if (
     options.frameworkPreset !== undefined &&
@@ -338,6 +425,11 @@ export function withWebGuard<T extends object>(
     options.frameworkPreset !== "inherit"
   )
     throw new TypeError("frameworkPreset must be standard or inherit");
+  if (
+    options.domIdentifiers !== undefined &&
+    typeof options.domIdentifiers !== "boolean"
+  )
+    throw new TypeError("domIdentifiers must be a boolean");
   const policy = resolveConfig({
     preset: options.preset === undefined ? "strict" : options.preset,
   });
@@ -404,7 +496,9 @@ export function withWebGuard<T extends object>(
         );
       if (!returned || typeof returned !== "object" || Array.isArray(returned))
         throw new TypeError("Next webpack hook must return its config object");
-      const current = returned as WebpackConfig;
+      let current = returned as WebpackConfig;
+      if (!context.dev && options.domIdentifiers)
+        current = withDomIdentifiers(current, context.dir ?? process.cwd());
       if (context.dev || context.isServer || context.nextRuntime)
         return current;
       if (current.plugins !== undefined && !Array.isArray(current.plugins))

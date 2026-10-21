@@ -31,7 +31,7 @@ node scripts/verify-jsp-artifact.mjs
 - **네이티브 PHP는 실행 파일 부재로 건너뛰었습니다.** WASM 테스트는 같은 PHP 라우터를 실행하지만 PHP-FPM·Apache·네이티브 확장 모듈 검증을 대신하지 않습니다.
 - [버전·검사·건너뜀 기록](evidence/ssr-template-verification.json), [실행 예제와 재현 명령](../examples/ssr-templates/README.md).
 
-## Next.js + React SSR
+## Next.js + React SSR 기반 검증 (앞선 cff59f4 소스)
 
 - Next.js **16.4.2** / React·React DOM **19.3.1**, 별도 임시 앱에 실제 로컬 패키지를 설치한 운영 빌드입니다. Vite가 설치되지 않은 것도 확인했습니다.
 - Chromium·Firefox·WebKit **3개 브라우저 시나리오 통과**: 요청별 SSR, hydration·카운터·동적 import·클라이언트 페이지 이동·SDK 자동 시작·페이지 보호 안내. 콘솔/런타임/네트워크 오류가 없었습니다.
@@ -44,6 +44,17 @@ node scripts/verify-jsp-artifact.mjs
 - [실제 패키지 소비자 기록](evidence/next-consumer-verification.json), [실행 예제](../examples/next-ssr/README.md).
 
 어댑터는 운영 브라우저 청크에만 연결하며 Next 서버/RSC/API와 기존 CSP를 유지합니다. Next 16은 `next build --webpack`이 필요합니다. 인식 가능한 Next CLI 운영 빌드가 이를 누락하거나 Turbo 플래그를 지정하면 오류로 안내합니다. 프로그램 방식의 빌드 호출을 자동 판별하는 기능은 아닙니다. `.next` 전체 후처리·Turbopack·public/ 원본 JS·인라인 Flight 데이터는 대상이 아닙니다. Pages Router와 다른 Next 버전은 이 App Router 검증에 포함되지 않습니다.
+
+## 선택형 클래스·런타임 가드 후속 검증
+
+같은 최종 테스트 tarball로 새 Vite 8.3.4와 Next 16.4.2 / React 19.3.1 프로젝트를 각각 설치했습니다. npm 게시는 하지 않았습니다. 앞선 JSP·Python·PHP 기록은 해당 기반 소스의 검증이며 이번 후속 실행으로 대체하지 않습니다.
+
+- Vite: 설정 하나로 Strict 빌드·자동 SDK·CSS Modules 식별자·정적 DOM 감시·명시적 타이머 검사를 연결했습니다. Chromium·Firefox·WebKit에서 실제 CSS 스타일, 텍스트/속성/삭제/동일 내용 교체 감지, 정상 복구·재기준화, 실시간 OFF/ON, 단일 SDK를 확인했습니다. 실제 CSP·최종 SRI와 비공개 경로 거부도 확인했습니다. 공개 manifest는 의도된 기능이며 비공개 파일로 오인하지 않습니다.
+- Next: SSR HTML과 hydration 후 클래스 이름 일치, 실제 CSS 스타일·카운터·지연 import·클라이언트 이동·요청별 nonce CSP·자동 SDK를 세 엔진에서 확인했습니다. 오류·실패 요청은 없었습니다. 내부 next/font 생성 스타일은 원래 메타데이터와 이름을 유지합니다. 처음 확인한 폰트 로더 오판을 회귀 테스트로 고쳤습니다.
+- Next 공개 JS 22개는 Strict 19개 / Standard 3개입니다. 비압축 합계는 변환 전 972,723 → 변환 후 7,099,717바이트이며 성능 벤치마크가 아닙니다.
+- 별도 데모 테스트는 Chromium CDP의 실제 일시정지·재개 후 타이머 지연 신호를 확인했습니다. 다른 두 엔진에는 CDP가 없으므로 이 특정 도구 시험은 명시적으로 건너뜁니다. 이는 모든 DevTools 열림을 탐지하거나 닫았다는 결과가 아닙니다.
+
+[새 Vite 설치 기록](evidence/runtime-vite-consumer-verification.json) · [새 Next 설치 기록](evidence/runtime-next-consumer-verification.json). DOM 감시는 선택한 작은 정적 light-DOM에만 적용하며 서버 권한 검증·브라우저 제어 경계가 아닙니다.
 
 ## 검증 범위
 

@@ -25,6 +25,11 @@ import {
   initRuntimeDemo,
   reportRuntimeThreat,
 } from "./runtime-demo";
+import {
+  hardeningMarkup,
+  initHardeningDemo,
+  reportHardeningThreat,
+} from "./runtime-hardening";
 const cubeArt = new URL("./assets/sdk-cube.webp", import.meta.url).href;
 const webArt = new URL("./assets/web-app.webp", import.meta.url).href;
 // Production uses the injected automatic instance; dev/HMR uses the same registry.
@@ -43,7 +48,7 @@ export default defineConfig({
 ${productStoryMarkup}
 ${protectionOverviewMarkup}
 <section id="sdk-demo" class="demo-hub" aria-labelledby="demo-heading"><div class="demo-heading"><div class="eyebrow">INTERACTIVE DEMO</div><h2 id="demo-heading">가드를 켜고, 직접 확인하세요.</h2><p>내 앱에 연결할 SDK의 동작을 먼저 체험해 보세요.</p></div><div class="demo-tabs" role="tablist" aria-label="SDK 체험 선택"><button id="tab-runtime" role="tab" data-demo-tab="runtime" aria-controls="runtime-view" aria-selected="true">브라우저 가드</button><button id="tab-obfuscation" role="tab" data-demo-tab="obfuscation" aria-controls="obfuscation-view" aria-selected="false" tabindex="-1">코드 난독화</button><button id="tab-integrity" role="tab" data-demo-tab="integrity" aria-controls="integrity-view" aria-selected="false" tabindex="-1">파일 검사</button><button id="tab-advanced" role="tab" data-demo-tab="advanced" aria-controls="advanced-view" aria-selected="false" tabindex="-1">고급 검사</button></div>
-<div id="runtime-view" class="demo-view" role="tabpanel" aria-labelledby="tab-runtime" tabindex="0">${runtimeMarkup}</div>
+<div id="runtime-view" class="demo-view" role="tabpanel" aria-labelledby="tab-runtime" tabindex="0">${runtimeMarkup}${hardeningMarkup}</div>
 <div id="integrity-view" class="demo-view" role="tabpanel" aria-labelledby="tab-integrity" tabindex="0" hidden>${sdkIntegrityMarkup}</div>
 <div id="advanced-view" class="demo-view" role="tabpanel" aria-labelledby="tab-advanced" tabindex="0" hidden><nav class="advanced-navigation" aria-label="고급 검사 선택"><a href="#policy-lab">정책 켜기·끄기</a><a href="#security-lab">삽입·변조 시나리오</a><a href="#compatibility-lab">배포 호환성</a><a href="#resource-exposure">리소스 공개 검사</a></nav><p class="advanced-scope">브라우저 정책·배포 설정·서버 검증 예제입니다. 수동 SDK만 연결했을 때 자동으로 제공되는 기능과 구분해서 확인하세요.</p>${policyMarkup}${compatMarkup}${labMarkup}${resourceMarkup}</div>
 <div id="obfuscation-view" class="demo-view" role="tabpanel" aria-labelledby="tab-obfuscation" tabindex="0" hidden>
@@ -257,7 +262,13 @@ copy.addEventListener("click", async () => {
       "Clipboard unavailable. Select and copy the protected output manually.";
   }
 });
-guard.update({ onThreat: reportRuntimeThreat });
+const cleanupHardening = initHardeningDemo(guard);
+guard.update({
+  onThreat: (event) => {
+    reportHardeningThreat(event);
+    reportRuntimeThreat(event);
+  },
+});
 const cleanupRuntime = initRuntimeDemo(guard);
 let currentIntegration: (typeof integrations)[number] = integrations[0];
 function selectedSetup() {
@@ -337,6 +348,15 @@ element("runtime-tour").addEventListener("click", () => {
   element<HTMLInputElement>("sdk-integrity").checked = true;
   element("sdk-integrity").dispatchEvent(new Event("change"));
   element<HTMLButtonElement>("runtime-enable").click();
+  for (const id of ["dom-block", "pause-block"])
+    element<HTMLInputElement>(id).checked = false;
+  element<HTMLButtonElement>("dom-restore").click();
+  for (const id of ["dom-monitor", "pause-monitor"]) {
+    element<HTMLInputElement>(id).checked = true;
+    element(id).dispatchEvent(new Event("change"));
+  }
+  element<HTMLButtonElement>("dom-tamper").click();
+  element<HTMLButtonElement>("pause-check").click();
   element<HTMLButtonElement>("runtime-integrity").click();
   element<HTMLButtonElement>("lab-all").click();
   element<HTMLButtonElement>("resource-audit").click();
@@ -351,6 +371,7 @@ element("runtime-tour").addEventListener("click", () => {
 window.addEventListener("pagehide", (event) => {
   if (event.persisted) return;
   cleanupRuntime();
+  cleanupHardening();
   cleanupResources();
   cleanupPolicy();
   cleanupCompat();

@@ -2,6 +2,7 @@ import { lstat } from "node:fs/promises";
 import { join, resolve, relative, isAbsolute, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
+import { createDomIdentifierGenerator } from "@webguard/cli";
 import {
   parse,
   serialize,
@@ -21,6 +22,8 @@ import {
 import { webguard } from "./index.js";
 
 export interface WebGuardAppOptions extends WebGuardConfigInput {
+  /** Opaque CSS Modules class names only; global CSS and DOM IDs are unchanged. */
+  domIdentifiers?: boolean;
   /** Build-time serializable SDK settings. Shortcuts/context menus require explicit opt-in. */
   runtime?: Omit<WebGuardOptions, "preset" | "onThreat"> | false;
   /** Inject early HTML CSP and emit deployment headers; HTTP-only directives still require the host. */
@@ -131,7 +134,9 @@ export function createWebGuardApp(
 ): Plugin[] {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new TypeError("WebGuard app options must be an object");
-  const { runtime, headers, ...buildOptions } = input;
+  const { runtime, headers, domIdentifiers, ...buildOptions } = input;
+  if (domIdentifiers !== undefined && typeof domIdentifiers !== "boolean")
+    throw new TypeError("domIdentifiers must be a boolean");
   const policy = resolveConfig({
     ...buildOptions,
     preset: buildOptions.preset === undefined ? "strict" : buildOptions.preset,
@@ -159,11 +164,47 @@ export function createWebGuardApp(
   }
   const responseHeaders =
     headers === false ? false : createSecurityHeaders(headers);
+  let domNameGenerator:
+    ReturnType<typeof createDomIdentifierGenerator> | undefined;
   const bootstrap: Plugin = {
     name: "webguard-app-bootstrap",
     apply: "build",
     enforce: "pre",
+    config(config) {
+      if (!domIdentifiers) return;
+      if (config.css?.transformer === "lightningcss")
+        throw new Error(
+          "WebGuard domIdentifiers requires Vite's PostCSS CSS Modules pipeline; disable lightningcss or configure opaque module naming in your compiler",
+        );
+      if (
+        config.css?.modules === false ||
+        (config.css?.modules &&
+          config.css.modules.generateScopedName !== undefined)
+      )
+        throw new Error(
+          "WebGuard domIdentifiers conflicts with css.modules:false or an existing generateScopedName; remove the conflict or use createDomIdentifierGenerator explicitly for both SSR and browser builds",
+        );
+      domNameGenerator = createDomIdentifierGenerator({
+        root: resolve(config.root ?? process.cwd()),
+      });
+      return {
+        css: {
+          modules: {
+            generateScopedName: domNameGenerator,
+          },
+        },
+      };
+    },
     async configResolved(config) {
+      if (
+        domIdentifiers &&
+        (config.css?.transformer === "lightningcss" ||
+          config.css?.modules === false ||
+          config.css?.modules?.generateScopedName !== domNameGenerator)
+      )
+        throw new Error(
+          "WebGuard domIdentifiers configuration was replaced by another plugin; configure createDomIdentifierGenerator explicitly in both server and browser compilers",
+        );
       if (!responseHeaders) return;
       const directories: string[] = config.publicDir ? [config.publicDir] : [];
       const output = resolve(config.root, config.build.outDir);

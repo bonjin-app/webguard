@@ -273,3 +273,13 @@ See [architecture](ARCHITECTURE.md), [threat model](THREAT_MODEL.md), [security 
 - [Python WSGI / PHP](examples/ssr-templates/README.md): real per-request template rendering, isolated browser assets, SRI, server headers, live SDK controls and automated browser checks.
 
 Java/Python/PHP source is never input to the JavaScript obfuscator. Inline scripts in server templates are not automatically transformed. See [한국어 적용 가이드](docs/ENVIRONMENTS.ko.md) and [runtime-specific verification](docs/SSR_VERIFICATION.md). All new APIs remain local candidates; npm publication is paused.
+
+## Optional CSS identifiers and runtime signals
+
+These unpublished candidate features default **off**:
+
+- `webguardApp({ domIdentifiers: true })` and `withWebGuard(config, { domIdentifiers: true })` use opaque production **CSS Modules class names**. Next shares the mapping between SSR and browser compilers. This does not rewrite arbitrary HTML IDs, global CSS, form names or DOM structure. Supported PostCSS/Webpack CSS Modules pipelines are required; conflicting custom naming or Lightning CSS/Turbopack configurations are rejected. Manual CSS Modules pipelines can share `createDomIdentifierGenerator({ root: absoluteRoot })` from `uulab-webguard/build` across server and browser builds.
+- `debugging: { enabled: true, response: "report" }` permits an explicit `await guard.checkDebugging()`: one visible-page timer-lateness sample. Debugger pauses, CPU load and scheduling can all cause the signal. `false` also covers disabled, cancelled and hidden-page samples. There are no repeated debugger traps, and this is not proof that DevTools is open.
+- `domIntegrity: { enabled: true, selectors: ["#static-notice"], response: "report" }` snapshots the first matching **static** anchor per selector, observes attributes/text/removal/replacement and reports metadata without raw DOM contents. Enable after mount/hydration, then call `guard.rebaselineDom()` only to accept trusted current content. Missing anchors and budget failures are errors. A mismatch/error stops observation until an explicit successful rebaseline. Dynamic forms/counters should not be selected.
+
+Use the existing auto-started guard via `getWebGuard()` from `/client`, rather than initializing another instance. Runtime policies can also be supplied to manual initialization or build integration. A `block` response restricts interaction through a page notice; it cannot close DevTools, stop console/background execution or enforce server authorization. CSS names and selected DOM remain browser-visible. See [한국어 설정·SSR 수명주기·한도](docs/INSTALL.ko.md#9-선택-기능-css-식별자와-런타임-신호) and [interactive comparison](https://webguard.uulab.co.kr/demo#runtime-hardening). npm publication remains paused.

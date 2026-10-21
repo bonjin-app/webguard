@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [
     webguardApp({
       preset: "strict",
+      domIdentifiers: true,
       headers: false,
       runtime: siteGuardOptions,
     }),

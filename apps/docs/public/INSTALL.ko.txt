@@ -377,3 +377,88 @@ Next 16에서는 `next build --webpack`으로 빌드합니다. 서버/RSC/API와
 JSP·Java·Python·PHP는 브라우저 자산만 별도로 빌드·보호한 뒤 외부 SDK·초기화 파일·앱 JS와 최종 SRI를 서버 템플릿에 연결합니다. 템플릿·서버 언어 자체와 인라인 스크립트를 자동 난독화하지 않습니다. 서버 공개 루트에는 허용 자산만 배치하고 정책·보고서·매니페스트·소스맵은 밖에 보관하세요.
 
 [환경별 전체 적용법](ENVIRONMENTS.ko.md), [Next 실행 예제](../examples/next-ssr/README.md), [JSP 실행 예제](../examples/jsp-servlet/README.md), [Python·PHP 실행 예제](../examples/ssr-templates/README.md)를 참고하세요. 현재 미게시 로컬 후보에서 검증하며 npm 배포는 보류합니다.
+
+## 9. 선택 기능: CSS 식별자와 런타임 신호
+
+아래 기능은 **미게시 로컬 후보** 기준이며 모두 기본 OFF입니다. 기존 npm 0.2.0에 포함된 것으로 판단하지 마세요. [런타임 강화 체험](https://webguard.uulab.co.kr/demo#runtime-hardening)에서 보호 전후를 비교합니다.
+
+### CSS Modules 클래스 이름
+
+```ts
+webguardApp({ domIdentifiers: true });
+```
+
+운영 빌드에서 CSS Modules의 클래스 이름을 `wg_…` 형태로 만들고, 컴파일러가 생성한 JS의 클래스 참조도 같은 이름을 사용하게 합니다. Next는 `withWebGuard(existingConfig, { domIdentifiers: true })`로 설정하며 SSR과 브라우저에 같은 매핑을 적용합니다. Next가 관리하는 생성 폰트 스타일의 이름과 메타데이터는 유지합니다. 임의의 HTML `id`·전역 CSS·`data-*`·폼 이름이나 DOM 구조를 숨기거나 변경하지 않습니다. `.module.css`처럼 컴파일러의 CSS Modules 경로에 들어가는 스타일에 한정합니다.
+
+Vite는 PostCSS CSS Modules, Next는 지원되는 Webpack CSS Modules 연결을 사용합니다. Lightning CSS·기존 사용자 정의 클래스 이름 생성기와 충돌하면 오류를 확인하고 한 쪽을 선택하세요. 생성된 클래스 이름에 의존하는 외부 CSS·E2E 선택자는 영향을 받을 수 있으므로 안정적인 `data-*`나 명시적인 ID를 사용하고 실제 SSR hydration·스타일을 확인하세요. 클래스 이름이 불투명해져도 브라우저의 Elements·Styles·CSS 파일은 계속 보입니다.
+
+### 명시적으로 한 번 검사하는 실행 지연 신호
+
+자동 통합한 SDK는 기존 인스턴스를 조회해서 설정합니다. 아래 코드는 브라우저에서 실행하세요.
+
+```ts
+import { getWebGuard } from "uulab-webguard/client";
+
+const guard = getWebGuard();
+guard?.update({
+  debugging: {
+    enabled: true,
+    response: "report",
+    sampleMs: 100,
+    thresholdMs: 1500,
+  },
+});
+const delayed = await guard?.checkDebugging();
+```
+
+`checkDebugging()`을 호출할 때만 보이는 페이지에서 타이머 표본 하나를 검사합니다. 요청 지연 `sampleMs`에 더해 실제 복귀가 `thresholdMs` 이상 늦으면 `true`와 실행 지연 의심 이벤트를 반환합니다. 디버거 일시 정지뿐 아니라 CPU 부하·브라우저 스케줄링도 원인이므로 개발자도구가 열렸다는 증거가 아닙니다. `false`에는 신호 없음 외에 비활성화·취소·숨겨진 페이지도 포함됩니다. 연속 `debugger` 트랩이나 자동 반복 검사는 삽입하지 않습니다.
+
+`sampleMs`는 기본 100ms·최대 1,000ms, `thresholdMs`는 기본 1,500ms·최대 60,000ms입니다. 명시적 검사라도 임계값을 지나치게 낮추면 정상 사용을 방해할 수 있습니다. `response: "block"`은 의심 시 페이지 안내로 상호작용을 제한하며 개발자도구·콘솔·네트워크나 실행 중인 코드를 중단하지 않습니다.
+
+### 선택한 정적 DOM의 변조 신호
+
+```ts
+// #static-notice가 실제로 마운트된 뒤 실행합니다.
+guard?.update({
+  domIntegrity: {
+    enabled: true,
+    selectors: ["#static-notice"],
+    response: "report",
+    maxNodes: 1000,
+    maxBytes: 65536,
+  },
+});
+guard?.rebaselineDom();
+```
+
+각 선택자의 **첫 번째 일치 요소**와 그 하위 정적 내용을 기준으로 속성·텍스트·이동·삭제·교체를 관찰합니다. 선택자는 최대 16개·각 256자이며, 전체 선택 영역의 합계 한도는 기본 1,000노드·65,536바이트, 최대 4,096노드·262,144바이트입니다. 전체 페이지를 자동으로 감시하거나 서버가 만든 마크업을 수정하지 않습니다. 이벤트에는 원시 DOM·텍스트를 담지 않고 신호 메타데이터만 제공합니다.
+
+요소가 없거나 선택자·관찰·예산에 문제가 있으면 오류 신호를 내며 성공으로 판단하지 않습니다. 한 번 불일치·오류를 알리면 관찰을 멈추고, 명시적인 `rebaselineDom()`이 성공해야 새 기준으로 재개합니다. 이 메서드는 현재 내용을 새 기준으로 승인하므로 신뢰할 수 있는 앱 변경에만 호출하세요. 정상적인 직접 DOM 변경 직후에는 같은 동기 작업에서 다시 기준을 잡습니다. React처럼 나중에 커밋하는 경우 `setState()` 직후에 호출하지 말고, 실제 DOM 커밋 직후의 `useLayoutEffect` 등에서 동기적으로 처리해야 관찰 알림 전에 기준을 갱신할 수 있습니다. 카운터·폼·사용자 입력·실시간 목록은 정적 앵커로 지정하지 마세요.
+
+SSR에서는 서버 요청 중 SDK를 실행하지 말고 hydration 이후에 켭니다. 예를 들어 React 클라이언트 컴포넌트의 정적인 공지에만 적용합니다.
+
+```tsx
+"use client";
+import { useEffect } from "react";
+import { getWebGuard } from "uulab-webguard/client";
+
+export function StaticNotice() {
+  useEffect(() => {
+    const guard = getWebGuard();
+    guard?.update({
+      domIntegrity: {
+        enabled: true,
+        selectors: ["#static-notice"],
+        response: "report",
+      },
+    });
+    guard?.rebaselineDom();
+    return () => guard?.update({ domIntegrity: { enabled: false } });
+  }, []);
+  return <p id="static-notice">계정 권한은 서버에서 검증합니다.</p>;
+}
+```
+
+예제는 페이지가 공유하는 가드의 DOM 정책을 이 컴포넌트가 소유한다는 전제입니다. 여러 화면이 같은 정책을 관리한다면 앱 수명주기에 맞춰 한 곳에서 통합하세요. SDK가 마운트 후 시작되는 수동 통합은 가드 초기화가 완료된 뒤 설정해야 합니다.
+
+두 신호 모두 직접 `WebGuard.init()`의 옵션이나 Vite·Next의 `runtime` 옵션으로 전달할 수 있습니다. DOM 감시를 초기 HTML 주입 단계에서 켜면 앱이 아직 마운트되지 않아 오류가 날 수 있으므로 위처럼 켜는 시점을 정하세요. 해제는 `guard.update({ debugging: { enabled: false }, domIntegrity: { enabled: false } })`, 완전한 정리는 `guard.destroy()`입니다. `block`은 관찰한 신호에 대한 클라이언트 UI 반응이며 인증·인가·서버 데이터 무결성을 대신하지 않습니다.

@@ -140,6 +140,36 @@ mvn -B -f examples/jsp-servlet/pom.xml -Dwebguard.browser=true package
 
 ## 배포 전에 확인할 것
 
+### CSS Modules 식별자와 SSR 매핑
+
+미게시 후보에서 Vite는 `webguardApp({ domIdentifiers: true })`, Next Webpack은 `withWebGuard(config, { domIdentifiers: true })`로 운영 CSS Modules 클래스 이름을 불투명하게 만들 수 있습니다. Next 연결은 서버와 브라우저 컴파일에 같은 생성기를 연결합니다. 서버 HTML과 브라우저 CSS의 이름이 달라지면 스타일·hydration 문제가 생기므로 CSS를 빌드한 뒤 DOM의 문자열만 별도로 바꾸지 마세요.
+
+다른 CSS Modules 파이프라인은 Node 전용 생성기를 명시적으로 공유할 수 있습니다.
+
+```js
+import { fileURLToPath } from "node:url";
+import { createDomIdentifierGenerator } from "uulab-webguard/build";
+
+const generateName = createDomIdentifierGenerator({
+  root: fileURLToPath(new URL("./", import.meta.url)),
+});
+// 양쪽 컴파일러에 같은 프로젝트 루트와 소스 파일 경로 규칙을 사용합니다.
+// 컴파일러의 콜백 인자 순서에 맞춰 연결하세요.
+const className = generateName("notice", "/absolute/project/Notice.module.css");
+```
+
+`root`와 CSS 파일명은 절대 경로이며 이름은 프로젝트 기준 상대 파일 경로·로컬 클래스 이름에서 결정됩니다. 동일한 프로젝트 구조와 규칙을 SSR·클라이언트에 사용하세요. Vite의 수동 연결은 `css.modules.generateScopedName: generateName`입니다. 수동 생성기와 `domIdentifiers: true`를 중복 설정하지 마세요. Vite의 Lightning CSS·Next Turbopack·실험적인 Lightning CSS 연결은 이 자동 옵션의 대상이 아닙니다. 사용자 정의 생성기와 충돌하면 자동으로 덮어쓰지 않고 오류를 냅니다.
+
+범위는 CSS Modules 클래스이며 임의의 ID, 전역 CSS, 템플릿 선택자, 폼 이름이나 DOM 구조를 변경하지 않습니다. JSP·Python·PHP의 기존 정적 HTML과 전역 CSS에 이 옵션만 추가해서 이름이 바뀌지는 않습니다. CSS Modules를 사용하는 기존 프런트엔드 컴파일 단계에서 연결해야 합니다. 생성 이름에 기대는 외부 스타일·자동화 선택자는 함께 점검하세요. 난독화된 이름도 Elements·Styles에서 열람할 수 있습니다.
+
+### SSR 이후의 선택적 런타임 검사
+
+브라우저 SDK의 `debugging`과 `domIntegrity`는 모두 기본 OFF입니다. `debugging: { enabled: true, response: "report" }`를 설정한 뒤 **명시적으로** `await guard.checkDebugging()`을 호출하면 보이는 페이지에서 타이머 지연 표본 하나를 검사합니다. CPU 부하 등으로도 발생할 수 있는 신호이며 개발자도구 탐지·반복 debugger 트랩이 아닙니다. `false`에는 비활성화·취소·숨김 상태도 포함됩니다.
+
+`domIntegrity: { enabled: true, selectors: ["#static-notice"], response: "report" }`는 선택한 첫 일치 정적 앵커의 변경·이동·삭제·교체를 관찰합니다. 서버에서 SDK를 실행하거나 SSR 템플릿을 변경하지 않습니다. 가드가 준비되고 hydration·마운트가 끝난 뒤 정책을 켜고 `guard.rebaselineDom()`으로 현재 정적 내용을 기준으로 잡으세요. 요소 없음은 오류이며 자동으로 마운트 완료를 기다려 성공 처리하지 않습니다. 불일치·오류 후에는 관찰을 멈추므로 신뢰하는 상태에서 명시적으로 새 기준을 잡아야 재개합니다. 동적 폼·카운터·목록에는 연결하지 마세요.
+
+앱이 허용한 DOM 직접 변경 뒤에는 같은 동기 작업에서 기준을 갱신합니다. 프레임워크 비동기 변경은 `setState()` 직후가 아니라 실제 커밋 직후의 `useLayoutEffect` 등에서 동기적으로 갱신해야 관찰 알림 전에 새 기준을 반영할 수 있습니다. `response: "block"`은 페이지 안내로 상호작용을 제한하는 선택 기능이며 개발자도구를 닫거나 서버 권한을 보호하지 않습니다. DOM 내용은 이벤트로 전송하지 않습니다. 세부 예제·기본값·한도·해제 방법은 [설치 가이드](INSTALL.ko.md#9-선택-기능-css-식별자와-런타임-신호)를 참고하세요.
+
 인라인 스크립트·이벤트 속성은 외부화하세요. 기존 CSP와 자동 정책이 충돌하면 정책 소유자를 정해야 하며 자동으로 약화하지 않습니다. `trustedTypes: "report-only"`는 문자열 DOM 삽입의 강제를 관찰로 전환하지만 인라인 실행 허용이나 정화를 제공하지 않습니다. report-only는 실제 HTTP 헤더가 필요합니다.
 
 출력에 서버 코드·환경 파일·원본 소스·비밀값을 넣지 마세요. 원본 소스맵은 공개 루트 밖에 보관합니다. 서비스 워커·프리캐시·외부 SRI·서명 매니페스트는 후처리한 최종 바이트로 갱신해야 합니다. 서버 템플릿은 자동 HTML 주입 대신 정적 자산 연결과 서버 헤더 레시피를 사용하세요. [서버 예제](../examples/server-templates/README.md).

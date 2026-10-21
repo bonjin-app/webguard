@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getWebGuard } from "uulab-webguard/client";
+import styles from "./counter.module.css";
 
 export default function Counter() {
   const [count, setCount] = useState(0);
@@ -12,7 +13,11 @@ export default function Counter() {
   return (
     <section>
       <p id="guard-status">{guard}</p>
-      <button id="counter" onClick={() => setCount((value) => value + 1)}>
+      <button
+        className={styles.protectedCounter}
+        id="counter"
+        onClick={() => setCount((value) => value + 1)}
+      >
         Count {count}
       </button>
       <button

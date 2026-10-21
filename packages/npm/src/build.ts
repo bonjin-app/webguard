@@ -1,6 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { createApplicationProtector } from "../../cli/src/application.js";
+export {
+  createDomIdentifierGenerator,
+  type DomIdentifierOptions,
+} from "../../cli/src/dom-identifiers.js";
 
 export {
   protectDirectory,

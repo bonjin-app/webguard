@@ -287,6 +287,8 @@ void config;
   assert.doesNotMatch(policy, /unsafe-inline|unsafe-eval/);
   const nonce = policy.match(/'nonce-([^']+)'/)[1];
   const document = new JSDOM(html).window.document;
+  const serverClass = document.querySelector("#counter").className;
+  assert.match(serverClass, /^wg_[a-f0-9]{24}$/);
   assert.ok(document.scripts.length > 0);
   for (const script of document.scripts)
     assert.equal(
@@ -339,6 +341,18 @@ void config;
         .locator("#guard-status")
         .filter({ hasText: "active" })
         .waitFor();
+      assert.equal(
+        await page.locator("#counter").getAttribute("class"),
+        serverClass,
+        "SSR and hydrated CSS class must match",
+      );
+      assert.equal(
+        await page
+          .locator("#counter")
+          .evaluate((node) => window.getComputedStyle(node).backgroundColor),
+        "rgb(37, 99, 235)",
+        "Opaque CSS Module must preserve styling",
+      );
       await page.locator("#counter").click();
       await page.locator("#counter").filter({ hasText: "Count 1" }).waitFor();
       await page.locator("#lazy").click();
@@ -374,6 +388,8 @@ void config;
       assert.deepEqual(errors, [], `${engine.name()} hydration/runtime errors`);
       Object.assign(browserResult, {
         hydration: true,
+        opaqueCSSModuleSSR: true,
+        opaqueCSSModuleStyle: true,
         counter: true,
         clientNavigation: true,
         lazyImport: true,

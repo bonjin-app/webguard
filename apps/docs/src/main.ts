@@ -8,7 +8,7 @@ const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
 <header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
-<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a></nav><main id="main-content" tabindex="-1">
+<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#runtime-hardening">클래스·DOM·실행 지연</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a></nav><main id="main-content" tabindex="-1">
 <aside class="site-protection" aria-label="이 문서의 실제 보호 설정">
   <details id="site-protection-controls">
     <summary><span>이 문서에도 WebGuard 적용 중</span><span class="site-protection-action">실제 설정 바꾸기</span></summary>
@@ -92,6 +92,20 @@ const guard = WebGuard.init({
 
 // On application teardown:
 guard.destroy();</code></pre><p>탐지는 오탐과 누락이 있는 참고 신호입니다. 인증이나 권한 판단에 사용하지 마세요. 단축키 제한은 페이지에 전달된 입력에만 적용되고 개발자도구 창 전체를 잠그지 못합니다. 이벤트는 로컬 콜백으로 전달하며 원격 수집을 자동으로 시작하지 않습니다.</p></section>
+<section id="runtime-hardening"><div class="eyebrow">OPTIONAL PROTECTION</div><h2>클래스 식별자와 실행 중 변경을 함께 다루세요</h2><p>미게시 0.3.0 후보의 선택 기능입니다. 기존 앱에 자동으로 전체 DOM 감시를 추가하지 않습니다. <a href="/demo#runtime-hardening">실제 클래스를 보고, 감시를 켜고 끄며 체험하기 →</a></p><h3>CSS Modules 클래스 식별자</h3><pre><code>// Vite
+webguardApp({ domIdentifiers: true });
+// Next.js (운영 Webpack 빌드)
+withWebGuard(nextConfig, { domIdentifiers: true });</code></pre><p>CSS Modules의 클래스 이름을 wg_로 시작하는 불투명 식별자로 바꾸고, JavaScript·CSS·Next SSR이 같은 이름을 사용합니다. Next 내부의 생성 폰트 스타일과 메타데이터는 유지합니다. 전체 ID·전역 CSS·기존 DOM 선택자는 임의로 바꾸지 않습니다. 기존 사용자 지정 클래스 생성기와 충돌하면 빌드가 실패합니다. Elements·HTML·내용을 감추거나 원본 소유권을 증명하는 기능은 아닙니다.</p><h3>정적 DOM 감시와 명시적 실행 지연 검사</h3><pre><code>import { getWebGuard } from 'uulab-webguard/client';
+// SSR hydration/CSR 렌더링이 끝나고 정적 안내가 존재한 뒤 호출
+const guard = getWebGuard();
+guard?.update({
+  domIntegrity: {
+    enabled: true, selectors: ['#static-notice'], response: 'report',
+  },
+  debugging: { enabled: true, response: 'report' },
+});
+await guard?.checkDebugging();
+// 정상 DOM 변경이 완료된 즉시: guard?.rebaselineDom();</code></pre><p>DOM 감시는 선택자마다 첫 번째 정적 light-DOM 영역의 텍스트·속성·삭제·이동·교체를 관찰합니다. 기본 총 1,000노드·64KiB이고 최대 4,096노드·256KiB, 선택자 16개·각 256자입니다. 기준 수집 오류나 불일치 후 관찰을 멈추며, 원문 DOM을 이벤트에 넣지 않습니다. 렌더링 전 선택자가 없으면 오류가 발생하므로 렌더링 후 rebaselineDom()으로 명시적으로 수집하세요. 동적 카운터·폼, input.value 같은 DOM 프로퍼티·canvas·닫힌 ShadowRoot는 이 기능의 보호 대상이 아닙니다.</p><p>checkDebugging()은 보이는 페이지에서 호출마다 타이머를 한 번 측정합니다. 기본 예정 지연 100ms에서 추가로 1,500ms 이상 늦어지면 execution-pause-suspected 이벤트를 냅니다. sampleMs 최대 1,000ms, thresholdMs 최대 60,000ms입니다. false는 비활성·숨김·취소·검사 중에도 반환될 수 있어 정상 인증값이 아닙니다. CPU 부하·절전도 오탐 원인이며, DevTools의 열림·닫힘을 확정하지 않습니다. SDK가 debugger 구문이나 반복 일시정지 코드를 삽입하지 않습니다.</p><p>두 기능은 기본 OFF입니다. response: 'report'가 기본이며 'block'은 페이지 안에 보호 안내를 표시합니다. 안내는 개발자도구·콘솔·스크립트 실행·서버 접근을 차단하는 경계가 아닙니다. update()로 끄거나 destroy()하면 감시와 진행 중인 측정을 정리합니다. 자세한 React 수명주기 예제와 옵션은 <a href="/docs/INSTALL.ko.txt">한국어 가이드 9절</a>을 참고하세요.</p></section>
 <section id="integrity-budgets"><h2>파일 검사 요청에도 한도를 적용해요</h2><p>미게시 후보의 checkIntegrity는 검사를 활성화하고 직접 호출할 때 실행됩니다. 파일 전체를 자동 감시하지 않습니다. 쿠키·리퍼러를 보내지 않고 리디렉션을 거부합니다. 기본 10초·압축 해제 후 16MiB·인스턴스당 동시 4개로 제한합니다. 시간 초과나 크기 초과를 변조 탐지 성공으로 계산하지 않습니다.</p><pre><code>webguardApp({ runtime: { integrity: {
   enabled: true,
   timeoutMs: 10_000,

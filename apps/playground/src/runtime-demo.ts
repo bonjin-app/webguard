@@ -35,6 +35,9 @@ export function reportRuntimeThreat(event: ThreatEvent) {
     "devtools-heuristic": "창 크기 추정 신호 · 오탐 가능",
     "integrity-mismatch": "SDK 무결성 불일치 이벤트",
     "integrity-error": "SDK 파일 읽기·검사 오류",
+    "execution-pause-suspected": "실행 지연 신호 · 디버깅 확정 아님",
+    "dom-integrity-mismatch": "정적 DOM 변경 감지 · 관찰 중지",
+    "dom-integrity-error": "정적 DOM 기준 수집·관찰 오류",
     "page-blocked": "페이지 보호 안내 표시 · 개발자도구 강제 닫기 아님",
     "page-unblocked": "페이지 보호 안내 해제",
     "page-block-unavailable":
@@ -50,6 +53,7 @@ export function reportRuntimeThreat(event: ThreatEvent) {
       exit.setAttribute("data-demo-block-exit", "");
       exit.textContent = "이 데모의 보호 모드 끄기";
       exit.addEventListener("click", () => {
+        window.dispatchEvent(new Event("webguard-demo-release"));
         const mode = get<HTMLInputElement>("runtime-page-block");
         mode.checked = false;
         mode.dispatchEvent(new Event("change", { bubbles: true }));
@@ -95,6 +99,7 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
   }
   syncControls();
   get("runtime-defaults").addEventListener("click", () => {
+    window.dispatchEvent(new Event("webguard-demo-release"));
     guard.update({
       ...siteGuardOptions,
       devtools: { ...siteGuardOptions.devtools, threshold: 160 },

@@ -11,6 +11,7 @@ export default withWebGuard(
   },
   {
     preset: "strict",
+    domIdentifiers: true,
     runtime: {
       devtools: {
         detect: false,

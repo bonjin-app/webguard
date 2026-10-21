@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-21T08:01:35.277Z",
+  "tarballSha512": "1bd20892962e2dfa576781bf45312ba14220b10c25eea81a6a9e98c89b7c2a041d153731fd57efc5c9cec5c4c1d7e6b3f6ae69195b2067b848f3a12ceef56e26",
+  "versions": {
+    "vite": "8.3.4",
+    "uulab-webguard": "0.3.0"
+  },
+  "checks": {
+    "singleConfigBuild": true,
+    "sriMatchesFinalBytes": true,
+    "noPublicSourceMapArtifacts": true,
+    "realProtectedServerCSP": true,
+    "httpEntrySRI": true,
+    "privatePathsDenied": [
+      "/assets/index-DbGtGAf3.js.map",
+      "/webguard-report.json",
+      "/webguard-headers.json",
+      "/_headers",
+      "/package.json",
+      "/.env",
+      "/src/main.js"
+    ]
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "errors": [],
+      "failedRequests": [],
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    },
+    {
+      "engine": "firefox",
+      "errors": [],
+      "failedRequests": [],
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    },
+    {
+      "engine": "webkit",
+      "errors": [],
+      "failedRequests": [],
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    }
+  ],
+  "scope": "Fresh installed Vite build with one webguardApp configuration; opt-in CSS Modules naming, static DOM monitoring and explicit normal timer sample. Does not prove DevTools detection, closure or resistance to a user controlling the browser."
+}

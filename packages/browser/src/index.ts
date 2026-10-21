@@ -1,4 +1,11 @@
-import { createPageBlocker } from "./blocker";
+import { createPageBlocker, type BlockReason } from "./blocker";
+import {
+  createDomIntegrityMonitor,
+  createPauseSampler,
+  type DebuggingPolicy,
+  type DomIntegrityPolicy,
+} from "./runtime-signals";
+export type { DebuggingPolicy, DomIntegrityPolicy } from "./runtime-signals";
 import { abortable, readIntegrityBytes } from "./integrity";
 import type { ThreatEvent } from "@webguard/shared";
 export type { ThreatEvent } from "@webguard/shared";
@@ -22,6 +29,10 @@ export interface WebGuardOptions {
     /** Per-instance in-flight request cap; default 4, ceiling 16. */
     maxConcurrent?: number;
   };
+  /** Explicit one-shot event-loop pause sampling. Disabled by default, never proof of DevTools. */
+  debugging?: DebuggingPolicy;
+  /** Opt-in immutable DOM anchors. Legitimate updates require an explicit rebaseline. */
+  domIntegrity?: DomIntegrityPolicy;
   onThreat?: (event: ThreatEvent) => void;
 }
 export interface WebGuardInstance {
@@ -32,8 +43,19 @@ export interface WebGuardInstance {
   getOptions(): WebGuardOptions;
   /** Fetches only when explicitly called and integrity.enabled is true. */
   checkIntegrity(url: string, expected: string): Promise<boolean>;
+  /** One visible-page timer sample, only when debugging.enabled. Never inserts debugger statements. */
+  checkDebugging(): Promise<boolean>;
+  /** Accepts current selected static-anchor state as the new baseline. No DOM restoration. */
+  rebaselineDom(): boolean;
 }
-const optionKeys = ["preset", "devtools", "integrity", "onThreat"];
+const optionKeys = [
+  "preset",
+  "devtools",
+  "integrity",
+  "debugging",
+  "domIntegrity",
+  "onThreat",
+];
 function dataObject(
   value: unknown,
   allowed: readonly string[],
@@ -144,6 +166,81 @@ function validatedOptions(value: unknown): WebGuardOptions {
       ),
     );
   }
+  for (const key of ["debugging", "domIntegrity"] as const) {
+    if (input[key] === undefined) continue;
+    const policy = dataObject(
+      input[key],
+      key === "debugging"
+        ? ["enabled", "response", "thresholdMs", "sampleMs"]
+        : ["enabled", "response", "selectors", "maxNodes", "maxBytes"],
+      key,
+    );
+    if (policy.enabled !== undefined && typeof policy.enabled !== "boolean")
+      throw new TypeError(`Invalid ${key} enabled`);
+    if (
+      policy.response !== undefined &&
+      policy.response !== "report" &&
+      policy.response !== "block"
+    )
+      throw new TypeError(`Invalid ${key} response`);
+    for (const [field, ceiling] of key === "debugging"
+      ? ([
+          ["thresholdMs", 60000],
+          ["sampleMs", 1000],
+        ] as const)
+      : ([
+          ["maxNodes", 4096],
+          ["maxBytes", 262144],
+        ] as const)) {
+      const value = policy[field];
+      if (
+        value !== undefined &&
+        (typeof value !== "number" ||
+          !Number.isSafeInteger(value) ||
+          value < 1 ||
+          value > ceiling)
+      )
+        throw new TypeError(`Invalid ${key} ${field}`);
+    }
+    if (key === "domIntegrity" && policy.selectors !== undefined) {
+      const selectors = policy.selectors;
+      if (
+        !Array.isArray(selectors) ||
+        Object.getPrototypeOf(selectors) !== Array.prototype ||
+        selectors.length > 16
+      )
+        throw new TypeError("Invalid DOM selectors");
+      const copy: string[] = [];
+      for (const field of Reflect.ownKeys(selectors)) {
+        if (field === "length") continue;
+        if (
+          typeof field !== "string" ||
+          !/^(0|[1-9]\d*)$/.test(field) ||
+          Number(field) >= selectors.length
+        )
+          throw new TypeError("Unknown DOM selectors field");
+        const descriptor = Object.getOwnPropertyDescriptor(selectors, field)!;
+        if (!Object.hasOwn(descriptor, "value"))
+          throw new TypeError("DOM selector accessors are not supported");
+      }
+      for (let i = 0; i < selectors.length; i++) {
+        const value = Object.getOwnPropertyDescriptor(
+          selectors,
+          String(i),
+        )?.value;
+        if (typeof value !== "string" || !value.trim() || value.length > 256)
+          throw new TypeError("Invalid DOM selector");
+        copy.push(value);
+      }
+      policy.selectors = copy;
+    }
+    result[key] = Object.assign(
+      Object.create(null),
+      Object.fromEntries(
+        Object.entries(policy).filter(([, item]) => item !== undefined),
+      ),
+    );
+  }
   if (Object.hasOwn(input, "onThreat")) {
     if (input.onThreat !== undefined && typeof input.onThreat !== "function")
       throw new TypeError("Invalid onThreat callback");
@@ -157,6 +254,16 @@ function snapshot(options: WebGuardOptions): WebGuardOptions {
     copy.devtools = Object.assign(Object.create(null), options.devtools);
   if (options.integrity)
     copy.integrity = Object.assign(Object.create(null), options.integrity);
+  if (options.debugging)
+    copy.debugging = Object.assign(Object.create(null), options.debugging);
+  if (options.domIntegrity)
+    copy.domIntegrity = Object.assign(
+      Object.create(null),
+      options.domIntegrity,
+      options.domIntegrity.selectors
+        ? { selectors: [...options.domIntegrity.selectors] }
+        : {},
+    );
   return copy;
 }
 function editable(target: EventTarget | null): boolean {
@@ -213,14 +320,41 @@ function createGuard(
   };
   let policyRevision = 0;
   let blocked = false;
-  let blockedReason: "shortcut" | "geometry" | undefined;
+  let blockedReason: BlockReason | undefined;
+  const activeReasons = new Set<BlockReason>();
+  const reasonPriority: readonly BlockReason[] = [
+    "dom-tamper",
+    "debugging-suspicion",
+    "geometry",
+    "shortcut",
+  ];
   let unavailableReported = false;
-  let pendingReason: "shortcut" | "geometry" | undefined;
+  let pendingReason: BlockReason | undefined;
   let removeReady: (() => void) | undefined;
   const blocker = browserDocument
-    ? createPageBlocker(browserDocument, () => measure(true))
+    ? createPageBlocker(browserDocument, () => {
+        if (blockedReason === "dom-tamper") {
+          if (domMonitor?.matchesBaseline()) {
+            const restoredMonitor = domMonitor;
+            clearBlock(true, ["dom-tamper"]);
+            if (!destroyed && domMonitor === restoredMonitor)
+              restoredMonitor.rebaseline();
+          }
+        } else if (blockedReason === "debugging-suspicion")
+          clearBlock(true, ["debugging-suspicion"]);
+        else measure(true);
+      })
     : undefined;
-  function clearBlock(notify = true) {
+  function clearBlock(notify = true, only?: readonly BlockReason[]) {
+    if (only) for (const reason of only) activeReasons.delete(reason);
+    else activeReasons.clear();
+    const remaining = reasonPriority.find((reason) =>
+      activeReasons.has(reason),
+    );
+    if (remaining && !destroyed) {
+      blockPage(remaining);
+      return;
+    }
     const revision = policyRevision;
     const wasBlocked = blocked;
     blocked = false;
@@ -241,14 +375,36 @@ function createGuard(
         browserWindow.outerHeight - browserWindow.innerHeight > threshold),
     );
   }
-  function blockPage(reason: "shortcut" | "geometry") {
+  function shouldBlock(reason: BlockReason): boolean {
+    if (reason === "dom-tamper")
+      return (
+        options.domIntegrity?.enabled === true &&
+        options.domIntegrity.response === "block"
+      );
+    if (reason === "debugging-suspicion")
+      return (
+        options.debugging?.enabled === true &&
+        options.debugging.response === "block"
+      );
+    return (
+      options.devtools?.response === "block" &&
+      (reason === "geometry"
+        ? options.devtools.detect === true
+        : options.devtools.blockShortcuts === true)
+    );
+  }
+  function blockPage(requestedReason: BlockReason) {
     if (
       destroyed ||
-      options.devtools?.response !== "block" ||
+      !shouldBlock(requestedReason) ||
       !browserDocument ||
       !blocker
     )
       return;
+    activeReasons.add(requestedReason);
+    const reason = reasonPriority.find(
+      (item) => activeReasons.has(item) && shouldBlock(item),
+    )!;
     if (!browserDocument.body) {
       pendingReason = reason;
       if (!removeReady) {
@@ -257,7 +413,10 @@ function createGuard(
           pendingReason = undefined;
           removeReady?.();
           removeReady = undefined;
-          if (pending === "geometry" && !sizeSignal()) return;
+          if (pending === "geometry" && !sizeSignal()) {
+            clearBlock(true, ["geometry"]);
+            return;
+          }
           if (pending) blockPage(pending);
         };
         browserDocument.addEventListener("DOMContentLoaded", ready);
@@ -271,14 +430,7 @@ function createGuard(
     if (destroyed) return;
     if (revision !== policyRevision) {
       // A focus handler may have changed an unrelated option while the modal opened.
-      if (
-        result !== "unavailable" &&
-        options.devtools?.response === "block" &&
-        (reason === "geometry"
-          ? options.devtools.detect
-          : options.devtools.blockShortcuts)
-      )
-        blockPage(reason);
+      if (result !== "unavailable" && shouldBlock(reason)) blockPage(reason);
       return;
     }
     if (result === "shown" || (result === "existing" && !blocked)) {
@@ -289,7 +441,11 @@ function createGuard(
         "page-blocked",
         reason === "shortcut"
           ? "Inspection shortcut observed; background page interaction is restricted."
-          : "Window-size heuristic; background page interaction is restricted. False positives are possible.",
+          : reason === "geometry"
+            ? "Window-size heuristic; background page interaction is restricted. False positives are possible."
+            : reason === "dom-tamper"
+              ? "A static DOM anchor changed; background page interaction is restricted."
+              : "Execution pause suspicion; background page interaction is restricted. This is not proof of debugging.",
       );
     } else if (result === "unavailable" && !unavailableReported) {
       blocked = false;
@@ -314,14 +470,11 @@ function createGuard(
     if (destroyed || revision !== policyRevision) return;
     if (options.devtools?.response === "block") {
       if (next) blockPage("geometry");
-      else if (
-        initial
-          ? blockedReason === "geometry" || pendingReason === "geometry"
-          : recheck || blocked || pendingReason
-      )
-        clearBlock();
+      else if (!initial || activeReasons.has("geometry"))
+        clearBlock(true, recheck ? ["geometry", "shortcut"] : ["geometry"]);
     }
   }
+
   function installListeners() {
     if (browserWindow && browserDocument) {
       function listen(
@@ -405,7 +558,43 @@ function createGuard(
         measure(false, true);
     }
   }
+  const pauseSampler = createPauseSampler(browserDocument);
+  let domMonitor: ReturnType<typeof createDomIntegrityMonitor> | undefined;
+  let runtimeRevision = 0;
+  let domBaselineRevision = 0;
+  function installDomMonitor() {
+    domMonitor?.destroy();
+    domMonitor = undefined;
+    if (!browserDocument || options.domIntegrity?.enabled !== true || destroyed)
+      return;
+    const revision = runtimeRevision;
+    const next = createDomIntegrityMonitor(
+      browserDocument,
+      options.domIntegrity,
+      (type, detail) => {
+        if (
+          destroyed ||
+          revision !== runtimeRevision ||
+          options.domIntegrity?.enabled !== true
+        )
+          return;
+        const before = policyRevision;
+        const baselineBefore = domBaselineRevision;
+        emit(type, detail);
+        if (
+          !destroyed &&
+          before === policyRevision &&
+          baselineBefore === domBaselineRevision &&
+          options.domIntegrity?.response === "block"
+        )
+          blockPage("dom-tamper");
+      },
+    );
+    domMonitor = next;
+    next.rebaseline();
+  }
   installListeners();
+  installDomMonitor();
   return {
     update(patch) {
       if (destroyed) return;
@@ -427,6 +616,29 @@ function createGuard(
           options.integrity,
           validated.integrity,
         );
+      if (validated.debugging)
+        next.debugging = Object.assign(
+          Object.create(null),
+          options.debugging,
+          validated.debugging,
+        );
+      if (validated.domIntegrity)
+        next.domIntegrity = Object.assign(
+          Object.create(null),
+          options.domIntegrity,
+          validated.domIntegrity,
+        );
+      const debuggingChanged =
+        JSON.stringify(next.debugging) !== JSON.stringify(options.debugging);
+      const domChanged = ["enabled", "selectors", "maxNodes", "maxBytes"].some(
+        (key) =>
+          JSON.stringify(
+            next.domIntegrity?.[key as keyof DomIntegrityPolicy],
+          ) !==
+          JSON.stringify(
+            options.domIntegrity?.[key as keyof DomIntegrityPolicy],
+          ),
+      );
       const integrityChanged = [
         "enabled",
         "timeoutMs",
@@ -449,27 +661,23 @@ function createGuard(
         detected = false;
       const revision = ++policyRevision;
       options = next;
+      if (debuggingChanged) pauseSampler.cancel();
+      if (domChanged) {
+        runtimeRevision++;
+        domMonitor?.destroy();
+        domMonitor = undefined;
+      }
       if (integrityChanged || options.integrity?.enabled !== true)
         abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
-      if (
-        (pendingReason === "geometry" && options.devtools?.detect !== true) ||
-        (pendingReason === "shortcut" &&
-          options.devtools?.blockShortcuts !== true)
-      ) {
-        pendingReason = undefined;
-        removeReady?.();
-        removeReady = undefined;
-      }
-      if (
-        options.devtools?.response !== "block" ||
-        (blockedReason === "geometry" && options.devtools.detect !== true) ||
-        (blockedReason === "shortcut" &&
-          options.devtools.blockShortcuts !== true)
-      )
-        clearBlock();
+      const disabledReasons = [...activeReasons].filter(
+        (reason) => !shouldBlock(reason),
+      );
+      if (disabledReasons.length) clearBlock(true, disabledReasons);
       if (destroyed || revision !== policyRevision) return;
       installListeners();
+      if (domChanged && !destroyed && revision === policyRevision)
+        installDomMonitor();
     },
     getOptions() {
       return snapshot(options);
@@ -477,10 +685,46 @@ function createGuard(
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      runtimeRevision++;
+      pauseSampler.cancel();
+      domMonitor?.destroy();
       clearBlock(false);
       abortIntegrityRequests();
       remove.splice(0).forEach((fn) => fn());
       onDestroy?.();
+    },
+    async checkDebugging() {
+      if (destroyed || options.debugging?.enabled !== true) return false;
+      const policy = options.debugging;
+      const suspected = await pauseSampler.sample(policy);
+      if (
+        !suspected ||
+        destroyed ||
+        options.debugging !== policy ||
+        options.debugging.enabled !== true
+      )
+        return false;
+      const revision = policyRevision;
+      emit(
+        "execution-pause-suspected",
+        "A visible-page timer resumed late; debugger pause, busy CPU or scheduling may cause this. This is not proof of DevTools.",
+      );
+      if (
+        !destroyed &&
+        revision === policyRevision &&
+        options.debugging?.response === "block"
+      )
+        blockPage("debugging-suspicion");
+      return true;
+    },
+    rebaselineDom() {
+      if (destroyed || options.domIntegrity?.enabled !== true || !domMonitor)
+        return false;
+      domBaselineRevision++;
+      const result = domMonitor.rebaseline();
+      if (result && activeReasons.has("dom-tamper"))
+        clearBlock(true, ["dom-tamper"]);
+      return result;
     },
     async checkIntegrity(url, expected) {
       if (destroyed || options.integrity?.enabled !== true) return false;
@@ -608,7 +852,14 @@ function registryRecord(host: Window): AutoGuardRecord | undefined {
     instance.value === null
   )
     return undefined;
-  for (const key of ["update", "getOptions", "destroy", "checkIntegrity"]) {
+  for (const key of [
+    "update",
+    "getOptions",
+    "destroy",
+    "checkIntegrity",
+    "checkDebugging",
+    "rebaselineDom",
+  ]) {
     const method = Object.getOwnPropertyDescriptor(instance.value, key);
     if (
       !method ||
