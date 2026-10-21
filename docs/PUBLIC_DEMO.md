@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Optional native page protection (current)
+## SDK security hardening (current)
+
+[Updated SDK guide](https://webguard.uulab.co.kr/docs/?sdk=f647a0d#integrity-budgets) · [Latest demo](https://webguard.uulab.co.kr/demo?sdk=f647a0d#live-demo). Explicit SDK integrity checks now omit credentials/referrers, reject redirects and non-HTTP(S)/userinfo URLs, and enforce validated time, decoded-byte and concurrency budgets. Policy validation rejects inherited/accessor inputs, and the low-level deployment verifier checks the actual root independently of optional headers. The existing obfuscated demo build and opt-in page protection remain available.
+
+Source **`f647a0d`** is deployed as Worker **`091fa762-aaf3-4f2e-9225-3a6c341a1f81`**, deployment **`ae0ad8e6-cf98-4ab7-b6c1-05b4f0ebee94`**, at 100% traffic. All **37** public files matched prepared SHA-256 values. Runtime settings/bindings are unchanged. npm publication remains paused; the canonical release artifact is unchanged. The separately packed verification candidate is not a registry release.
+
+Unit/integration checks passed **398/398**. Fresh installed-package verification passed **30/30** across Chromium, Firefox and WebKit: credential/referrer controls with an SDK-free baseline, redirect rejection, decompression budgets, real connection cancellation, concurrency limits, Vite option serialization and native page-block lifecycle. Local scoped browser checks passed **96/96**, and fresh deployed scoped checks passed **110/110**, both with no retries. Public coverage includes HTTP deployment, runtime SDK, security scenarios, policy switches, resources, navigation and diagnostics. Root/Worker types, lint, formatting, full deployment build and dry run passed. Production dependency advisory lookup reported zero known advisories for its 206-dependency snapshot; that is not a penetration-test result.
+
+Private cookie/HTTP-authenticated assets cannot be verified with this credential-free API. The SDK cannot prohibit DevTools or hide delivered resources, and these checks do not establish a server authorization boundary or independently measured reverse-engineering resistance. Build reports/control files still require protected hosting rules. WebKit's native redirect diagnostic was reproduced without the SDK; exact expected diagnostics are kept separate from unhandled DOM/runtime failures.
+
+[Deployment receipt](evidence/sdk-hardening-deployment.json) · [Installed security receipt](evidence/sdk-hardening-installed.json) · [Installed Vite receipt](evidence/sdk-hardening-vite-installed.json) · [Korean options](INSTALL.ko.md) · [Public guide capture](evidence/sdk-hardening-public-guide.png).
+
+## Optional native page protection (preceding release)
 
 [Try page protection](https://webguard.uulab.co.kr/demo?guard=6d8e941#live-demo). Turn on **페이지 보호 모드**. The SDK then cancels inspection shortcuts even inside editors, observes docked-window size hints, and opens a native modal asking the visitor to close DevTools and recheck. The modal makes the background page inert. The demo offers an explicit exit; SDK teardown and response changes remove the owned UI. Original opt-in SDK defaults and IME composition remain preserved.
 
