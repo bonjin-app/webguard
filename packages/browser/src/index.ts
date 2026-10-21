@@ -175,9 +175,16 @@ function createGuard(
           const event = raw as KeyboardEvent;
           if (destroyed || editableEvent(event) || event.isComposing) return;
           const key = event.key.toLowerCase();
+          // Option/layout transformations can report "Dead", "ˆ", "∆" or "ç".
+          // Match the physical inspect key as well as the unmodified character.
+          const inspectKey = ["i", "j", "c"].includes(key)
+            ? key
+            : ["KeyI", "KeyJ", "KeyC"].includes(event.code)
+              ? event.code.slice(3).toLowerCase()
+              : undefined;
           const shortcut =
             key === "f12" ||
-            (["i", "j", "c"].includes(key) &&
+            (Boolean(inspectKey) &&
               ((event.ctrlKey &&
                 event.shiftKey &&
                 !event.altKey &&
@@ -188,7 +195,7 @@ function createGuard(
                   !event.shiftKey)));
           if (!shortcut) return;
           event.preventDefault();
-          if (!event.repeat) emit("shortcut-blocked", key);
+          if (!event.repeat) emit("shortcut-blocked", inspectKey ?? key);
         });
       if (options.devtools?.blockContextMenu === true)
         listen(browserDocument, "contextmenu", (event) => {

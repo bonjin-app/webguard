@@ -79,6 +79,50 @@ describe("browser SDK", () => {
     expect(fire({ key: "F12" })).toBe(false);
   });
   it.each([
+    { key: "Dead", code: "KeyI" },
+    { key: "ˆ", code: "KeyI" },
+    { key: "∆", code: "KeyJ" },
+    { key: "ç", code: "KeyC" },
+  ])(
+    "recognizes Mac inspect shortcuts by physical code: $code / $key",
+    (key) => {
+      const win = browser();
+      const events: ThreatEvent[] = [];
+      const guard = WebGuard.init({
+        devtools: { blockShortcuts: true },
+        onThreat: (event) => events.push(event),
+      });
+      cleanup.push(() => guard.destroy());
+      const fire = (
+        modifiers: KeyboardEventInit,
+        target: EventTarget = win.document,
+      ) => {
+        const event = new win.KeyboardEvent("keydown", {
+          ...key,
+          ...modifiers,
+          bubbles: true,
+          cancelable: true,
+        });
+        target.dispatchEvent(event);
+        return event.defaultPrevented;
+      };
+      expect(fire({ metaKey: true, altKey: true })).toBe(true);
+      expect(events).toHaveLength(1);
+      // Option typing, unrelated modifier combinations and editable fields stay usable.
+      expect(fire({ altKey: true })).toBe(false);
+      expect(fire({ metaKey: true })).toBe(false);
+      expect(fire({ metaKey: true, altKey: true, shiftKey: true })).toBe(false);
+      expect(
+        fire(
+          { metaKey: true, altKey: true },
+          win.document.querySelector("input")!,
+        ),
+      ).toBe(false);
+      guard.update({ devtools: { blockShortcuts: false } });
+      expect(fire({ metaKey: true, altKey: true })).toBe(false);
+    },
+  );
+  it.each([
     "<input>",
     "<textarea></textarea>",
     "<select><option>One</option></select>",

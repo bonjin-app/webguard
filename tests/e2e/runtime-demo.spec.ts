@@ -8,17 +8,32 @@ interface InputObservation {
   prevented: boolean;
 }
 
-async function observeNextInput(page: Page, type: "keydown" | "contextmenu") {
-  // Await this synchronous setup before sending browser input. A pending evaluate Promise
-  // does not guarantee that its listener was registered before another protocol command.
-  await page.evaluate((eventType) => {
-    const state = window as typeof window & {
-      __webguardE2EInput?: InputObservation;
-    };
-    delete state.__webguardE2EInput;
-    document.addEventListener(
-      eventType,
-      (event) => {
+async function observeNextInput(
+  page: Page,
+  type: "keydown" | "contextmenu",
+  code?: string,
+) {
+  // Await synchronous listener setup before sending browser input. Modifier keydowns
+  // must not satisfy observations intended for the final physical shortcut key.
+  await page.evaluate(
+    ({ eventType, expectedCode }) => {
+      const state = window as typeof window & {
+        __webguardE2EInput?: InputObservation;
+        __webguardE2EInputCleanup?: () => void;
+      };
+      state.__webguardE2EInputCleanup?.();
+      delete state.__webguardE2EInput;
+      const cleanup = () => {
+        document.removeEventListener(eventType, observe);
+        delete state.__webguardE2EInputCleanup;
+      };
+      const observe = (event: Event) => {
+        if (
+          expectedCode &&
+          (!(event instanceof KeyboardEvent) || event.code !== expectedCode)
+        )
+          return;
+        cleanup();
         // Read after every synchronous SDK listener has had a chance to prevent the event.
         queueMicrotask(() => {
           state.__webguardE2EInput = {
@@ -26,10 +41,12 @@ async function observeNextInput(page: Page, type: "keydown" | "contextmenu") {
             prevented: event.defaultPrevented,
           };
         });
-      },
-      { once: true },
-    );
-  }, type);
+      };
+      state.__webguardE2EInputCleanup = cleanup;
+      document.addEventListener(eventType, observe);
+    },
+    { eventType: type, expectedCode: code },
+  );
 }
 
 function inputObservation(page: Page) {
@@ -106,6 +123,46 @@ test("blocks actual F12 and right-click input outside an editor while preserving
   await expect(result).toContainText("허용됨");
   await expect(result).toContainText("입력 영역");
 });
+
+for (const [platform, modifiers] of [
+  ["Mac", "Meta+Alt"],
+  ["Windows", "Control+Shift"],
+]) {
+  test(`cancels actual ${platform} inspect shortcuts only while restrictions are enabled`, async ({
+    page,
+  }) => {
+    await page.goto("/#live-demo");
+    await page.locator("#runtime-advanced > summary").click();
+    const target = page.getByLabel("본문 시험 영역", { exact: true });
+    const result = page.locator("#runtime-input-result");
+    const log = page.locator("#runtime-log");
+    for (const enabled of [true, false]) {
+      await page.locator("#shortcuts").setChecked(enabled);
+      for (const code of ["KeyI", "KeyJ", "KeyC"]) {
+        await page
+          .getByRole("button", { name: "기록 지우기", exact: true })
+          .click();
+        await expect(log.locator("li")).toHaveCount(0);
+        await target.focus();
+        await observeNextInput(page, "keydown", code);
+        // These are trusted browser key events. The assertion covers cancellation
+        // when delivered to the page, not whether a DevTools window opens.
+        await page.keyboard.press(`${modifiers}+${code}`);
+        await expect
+          .poll(() => inputObservation(page))
+          .toEqual({
+            trusted: true,
+            prevented: enabled,
+          });
+        const outcome = enabled ? "차단됨" : "허용됨";
+        await expect(result).toContainText("실제 입력 · 검사 단축키 · 본문");
+        await expect(result).toContainText(outcome);
+        await expect(log).toContainText("실제 입력 · 검사 단축키 · 본문");
+        await expect(log).toContainText(outcome);
+      }
+    }
+  });
+}
 
 test("labels synthetic F12 trials honestly and caps then clears the local event history", async ({
   page,

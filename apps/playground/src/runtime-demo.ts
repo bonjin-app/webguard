@@ -4,14 +4,14 @@ export const runtimeMarkup = `
 <section id="live-demo" class="demo-section runtime-demo" aria-labelledby="runtime-heading">
 <h3 id="runtime-heading" class="sr-only">브라우저 가드 실시간 체험</h3>
 <div class="runtime-switches"><label class="switch-label"><span>단축키 제한<span class="sr-only"> · Restrict F12 / inspect shortcuts</span></span><input id="shortcuts" type="checkbox"></label><label class="switch-label"><span>우클릭 제한<span class="sr-only"> · Restrict context menu</span></span><input id="context" type="checkbox"></label></div>
-<div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>여기를 클릭하고 시험해 보세요.</h3><p>F12를 누르거나 마우스 오른쪽 버튼을 눌러보세요.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div><p id="runtime-state" class="runtime-state" aria-live="polite"></p>
+<div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>제한을 켠 뒤, 여기를 클릭하세요.</h3><p>Mac ⌘+⌥+I · Windows Ctrl+Shift+I · F12<br>우클릭은 별도 스위치로 켜고 끌 수 있습니다.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div><p id="runtime-state" class="runtime-state" aria-live="polite"></p>
 <p class="runtime-scope">브라우저 메뉴로 여는 개발자도구는 제한할 수 없습니다. 페이지에 전달되는 입력만 제한합니다.</p>
 <details id="runtime-advanced" class="runtime-advanced"><summary>고급 옵션과 실행 기록 보기</summary>
 <div class="runtime-limit"><strong>개발자도구 창 자체는 차단하지 못합니다.</strong><p>Chrome 메뉴, 이미 열린 도구, 외부 디버깅과 콘솔 실행은 통제하지 못합니다. 창 크기 감지는 오탐할 수 있는 추정 신호입니다. 새로고침하면 초기 설정으로 돌아갑니다.</p></div>
 <div class="lab-actions"><button id="runtime-enable" class="primary">입력 제한 켜기</button><button id="runtime-disable" class="sample-run">입력 제한 끄기</button><button id="runtime-tour" class="sample-run">전체 기능 체험 시작</button></div><p id="runtime-tour-status" aria-live="polite">입력 제한·정책 스위치 → 배포 호환성·파일 검사 → 삽입·변조 5종 → High 난독화를 시작합니다. 실제 키 입력은 위 영역에서 직접 시험하세요.</p>
 <div class="runtime-grid"><article class="sample-card"><h3>SDK 설정</h3><div class="toggles">
 <label><input id="runtime-detect" type="checkbox" checked> 창 크기 추정 감지</label><label><input id="runtime-warn" type="checkbox"> SDK 경고를 콘솔에도 출력</label><label><input id="sdk-integrity" type="checkbox" checked> 명시적 SDK 파일 검사 허용</label><label for="runtime-threshold">감지 기준 차이 (픽셀)<input id="runtime-threshold" type="number" min="40" max="1000" step="1" value="160"></label></div><p id="runtime-config-error" aria-live="polite"></p><details><summary>지금 적용된 update 코드</summary><pre id="runtime-config"></pre></details><p id="detection">감지된 추정 신호 없음 · 실제 개발자도구 열림 상태는 판정하지 않습니다.</p></article>
-<article class="sample-card"><h3>편집·합성 이벤트 비교</h3><label for="runtime-editor">편집 허용 시험 입력</label><input id="runtime-editor" placeholder="입력·편집·우클릭은 제한에서 제외됩니다."><div class="lab-actions"><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p>합성 이벤트는 SDK의 이벤트 취소만 시험합니다. 실제 개발자도구 열림 여부를 검사하지 않습니다.</p></article>
+<article class="sample-card"><h3>편집·합성 이벤트 비교</h3><label for="runtime-editor">편집 허용 시험 입력</label><input id="runtime-editor" placeholder="입력·편집·우클릭은 제한에서 제외됩니다."><div class="lab-actions"><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-mac-inspect" class="sample-run">⌘+⌥+I 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p>합성 이벤트는 SDK의 이벤트 취소만 시험합니다. 실제 개발자도구 열림 여부를 검사하지 않습니다.</p></article>
 <article class="sample-card"><div class="lab-actions"><h3>로컬 이벤트 기록</h3><button id="runtime-clear" class="text-button">기록 지우기</button></div><ul id="runtime-log" class="runtime-log" aria-live="polite" aria-label="로컬 이벤트 기록"></ul><p>최근 20건만 이 화면에 기록합니다. 입력 내용은 수집하지 않고 기록을 서버로 보내지 않습니다.</p></article></div></details></section>`;
 export const sdkIntegrityMarkup = `<section id="sdk-file" class="demo-section integrity-demo" aria-labelledby="integrity-heading"><div class="section-heading"><div><h3 id="integrity-heading">SDK로 실제 파일을 검사하세요.</h3><p>보호된 예제 파일을 checkIntegrity()로 읽고, 정상 해시와 한 글자 다른 기대 해시를 비교합니다.</p></div></div><button id="runtime-integrity" class="primary">SDK 파일 검사</button><pre id="runtime-integrity-result" class="lab-result" aria-live="polite">아직 검사하지 않았습니다.</pre><p class="lab-limit">공개 manifest를 기준으로 한 SDK 검사 체험입니다. 변조한 파일을 배포하거나 실행하지 않습니다. 신뢰할 수 있는 기준 해시의 배포는 별도 책임입니다.</p><a href="#sdk-integrity">SDK 검사 허용 옵션 확인</a></section>`;
 const get = <T extends HTMLElement>(id: string) =>
@@ -66,7 +66,7 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
     get("runtime-config-error").textContent = "";
     const options = guard.getOptions();
     get("runtime-state").textContent =
-      `현재 적용: 단축키 ${options.devtools?.blockShortcuts ? "ON" : "OFF"} · 우클릭 ${options.devtools?.blockContextMenu ? "ON" : "OFF"}`;
+      `현재 적용: 단축키 ${options.devtools?.blockShortcuts ? "ON (⌘+⌥+I/J/C · Ctrl+Shift+I/J/C · F12)" : "OFF (스위치를 켜야 제한됩니다)"} · 우클릭 ${options.devtools?.blockContextMenu ? "ON" : "OFF"}`;
     get("runtime-config").textContent =
       `guard.update(${JSON.stringify({ devtools: options.devtools, integrity: options.integrity }, null, 2)});`;
     get("runtime-input-result").textContent =
@@ -103,10 +103,13 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
   function observe(event: Event) {
     if (event instanceof KeyboardEvent) {
       const key = event.key.toLowerCase();
+      const inspectKey =
+        ["i", "j", "c"].includes(key) ||
+        ["KeyI", "KeyJ", "KeyC"].includes(event.code);
       if (
         key !== "f12" &&
         !(
-          ["i", "j", "c"].includes(key) &&
+          inspectKey &&
           ((event.ctrlKey && event.shiftKey) || (event.metaKey && event.altKey))
         )
       )
@@ -141,6 +144,19 @@ export function initRuntimeDemo(guard: WebGuardInstance) {
         cancelable: true,
       }),
       "F12",
+    ),
+  );
+  get("test-mac-inspect").addEventListener("click", () =>
+    synthetic(
+      new KeyboardEvent("keydown", {
+        key: "Dead",
+        code: "KeyI",
+        metaKey: true,
+        altKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+      "⌘+⌥+I (Option 문자 변환)",
     ),
   );
   get("test-menu").addEventListener("click", () =>
