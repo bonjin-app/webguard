@@ -26,8 +26,10 @@ Initial comparison found three P2 differences: the transparent illustrations app
 ## Behavior and responsive checks
 
 - In-app browser: 1440 desktop and 390 mobile captures, live restriction change, native input area, folded advanced controls and hero demo navigation checked. Mobile document width equals its viewport (390 px).
+- Browser console review in both local and public in-app previews found no error entries during normal startup/navigation. The separately documented intentional protection trials can generate expected policy diagnostics.
 - Existing local three-engine suite: 198 cases passed initially; the three new navigation cases used an incorrect literal `tabindex` expectation for a native button. The semantic `tabIndex` assertion was corrected; all nine navigation cases then passed across three engines. No app bug was hidden or timeout increased.
 - Final built artifact: navigation, runtime and setup smoke passed 36/36 across Chromium, Firefox and WebKit.
+- Final deployed artifact: all 185 public browser/HTTP checks passed without automatic retries. The earlier host-beacon assertion mismatch and slow engine-download prerequisites are retained in `docs/evidence/blue-sdk-deployment.json`; no sandbox/SDK code or time budget changed to obtain that result.
 - SDK/browser policy implementation and sandbox execution budgets were not changed. npm publication remains paused.
 
 ## Follow-up polish

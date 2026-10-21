@@ -4,7 +4,19 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Light interface and clearer navigation (current)
+## SDK-first blue demo (current)
+
+[Open the blue demo](https://webguard.uulab.co.kr/demo?ui=blue-aede67c). The installable SDK and Vite integration are the product; this website introduces them and demonstrates their behavior. A centered blue hero leads to installation or a spacious experiment. Browser guards, obfuscation, SDK file inspection and advanced scenarios use tabs; advanced runtime options, logs and the longer integration examples start collapsed. Native checkbox switches and keyboard tab navigation remain functional, selections and results survive tab changes, and existing fragment links reveal their target panels and disclosures.
+
+UI source **`aede67c`** is deployed as Worker **`98783c45-299d-4934-9c7d-af34591a4a2e`**. All **35** prepared public files matched their deployed SHA-256 values. Runtime settings and bindings match the previous release. SDK and sandbox execution code and budgets are unchanged. npm publication remains paused: public **0.2.0**, unpublished candidate **0.3.0**.
+
+The final local navigation/runtime/setup matrix passed **36/36** across Chromium, Firefox and WebKit. Earlier local regression coverage passed 198 cases plus all nine corrected navigation cases; the first navigation test had incorrectly expected a literal `tabindex` attribute instead of the native button's semantic `tabIndex` property. Browser-rendered desktop/mobile comparison and the intentional visual adaptations are recorded in [design QA](../design-qa.md).
+
+The final fresh public matrix passed **185/185** with no automatic retries across the three browser engines and HTTP checks. The preceding run's four failures remain documented: two assertions counted the host's Cloudflare RUM beacon as SDK traffic, and two WebKit fault-injection scenarios spent their prerequisite time downloading the transform engine. The test now excludes only the exact same-origin host RUM endpoint; every application request is still checked. The bounded transformation timeout recovered normally, and SDK/sandbox code and time budgets were not changed. All affected scenarios passed in the final complete run.
+
+[Deployment and verification receipt](evidence/blue-sdk-deployment.json) · [Desktop](evidence/blue-public-desktop.png) · [Spacious experiment](evidence/blue-public-runtime.png) · [Mobile](evidence/blue-public-mobile.png).
+
+## Light interface and clearer navigation (historical)
 
 [Open the updated demo](https://webguard.uulab.co.kr/demo?ui=light-e459d5e). The demo, documentation and three protected examples now use light page backgrounds, white cards, dark text, mint accents, pale code areas and visible focus outlines. The first screen explains the three-step journey and offers direct links to live protection and the Vite setup generator. Mobile feature navigation scrolls within its own row, and Korean text avoids awkward word breaks. Native WebKit selects now render at the same measured 46px height as the other engines; disclosure markers remain visible.
 

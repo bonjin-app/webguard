@@ -1,0 +1,326 @@
+{
+  "checkedAt": "2026-10-21T01:19:41.752Z",
+  "url": "https://webguard.uulab.co.kr/demo?ui=blue-aede67c",
+  "sourceCommit": "aede67c46dc513a145d749ffd11ae8fe9c25b3c1",
+  "testCommit": "f8d3917c236b47867c3e5cb80c83f0f8a486dd01",
+  "deployment": {
+    "id": "30da7e88-f2e6-4288-82dd-dbf8493c9689",
+    "version": "98783c45-299d-4934-9c7d-af34591a4a2e",
+    "versions": [
+      {
+        "version_id": "98783c45-299d-4934-9c7d-af34591a4a2e",
+        "percentage": 100
+      }
+    ]
+  },
+  "unchanged": {
+    "workerRuntime": true,
+    "bindings": true,
+    "sdkAndSandboxCode": true,
+    "codexConfiguration": true
+  },
+  "assets": {
+    "count": 35,
+    "matched": 35,
+    "files": [
+      {
+        "path": "/assets/index-BQOWM-au.css",
+        "status": 200,
+        "bytes": 28789,
+        "match": true,
+        "sha256": "1552b5548d453882b5accb13d62caf173296000075cb6bc65dcee89acfc4d09b"
+      },
+      {
+        "path": "/assets/index-Dlz6w9i7.js",
+        "status": 200,
+        "bytes": 540663,
+        "match": true,
+        "sha256": "059b07a884d21d6b9217f658a35e527642744035ecb3ec1744113b398a6e53fd"
+      },
+      {
+        "path": "/assets/index.browser-CtOKMlmK.js",
+        "status": 200,
+        "bytes": 1654565,
+        "match": true,
+        "sha256": "199db8f4370cd10516313fed7a59eac2242ac8ba7b12ed600fc3b886c8ad2a7f"
+      },
+      {
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "match": true,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a"
+      },
+      {
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "match": true,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a"
+      },
+      {
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "match": true,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b"
+      },
+      {
+        "path": "/assets/transform.worker-CjrfSGER.js",
+        "status": 200,
+        "bytes": 124999,
+        "match": true,
+        "sha256": "0c9e941b5d475e3d78855f246742ae46fce045e8f4ffece2db25aec438ae497f"
+      },
+      {
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "match": true,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554"
+      },
+      {
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 19180,
+        "match": true,
+        "sha256": "b09eec7cb2ff79c93195700eefabbe6ca101969d3ceea1f92a49721f9f7eb541"
+      },
+      {
+        "path": "/docs/assets/index-DmPpgrSY.js",
+        "status": 200,
+        "bytes": 15457,
+        "match": true,
+        "sha256": "0997d935c003f2130f31f5c4b95a5949bca86bc4682b154188be7ae89af65bc3"
+      },
+      {
+        "path": "/docs/assets/index-lg960Ytl.css",
+        "status": 200,
+        "bytes": 3553,
+        "match": true,
+        "sha256": "b427b9eedb94c446f800b6fcabcf0947e46f7b4dfccb4404a674100d0af669e9"
+      },
+      {
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 584,
+        "match": true,
+        "sha256": "0f1c109b10a245a1712ff5397ac87c44227d4dffcc4ebf025b37bc48db565a6d"
+      },
+      {
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "match": true,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+      },
+      {
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "match": true,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3"
+      },
+      {
+        "path": "/examples/react/assets/index-AqKREL_J.js",
+        "status": 200,
+        "bytes": 1814914,
+        "match": true,
+        "sha256": "2ff8274fb2a267ad5157d5cc17629eea4ae0311c27943df08aff0c489ff80d79"
+      },
+      {
+        "path": "/examples/react/assets/lazy-BcaoucNl.js",
+        "status": 200,
+        "bytes": 2994,
+        "match": true,
+        "sha256": "b5c79e3f06eb79b4ed482e5ea59b63a2bf8302542bf0f48a1357e5685bc9abbb"
+      },
+      {
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "match": true,
+        "sha256": "0f9682d600382d52779690ed753a3fda323dc2c4b4cc7932694d5f8f8fe5bb97"
+      },
+      {
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "match": true,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+      },
+      {
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "match": true,
+        "sha256": "a34bc36d12b55170d45cc216184d11230eea7aa1c858ad2116676298f42acb80"
+      },
+      {
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "match": true,
+        "sha256": "695fe8ca4c17cd9b821baedf7d26c486e791b2170304aac726e44b5903d6e9c1"
+      },
+      {
+        "path": "/examples/vanilla-js/assets/about-XUaWAt0I.js",
+        "status": 200,
+        "bytes": 536,
+        "match": true,
+        "sha256": "1d7b0b15d2d26f4e3731f683194e8077cd3bf9c3f8d1c406005099a18272be54"
+      },
+      {
+        "path": "/examples/vanilla-js/assets/index-BIEmXysL.js",
+        "status": 200,
+        "bytes": 9390,
+        "match": true,
+        "sha256": "4173a09b1eb157a865f31fb3f39dd12d34e50e49f4cd413a7596f8a21aafbae1"
+      },
+      {
+        "path": "/examples/vanilla-js/assets/lazy-DuBVgNU4.js",
+        "status": 200,
+        "bytes": 707,
+        "match": true,
+        "sha256": "eae8f8adef28fe18bee8fb81e78bafaed16d7e52369e6669d9cd6b54aa37edd0"
+      },
+      {
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "match": true,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+      },
+      {
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "match": true,
+        "sha256": "1a25c90dc67695f41678af074ec21f3a407550d1c040b65207bb64313fed02fe"
+      },
+      {
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 961,
+        "match": true,
+        "sha256": "b1559a8055f942138541ab89870489bb0165d3bc511c1b817b97aea7af0704bc"
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index--A5yCZ2l.js",
+        "status": 200,
+        "bytes": 10367,
+        "match": true,
+        "sha256": "da5dd52e6c75e7da6e39c3c731db69204044b2b0267c8358a82495cf4b2943b4"
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "match": true,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/lazy-OTF0gUJa.js",
+        "status": 200,
+        "bytes": 1173,
+        "match": true,
+        "sha256": "9dbef3979d334d7e355098917452867b11547766f0ba31c20557f5b64ac2afa1"
+      },
+      {
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "match": true,
+        "sha256": "8e1d21eb823df2b9afa47dbff69808f531655a400e1408815f25dfa6e81784c8"
+      },
+      {
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "match": true,
+        "sha256": "3463d6dd427cf6274afc67817c80a0404b8f22a87bc1bedf52b695081b08ab67"
+      },
+      {
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "match": true,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831"
+      },
+      {
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "match": true,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471"
+      },
+      {
+        "path": "/index.html",
+        "status": 200,
+        "bytes": 1004,
+        "match": true,
+        "sha256": "35900bee2b5755c2564019b56dd8a3b142d5a21dd1d0a07486c2879d678344e5"
+      },
+      {
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "match": true,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+      }
+    ]
+  },
+  "npm": {
+    "checkedAt": "2026-10-21T01:09:20.127Z",
+    "status": 200,
+    "latest": "0.2.0",
+    "candidatePublished": false,
+    "publishAttempted": false,
+    "tarballRepacked": false
+  },
+  "verification": {
+    "build": "passed",
+    "rootTypes": "passed",
+    "workerTypes": "passed",
+    "lint": "passed",
+    "formatting": "passed",
+    "dryRun": "passed",
+    "public": {
+      "passed": 185,
+      "failed": 0,
+      "retries": 0,
+      "duration": "5.8m",
+      "log": ".npm-release/blue-public-final.log"
+    },
+    "finalLocalSmoke": {
+      "passed": 36,
+      "failed": 0,
+      "engines": ["chromium", "firefox", "webkit"],
+      "log": ".npm-release/blue-final-smoke.log"
+    },
+    "visual": {
+      "report": "design-qa.md",
+      "desktop": "docs/evidence/blue-public-desktop.png",
+      "experiment": "docs/evidence/blue-public-runtime.png",
+      "mobile": "docs/evidence/blue-public-mobile.png",
+      "normalConsoleErrors": 0
+    }
+  },
+  "earlierFindings": [
+    {
+      "scope": "first public matrix",
+      "passed": 181,
+      "failed": 4,
+      "log": ".npm-release/blue-public-e2e.log",
+      "findings": [
+        "Two disabled-integrity assertions included the host-managed /cdn-cgi/rum beacon. f8d3917 excludes only that exact same-origin host endpoint; every application request remains asserted absent.",
+        "Two WebKit fault-injection scenarios exhausted prerequisites while the transform engine was downloading. Traces show the 15-second transform timeout recovered with controls enabled, and cancellation/cleanup passed before a later overall test timeout. Underlying transport/edge/runner attribution is undetermined. No SDK code or budgets were changed; the final fresh full public matrix passed."
+      ]
+    }
+  ],
+  "limitations": [
+    "Browser engines tested locally, not physical-device Safari.",
+    "No assertion that DevTools or delivered browser resources can be hidden.",
+    "Public asset transport can exceed the bounded transformation deadline; a failed transform is not counted as protection success."
+  ]
+}
