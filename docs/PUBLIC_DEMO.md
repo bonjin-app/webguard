@@ -4,7 +4,21 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## SSR environment integration and guides (current)
+## Opaque CSS Modules and bounded runtime guards (current)
+
+[Try the new controls](https://webguard.uulab.co.kr/demo?guards=368e725#runtime-hardening) · [Korean feature guide](https://webguard.uulab.co.kr/docs/#runtime-hardening). The actual obfuscated demo uses opaque CSS Modules and the same automatic SDK for selected static-DOM monitoring, explicit rebaseline and a one-shot visible-page timer-lateness sample. Controls compare genuine DOM changes with protection OFF/ON and optional native page response. No injected debugger loop or forced reload is used.
+
+Source **368e725** is deployed as Worker **e832eaf9-9a35-4bab-9a35-071a749c9adf**, deployment **fa3b07dd-0286-4fab-858f-f6d26db22d97**, at 100% traffic. All **40/40 public files** matched prepared SHA-256 values; bindings and runtime settings are unchanged. npm publication remains paused and the canonical prepared release tarball is unchanged.
+
+Fresh verification passed **459/459 unit/integration tests**, **148 local scoped browser cases**, and **246 public HTTP/browser cases**, without retries. The local/public matrices each explicitly skip two Chromium-CDP-only pause/resume scenarios on the other engines; DOM and ordinary timer checks pass all three engines. The final local feature-only smoke passed 13 cases with those two skips. Build, root/Worker types, lint, format and deployment dry run passed. A read-only review found a multi-cause page-response release bug; the fix retains independent reasons and passed re-review and regression tests.
+
+The same final test tarball was installed into fresh Vite and Next projects. Vite 8.3.4 proved one configuration connecting SDK, obfuscation, opaque CSS Modules, actual CSP/SRI, DOM text/attribute/removal/replacement detection, live toggles and rebaseline. Next 16.4.2 / React 19.3.1 proved matching SSR/hydrated classes and computed styles, nonce CSP, counter, lazy import and client navigation in all three engines, with no page errors or failed requests. Next internal font styles retain their metadata naming. Public JS grows from 972,723 to 7,099,717 uncompressed bytes; this is functional verification, not performance neutrality. All 34 packed files match the current package build.
+
+The features are opt-in. CSS Modules transformation does not hide HTML/global selectors or rendered DOM. DOM snapshots protect selected static light-DOM state only; app-owned legitimate changes must explicitly reset the baseline. Timing delays can result from CPU load or sleep and cannot establish DevTools state. Page responses cannot close browser tools, stop console/background execution or enforce server authorization. Previous JSP/Python/PHP receipts remain foundation evidence; this release does not claim to rerun those application servers.
+
+[Deployment receipt](evidence/runtime-hardening-deployment.json) · [Vite installed candidate](evidence/runtime-vite-consumer-verification.json) · [Next installed candidate](evidence/runtime-next-consumer-verification.json) · [Native public-page capture](evidence/runtime-hardening-public.png).
+
+## SSR environment integration and guides (preceding release)
 
 [Environment integration](https://webguard.uulab.co.kr/docs/?ssr=cff59f4#environments) · [Korean guide](https://webguard.uulab.co.kr/docs/ENVIRONMENTS.ko.txt) · [Runtime verification](https://webguard.uulab.co.kr/docs/SSR_VERIFICATION.txt). Next.js App Router now has a dedicated client-only Webpack adapter and automatic SDK startup; JSP/Java and Python/PHP have runnable server-rendered examples with protected external assets, final-byte SRI and server response policies. The public release presents their setup and measured validation scope. Those application servers were tested locally; this Worker continues serving the existing demo and documentation.
 
