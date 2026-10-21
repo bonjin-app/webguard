@@ -4,7 +4,21 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Own-site default SDK protection (current)
+## SDK explanation and social presence (current)
+
+[SDK strengths](https://webguard.uulab.co.kr/demo?product=6a00ff6#sdk-strengths) · [Documentation scope](https://webguard.uulab.co.kr/docs/?product=6a00ff6#security-strengths). The demo now introduces code obfuscation, browser policies, live runtime guards and explicit file/deployment checks before the interactive lab. Each capability links to a working demonstration. Integration guidance and FAQ distinguish build-time automation, explicit browser opt-ins, direct file-check calls and host/server responsibilities. Documentation adds the same product context and a responsibility table while preserving existing routes, anchors and controls.
+
+Both pages now serve their own Open Graph/Twitter metadata, canonical URL, description and structured WebSite/SoftwareApplication data directly in initial HTML. Branded **1200×630 PNG** previews have matching MIME/dimensions and stable public paths. No ratings, price, release date, unverified security grade or new SDK-strength claim is added. SVG sources are retained in docs/assets.
+
+Source **`6a00ff6`** is deployed as Worker **`e0b8596d-5c56-46e6-bb0e-04cde57cd0ee`**, deployment **`5961da25-73f1-4118-a803-525549846715`**, at 100% traffic. All **39** public files matched prepared SHA-256 values, including both social images. Runtime settings and bindings are unchanged. npm publication remains paused and the canonical prepared artifact is unchanged.
+
+Fresh scoped local browser checks passed **123/123** and the full public HTTP/browser matrix passed **233/233**, with no retries, across Chromium, Firefox and WebKit. The metadata test disables page JavaScript to verify crawler-readable initial HTML and checks PNG headers, dimensions, social URLs and structured data. Build, root/Worker types, scoped lint, formatting, dry run and read-only factual review passed. This content/UI task did not rerun the unit suite or change SDK algorithms. Native public-page captures confirm the new composition.
+
+External social-platform caches, actual platform preview rendering and search rich-result eligibility were not independently verified. These page changes explain existing candidate capabilities and do not make DevTools lockable, browser-delivered code secret or server authorization automatic.
+
+[Deployment and metadata receipt](evidence/product-presence-deployment.json) · [Public demo capture](evidence/product-presence-public-demo.png) · [Public docs capture](evidence/product-presence-public-docs.png) · [Demo OG image](https://webguard.uulab.co.kr/og-demo.png) · [Docs OG image](https://webguard.uulab.co.kr/docs/og-docs.png).
+
+## Own-site default SDK protection (preceding release)
 
 [Try the actual page controls](https://webguard.uulab.co.kr/demo?guard=9fc09df#live-demo) · [Protected documentation](https://webguard.uulab.co.kr/docs/?guard=9fc09df#overview). The demo and documentation now start the SDK automatically and reuse that same instance for their live controls. Inspection shortcuts apply across the page, including editors, with a native page-protection modal response. Context-menu cancellation is on outside editors. Geometry detection is independently selectable and defaults OFF to avoid false-positive startup lockouts. The demo has an explicit modal exit and a restore-defaults control; refresh resets the current page's choices. Static obfuscation, source-map removal and existing server policies are independent of these runtime switches. SDK consumer defaults remain opt-in.
 

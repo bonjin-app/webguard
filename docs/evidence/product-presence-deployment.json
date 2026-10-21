@@ -1,0 +1,484 @@
+{
+  "checkedAt": "2026-10-21T05:58:05.320Z",
+  "source": "6a00ff6",
+  "workerVersion": "e0b8596d-5c56-46e6-bb0e-04cde57cd0ee",
+  "deployment": "5961da25-73f1-4118-a803-525549846715",
+  "previousWorkerVersion": "e9524b29-1b4c-4c31-b106-f5c5dc24bc08",
+  "trafficPercent": 100,
+  "runtimeAndBindingsUnchanged": true,
+  "npmPublication": "paused",
+  "canonicalPreparedArtifactUnchanged": true,
+  "canonicalPreparedArtifactSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+  "scope": "Static metadata, social images, product explanation, navigation and documentation hierarchy; no SDK security algorithm or consumer defaults changed.",
+  "changes": [
+    "Page-specific static Open Graph, Twitter card, canonical, description and robots metadata",
+    "1200x630 blue branded PNG previews with SVG sources",
+    "WebSite and SoftwareApplication JSON-LD; documentation WebPage relationship",
+    "SDK CODE/POLICY/RUNTIME/VERIFY explanation linked to working demonstrations",
+    "Automatic, opt-in, manual invocation and host/server responsibility guidance",
+    "FAQ for SDK-only vs build integration, browser-control limits and performance/compatibility"
+  ],
+  "metadata": [
+    {
+      "url": "https://webguard.uulab.co.kr/demo",
+      "title": "WebGuard — 웹 코드 보호 SDK · 난독화와 브라우저 가드",
+      "description": "JavaScript 난독화, 브라우저 가드, SRI·CSP와 배포 검증을 연결하는 WebGuard SDK. 보호 전후를 직접 비교하고 Vite·Webpack·esbuild·HTML 적용 방법을 확인하세요.",
+      "canonical": "https://webguard.uulab.co.kr/demo",
+      "og": {
+        "type": "website",
+        "siteName": "WebGuard",
+        "locale": "ko_KR",
+        "image": "https://webguard.uulab.co.kr/og-demo.png",
+        "alt": "WebGuard — 웹 코드 보호를, 빌드부터 런타임까지. 난독화·브라우저 가드·배포 검증",
+        "width": 1200,
+        "height": 630
+      },
+      "twitterCard": "summary_large_image",
+      "structuredData": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://webguard.uulab.co.kr/#website",
+            "name": "WebGuard",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "inLanguage": "ko-KR"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://webguard.uulab.co.kr/#sdk",
+            "name": "WebGuard",
+            "description": "빌드 난독화·브라우저 가드·배포 검증을 연결하는 웹 코드 보호 SDK",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "softwareHelp": {
+              "@type": "WebPage",
+              "url": "https://webguard.uulab.co.kr/docs/"
+            }
+          }
+        ]
+      },
+      "staticInitialHtml": true,
+      "imageBytes": 59822,
+      "imageSha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc"
+    },
+    {
+      "url": "https://webguard.uulab.co.kr/docs/",
+      "title": "WebGuard 개발자 가이드 — 설치·보호 범위·환경별 연동",
+      "description": "WebGuard SDK의 보안 강점과 적용 범위를 확인하세요. 설치, 난독화, 브라우저 가드, SRI·CSP, 파일 검사와 Vite·범용 빌드 연동을 안내합니다.",
+      "canonical": "https://webguard.uulab.co.kr/docs/",
+      "og": {
+        "type": "website",
+        "siteName": "WebGuard",
+        "locale": "ko_KR",
+        "image": "https://webguard.uulab.co.kr/docs/og-docs.png",
+        "alt": "WebGuard 개발자 가이드 — 내 웹 앱에 WebGuard를 연결하세요. 설치·환경별 연동·보호 범위와 검증",
+        "width": 1200,
+        "height": 630
+      },
+      "twitterCard": "summary_large_image",
+      "structuredData": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://webguard.uulab.co.kr/#website",
+            "name": "WebGuard",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "inLanguage": "ko-KR"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://webguard.uulab.co.kr/#sdk",
+            "name": "WebGuard",
+            "description": "빌드 난독화·브라우저 가드·배포 검증을 연결하는 웹 코드 보호 SDK",
+            "url": "https://webguard.uulab.co.kr/demo",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "softwareHelp": {
+              "@type": "WebPage",
+              "url": "https://webguard.uulab.co.kr/docs/"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "name": "WebGuard 개발자 가이드 — 설치·보호 범위·환경별 연동",
+            "url": "https://webguard.uulab.co.kr/docs/",
+            "description": "WebGuard SDK의 보안 강점과 적용 범위를 확인하세요. 설치, 난독화, 브라우저 가드, SRI·CSP, 파일 검사와 Vite·범용 빌드 연동을 안내합니다.",
+            "inLanguage": "ko-KR",
+            "isPartOf": {
+              "@id": "https://webguard.uulab.co.kr/#website"
+            },
+            "about": {
+              "@id": "https://webguard.uulab.co.kr/#sdk"
+            }
+          }
+        ]
+      },
+      "staticInitialHtml": true,
+      "imageBytes": 65729,
+      "imageSha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492"
+    }
+  ],
+  "verification": {
+    "localBrowsers": {
+      "passed": 123,
+      "total": 123,
+      "engines": ["chromium", "firefox", "webkit"],
+      "retries": 0
+    },
+    "publicMatrix": {
+      "passed": 233,
+      "total": 233,
+      "engines": ["chromium", "firefox", "webkit"],
+      "includesHttp": true,
+      "retries": 0
+    },
+    "build": true,
+    "rootTypecheck": true,
+    "workerTypecheck": true,
+    "scopedLint": true,
+    "formatting": true,
+    "deployDryRun": true,
+    "readOnlyClaimReview": "No blocking factual findings; capability and scope claims match current implementation",
+    "unitSuiteRerun": false,
+    "unitSuiteNote": "UI/content/static metadata scope. Current checks use installed build and real browser/HTTP verification; no SDK algorithm or policy API changed.",
+    "crawlerChecks": "Real browser context with JavaScript disabled verifies static initial-HTML metadata and JSON-LD, plus HTTP PNG MIME/signature/dimensions.",
+    "nativeUi": "Public demo and documentation viewed in Codex in-app browser on macOS; screenshots saved."
+  },
+  "publicAssets": {
+    "checkedAt": "2026-10-21T05:53:11.271Z",
+    "total": 39,
+    "matched": 39,
+    "files": [
+      {
+        "file": "assets/index-6orG6HeT.js",
+        "path": "/assets/index-6orG6HeT.js",
+        "status": 200,
+        "bytes": 680695,
+        "sha256": "a432f59ad3f298737fafed613cdfbde6f269d488de21b28526140b5d2be8f6db",
+        "match": true
+      },
+      {
+        "file": "assets/index-CbhBC2Ei.css",
+        "path": "/assets/index-CbhBC2Ei.css",
+        "status": 200,
+        "bytes": 33572,
+        "sha256": "916c0863e28935c9b6be13597e370a30c55c99fb173d7cbbf5b537a17a921bfb",
+        "match": true
+      },
+      {
+        "file": "assets/index.browser-hwr-EbVl.js",
+        "path": "/assets/index.browser-hwr-EbVl.js",
+        "status": 200,
+        "bytes": 1758314,
+        "sha256": "9e519de7103df97ffec61aaa3e6760d5d491e2e4ad4f122da5f6acf060080ae5",
+        "match": true
+      },
+      {
+        "file": "assets/input-try-C8omM10O.webp",
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "bytes": 57156,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "match": true
+      },
+      {
+        "file": "assets/sdk-cube-BfW27hof.webp",
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "bytes": 48932,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "match": true
+      },
+      {
+        "file": "assets/sky-background-BT0G8_Wo.webp",
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "bytes": 11068,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "match": true
+      },
+      {
+        "file": "assets/transform.worker-DIh-7H8b.js",
+        "path": "/assets/transform.worker-DIh-7H8b.js",
+        "status": 200,
+        "bytes": 950961,
+        "sha256": "2b72247bab9a612ead8a9c0f1960044fbd147b4fc28c94fd67dce598f34bd0fd",
+        "match": true
+      },
+      {
+        "file": "assets/web-app-B46Mgxd8.webp",
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "bytes": 96138,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "match": true
+      },
+      {
+        "file": "docs/ENVIRONMENTS.ko.txt",
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "bytes": 6956,
+        "sha256": "6511cd5b6a3f3eb7e88d3c4af8821e0fe9dedb0b5f68b37e1af3bc31733d475c",
+        "match": true
+      },
+      {
+        "file": "docs/INSTALL.ko.txt",
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "bytes": 30138,
+        "sha256": "b131c893d0b16bf0cea2f7f56abe589ed5554db0da8346611b4d5742dfa9a062",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-gal6gU6H.css",
+        "path": "/docs/assets/index-gal6gU6H.css",
+        "status": 200,
+        "bytes": 9377,
+        "sha256": "f6fbdc8f8364f1a58cb696b7ec724e29157f7f531013de39e2ac6f16d43194db",
+        "match": true
+      },
+      {
+        "file": "docs/assets/index-rielPsav.js",
+        "path": "/docs/assets/index-rielPsav.js",
+        "status": 200,
+        "bytes": 212953,
+        "sha256": "9473caa0ea38633d9b618d13170e0ab2a17b8af6d70c59e5beeffbc52808f9d5",
+        "match": true
+      },
+      {
+        "file": "docs/favicon.svg",
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "docs/index.html",
+        "path": "/docs/index.html",
+        "status": 200,
+        "bytes": 4804,
+        "sha256": "8d4522e561e7597dcd0fdf9add5cc7444f0a49881521a42e924e485cc25f637f",
+        "match": true
+      },
+      {
+        "file": "docs/og-docs.png",
+        "path": "/docs/og-docs.png",
+        "status": 200,
+        "bytes": 65729,
+        "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492",
+        "match": true
+      },
+      {
+        "file": "docs/third-party-licenses.md",
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-65KBRBiT.css",
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "bytes": 1851,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/index-DN77-9Us.js",
+        "path": "/examples/react/assets/index-DN77-9Us.js",
+        "status": 200,
+        "bytes": 1860412,
+        "sha256": "a223bc0b65313d164c5197c656a2844f936e7a30bba82083e378e76c74d91c36",
+        "match": true
+      },
+      {
+        "file": "examples/react/assets/lazy-BTnrHYzp.js",
+        "path": "/examples/react/assets/lazy-BTnrHYzp.js",
+        "status": 200,
+        "bytes": 2871,
+        "sha256": "7b050da9a603807c357b499cb542c4d4f16d55e9c710df0999dd342a76afe1db",
+        "match": true
+      },
+      {
+        "file": "examples/react/index.html",
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "bytes": 899,
+        "sha256": "478ecabc4eedd182a5272ab85169c3c245022e438a947e310402964ac78c4cd2",
+        "match": true
+      },
+      {
+        "file": "examples/react/third-party-licenses.md",
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "bytes": 3429,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "match": true
+      },
+      {
+        "file": "examples/react/webguard-manifest.json",
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "bytes": 818,
+        "sha256": "6ae25c2fcf8d86cfecc813d4546599e8a21a1c356777c4d4b7a28bf2492e2e29",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/about/index.html",
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "bytes": 1676,
+        "sha256": "1a3aa6bdc189ce92d44486700d5cf82a957591a7d695ab70625ddbd3d93c4e9f",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/about-CAW_e6Sj.js",
+        "path": "/examples/vanilla-js/assets/about-CAW_e6Sj.js",
+        "status": 200,
+        "bytes": 604,
+        "sha256": "90fe3768114b7bb22e35e40402db12c92937ee83e926f2ca949b19f072dbc39d",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/index-CFR1pnev.js",
+        "path": "/examples/vanilla-js/assets/index-CFR1pnev.js",
+        "status": 200,
+        "bytes": 16691,
+        "sha256": "dfc1340126004b73cad05a0e5c193128b04484981139628f25755466ac6e305b",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/lazy-Bn3oem6U.js",
+        "path": "/examples/vanilla-js/assets/lazy-Bn3oem6U.js",
+        "status": 200,
+        "bytes": 603,
+        "sha256": "7c0443f12a8b27df49ae8a20b0bee3cf4fd3beea3b26132cc12eaa92e22686f7",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/assets/style-BzABUnnU.css",
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/index.html",
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "92722489fec5d9fa78b1e36d300fbfacbc6c0f8b022717f9e106604bb4632471",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-js/webguard-manifest.json",
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "bytes": 962,
+        "sha256": "e4ebcc53d875abb9a8b2f6951e55c45a718905fcd40b1c4581a2ec85fc034839",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "bytes": 1848,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/index-DPjAMuFK.js",
+        "path": "/examples/vanilla-ts/assets/index-DPjAMuFK.js",
+        "status": 200,
+        "bytes": 17630,
+        "sha256": "ee9e4e2d6d32090f456b6b096007aa3aaead509ef3cbedd21992af9b65b7adea",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/assets/lazy-HIt-Q8Ju.js",
+        "path": "/examples/vanilla-ts/assets/lazy-HIt-Q8Ju.js",
+        "status": 200,
+        "bytes": 1150,
+        "sha256": "f44cd25248d4c7367af4c4ff89d52e45403ba7bec8ba60b6d74166862a76934f",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/index.html",
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "bytes": 2661,
+        "sha256": "1f3fa425d44b54399e47602fa630facae74d26897392ab77edb6d042d18e5eb2",
+        "match": true
+      },
+      {
+        "file": "examples/vanilla-ts/webguard-manifest.json",
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "bytes": 664,
+        "sha256": "512ab53559204dfdfb5854223111432661a248077dd80fc892a5098758d8d6d8",
+        "match": true
+      },
+      {
+        "file": "favicon.ico",
+        "path": "/favicon.ico",
+        "status": 200,
+        "bytes": 4286,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "match": true
+      },
+      {
+        "file": "favicon.svg",
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 301,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "match": true
+      },
+      {
+        "file": "index.html",
+        "path": "/demo",
+        "status": 200,
+        "bytes": 4212,
+        "sha256": "c9f43f1b9659db7bec8c6bcdc5d9223568c4ef150fe930e5727a9f32249fe815",
+        "match": true
+      },
+      {
+        "file": "og-demo.png",
+        "path": "/og-demo.png",
+        "status": 200,
+        "bytes": 59822,
+        "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc",
+        "match": true
+      },
+      {
+        "file": "third-party-licenses.md",
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "bytes": 68,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "match": true
+      }
+    ]
+  },
+  "screenshots": [
+    "product-presence-public-demo.png",
+    "product-presence-public-docs.png"
+  ],
+  "references": ["https://ogp.me/", "https://schema.org/SoftwareApplication"],
+  "limitations": [
+    "Social-platform recrawl caches and external search rich-result eligibility were not independently tested or guaranteed.",
+    "Product copy explains existing protections; no new protection strength or performance improvement is claimed.",
+    "Web SDK cannot forbid or forcibly close DevTools, hide browser-delivered resources, or replace server authorization.",
+    "Current explanations cover an unpublished 0.3.0 candidate; npm publication remains paused."
+  ],
+  "reproduction": {
+    "local": "pnpm exec playwright test tests/e2e/product-presence.spec.ts tests/e2e/navigation.spec.ts tests/e2e/site-guard.spec.ts tests/e2e/docs-site-guard.spec.ts tests/e2e/runtime-demo.spec.ts tests/e2e/diagnostics.spec.ts tests/e2e/demo.spec.ts tests/e2e/setup.spec.ts tests/e2e/playground.spec.ts --workers=2",
+    "public": "WEBGUARD_PUBLIC_URL=https://webguard.uulab.co.kr pnpm exec playwright test -c playwright.public.config.ts --workers=2"
+  }
+}
