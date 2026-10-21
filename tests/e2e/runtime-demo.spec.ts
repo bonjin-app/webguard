@@ -204,14 +204,25 @@ test("reports a real mismatch when the manifest-listed SDK file response is chan
   expect(changedFiles).toBeGreaterThanOrEqual(2);
 });
 
-test("does not request any resource when the SDK integrity policy is disabled", async ({
+test("does not request application resources when the SDK integrity policy is disabled", async ({
   page,
 }) => {
   await page.goto("/");
   await page.locator("#runtime-advanced > summary").click();
   await page.locator("#sdk-integrity").uncheck();
   const requests: string[] = [];
-  page.on("request", (request) => requests.push(request.url()));
+  page.on("request", (request) => {
+    // The host can emit its own Cloudflare RUM beacon independently of the SDK.
+    // Keep every application request in the assertion, including late images.
+    const url = new URL(request.url());
+    if (
+      process.env.WEBGUARD_PUBLIC_URL &&
+      url.origin === new URL(page.url()).origin &&
+      url.pathname === "/cdn-cgi/rum"
+    )
+      return;
+    requests.push(request.url());
+  });
   await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await page
     .getByRole("button", { name: "SDK 파일 검사", exact: true })
