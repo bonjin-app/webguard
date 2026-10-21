@@ -9,6 +9,8 @@ const browserTests = [
   "**/e2e/playground.spec.ts",
   "**/e2e/lab.spec.ts",
   "**/e2e/runtime-demo.spec.ts",
+  "**/e2e/site-guard.spec.ts",
+  "**/e2e/docs-site-guard.spec.ts",
   "**/e2e/diagnostics.spec.ts",
   "**/e2e/resources.spec.ts",
   "**/e2e/policy-demo.spec.ts",

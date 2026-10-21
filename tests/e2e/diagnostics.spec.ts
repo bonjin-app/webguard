@@ -11,7 +11,7 @@ test("loads valid brand icons and starts without application or resource errors"
   });
   await page.goto("/");
   await expect(page.locator("#runtime-state")).toContainText(
-    "페이지 보호 모드 OFF",
+    "페이지 보호 모드 ON",
   );
   await expect(page.locator("#runtime-state")).toContainText("단축키 ON");
   for (const [path, mime] of [

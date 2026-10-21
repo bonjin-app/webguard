@@ -1,9 +1,30 @@
 import "./style.css";
+import { getAutoGuard, installAutoGuard } from "@webguard/browser";
+import { siteGuardOptions } from "../../site-guard-options";
+
+// Reuse the build-injected instance. Development starts the same policy here.
+const siteGuard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
 <header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
 <div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a></nav><main id="main-content" tabindex="-1">
+<aside class="site-protection" aria-label="이 문서의 실제 보호 설정">
+  <details id="site-protection-controls">
+    <summary><span>이 문서에도 WebGuard 적용 중</span><span class="site-protection-action">실제 설정 바꾸기</span></summary>
+    <p>이 페이지의 난독화된 빌드와 SDK를 직접 사용합니다. 아래 변경은 이 문서 전체에 즉시 적용되며 새로고침하면 기본값으로 돌아갑니다.</p>
+    <div class="site-protection-switches">
+      <label><input id="site-page-block" type="checkbox" checked>검사 입력에 페이지 보호 안내</label>
+      <label><input id="site-shortcuts" type="checkbox" checked>검사 단축키 제한 · 입력 영역 포함</label>
+      <label><input id="site-context" type="checkbox" checked>우클릭 제한 · 입력 영역 제외</label>
+      <label><input id="site-detect" type="checkbox">크기 변화 추정 감지 · 오탐 가능</label>
+    </div>
+    <p id="site-protection-state" role="status" aria-live="polite"></p>
+    <p id="site-protection-event" role="status" aria-live="polite">아직 관측된 SDK 이벤트가 없습니다.</p>
+    <p class="site-protection-limit">브라우저 메뉴로 여는 개발자도구와 콘솔 실행은 통제할 수 없습니다. 보호 안내는 페이지 위에 표시되며 개발자도구 창을 닫지 않습니다. 빌드 난독화·서버 보안 헤더는 이 스위치로 해제되지 않습니다.</p>
+    <a href="/demo#live-demo">보호 전후 비교와 전체 데모 →</a>
+  </details>
+</aside>
 <section id="overview" class="docs-intro"><div class="eyebrow">WEBGUARD GUIDE</div><h1>내 웹 앱에,<br><span>WebGuard를 연결하세요.</span></h1><p class="lead">패키지 설치부터 난독화와 브라우저 가드까지.<br>사용하는 환경에 맞춰 차근차근 적용해 보세요.</p><div class="docs-actions"><a class="primary" href="#install">설치부터 시작하기</a><a class="secondary" href="#environments">다른 환경에 적용하기</a></div><p class="docs-meta">Node.js 22.12+ · Vite와 범용 빌드 지원 · 별도 서비스 계정 없이 사용</p><aside>난독화는 코드 분석을 어렵게 합니다. 브라우저에 전달된 파일은 관찰할 수 있으므로 비밀값과 권한 검증은 서버에서 관리하세요.</aside></section>
 <section id="install"><h2>설치하고, 내 앱에 적용하세요</h2><aside>0.3.0은 아직 npm에 게시하지 않았습니다. 현재 공개 버전은 0.2.0입니다. 아래 새 동작은 로컬 후보 기준이며 공개 0.2.0에 동일하게 제공된다고 판단하지 마세요.</aside><p>Node.js 22.12 이상에서 사용합니다. 패키지 하나에 범용 CLI·빌드 API·독립 SDK·Vite 연동·보호 서버가 포함됩니다. Vite가 없어도 범용 빌드 경로를 사용할 수 있습니다. 아래는 Vite 7/8의 ESM 웹 앱 설정입니다.</p><p>검토한 로컬 tgz가 있다면 아래 경로를 실제 파일 경로로 바꿔 시험 앱에 설치합니다.</p><pre><code>npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><details class="future-install"><summary>npm 게시 후 사용할 설치 명령</summary><pre><code># 0.3.0 배포 후에만 실행 — 현재는 미게시
 npm install -D uulab-webguard@0.3.0</code></pre></details><pre><code>import { defineConfig } from 'vite';
@@ -88,3 +109,82 @@ function syncCurrentSection() {
 }
 window.addEventListener("hashchange", syncCurrentSection);
 syncCurrentSection();
+
+const siteSwitch = (id: string) =>
+  document.querySelector<HTMLInputElement>(`#${id}`)!;
+const pageBlockSwitch = siteSwitch("site-page-block");
+const shortcutSwitch = siteSwitch("site-shortcuts");
+const contextSwitch = siteSwitch("site-context");
+const detectSwitch = siteSwitch("site-detect");
+const siteStatus = document.querySelector<HTMLElement>(
+  "#site-protection-state",
+)!;
+const eventStatus = document.querySelector<HTMLElement>(
+  "#site-protection-event",
+)!;
+
+function renderSiteProtection() {
+  const options = siteGuard.getOptions().devtools;
+  pageBlockSwitch.checked = options?.response === "block";
+  shortcutSwitch.checked = options?.blockShortcuts === true;
+  contextSwitch.checked = options?.blockContextMenu === true;
+  detectSwitch.checked = options?.detect === true;
+  siteStatus.textContent = `실제 SDK 상태 · 페이지 보호 안내 ${pageBlockSwitch.checked ? "ON" : "OFF"} · 단축키 ${shortcutSwitch.checked ? "ON" : "OFF"} · 우클릭 ${contextSwitch.checked ? "ON" : "OFF"} · 크기 추정 ${detectSwitch.checked ? "ON" : "OFF"}`;
+}
+
+function updateSiteProtection() {
+  siteGuard.update({
+    devtools: {
+      detect: detectSwitch.checked,
+      blockShortcuts: shortcutSwitch.checked,
+      blockContextMenu: contextSwitch.checked,
+      response: pageBlockSwitch.checked ? "block" : "monitor",
+      shortcutScope: "page",
+    },
+  });
+  renderSiteProtection();
+}
+
+siteGuard.update({
+  onThreat(event) {
+    const messages: Record<string, string> = {
+      "shortcut-blocked": "페이지에 전달된 검사 단축키를 취소했습니다.",
+      "shortcut-unavailable": "이 입력은 취소할 수 없습니다.",
+      "context-menu-blocked": "페이지의 우클릭 기본 동작을 취소했습니다.",
+      "context-menu-unavailable": "이 우클릭 이벤트는 취소할 수 없습니다.",
+      "devtools-heuristic":
+        "크기 변화 추정 신호입니다. 개발자도구 열림을 확정하지 않습니다.",
+      "page-blocked":
+        "페이지 보호 안내가 표시되었습니다. 개발자도구 창의 상태는 바꾸지 않습니다.",
+      "page-unblocked": "페이지 보호 안내가 해제되었습니다.",
+      "page-block-unavailable":
+        "이 브라우저에서 페이지 보호 안내를 표시할 수 없습니다.",
+    };
+    eventStatus.textContent =
+      messages[event.type] ?? `SDK 이벤트: ${event.type}`;
+    if (event.type !== "page-blocked") return;
+    const dialog = document.querySelector("[data-webguard-blocker]");
+    if (!dialog || dialog.querySelector("[data-site-block-exit]")) return;
+    const exit = document.createElement("button");
+    exit.type = "button";
+    exit.setAttribute("data-site-block-exit", "");
+    exit.className = "site-protection-exit";
+    exit.textContent = "이 사이트의 보호 모드 끄기";
+    exit.addEventListener("click", () => {
+      pageBlockSwitch.checked = false;
+      updateSiteProtection();
+    });
+    (dialog.querySelector("section") ?? dialog).append(exit);
+  },
+});
+for (const control of [
+  pageBlockSwitch,
+  shortcutSwitch,
+  contextSwitch,
+  detectSwitch,
+])
+  control.addEventListener("change", updateSiteProtection);
+renderSiteProtection();
+window.addEventListener("pagehide", (event) => {
+  if (!event.persisted) siteGuard.destroy();
+});

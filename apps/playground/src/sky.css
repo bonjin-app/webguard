@@ -1031,3 +1031,42 @@ main.sdk-site {
     animation: none;
   }
 }
+
+/* The status describes this very page, independent of the selected demo tab. */
+.site-protection-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1160px;
+  margin: 28px auto 0;
+  padding: 20px 24px;
+  border: 1px solid #dbe8ff;
+  border-radius: 20px;
+  background: #f2f7ff;
+  color: #254675;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.site-protection-strip strong {
+  font-size: 15px;
+  color: #1c3b68;
+}
+.site-protection-strip p {
+  margin: 4px 0 0;
+  color: #526b8f;
+}
+.site-protection-strip a {
+  flex-shrink: 0;
+  color: #2663df;
+  font-weight: 650;
+}
+@media (max-width: 760px) {
+  .site-protection-strip {
+    margin: 20px 20px 0;
+    padding: 18px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}

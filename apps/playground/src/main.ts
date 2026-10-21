@@ -1,4 +1,5 @@
-import { WebGuard } from "@webguard/browser";
+import { getAutoGuard, installAutoGuard } from "@webguard/browser";
+import { siteGuardOptions } from "../../site-guard-options";
 import { runIsolated, type RunResult } from "./sandbox";
 import { examples, integrations } from "./examples";
 import "./style.css";
@@ -25,10 +26,13 @@ import {
 } from "./runtime-demo";
 const cubeArt = new URL("./assets/sdk-cube.webp", import.meta.url).href;
 const webArt = new URL("./assets/web-app.webp", import.meta.url).href;
+// Production uses the injected automatic instance; dev/HMR uses the same registry.
+const guard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header class="site-header"><a class="brand" href="/" aria-label="WebGuard Playground"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
 <main class="sdk-site">
+<aside id="site-protection-status" class="site-protection-strip" aria-label="이 페이지의 실제 보호 상태"><div><strong>이 페이지에도 WebGuard가 적용되어 있습니다.</strong><p id="site-protection-summary" aria-live="polite"></p></div><a href="#live-demo">이 페이지의 보호 설정 <span aria-hidden="true">↗</span></a></aside>
 <section class="sdk-hero" aria-labelledby="hero-heading"><div class="hero-content"><div class="eyebrow">WEB PROTECTION SDK</div><h1 id="hero-heading">작은 설정으로,<br><span>코드 보호를</span> 한 단계 더.</h1><p>Vite 앱에 난독화와 브라우저 가드를 연결하세요.</p><div class="hero-actions"><a class="primary" href="#sdk-install">SDK 적용하기</a><a class="demo-link" href="#sdk-demo">데모 체험하기</a></div><div class="hero-flow"><div class="flow-art"><img src="${cubeArt}" alt="WebGuard SDK 패키지" width="180" height="180"><strong>WebGuard</strong><p class="flow-caption">내 앱에 설치하는 개발자 SDK</p></div><div class="hero-code-block"><div class="hero-code"><div class="code-filename">vite.config.ts</div><pre><code>import { defineConfig } from 'vite';
 import { webguardApp } from 'uulab-webguard';
 
@@ -250,11 +254,7 @@ copy.addEventListener("click", async () => {
       "Clipboard unavailable. Select and copy the protected output manually.";
   }
 });
-const guard = WebGuard.init({
-  devtools: { detect: true, response: "monitor" },
-  integrity: { enabled: true },
-  onThreat: reportRuntimeThreat,
-});
+guard.update({ onThreat: reportRuntimeThreat });
 const cleanupRuntime = initRuntimeDemo(guard);
 let currentIntegration: (typeof integrations)[number] = integrations[0];
 function selectedSetup() {

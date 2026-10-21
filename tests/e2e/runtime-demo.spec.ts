@@ -57,20 +57,27 @@ function inputObservation(page: Page) {
   );
 }
 
+async function openBasicDemo(page: Page, path: string) {
+  await page.goto(path);
+  // These scenarios exercise the basic non-editable policy explicitly. The
+  // public site now starts in page protection mode, covered separately below.
+  await page.locator("#runtime-page-block").uncheck();
+}
+
 test("reaches live SDK controls from the hero and applies both policy buttons", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
+  await page.locator("#hero-heading").scrollIntoViewIfNeeded();
   await expect(page.locator("#hero-heading")).toBeInViewport();
   await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
   await expect(page.locator("#live-demo")).toBeInViewport();
   await page.locator("#runtime-advanced > summary").click();
   await expect(page.locator("#shortcuts")).toBeChecked();
-  await expect(page.locator("#context")).not.toBeChecked();
+  await expect(page.locator("#context")).toBeChecked();
   await expect(page.locator("#sdk-integrity")).toBeChecked();
   await expect(page.locator("#runtime-state")).toContainText("단축키 ON");
-  // No opt-in click: the public demo must start protected and still allow
-  // switching it off for comparison. This observes page cancellation only.
+  // Explicit basic mode isolates input cancellation from the default modal response.
   await page.getByLabel("본문 시험 영역", { exact: true }).focus();
   await observeNextInput(page, "keydown", "KeyI");
   await page.keyboard.press("Meta+Alt+KeyI");
@@ -96,7 +103,7 @@ test("reaches live SDK controls from the hero and applies both policy buttons", 
 test("blocks actual F12 and right-click input outside an editor while preserving editable context menus", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
@@ -143,7 +150,7 @@ for (const [platform, modifiers] of [
   test(`cancels actual ${platform} inspect shortcuts only while restrictions are enabled`, async ({
     page,
   }) => {
-    await page.goto("/#live-demo");
+    await openBasicDemo(page, "/#live-demo");
     await page.locator("#runtime-advanced > summary").click();
     const target = page.getByLabel("본문 시험 영역", { exact: true });
     const result = page.locator("#runtime-input-result");
@@ -179,7 +186,7 @@ for (const [platform, modifiers] of [
 test("labels synthetic F12 trials honestly and caps then clears the local event history", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
@@ -214,7 +221,7 @@ test("labels synthetic F12 trials honestly and caps then clears the local event 
 test("checks a real manifest and file through the SDK with matching and different expected hashes", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   // Pass through unchanged bytes, while disabling browser HTTP caching for this
   // network-observation assertion. Cached SDK reads are valid product behavior.
@@ -253,7 +260,7 @@ test("checks a real manifest and file through the SDK with matching and differen
 test("reports a real mismatch when the manifest-listed SDK file response is changed", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   let changedFiles = 0;
   await page.route(`**${examplePath}**`, async (route) => {
@@ -287,7 +294,7 @@ test("reports a real mismatch when the manifest-listed SDK file response is chan
 test("does not request application resources when the SDK integrity policy is disabled", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   await page.locator("#sdk-integrity").uncheck();
   const requests: string[] = [];
@@ -317,7 +324,7 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
   page,
   browserName,
 }) => {
-  await page.goto("/");
+  await openBasicDemo(page, "/");
   await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "전체 기능 체험 시작", exact: true })
@@ -369,19 +376,19 @@ async function useUndockedGeometry(page: Page) {
   });
 }
 
-test("opt-in page protection cancels trusted Mac inspection input inside an editor and permits rechecking", async ({
+test("default page protection cancels trusted Mac inspection input inside an editor and permits rechecking", async ({
   page,
 }) => {
   await useUndockedGeometry(page);
   await page.goto("/#live-demo");
   const mode = page.locator("#runtime-page-block");
-  await expect(mode).not.toBeChecked();
+  await expect(mode).toBeChecked();
   await page.locator("#runtime-advanced > summary").click();
   await mode.check();
   await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#shortcuts")).toBeDisabled();
-  await expect(page.locator("#runtime-detect")).toBeChecked();
-  await expect(page.locator("#runtime-detect")).toBeDisabled();
+  await expect(page.locator("#runtime-detect")).not.toBeChecked();
+  await expect(page.locator("#runtime-detect")).toBeEnabled();
   await expect(page.locator("#runtime-warn")).toBeDisabled();
   await expect(page.locator("#runtime-config")).toContainText(
     '"shortcutScope": "page"',
@@ -453,6 +460,8 @@ test("simulated docked-window geometry opens the page dialog and recheck waits f
   await useUndockedGeometry(page);
   await page.goto("/#live-demo");
   await page.locator("#runtime-page-block").check();
+  await page.locator("#runtime-advanced > summary").click();
+  await page.locator("#runtime-detect").check();
   // An explicit fixture for the heuristic, not an opened browser DevTools window.
   await page.evaluate(() => {
     Object.defineProperty(window, "outerWidth", {

@@ -45,6 +45,9 @@ test("demonstrates live SDK controls and provides selectable integration code", 
   page,
 }) => {
   await page.goto("/");
+  // This comparison exercises basic input cancellation, independently of the
+  // site's default modal response, covered by the own-site guard scenarios.
+  await page.locator("#runtime-page-block").uncheck();
   await page.locator("#runtime-advanced > summary").click();
   await page.getByRole("button", { name: "F12 시험 이벤트 실행" }).click();
   await expect(page.locator("#live-result")).toContainText("차단됨");

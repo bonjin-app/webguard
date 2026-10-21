@@ -28,7 +28,7 @@ test("protects locally, compares real output, and creates a local integrity repo
     });
   }
   await page.getByRole("tab", { name: "브라우저 가드", exact: true }).click();
-  await expect(page.getByLabel("Restrict context menu")).not.toBeChecked();
+  await expect(page.getByLabel("Restrict context menu")).toBeChecked();
   await expect(
     page.getByLabel("Restrict F12 / inspect shortcuts"),
   ).toBeChecked();

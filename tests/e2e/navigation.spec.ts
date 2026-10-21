@@ -60,6 +60,7 @@ test("starts with a quiet browser guard surface and preserves choices across key
   await expect(page.locator("#security-lab")).toBeHidden();
   await expect(page.locator(".setup-details")).not.toHaveAttribute("open");
 
+  await page.locator("#runtime-page-block").uncheck();
   await page.locator("#shortcuts").check();
   await runtime.focus();
   await page.keyboard.press("ArrowRight");
