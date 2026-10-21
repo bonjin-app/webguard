@@ -47,7 +47,7 @@ test("demonstrates live SDK controls and provides selectable integration code", 
   await page.goto("/");
   await page.locator("#runtime-advanced > summary").click();
   await page.getByRole("button", { name: "F12 시험 이벤트 실행" }).click();
-  await expect(page.locator("#live-result")).toContainText("허용됨");
+  await expect(page.locator("#live-result")).toContainText("차단됨");
   await page.getByLabel("Restrict F12 / inspect shortcuts").check();
   await page.getByRole("button", { name: "F12 시험 이벤트 실행" }).click();
   await expect(page.locator("#live-result")).toContainText("차단됨");

@@ -65,9 +65,21 @@ test("reaches live SDK controls from the hero and applies both policy buttons", 
   await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
   await expect(page.locator("#live-demo")).toBeInViewport();
   await page.locator("#runtime-advanced > summary").click();
-  await expect(page.locator("#shortcuts")).not.toBeChecked();
+  await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#context")).not.toBeChecked();
   await expect(page.locator("#sdk-integrity")).toBeChecked();
+  await expect(page.locator("#runtime-state")).toContainText("단축키 ON");
+  // No opt-in click: the public demo must start protected and still allow
+  // switching it off for comparison. This observes page cancellation only.
+  await page.getByLabel("본문 시험 영역", { exact: true }).focus();
+  await observeNextInput(page, "keydown", "KeyI");
+  await page.keyboard.press("Meta+Alt+KeyI");
+  await expect
+    .poll(() => inputObservation(page))
+    .toEqual({
+      trusted: true,
+      prevented: true,
+    });
 
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
