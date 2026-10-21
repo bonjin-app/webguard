@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("reports empty thrown values as execution failures instead of matching outputs", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   for (const code of ["throw new Error('');", "throw '';"]) {
     await page.getByLabel("Source JavaScript", { exact: true }).fill(code);
     await page.getByRole("button", { name: "Protect & compare" }).click();

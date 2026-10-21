@@ -5,7 +5,7 @@ test("generates one Vite configuration for strict React and explicit vanilla com
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/");
+  await page.goto("/#setup");
   await expect(page.getByLabel("프로젝트 유형")).toBeVisible({ timeout: 1500 });
   await page.getByLabel("프로젝트 유형").selectOption("react");
   await expect(page.locator("#setup-code")).toContainText(
@@ -57,7 +57,7 @@ test("copies the selected configuration and keeps choices when integration tabs 
       },
     });
   });
-  await page.goto("/");
+  await page.goto("/#setup");
   await expect(page.getByLabel("프로젝트 유형")).toBeVisible({ timeout: 1500 });
   await page.getByLabel("프로젝트 유형").selectOption("vanilla-string");
   await page.getByLabel("설정 코드: 우클릭 제한").uncheck();

@@ -1,8 +1,8 @@
 # uulab-webguard
 
-Vite preview의 명시적인 `preview.proxy` 경로는 백엔드가 응답 헤더·인증·비공개 자료를 보호해야 합니다. 좁은 API prefix를 사용하세요. `proxy.bypass`는 정적 파일 보호 우회를 막기 위해 지원하지 않으며 시작 전 오류로 표시합니다.
+개발자의 웹 앱에 설치하는 보호 SDK와 Vite 빌드 통합 패키지입니다. 웹사이트는 SDK 동작과 보호 전후를 확인하는 데모이며, 운영 앱의 보호는 설치한 패키지와 배포 설정에서 수행합니다.
 
-Vite 웹 앱에 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 적용하는 단일 패키지입니다. Node.js 22.12 이상, Vite 7/8의 ESM 웹 앱을 지원합니다.
+Vite 설정 한 번으로 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 연결합니다. Node.js 22.12 이상, Vite 7/8의 ESM 웹 앱을 지원합니다.
 
 [데모 체험](https://webguard.uulab.co.kr/demo) · [한국어 전체 가이드](INSTALL.ko.md) · [온라인 가이드](https://webguard.uulab.co.kr/docs/#install)
 
@@ -59,6 +59,26 @@ import { getWebGuard } from "uulab-webguard/client";
 getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 ```
 
+### SDK 직접 연결
+
+Vite 자동 통합을 쓰면 위 `/client`로 기존 인스턴스를 조회하세요. 자동 SDK 없이 직접 수명 주기를 관리할 때만 `/browser`를 사용하며, 중복 초기화하지 않습니다.
+
+```ts
+import { WebGuard } from "uulab-webguard/browser";
+
+const guard = WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+  onThreat: (event) => console.info("[WebGuard]", event.type),
+});
+
+// 이 페이지에 즉시 적용합니다. 새로고침 후에는 초기 설정으로 돌아갑니다.
+guard.update({ devtools: { blockShortcuts: false } });
+```
+
+앱 종료·기능 해제 시 `guard.destroy()`를 호출하면 이벤트 리스너와 진행 중인 명시적 파일 검사를 정리합니다. 해제한 인스턴스에 `update()`를 호출해도 다시 시작하지 않습니다. `getOptions()`는 현재 옵션의 분리된 스냅샷을 반환합니다.
+
+직접 연결한 브라우저 SDK는 빌드 난독화·SRI·CSP·HTTP 헤더를 자동 생성하지 않습니다. 난독화와 자동 연결이 필요하면 `webguardApp()`을 사용하세요. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 사이트 전체 자동 검사나 서버 권한 검증 기능이 아닙니다.
+
 Node 서버 API도 제공합니다. 브라우저 번들에 가져오지 마세요.
 
 ```js
@@ -80,6 +100,8 @@ npx --no-install webguard-check dist --url https://YOUR-SITE.example/
 - `/headers`: 서버 정책 생성
 - `/server`: Node 보호 서버 `createProtectedServer(directory)`
 - `/verify`: Node 배포 검사 `checkDeployment(directory, baseUrl)`
+
+Vite preview의 명시적인 `preview.proxy` 경로는 백엔드가 응답 헤더·인증·비공개 자료를 보호해야 합니다. 좁은 API prefix를 사용하세요. `proxy.bypass`는 정적 파일 보호 우회를 막기 위해 지원하지 않으며 시작 전 오류로 표시합니다.
 
 난독화와 RC4 문자열 인코딩은 전달된 HTML·CSS·JavaScript나 네트워크 요청을 숨기지 않습니다. 브라우저 메뉴·콘솔·이미 열린 개발자도구는 통제하지 못합니다. 비밀키·가격 재계산·권한 검증은 서버에 두세요. 서버 검증은 SDK의 자동 기능이 아닙니다. 원격 수집·무한 디버거 루프를 추가하지 않습니다.
 

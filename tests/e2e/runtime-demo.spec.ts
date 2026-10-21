@@ -40,11 +40,14 @@ function inputObservation(page: Page) {
   );
 }
 
-test("shows the live SDK controls in the initial viewport and applies both policy buttons", async ({
+test("reaches live SDK controls from the hero and applies both policy buttons", async ({
   page,
 }) => {
   await page.goto("/");
+  await expect(page.locator("#hero-heading")).toBeInViewport();
+  await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
   await expect(page.locator("#live-demo")).toBeInViewport();
+  await page.locator("#runtime-advanced > summary").click();
   await expect(page.locator("#shortcuts")).not.toBeChecked();
   await expect(page.locator("#context")).not.toBeChecked();
   await expect(page.locator("#sdk-integrity")).toBeChecked();
@@ -65,6 +68,7 @@ test("blocks actual F12 and right-click input outside an editor while preserving
   page,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
     .click();
@@ -107,6 +111,7 @@ test("labels synthetic F12 trials honestly and caps then clears the local event 
   page,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "입력 제한 켜기", exact: true })
     .click();
@@ -130,6 +135,7 @@ test("checks a real manifest and file through the SDK with matching and differen
   page,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   // Pass through unchanged bytes, while disabling browser HTTP caching for this
   // network-observation assertion. Cached SDK reads are valid product behavior.
   await page.route(`**${examplePath}**`, (route) => route.continue());
@@ -143,6 +149,7 @@ test("checks a real manifest and file through the SDK with matching and differen
   const manifestResponse = page.waitForResponse(
     (response) => new URL(response.url()).pathname === manifestPath,
   );
+  await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await page
     .getByRole("button", { name: "SDK 파일 검사", exact: true })
     .click();
@@ -167,6 +174,7 @@ test("reports a real mismatch when the manifest-listed SDK file response is chan
   page,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   let changedFiles = 0;
   await page.route(`**${examplePath}**`, async (route) => {
     if (new URL(route.request().url()).pathname === manifestPath) {
@@ -183,6 +191,7 @@ test("reports a real mismatch when the manifest-listed SDK file response is chan
       ]),
     });
   });
+  await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await page
     .getByRole("button", { name: "SDK 파일 검사", exact: true })
     .click();
@@ -199,9 +208,11 @@ test("does not request any resource when the SDK integrity policy is disabled", 
   page,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   await page.locator("#sdk-integrity").uncheck();
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
+  await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await page
     .getByRole("button", { name: "SDK 파일 검사", exact: true })
     .click();
@@ -216,17 +227,20 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
   browserName,
 }) => {
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   await page
     .getByRole("button", { name: "전체 기능 체험 시작", exact: true })
     .click();
   await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#context")).toBeChecked();
+  await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await expect(page.locator("#runtime-integrity-result")).toContainText(
     "정상 해시: 일치",
   );
   await expect(page.locator("#runtime-integrity-result")).toContainText(
     "다른 기대 해시: 불일치",
   );
+  await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
   await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료", {
     timeout: 30000,
   });
@@ -235,6 +249,7 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
     "data-result",
     "pass",
   );
+  await page.getByRole("tab", { name: "코드 난독화", exact: true }).click();
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
     timeout: 30000,
   });
@@ -242,6 +257,7 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
     page.getByRole("button", { name: "High", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   if (process.env.WEBGUARD_PUBLIC_URL && browserName === "chromium") {
+    await page.getByRole("tab", { name: "브라우저 가드", exact: true }).click();
     await page
       .locator("#live-demo")
       .screenshot({ path: "docs/evidence/runtime-demo.png" });

@@ -33,7 +33,7 @@ test("does not charge slow real Worker startup against the code execution budget
   page,
 }) => {
   await slowWorkerStartup(page, 1400);
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
     timeout: 20000,
@@ -53,7 +53,7 @@ test("allows bounded iframe startup before starting execution", async ({
       /* deterministic frame startup contention */
     }
   });
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
     timeout: 20000,
@@ -65,7 +65,7 @@ test("reports unavailable startup separately and cleans up instead of claiming c
   page,
 }) => {
   await slowWorkerStartup(page, 0, true);
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("#equivalence")).toHaveText("Execution error", {
     timeout: 20000,
@@ -86,7 +86,7 @@ test("still terminates infinite code after delayed startup at the execution dead
   page,
 }) => {
   await slowWorkerStartup(page, 1400);
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page
     .getByLabel("Source JavaScript", { exact: true })
     .fill("while (true) {}");
@@ -106,7 +106,7 @@ test("still terminates infinite code after delayed startup at the execution dead
 test("Worker ready spam cannot extend the execution deadline", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByLabel("Source JavaScript", { exact: true }).fill(`
 const stop = performance.now() + 3000;
 while (performance.now() < stop) {
@@ -137,7 +137,7 @@ test("cleans up failed Worker construction and keeps the controls available", as
       },
     });
   });
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("#equivalence")).toHaveText("Execution error");
   await expect(page.locator("#logs")).toContainText("Sandbox startup failed");
@@ -152,7 +152,7 @@ test("cancels pending startup on pagehide and supports another run", async ({
   page,
 }) => {
   await slowWorkerStartup(page, 1400);
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("iframe").first()).toBeAttached();
   await page.evaluate(() =>

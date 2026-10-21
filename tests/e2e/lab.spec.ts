@@ -3,7 +3,7 @@ test("executes real policy, integrity and server tampering scenarios", async ({
   page,
   browserName,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page.getByRole("button", { name: "전체 시나리오 실행" }).click();
   await expect(page.locator("#lab-policy-result")).toContainText(
     "보호 적용: 차단 확인",
@@ -60,7 +60,7 @@ test("executes real policy, integrity and server tampering scenarios", async ({
 test("checks eval and inline handlers under CSP and resets local results", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   for (const scenario of ["eval", "handler"]) {
     await page.getByLabel("스크립트 시험 종류").selectOption(scenario);
     await page.getByRole("button", { name: "스크립트 삽입 비교" }).click();
@@ -89,7 +89,7 @@ test("checks eval and inline handlers under CSP and resets local results", async
 test("does not accept forged scenario messages or execute user markup", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page.evaluate(() =>
     window.postMessage(
       {
@@ -123,7 +123,7 @@ test("does not accept forged scenario messages or execute user markup", async ({
 test("reports a network failure without claiming verification success and permits retry", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page.route("**/api/demo/quote", (route) => route.abort());
   await page.getByRole("button", { name: "가격 요청 비교" }).click();
   await expect(page.locator("#lab-api-result")).toContainText("시험 실패:");
@@ -141,7 +141,7 @@ test("reports a network failure without claiming verification success and permit
 test("compares actual network responses against connect-src blocking and fails closed without a baseline", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page
     .getByRole("button", { name: "네트워크 요청 비교", exact: true })
     .click();
@@ -168,7 +168,7 @@ test("compares actual network responses against connect-src blocking and fails c
 test("compares actual innerHTML assignment with Trusted Types enforcement or reports unsupported explicitly", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   const supported = await page.evaluate(
     () =>
       typeof (
@@ -211,7 +211,7 @@ test("never counts an unavailable Trusted Types API as successful verification",
       configurable: true,
     });
   });
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page
     .getByRole("button", { name: "DOM 삽입 비교", exact: true })
     .click();

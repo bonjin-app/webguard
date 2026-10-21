@@ -49,7 +49,7 @@ test("audits actual deployed source URLs and matches the document entry SRI agai
   page.on("response", (response) =>
     responses.push(new URL(response.url()).pathname),
   );
-  await page.goto("/");
+  await page.goto("/#resource-exposure");
   const script = page.locator('script[type="module"][src]').first();
   await expect(script).toHaveAttribute(
     "integrity",

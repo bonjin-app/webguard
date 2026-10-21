@@ -84,7 +84,7 @@ test("checks the real multipage, charset, headers, query redirect and fixed API 
   });
   expect(redirect.status()).toBe(308);
   expect(redirect.headers().location).toBe(base + "?view=demo");
-  await page.goto("/");
+  await page.goto("/#compatibility-lab");
   await expect(page.locator("#compatibility-lab")).toContainText(
     "한글 페이지가 올바른 보안 정책과 함께 전달되는지 확인합니다.",
   );

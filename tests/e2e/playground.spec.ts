@@ -4,7 +4,7 @@ test("protects locally, compares real output, and creates a local integrity repo
   page,
   browserName,
 }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.getByRole("button", { name: "Protect & compare" }).click();
   await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
     timeout: 30000,
@@ -19,10 +19,6 @@ test("protects locally, compares real output, and creates a local integrity repo
   );
   await expect(page.locator("#timing")).toContainText("ms");
   await expect(page.locator("#size-change")).toContainText("%");
-  await expect(page.getByLabel("Restrict context menu")).not.toBeChecked();
-  await expect(
-    page.getByLabel("Restrict F12 / inspect shortcuts"),
-  ).not.toBeChecked();
   if (browserName === "chromium") {
     await page.screenshot({
       path: process.env.WEBGUARD_PUBLIC_URL
@@ -31,10 +27,15 @@ test("protects locally, compares real output, and creates a local integrity repo
       fullPage: true,
     });
   }
+  await page.getByRole("tab", { name: "브라우저 가드", exact: true }).click();
+  await expect(page.getByLabel("Restrict context menu")).not.toBeChecked();
+  await expect(
+    page.getByLabel("Restrict F12 / inspect shortcuts"),
+  ).not.toBeChecked();
 });
 
 test("rejects invalid JavaScript without executing it", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page
     .getByLabel("Source JavaScript", { exact: true })
     .fill("const broken = ;");
@@ -49,7 +50,7 @@ test("rejects invalid JavaScript without executing it", async ({ page }) => {
 test("terminates infinite execution and keeps the main app responsive", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page
     .getByLabel("Source JavaScript", { exact: true })
     .fill("while (true) {}");
@@ -72,7 +73,7 @@ test("blocks network requests from source and protected execution", async ({
     if (request.url().includes("webguard-test.invalid"))
       requests.push(request.url());
   });
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page
     .getByLabel("Source JavaScript", { exact: true })
     .fill(
@@ -88,7 +89,7 @@ test("blocks network requests from source and protected execution", async ({
 test("ignores forged window messages and prevents worker access to the page", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await page.evaluate(() =>
     window.postMessage(
       { token: "forged", result: { logs: ["FORGED"], elapsed: 0 } },
@@ -111,7 +112,7 @@ test("ignores forged window messages and prevents worker access to the page", as
 
 test("has a usable narrow layout and accessible controls", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/#try-examples");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Basic", exact: true }).click();
   await expect(

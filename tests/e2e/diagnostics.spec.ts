@@ -80,19 +80,25 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
       unexpectedConsole.push(`${url}: ${text}`);
   });
   await page.goto("/");
+  await page.locator("#runtime-advanced > summary").click();
   await page.getByRole("button", { name: "전체 기능 체험 시작" }).click();
+  await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
   await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료", {
     timeout: 30000,
   });
+  await page.getByRole("tab", { name: "코드 난독화", exact: true }).click();
   await expect(page.locator("#equivalence")).toHaveText("Outputs match");
+  await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
   await expect(page.locator("#policy-summary")).toContainText("비교 완료");
   await expect(page.locator("#compat-summary")).toHaveAttribute(
     "data-result",
     "pass",
   );
+  await page.getByRole("tab", { name: "파일 검사", exact: true }).click();
   await expect(page.locator("#runtime-integrity-result")).toContainText(
     "정상 해시: 일치",
   );
+  await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
   await expect(page.locator("#lab-console-guide")).toContainText(
     "예상된 시험 로그",
   );
@@ -111,7 +117,7 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
 });
 
 test("does not label server faults as expected rejection", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/#security-lab");
   await page.route("**/api/demo/quote", (route) =>
     route.fulfill({
       status: 500,

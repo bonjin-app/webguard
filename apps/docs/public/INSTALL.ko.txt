@@ -219,8 +219,14 @@ if (!result.valid) process.exitCode = 1;
 ```ts
 import { WebGuard } from "uulab-webguard/browser";
 const guard = WebGuard.init({ devtools: { blockShortcuts: true } });
-guard.destroy(); // 앱/화면 종료 시
+
+// 필요한 시점에 이 페이지의 옵션을 즉시 바꿉니다.
+guard.update({ devtools: { blockContextMenu: true } });
 ```
+
+앱/화면 종료·기능 해제 시 `guard.destroy()`를 호출하세요. 이벤트 리스너와 진행 중인 명시적 파일 검사를 정리하며, 이후 `update()`로 다시 시작되지 않습니다. `getOptions()`는 내부 상태와 분리된 옵션 스냅샷을 반환합니다. 자동 통합을 쓰는 앱은 새 인스턴스 대신 `/client`의 `getWebGuard()`로 기존 SDK를 조회하세요.
+
+수동 브라우저 SDK만 연결하면 빌드 난독화·SRI·CSP·HTTP 헤더가 자동 생성되지 않습니다. 이 기능과 자동 SDK 시작은 `webguardApp()` 빌드 통합으로 적용합니다. `checkIntegrity(url, expected)`는 `integrity: { enabled: true }`로 허용한 뒤 직접 호출하며, 신뢰할 수 있는 배포에서 얻은 `sha384-…` 기준값이 필요합니다. 웹 데모는 이런 동작을 확인하는 체험 공간이며 운영 앱을 대신 보호하는 서비스가 아닙니다.
 
 서버용 정책 생성은 `createSecurityHeaders`를 `uulab-webguard/headers`에서 가져옵니다. 브라우저 코드에는 `/client`·`/browser`를 사용하며 루트 빌드 진입점과 `/server`·`/verify`를 넣지 마세요.
 

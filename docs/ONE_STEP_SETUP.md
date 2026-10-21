@@ -1,6 +1,6 @@
 # One build setting and live SDK controls
 
-For the public npm facade, install `uulab-webguard@0.1.0` and follow [the Korean guide](INSTALL.ko.md). Its root, `/client`, `/browser` and `/headers` exports bundle the internal packages. The commands below document development inside this repository's workspace.
+WebGuard is installed into the developer's application; the website is a demonstration of the package, not a hosted protection service. Follow [the Korean guide](INSTALL.ko.md) for the public package facade. The public npm version is 0.2.0; the behavior below describes the unpublished 0.3.0 candidate. To test that candidate, install a reviewed local tarball with `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`. Do not assume the candidate is available from npm. Its root, `/client`, `/browser` and `/headers` exports bundle the internal packages. The commands below document development inside this repository's workspace.
 
 The opt-in `webguardApp()` Vite integration bundles Strict/High obfuscation, automatic browser SDK startup, source-map removal, SRI/manifests and deployment header artifacts. It targets Vite browser applications with HTML/module entries, not SSR/library builds. Existing `webguard()` keeps its compatible build-only behavior.
 

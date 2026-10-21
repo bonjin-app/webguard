@@ -3,6 +3,7 @@ const baseURL = process.env.WEBGUARD_PUBLIC_URL;
 if (!baseURL || new URL(baseURL).protocol !== "https:")
   throw new Error("Set WEBGUARD_PUBLIC_URL to the deployed HTTPS demo URL");
 const browserTests = [
+  "**/e2e/navigation.spec.ts",
   "**/e2e/demo.spec.ts",
   "**/e2e/setup.spec.ts",
   "**/e2e/playground.spec.ts",

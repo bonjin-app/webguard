@@ -4,7 +4,7 @@ test("compares all policies, mixed settings and all-off using real sandbox opera
   page,
   browserName,
 }) => {
-  await page.goto("/");
+  await page.goto("/#policy-lab");
   await expect(page.locator("#policy-summary")).toContainText("실행 전");
   expect(await page.locator("#policy-lab iframe").count()).toBe(0);
   await page.locator("#policy-run").click();
@@ -52,7 +52,7 @@ test("reports failed baseline networking instead of claiming a successful block 
   page,
 }) => {
   await page.route("**/api/demo/network-probe", (route) => route.abort());
-  await page.goto("/");
+  await page.goto("/#policy-lab");
   await page.locator("#policy-run").click();
   await page.evaluate(() =>
     window.postMessage(
@@ -104,7 +104,7 @@ test("cancels pending frames on pagehide and can run again after page restoratio
     await route.abort().catch(() => {});
   });
   try {
-    await page.goto("/");
+    await page.goto("/#policy-lab");
     await page.locator("#policy-run").click();
     await requestObserved;
     await expect(page.locator("#policy-lab iframe").first()).toBeAttached();
