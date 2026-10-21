@@ -8,7 +8,7 @@ Local, open-source build protection for browser applications. WebGuard raises th
 
 ## Install in your web application
 
-The public distribution is `uulab-webguard`. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
+The product and service name is **WebGuard**. `uulab-webguard` is the npm package identifier only; use WebGuard in user-facing branding. It bundles the internal workspaces, so consumers install only one protection package. [한국어 설치·적용 가이드](docs/INSTALL.ko.md).
 
 **0.3.0 is an unpublished local candidate; the currently published npm version is 0.2.0.** The behavior below describes the candidate, not the published 0.2.0 package. Review it in a separate application using a reviewed local tarball, for example `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`. One candidate package supplies the plugin, SDK, deployment checker and Node protection server.
 
