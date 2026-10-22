@@ -119,6 +119,7 @@ test("keeps the requested section below the header after a delayed download cata
 test("does not pull the reader back after they scroll during catalog loading", async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   let releaseCatalog!: () => void;
   const catalogGate = new Promise<void>((resolve) => {
     releaseCatalog = resolve;
@@ -129,7 +130,30 @@ test("does not pull the reader back after they scroll during catalog loading", a
   });
   try {
     await page.goto("/docs/#configure");
+    // Establish the reader's starting position independently of each engine's
+    // initial fragment timing, while the catalog is still held back.
+    await page.evaluate(() =>
+      document
+        .querySelector("#configure")!
+        .scrollIntoView({ behavior: "instant" }),
+    );
+    await expect
+      .poll(async () => (await page.locator("#configure").boundingBox())!.y)
+      .toBeLessThan(180);
+    await page.evaluate(() => {
+      window.addEventListener(
+        "wheel",
+        () => {
+          document.documentElement.dataset.catalogReaderScrolled = "true";
+        },
+        { once: true },
+      );
+    });
     await page.mouse.wheel(0, -800);
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-catalog-reader-scrolled",
+      "true",
+    );
     await expect
       .poll(async () => (await page.locator("#configure").boundingBox())!.y)
       .toBeGreaterThan(300);
