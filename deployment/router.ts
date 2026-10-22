@@ -56,12 +56,9 @@ export async function handleRequest(
   )
     return error(404, "Not found");
   const url = new URL(request.url);
-  if (
-    (path === "/" && url.hostname === "webguard.uulab.co.kr") ||
-    path === "/demo/"
-  ) {
+  if (path === "/demo/") {
     return new Response(null, {
-      status: path === "/" ? 307 : 308,
+      status: 308,
       headers: headersFor({
         Location: "/demo" + url.search,
         "Cache-Control": "no-store",
@@ -69,7 +66,7 @@ export async function handleRequest(
     });
   }
   // Exact entry alias only; nested paths still require the public-file allowlist.
-  if (path === "/demo") path = "/";
+  if (path === "/demo") path = "/demo.html";
   if (mount && mount.prefix !== "/" && path === mount.prefix.slice(0, -1)) {
     const queryIndex = request.url.indexOf("?");
     const query = queryIndex < 0 ? "" : request.url.slice(queryIndex);

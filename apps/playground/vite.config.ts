@@ -10,7 +10,11 @@ export default defineConfig({
       runtime: siteGuardOptions,
     }),
   ],
-  build: { license: { fileName: "third-party-licenses.md" }, sourcemap: false },
+  build: {
+    license: { fileName: "third-party-licenses.md" },
+    sourcemap: false,
+    rolldownOptions: { input: { home: "index.html", demo: "demo.html" } },
+  },
   worker: {
     format: "es",
     plugins: () => [

@@ -91,7 +91,7 @@ test("large window dimensions do not lock the site while heuristic detection is 
       get: () => innerHeight + 600,
     });
   });
-  await page.goto("/");
+  await page.goto("/#live-demo");
   await expect(page.locator("#runtime-page-block")).toBeChecked();
   await page.locator("#runtime-advanced > summary").click();
   await expect(page.locator("#runtime-detect")).not.toBeChecked();

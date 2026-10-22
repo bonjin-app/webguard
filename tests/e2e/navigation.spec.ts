@@ -25,16 +25,9 @@ test("opens /demo directly on operable controls and preserves the home introduct
   await page.locator("#test-mac-inspect").click();
   await expect(page.locator("#live-result")).toContainText("허용됨");
   await page.goto("/");
-  if (new URL(page.url()).pathname === "/demo") {
-    // Production canonically redirects / to /demo; the local server also exposes the SDK home.
-    await expect(page.locator("#demo-heading")).toBeInViewport();
-  } else {
-    await expect(page.locator("#hero-heading")).toHaveJSProperty(
-      "tagName",
-      "H1",
-    );
-    await expect(page.locator("#hero-heading")).toBeInViewport();
-  }
+  await expect(page).toHaveURL(new URL("/", page.url()).href);
+  await expect(page.locator("#hero-heading")).toHaveJSProperty("tagName", "H1");
+  await expect(page.locator("#hero-heading")).toBeInViewport();
 });
 
 const tabs = ["브라우저 가드", "코드 난독화", "파일 검사", "고급 검사"];
@@ -80,9 +73,8 @@ test("starts with a quiet browser guard surface and preserves choices across key
 }) => {
   await page.goto("/");
   const runtime = page.getByRole("tab", { name: tabs[0], exact: true });
-  await expect(page.getByRole("tab")).toHaveCount(4);
-  await expect(runtime).toHaveAttribute("aria-selected", "true");
-  await expect(runtime).toHaveJSProperty("tabIndex", 0);
+  await expect(page.locator("#landing-live-demo")).not.toHaveAttribute("open");
+  await expect(page.getByRole("tab")).toHaveCount(0);
   await expect(
     page.locator(
       new URL(page.url()).pathname === "/demo"
@@ -91,6 +83,10 @@ test("starts with a quiet browser guard surface and preserves choices across key
     ),
   ).toBeInViewport();
   await page.getByRole("link", { name: "데모 체험하기", exact: true }).click();
+  await expect(page.locator("#landing-live-demo")).toHaveAttribute("open");
+  await expect(page.getByRole("tab")).toHaveCount(4);
+  await expect(runtime).toHaveAttribute("aria-selected", "true");
+  await expect(runtime).toHaveJSProperty("tabIndex", 0);
   await expect(page.locator("#live-demo")).toBeInViewport();
   await expect(page.locator("#runtime-target")).toBeVisible();
   await expect(page.locator("#shortcuts")).toBeVisible();
@@ -152,7 +148,7 @@ test("routes existing deep links to their tabs and opens setup disclosures", asy
     await expect(page.locator(`#${hash}`)).toBeVisible();
   }
 
-  await page.goto("/");
+  await page.goto("/#live-demo");
   await page.locator("#context").check();
   await page.evaluate(() => {
     window.location.hash = "sdk-file";
@@ -168,7 +164,7 @@ test("allows every tab to be selected without overflowing a 390px viewport", asy
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/#live-demo");
   for (const name of tabs) {
     const tab = page.getByRole("tab", { name, exact: true });
     await tab.click();

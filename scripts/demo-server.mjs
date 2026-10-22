@@ -107,7 +107,7 @@ export async function createDemoServer(outputDirectory) {
       return;
     }
     if (path === "/demo") {
-      request.url = "/" + query;
+      request.url = "/demo.html" + query;
       playground.emit("request", request, response);
       return;
     }

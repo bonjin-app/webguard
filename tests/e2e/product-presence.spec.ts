@@ -14,7 +14,8 @@ test("serves complete social metadata and genuine PNG previews without running J
   const page = await context.newPage();
   try {
     for (const [path, canonical, image] of [
-      ["/", "/demo", "/og-demo.png"],
+      ["/", "/", "/og-demo.png"],
+      ["/demo", "/demo", "/og-demo.png"],
       ["/docs/", "/docs/", "/docs/og-docs.png"],
     ]) {
       const response = await page.goto(path!);
@@ -88,7 +89,7 @@ test("serves complete social metadata and genuine PNG previews without running J
           expect.objectContaining({
             "@type": "SoftwareApplication",
             name: "WebGuard",
-            url: origin + "/demo",
+            url: origin + "/",
           }),
         ]),
       );
@@ -153,5 +154,39 @@ test("connects SDK strengths to real interactive panels and keeps product scope 
   );
   await expect(page.locator("#integration-scope")).toContainText(
     "패키지 기본 OFF",
+  );
+});
+
+test("the SDK landing exposes actionable documentation and fits compact and desktop screens", async ({
+  page,
+}) => {
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    await expect(page).toHaveURL(new URL("/", page.url()).href);
+    await expect(page.locator("#hero-heading")).toBeInViewport();
+    await expect(page.locator("#hero-heading")).toContainText("빌드");
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    const heroImage = page.locator(".hero-visual img");
+    await expect(heroImage).toBeVisible();
+    expect(
+      await heroImage.evaluate(
+        (node) => (node as HTMLImageElement).naturalWidth,
+      ),
+    ).toBeGreaterThan(0);
+  }
+  const resources = page.locator("#developer-resources");
+  for (const file of ["INSTALL", "ENVIRONMENTS", "API"]) {
+    await expect(
+      resources.locator(`a[href="/docs/${file}.ko.html"]`),
+    ).toBeVisible();
+  }
+  await resources.getByRole("link", { name: /함수와 옵션 명세/ }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "WebGuard API 명세",
   );
 });

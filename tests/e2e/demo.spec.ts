@@ -44,7 +44,7 @@ test("runs a ready-made strong example and shows its real output", async ({
 test("demonstrates live SDK controls and provides selectable integration code", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#live-demo");
   // This comparison exercises basic input cancellation, independently of the
   // site's default modal response, covered by the own-site guard scenarios.
   await page.locator("#runtime-page-block").uncheck();

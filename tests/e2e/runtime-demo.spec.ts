@@ -59,6 +59,10 @@ function inputObservation(page: Page) {
 
 async function openBasicDemo(page: Page, path: string) {
   await page.goto(path);
+  if (path === "/")
+    await page
+      .getByRole("link", { name: "데모 체험하기", exact: true })
+      .click();
   // These scenarios exercise the basic non-editable policy explicitly. The
   // public site now starts in page protection mode, covered separately below.
   await page.locator("#runtime-page-block").uncheck();

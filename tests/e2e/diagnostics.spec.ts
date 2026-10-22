@@ -79,7 +79,7 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
     if (!expectedPolicy && !expectedQuote && !expectedAudit)
       unexpectedConsole.push(`${url}: ${text}`);
   });
-  await page.goto("/");
+  await page.goto("/#live-demo");
   for (const path of [
     "/src/main.ts",
     "/package.json",

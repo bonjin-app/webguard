@@ -57,6 +57,10 @@ async function fixture() {
     );
     await writeFile(join(directory, "_headers"), "private control");
   }
+  await writeFile(
+    join(input, "playground", "demo.html"),
+    "<title>playground-demo</title>",
+  );
   for (const name of apps.slice(2))
     await writeFile(
       join(input, name, "webguard-manifest.json"),
@@ -404,7 +408,7 @@ it("rejects encoded separators and delimiters and streams successful asset bodie
   expect(response.headers.get("x-app")).toBe("docs");
 });
 
-it("serves the branded demo entry with query-preserving canonical redirects and legacy compatibility", async () => {
+it("serves the landing at root and the demo alias with query-preserving slash redirects", async () => {
   const { input, output } = await fixture();
   await prepare(input, output);
   const manifest = await routes(output);
@@ -412,9 +416,12 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
   const assets = {
     async fetch(request: Request) {
       requested.push(new URL(request.url).pathname);
-      return new Response("playground", {
-        headers: { "Content-Type": "text/html" },
-      });
+      return new Response(
+        await readFile(join(output, "public", new URL(request.url).pathname)),
+        {
+          headers: { "Content-Type": "text/html" },
+        },
+      );
     },
   };
   for (const host of [
@@ -427,10 +434,10 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
       manifest,
     );
     expect(demo.status).toBe(200);
-    expect(await demo.text()).toBe("playground");
+    expect(await demo.text()).toBe("<title>playground-demo</title>");
     expect(demo.headers.get("x-app")).toBe("playground");
     expect(demo.headers.get("content-type")).toBe("text/html; charset=utf-8");
-    expect(requested.at(-1)).toBe("/index.html");
+    expect(requested.at(-1)).toBe("/demo.html");
     const slash = await handleRequest(
       new Request(`https://${host}/demo/?example=hello`),
       assets,
@@ -447,22 +454,46 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
     expect(head.headers.get("content-type")).toBe("text/html; charset=utf-8");
     expect(await head.text()).toBe("");
   }
-  const root = await handleRequest(
-    new Request("https://webguard.uulab.co.kr/?next=https%3A%2F%2Fevil.test"),
-    assets,
-    manifest,
-  );
-  expect(root.status).toBe(307);
-  expect(root.headers.get("location")).toBe(
-    "/demo?next=https%3A%2F%2Fevil.test",
-  );
-  expect(root.headers.get("cache-control")).toBe("no-store");
-  const legacy = await handleRequest(
-    new Request("https://webguard-demo.uulab.workers.dev/"),
-    assets,
-    manifest,
-  );
-  expect(legacy.status).toBe(200);
+  for (const host of [
+    "webguard.uulab.co.kr",
+    "webguard-demo.uulab.workers.dev",
+  ]) {
+    for (const query of ["", "?next=https%3A%2F%2Fevil.test&example=hello"]) {
+      let forwarded: Request | undefined;
+      const binding = {
+        fetch: async (request: Request) => {
+          forwarded = request;
+          return new Response("landing", {
+            headers: { "Content-Type": "text/html" },
+          });
+        },
+      };
+      for (const method of ["GET", "HEAD"]) {
+        const response = await handleRequest(
+          new Request(`https://${host}/${query}`, { method }),
+          binding,
+          manifest,
+        );
+        expect(response.status).toBe(200);
+        expect(response.headers.get("location")).toBeNull();
+        expect(response.headers.get("x-app")).toBe("playground");
+        expect(response.headers.get("content-type")).toBe(
+          "text/html; charset=utf-8",
+        );
+        expect(await response.text()).toBe(method === "HEAD" ? "" : "landing");
+        expect(new URL(forwarded!.url).pathname).toBe("/index.html");
+        expect(new URL(forwarded!.url).search).toBe(query);
+        expect(forwarded!.method).toBe(method);
+      }
+      const methodDenied = await handleRequest(
+        new Request(`https://${host}/${query}`, { method: "POST" }),
+        binding,
+        manifest,
+      );
+      expect(methodDenied.status).toBe(405);
+      expect(methodDenied.headers.get("allow")).toBe("GET, HEAD");
+    }
+  }
   for (const path of [
     "/demo/private",
     "/demo/webguard-report.json",

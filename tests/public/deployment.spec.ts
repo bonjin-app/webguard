@@ -21,14 +21,15 @@ test("public network-policy fixture returns a fixed credential-free response onl
   );
 });
 
-test("branded demo entry preserves its canonical address, assets and safe redirects", async ({
+test("SDK landing and demo use their protected HTML entries with safe redirects", async ({
   request,
-  baseURL,
 }) => {
   const demo = await request.get("/demo");
   const index = await request.get("/index.html");
+  const demoFile = await request.get("/demo.html");
   expect(demo.status()).toBe(200);
-  expect(await demo.body()).toEqual(await index.body());
+  expect(demoFile.status()).toBe(200);
+  expect(await demo.body()).toEqual(await demoFile.body());
   expect(await demo.text()).toContain(
     'href="https://webguard.uulab.co.kr/demo"',
   );
@@ -36,10 +37,12 @@ test("branded demo entry preserves its canonical address, assets and safe redire
   expect(slash.status()).toBe(308);
   expect(slash.headers().location).toBe("/demo?example=hello");
   const root = await request.get("/?example=hello", { maxRedirects: 0 });
-  if (new URL(baseURL!).hostname === "webguard.uulab.co.kr") {
-    expect(root.status()).toBe(307);
-    expect(root.headers().location).toBe("/demo?example=hello");
-  } else expect(root.status()).toBe(200);
+  expect(root.status()).toBe(200);
+  expect(root.headers().location).toBeUndefined();
+  expect(await root.body()).toEqual(await index.body());
+  expect(await root.text()).toContain('href="https://webguard.uulab.co.kr/"');
+  expect((await request.head("/?example=hello")).status()).toBe(200);
+  expect((await request.post("/?example=hello")).status()).toBe(405);
   expect((await request.head("/demo")).status()).toBe(200);
   expect((await request.post("/demo")).status()).toBe(405);
   for (const path of [

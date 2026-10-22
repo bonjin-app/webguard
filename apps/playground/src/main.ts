@@ -6,6 +6,12 @@ import { runIsolated, type RunResult } from "./sandbox";
 import { examples, integrations } from "./examples";
 import "./style.css";
 import "./sky.css";
+import "./landing.css";
+import {
+  landingHeroMarkup,
+  landingResourcesMarkup,
+  landingFooterMarkup,
+} from "./landing";
 import { initDemoNavigation } from "./navigation";
 import { productStoryMarkup, productFaqMarkup } from "./product-story";
 import {
@@ -32,8 +38,6 @@ import {
   initHardeningDemo,
   reportHardeningThreat,
 } from "./runtime-hardening";
-const cubeArt = new URL("./assets/sdk-cube.webp", import.meta.url).href;
-const webArt = new URL("./assets/web-app.webp", import.meta.url).href;
 // Production uses the injected automatic instance; dev/HMR uses the same registry.
 const guard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 let selectedExample: (typeof examples)[number] = examples[0];
@@ -41,12 +45,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header class="site-header"><a class="brand" href="/" aria-label="WebGuard 데모 홈"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-strengths">SDK 강점</a><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a href="#sdk-downloads">다운로드·CDN</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
 <main class="sdk-site">
 <aside id="site-protection-status" class="site-protection-strip" aria-label="이 페이지의 실제 보호 상태"><div><strong>이 페이지에도 WebGuard가 적용되어 있습니다.</strong><p id="site-protection-summary" aria-live="polite"></p></div><a href="#live-demo">이 페이지의 보호 설정 <span aria-hidden="true">↗</span></a></aside>
-<section class="sdk-hero" aria-labelledby="hero-heading"><div class="hero-content"><div class="eyebrow">웹 보호 SDK</div><h1 id="hero-heading">웹 코드 보호를,<br><span>빌드부터 런타임까지.</span></h1><p>JavaScript 난독화부터 실행 가드·배포 검증까지.<br>내 프로젝트의 빌드 흐름에 연결하는 웹 보호 SDK입니다.</p><p class="hero-environments">Vite 자동 통합 · Webpack / esbuild 후처리 · HTML SDK</p><div class="hero-actions"><a class="primary" href="#sdk-install">SDK 적용하기</a><a class="demo-link" href="#sdk-demo">데모 체험하기</a></div><div class="hero-flow"><div class="flow-art"><img src="${cubeArt}" alt="WebGuard SDK 패키지" width="180" height="180"><strong>WebGuard</strong><p class="flow-caption">내 앱에 설치하는 개발자 SDK</p></div><div class="hero-code-block"><div class="hero-code"><div class="code-filename">vite.config.ts</div><pre><code>import { defineConfig } from 'vite';
-import { webguardApp } from 'uulab-webguard';
-
-export default defineConfig({
-  plugins: [webguardApp()],
-});</code></pre></div><p class="flow-caption">패키지 설치 · Vite 설정 · 빌드</p></div><div class="flow-art"><img src="${webArt}" alt="보호 설정을 적용한 웹 앱" width="220" height="180"><strong>내 웹 앱</strong><p class="flow-caption">보호한 빌드 결과로 배포</p></div></div></div></section>
+${landingHeroMarkup}
 ${productStoryMarkup}
 ${protectionOverviewMarkup}
 <section id="sdk-demo" class="demo-hub" aria-labelledby="demo-heading"><div class="demo-heading"><div class="eyebrow">직접 체험하는 데모</div><h2 id="demo-heading">가드를 켜고, 직접 확인하세요.</h2><p>내 앱에 연결할 SDK의 동작을 먼저 체험해 보세요.</p></div><div class="demo-tabs" role="tablist" aria-label="SDK 체험 선택"><button id="tab-runtime" role="tab" data-demo-tab="runtime" aria-controls="runtime-view" aria-selected="true">브라우저 가드</button><button id="tab-obfuscation" role="tab" data-demo-tab="obfuscation" aria-controls="obfuscation-view" aria-selected="false" tabindex="-1">코드 난독화</button><button id="tab-integrity" role="tab" data-demo-tab="integrity" aria-controls="integrity-view" aria-selected="false" tabindex="-1">파일 검사</button><button id="tab-advanced" role="tab" data-demo-tab="advanced" aria-controls="advanced-view" aria-selected="false" tabindex="-1">고급 검사</button></div>
@@ -67,10 +66,11 @@ npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><div class
 pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 웹앱·문서를 제공합니다. JSP는 위 준비 명령으로 WAR를 만든 뒤 별도 Tomcat에서 실행하세요.</p></details></section>
 <section id="app-examples" class="demo-section" aria-labelledby="apps-heading"><div class="section-heading"><div><h2 id="apps-heading">보호된 웹앱을 직접 써보세요</h2><p>난독화된 실제 빌드입니다. 폼·카운터·화면 이동·동적 모듈이 동작하는지 확인하세요.</p></div></div><div class="sample-grid"><article class="sample-card"><span class="badge">자동 SDK · 강력 보호</span><h3>React + Vite</h3><p>SDK 자동 시작, 강한 난독화, 서버 헤더와 실시간 제어를 한 앱에서 체험합니다.</p><a class="demo-link" href="/examples/react/">React 데모 열기</a></article><article class="sample-card"><span class="badge">수동 SDK · 표준 보호</span><h3>JavaScript</h3><p>SDK를 직접 연결한 예제입니다. 단축키 옵션을 켜고 입력·동적 로딩을 시험하세요.</p><a class="demo-link" href="/examples/vanilla-js/">JavaScript 데모 열기</a></article><article class="sample-card"><span class="badge">TypeScript · 표준 보호</span><h3>TypeScript</h3><p>TypeScript를 빌드한 뒤 보호한 예제입니다. 실행 동작과 SDK 옵션을 확인하세요.</p><a class="demo-link" href="/examples/vanilla-ts/">TypeScript 데모 열기</a></article></div></section>
 </details></div></section>
+${landingResourcesMarkup}
 ${productFaqMarkup}
-<footer class="site-footer"><strong>WebGuard</strong><p>난독화는 분석을 어렵게 합니다. 권한 검증은 서버에서 처리하세요.</p><details><summary>보호 범위와 실행 제한</summary> 브라우저에 전달된 JavaScript는 확인하거나 수정할 수 있습니다. 비밀 정보와 권한 검증은 서버에서 처리하세요. 이 실행 도구는 DOM 접근 없이 콘솔 기반 JavaScript를 지원하며, 모듈 가져오기와 네트워크 요청을 차단합니다. 실행 워커는 1초 후 중단됩니다. 코드를 시험하는 보조 도구이며, 악성 코드를 안전하게 격리하는 서비스는 아닙니다.</details></footer></main>`;
+${landingFooterMarkup}</main>`;
 // /demo leads with the workbench; the home page retains the SDK introduction.
-if (/^\/demo\/?$/.test(location.pathname)) {
+if (/^\/demo(?:\.html|\/)?$/.test(location.pathname)) {
   const main = document.querySelector<HTMLElement>("main.sdk-site")!;
   main.classList.add("is-demo-page");
   main.insertBefore(
@@ -87,6 +87,20 @@ if (/^\/demo\/?$/.test(location.pathname)) {
   subheading.id = heroTitle.id;
   subheading.innerHTML = heroTitle.innerHTML;
   heroTitle.replaceWith(subheading);
+} else {
+  const main = document.querySelector<HTMLElement>("main.sdk-site")!;
+  main.classList.add("is-landing-page");
+  const status = document.getElementById("site-protection-status")!;
+  main.insertBefore(status, document.getElementById("deployment-proof"));
+  const demo = document.getElementById("sdk-demo")!;
+  const disclosure = document.createElement("details");
+  disclosure.id = "landing-live-demo";
+  disclosure.className = "landing-live-demo";
+  const summary = document.createElement("summary");
+  summary.innerHTML =
+    '<div><span class="eyebrow">TRY WEBGUARD</span><strong>직접 켜고 끄며, 차이를 확인하세요.</strong><p>브라우저 가드 · 코드 난독화 · 파일 검사</p></div><span class="live-demo-open">체험 열기 <span aria-hidden="true">＋</span></span>';
+  main.insertBefore(disclosure, demo);
+  disclosure.append(summary, demo);
 }
 initDemoNavigation();
 const element = <T extends HTMLElement>(id: string) =>

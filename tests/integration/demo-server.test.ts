@@ -40,6 +40,10 @@ async function fixture() {
       }),
     );
   }
+  await writeFile(
+    join(root, "playground", "demo.html"),
+    "<!doctype html><title>playground-demo</title>",
+  );
   await writeFile(join(root, "react", "assets/react-only.js"), "REACT_ONLY");
   return root;
 }
@@ -77,7 +81,12 @@ it("serves the exact /demo alias with the playground policy and rejects child fa
   const port = await start(await fixture());
   const demo = await get(port, "/demo?view=guards");
   expect(demo.status).toBe(200);
-  expect(demo.body).toContain("<title>playground</title>");
+  expect(demo.body).toContain("<title>playground-demo</title>");
+  expect((await get(port, "/")).body).toContain("<title>playground</title>");
+  expect((await get(port, "/demo.html")).body).toBe(demo.body);
+  const demoHead = await get(port, "/demo?view=guards", "HEAD");
+  expect(demoHead.status).toBe(200);
+  expect(demoHead.body).toBe("");
   expect(demo.headers["x-demo-app"]).toBe("playground");
   expect(demo.headers["content-security-policy"]).toContain(
     "report-to playground",
