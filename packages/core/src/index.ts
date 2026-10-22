@@ -40,12 +40,57 @@ export interface WebGuardConfig {
 
 export type ResolvedConfig = WebGuardConfig;
 
-function object(value: unknown, path: string, keys: string[]): void {
+/** Read only declared own data; inherited policy and getters are not configuration. */
+function object(
+  value: unknown,
+  path: string,
+  keys: readonly string[],
+): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value))
     throw new TypeError(`${path} must be an object`);
-  for (const key of Object.keys(value))
-    if (!keys.includes(key))
-      throw new TypeError(`Unknown ${path} option: ${key}`);
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null)
+    throw new TypeError(`${path} must have a plain or null prototype`);
+  const result: Record<string, unknown> = Object.create(null);
+  for (const key of Reflect.ownKeys(value)) {
+    if (typeof key !== "string" || !keys.includes(key))
+      throw new TypeError(`Unknown ${path} option`);
+    const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
+    if (!Object.hasOwn(descriptor, "value"))
+      throw new TypeError(`${path} must contain only data properties`);
+    result[key] = descriptor.value;
+  }
+  return result;
+}
+function strings(value: unknown, path: string): string[] {
+  if (!Array.isArray(value))
+    throw new TypeError(`${path} must be an array of non-empty strings`);
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Array.prototype && prototype !== null)
+    throw new TypeError(`${path} must have a standard or null array prototype`);
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  const length = Object.getOwnPropertyDescriptor(value, "length")!
+    .value as number;
+  if (Reflect.ownKeys(descriptors).length !== length + 1)
+    throw new TypeError(`${path} must be a dense array without extra fields`);
+  const result: string[] = [];
+  for (let index = 0; index < length; index++) {
+    const descriptor = Object.getOwnPropertyDescriptor(
+      descriptors,
+      String(index),
+    )?.value as PropertyDescriptor | undefined;
+    if (
+      !descriptor ||
+      !Object.hasOwn(descriptor, "value") ||
+      typeof descriptor.value !== "string" ||
+      !descriptor.value.trim()
+    )
+      throw new TypeError(
+        `${path} must contain only own non-empty string data`,
+      );
+    result.push(descriptor.value);
+  }
+  return result;
 }
 function boolean(value: unknown, path: string): void {
   if (value !== undefined && typeof value !== "boolean")
@@ -54,16 +99,20 @@ function boolean(value: unknown, path: string): void {
 
 /** Resolve presets without mutating caller-owned values or sharing mutable defaults. */
 export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
-  object(input, "config", ["preset", "obfuscation", "sourceMaps", "integrity"]);
-  const preset = input.preset === undefined ? "standard" : input.preset;
+  const config = object(input, "config", [
+    "preset",
+    "obfuscation",
+    "sourceMaps",
+    "integrity",
+  ]);
+  const preset = (
+    config.preset === undefined ? "standard" : config.preset
+  ) as Preset;
   if (!["basic", "standard", "strict", "custom"].includes(preset))
     throw new TypeError("Unknown preset");
-  const effectiveLevel =
-    input.obfuscation?.level ??
-    (preset === "basic" ? "basic" : preset === "strict" ? "high" : "standard");
   const defaults: ObfuscationConfig = {
     enabled: true,
-    stringArrayEncoding: effectiveLevel === "high" ? "rc4" : "none",
+    stringArrayEncoding: "none",
     level:
       preset === "basic" ? "basic" : preset === "strict" ? "high" : "standard",
     include: ["**/*.{js,mjs,cjs}"],
@@ -74,9 +123,13 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
     deadCodeInjection: false,
     seed: 0,
   };
-  const options = input.obfuscation;
+  const options =
+    config.obfuscation === undefined
+      ? undefined
+      : object(config.obfuscation, "obfuscation", Object.keys(defaults));
+  const effectiveLevel = options?.level ?? defaults.level;
+  defaults.stringArrayEncoding = effectiveLevel === "high" ? "rc4" : "none";
   if (options !== undefined) {
-    object(options, "obfuscation", Object.keys(defaults));
     for (const key of [
       "enabled",
       "renameProperties",
@@ -85,17 +138,19 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
       boolean(options[key], `obfuscation.${key}`);
     if (
       options.level !== undefined &&
-      !["basic", "standard", "high"].includes(options.level)
+      !["basic", "standard", "high"].includes(options.level as string)
     )
       throw new TypeError("Invalid obfuscation level");
     if (
       options.stringArrayEncoding !== undefined &&
-      !["none", "base64", "rc4"].includes(options.stringArrayEncoding)
+      !["none", "base64", "rc4"].includes(options.stringArrayEncoding as string)
     )
       throw new TypeError("Invalid string-array encoding");
     if (
       options.seed !== undefined &&
-      (!Number.isSafeInteger(options.seed) || options.seed < 0)
+      (typeof options.seed !== "number" ||
+        !Number.isSafeInteger(options.seed) ||
+        options.seed < 0)
     )
       throw new TypeError("seed must be a non-negative safe integer");
     for (const key of [
@@ -104,15 +159,11 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
       "reservedNames",
       "reservedProperties",
     ] as const) {
-      const entries = options[key];
-      if (entries !== undefined) {
-        if (
-          !Array.isArray(entries) ||
-          entries.some((entry) => typeof entry !== "string" || !entry.trim())
-        )
-          throw new TypeError(`${key} must be an array of non-empty strings`);
+      if (options[key] !== undefined) {
+        const entries = strings(options[key], key);
         if (key === "reservedNames" || key === "reservedProperties")
           for (const expression of entries) new RegExp(expression);
+        options[key] = entries;
       }
     }
   }
@@ -121,13 +172,6 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
     const value = options?.[key];
     if (value !== undefined) Object.assign(obfuscation, { [key]: value });
   }
-  for (const key of [
-    "include",
-    "exclude",
-    "reservedNames",
-    "reservedProperties",
-  ] as const)
-    obfuscation[key] = [...obfuscation[key]];
   if (
     obfuscation.level === "basic" &&
     (obfuscation.renameProperties ||
@@ -146,25 +190,29 @@ export function resolveConfig(input: WebGuardConfigInput = {}): WebGuardConfig {
     public: false,
     privateArtifacts: false,
   };
-  if (input.sourceMaps !== undefined) {
-    object(input.sourceMaps, "sourceMaps", ["public", "privateArtifacts"]);
-    if (
-      input.sourceMaps.public !== undefined &&
-      input.sourceMaps.public !== false
-    )
+  if (config.sourceMaps !== undefined) {
+    const maps = object(config.sourceMaps, "sourceMaps", [
+      "public",
+      "privateArtifacts",
+    ]);
+    if (maps.public !== undefined && maps.public !== false)
       throw new TypeError("Public source maps are forbidden");
-    boolean(input.sourceMaps.privateArtifacts, "sourceMaps.privateArtifacts");
-    sourceMaps.privateArtifacts = input.sourceMaps.privateArtifacts ?? false;
+    boolean(maps.privateArtifacts, "sourceMaps.privateArtifacts");
+    sourceMaps.privateArtifacts = maps.privateArtifacts === true;
   }
   const integrity: IntegrityConfig = {
     enabled: preset !== "basic",
     generateManifest: preset !== "basic",
   };
-  if (input.integrity !== undefined) {
-    object(input.integrity, "integrity", ["enabled", "generateManifest"]);
+  if (config.integrity !== undefined) {
+    const overrides = object(config.integrity, "integrity", [
+      "enabled",
+      "generateManifest",
+    ]);
     for (const key of ["enabled", "generateManifest"] as const) {
-      boolean(input.integrity[key], `integrity.${key}`);
-      integrity[key] = input.integrity[key] ?? integrity[key];
+      const value = overrides[key];
+      boolean(value, `integrity.${key}`);
+      if (typeof value === "boolean") integrity[key] = value;
     }
   }
   return { preset, obfuscation, sourceMaps, integrity };

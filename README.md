@@ -13,8 +13,8 @@ The product and service name is **WebGuard**. `uulab-webguard` is the npm packag
 **0.3.0 is an unpublished local candidate; the currently published npm version is 0.2.0.** The behavior below describes the candidate, not the published 0.2.0 package. Review it in a separate application using a reviewed local tarball, for example `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`. One candidate package supplies the plugin, SDK, deployment checker and Node protection server.
 
 ```sh
-# After 0.3.0 is published only; it is not available from npm yet.
-npm install -D uulab-webguard@0.3.0
+# Review a supplied local candidate; replace this with its actual path.
+npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz
 ```
 
 ```ts
@@ -159,11 +159,11 @@ Root manifest/report files are excluded from the manifest to avoid self-referenc
 
 ## Vite
 
-The opt-in all-in-one integration uses one build configuration and supplies the SDK transitively:
+The public package integration uses one build configuration and includes the SDK. Install the reviewed candidate shown above; internal `@webguard/*` workspace packages are not required:
 
 ```ts
 import { defineConfig } from "vite";
-import { webguardApp } from "@webguard/vite-plugin";
+import { webguardApp } from "uulab-webguard";
 export default defineConfig({
   plugins: [
     webguardApp({
@@ -192,7 +192,7 @@ Adapt origins for your application. Test actual production behavior; this exampl
 ## Browser SDK
 
 ```ts
-import { WebGuard } from "@webguard/browser";
+import { WebGuard } from "uulab-webguard/browser";
 const guard = WebGuard.init({
   devtools: {
     detect: true, // coarse window-size heuristic; may have false positives/negatives
@@ -210,7 +210,7 @@ await guard.checkIntegrity("/assets/app.js", "sha384-BASE64_DIGEST");
 guard.destroy(); // removes listeners; safe to call repeatedly
 ```
 
-Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `@webguard/vite-plugin/client`.
+Use `guard.update({ devtools: { blockShortcuts: true } })` for immediate changes and `guard.getOptions()` for a detached snapshot. Automatically injected instances are available from `getWebGuard()` in `uulab-webguard/client`.
 
 The unpublished candidate bounds `checkIntegrity()` with `integrity.timeoutMs` (default 10,000ms), `maxBytes` (16 MiB of decoded bytes), and `maxConcurrent` (four per instance). Requests omit credentials/referrers and reject redirects and non-HTTP(S) URLs; cookie-authenticated files are not supported by this check. Overflow, deadlines and network failures are errors, not hash mismatches. Budget changes and teardown cancel pending work. Policy snapshots use null-prototype data objects; use `Object.hasOwn()` for property checks. See [request budgets and compatibility](docs/INSTALL.ko.md).
 
@@ -260,7 +260,9 @@ This explicitly fetches deployment resources and compares them to your **local**
 | JSP + Servlet      | See [JSP setup](examples/jsp-servlet/README.md)                  |
 | Documentation      | `pnpm --filter @webguard/docs preview --port 4175`               |
 
-Run `pnpm build` first. Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Webpack/esbuild/plain HTML use the generic application-protection pipeline, with real consumer fixtures. Next.js App Router production Webpack integration has a dedicated packed-consumer SSR/hydration test. Nuxt and Angular native adapters are not provided. Python WSGI, PHP and JSP/Servlet have runnable server examples; distinguish native/WASM/HTTP/browser evidence in the SSR report. See the environment guide for the distinction between toolchain tests and unexecuted server recipes.
+Run `pnpm build` first. For maintainers, `pnpm test:consumers` packs the current public facade once into a temporary directory, then installs those same bytes in fresh Vite 7, Vite 8, Webpack/esbuild/plain HTML and Next projects, followed by runnable SSR template checks prepared from the workspace build (the SSR suite does not install the tarball). It saves per-suite receipts under `test-results/consumers/`, leaves the held `.npm-release` candidate unchanged, and does not publish. Run it after `pnpm build`; CI runs this separately from workspace tests. Missing PHP is explicitly recorded as skipped, not passed.
+
+Playwright exercises Chromium, Firefox and WebKit desktop engines, not physical Chrome/Edge/Safari or mobile devices. Full compatibility is not claimed for untested browsers, versions or frameworks. Webpack/esbuild/plain HTML use the generic application-protection pipeline, with real consumer fixtures. Next.js App Router production Webpack integration has a dedicated packed-consumer SSR/hydration test. Nuxt and Angular native adapters are not provided. Python WSGI, PHP and JSP/Servlet have runnable server examples; distinguish native/WASM/HTTP/browser evidence in the SSR report. See the environment guide for the distinction between toolchain tests and unexecuted server recipes.
 
 `pnpm benchmark` writes real fixture measurements to [Node benchmark evidence](docs/evidence/benchmark-node.json). Measurements are environment-dependent, not performance promises. [Demo verification](docs/DEMO_VERIFICATION.md) records the runnable hub checks. [Foundation verification](docs/VERIFICATION.md) separates automated tests, builds and external/device limitations.
 

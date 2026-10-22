@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>SSR와 환경별 보호 검증 — WebGuard</title>
+    <meta
+      name="description"
+      content="SSR 검증 기록: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/SSR_VERIFICATION.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <span>전체 가이드</span
+        ><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+        ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+        ><a href="/docs/SSR_VERIFICATION.html" aria-current="page"
+          >SSR 검증 기록</a
+        ><span>이 문서의 목차</span
+        ><a href="#서버와-브라우저의-역할">서버와 브라우저의 역할</a
+        ><a href="#jsp--java-servlet">JSP + Java Servlet</a
+        ><a href="#python-wsgi--php-인터프리터">Python WSGI + PHP 인터프리터</a
+        ><a href="#nextjs--react-ssr-기반-검증-앞선-cff59f4-소스"
+          >Next.js + React SSR 기반 검증 (앞선 cff59f4 소스)</a
+        ><a href="#선택형-클래스런타임-가드-후속-검증-앞선-368e725-소스"
+          >선택형 클래스·런타임 가드 후속 검증 (앞선 368e725 소스)</a
+        ><a href="#자동-관찰-추가-후-설치-검증">자동 관찰 추가 후 설치 검증</a
+        ><a href="#검증-범위">검증 범위</a>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <p class="eyebrow">SSR 검증 기록</p>
+          <p class="docs-meta">
+            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
+            시점은 본문의 기록을 확인하세요.
+          </p>
+          <div class="guide-tools">
+            <a href="/docs/SSR_VERIFICATION.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/SSR_VERIFICATION.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="ssr와-환경별-보호-검증">SSR와 환경별 보호 검증</h1>
+          <p>
+            2026-10-21 로컬 후보 소스 기준입니다. npm 게시와 레지스트리 설치
+            검증은 하지 않았습니다. 기존 배포 후보 tarball은 보존하며 새 Next
+            연결은 현재 소스로 만든 별도 테스트 패키지를 사용합니다.
+          </p>
+          <h2 id="서버와-브라우저의-역할">서버와 브라우저의 역할</h2>
+          <p>
+            브라우저로 전달할 JavaScript를 빌드 때 난독화하고, 서버는 원래의
+            JSP·Java·Python·PHP·React 서버 코드를 실행합니다. 템플릿이나 서버
+            실행 파일 전체를 JavaScript 변환기에 넣지 않습니다. 브라우저 SDK
+            연결만으로 난독화·서버 CSP·권한 검증이 생기지 않습니다.
+          </p>
+          <h2 id="jsp--java-servlet">JSP + Java Servlet</h2>
+          <ul>
+            <li>Java 17.0.20 / embedded Tomcat 10.1.61 / Jakarta Servlet 6.</li>
+            <li>
+              실제 JSP 컴파일·Servlet API·응답 정책·소스/보고서/매니페스트
+              비공개·최종 SRI를 포함한 <strong>JUnit 7개 통과</strong>. 그중 한
+              테스트가 세 브라우저 엔진을 실행합니다.
+            </li>
+            <li>
+              Chromium·Firefox·WebKit
+              <strong>3개 브라우저 시나리오 통과</strong>: 실제 보호 JS 실행,
+              Servlet 호출, SDK 자동 인스턴스, trusted F12 페이지 이벤트 취소,
+              처리되지 않은 페이지 예외 없음.
+            </li>
+            <li>
+              회귀 테스트에서 공개 보고서/매니페스트와 누락된 SRI를 먼저 재현한
+              뒤 수정했습니다. 이제 SDK와 앱 JS 모두 Strict 변환하며 SRI
+              include는 <code>WEB-INF</code>에 생성합니다.
+            </li>
+            <li>
+              증분 WAR 패키징의 이전 보고서 파일 잔존도 최종 아카이브에서
+              재현했습니다. Maven의 패키징 허용 목록과 별도 WAR 파일 검사로 공개
+              파일을 보호 JS 두 개와 JSP 진입점으로 제한합니다.
+            </li>
+            <li>
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/jsp-ssr-verification.json"
+                >JUnit·WAR 기록</a
+              >,
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/jsp-ssr-browser.json"
+                >브라우저 실행 기록</a
+              >. 실제 WAR를 생성했으며 운영 Tomcat·물리 기기 테스트는
+              별도입니다.
+            </li>
+          </ul>
+          <pre tabindex="0" aria-label="코드 예제"><code>pnpm build
+node scripts/prepare-jsp.mjs
+mvn -B -f examples/jsp-servlet/pom.xml -Dwebguard.browser=true package
+node scripts/verify-jsp-artifact.mjs
+</code></pre>
+          <h2 id="python-wsgi--php-인터프리터">Python WSGI + PHP 인터프리터</h2>
+          <ul>
+            <li>
+              Python 3.9.6 표준 WSGI 서버와 PHP 8.4.25 WASM의 실제 인터프리터
+              실행.
+            </li>
+            <li>
+              <strong>HTTP 검사 28개</strong>, 두 런타임 ×
+              Chromium·Firefox·WebKit의
+              <strong>브라우저 시나리오 6개 통과</strong>.
+            </li>
+            <li>
+              요청별 HTML 렌더링·사용자 입력 이스케이프·새 요청 ID·API·하위
+              <code>/app/</code> 배포 경로·응답 헤더·비공개 경로 404·HEAD·405를
+              확인했습니다.
+            </li>
+            <li>
+              브라우저에서 카운터·API·trusted Cmd+Option+I 가드 ON/OFF, CSP의
+              인라인 삽입 거부와 실제 JS 변조 시 SRI 거부를 확인했습니다.
+            </li>
+            <li>
+              <strong>네이티브 PHP는 실행 파일 부재로 건너뛰었습니다.</strong>
+              WASM 테스트는 같은 PHP 라우터를 실행하지만 PHP-FPM·Apache·네이티브
+              확장 모듈 검증을 대신하지 않습니다.
+            </li>
+            <li>
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/ssr-template-verification.json"
+                >버전·검사·건너뜀 기록</a
+              >,
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/examples/ssr-templates/README.md"
+                >실행 예제와 재현 명령</a
+              >.
+            </li>
+          </ul>
+          <h2 id="nextjs--react-ssr-기반-검증-앞선-cff59f4-소스">
+            Next.js + React SSR 기반 검증 (앞선 cff59f4 소스)
+          </h2>
+          <ul>
+            <li>
+              Next.js <strong>16.4.2</strong> / React·React DOM
+              <strong>19.3.1</strong>, 별도 임시 앱에 실제 로컬 패키지를 설치한
+              운영 빌드입니다. Vite가 설치되지 않은 것도 확인했습니다.
+            </li>
+            <li>
+              Chromium·Firefox·WebKit
+              <strong>3개 브라우저 시나리오 통과</strong>: 요청별 SSR,
+              hydration·카운터·동적 import·클라이언트 페이지 이동·SDK 자동
+              시작·페이지 보호 안내. 콘솔/런타임/네트워크 오류가 없었습니다.
+            </li>
+            <li>
+              공개 JS <strong>22개</strong>의 실제 변환과 공개 소스맵 부재를
+              확인했습니다. Webpack 최종 해시 이후의 lazy 청크 URL도 실제
+              요청으로 확인했습니다.
+            </li>
+            <li>
+              앱이 소유하는 요청별 nonce CSP를 유지했습니다. 모든 초기
+              스크립트의 nonce 일치·매 요청 nonce 변경·운영 unsafe-inline/eval
+              부재·SDK/청크 실행을 함께 검사했습니다. 어댑터 자체가 CSP를 주입한
+              결과는 아닙니다.
+            </li>
+            <li>
+              앱·SDK·혼합·출처 불명 코드 19개는 Strict, 전체가 외부 의존성인
+              코드 3개는 Standard로 변환했습니다. 최종 합계
+              6,930,448바이트입니다. 변환 전 minified 출력 957,531바이트보다
+              여전히 크므로 초기 실행·모바일 성능 무영향을 주장하지 않습니다.
+              전체 Strict 시도보다 크기를 줄인 것이며 벤치마크 결과는 아닙니다.
+              <code>frameworkPreset: &quot;inherit&quot;</code>로 외부 코드도
+              같은 강도를 선택할 수 있습니다.
+            </li>
+            <li>
+              기존 NextConfig의 엄격한 TypeScript 타입 연결과 기존 동기 Webpack
+              설정 유지도 검사했습니다. 같은 최종 테스트 tarball로 세 가지
+              미지원 CLI 빌드 거부까지 확인했습니다.
+            </li>
+            <li>
+              클라이언트 컴파일에서 생성되는 <code>server/*.js</code> 보조
+              파일도 변환하지 않습니다. 해당 경계를 회귀 테스트로 확인하며 공개
+              <code>static/*.js</code>만 변환합니다.
+            </li>
+            <li>
+              비동기 Webpack 콜백 오류와 난독화 이후 lazy 청크 해시 참조 실패를
+              실제 빌드/브라우저에서 재현한 뒤 수정했습니다. 최종 해시에 필요한
+              Webpack 문자열을 보존하며 서버 번들과 HTML 데이터를 후처리하지
+              않습니다.
+            </li>
+            <li>
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/next-consumer-verification.json"
+                >실제 패키지 소비자 기록</a
+              >,
+              <a
+                href="https://github.com/bonjin-app/webguard/blob/main/examples/next-ssr/README.md"
+                >실행 예제</a
+              >.
+            </li>
+          </ul>
+          <p>
+            어댑터는 운영 브라우저 청크에만 연결하며 Next 서버/RSC/API와 기존
+            CSP를 유지합니다. Next 16은 <code>next build --webpack</code>이
+            필요합니다. 인식 가능한 Next CLI 운영 빌드가 이를 누락하거나 Turbo
+            플래그를 지정하면 오류로 안내합니다. 프로그램 방식의 빌드 호출을
+            자동 판별하는 기능은 아닙니다. <code>.next</code> 전체
+            후처리·Turbopack·public/ 원본 JS·인라인 Flight 데이터는 대상이
+            아닙니다. Pages Router와 다른 Next 버전은 이 App Router 검증에
+            포함되지 않습니다.
+          </p>
+          <h2 id="선택형-클래스런타임-가드-후속-검증-앞선-368e725-소스">
+            선택형 클래스·런타임 가드 후속 검증 (앞선 368e725 소스)
+          </h2>
+          <p>
+            같은 최종 테스트 tarball로 새 Vite 8.3.4와 Next 16.4.2 / React
+            19.3.1 프로젝트를 각각 설치했습니다. npm 게시는 하지 않았습니다.
+            앞선 JSP·Python·PHP 기록은 해당 기반 소스의 검증이며 이번 후속
+            실행으로 대체하지 않습니다.
+          </p>
+          <ul>
+            <li>
+              Vite: 설정 하나로 Strict 빌드·자동 SDK·CSS Modules 식별자·정적 DOM
+              감시·명시적 타이머 검사를 연결했습니다.
+              Chromium·Firefox·WebKit에서 실제 CSS 스타일, 텍스트/속성/삭제/동일
+              내용 교체 감지, 정상 복구·재기준화, 실시간 OFF/ON, 단일 SDK를
+              확인했습니다. 실제 CSP·최종 SRI와 비공개 경로 거부도 확인했습니다.
+              공개 manifest는 의도된 기능이며 비공개 파일로 오인하지 않습니다.
+            </li>
+            <li>
+              Next: SSR HTML과 hydration 후 클래스 이름 일치, 실제 CSS
+              스타일·카운터·지연 import·클라이언트 이동·요청별 nonce CSP·자동
+              SDK를 세 엔진에서 확인했습니다. 오류·실패 요청은 없었습니다. 내부
+              next/font 생성 스타일은 원래 메타데이터와 이름을 유지합니다. 처음
+              확인한 폰트 로더 오판을 회귀 테스트로 고쳤습니다.
+            </li>
+            <li>
+              Next 공개 JS 22개는 Strict 19개 / Standard 3개입니다. 비압축
+              합계는 변환 전 972,723 → 변환 후 7,099,717바이트이며 성능
+              벤치마크가 아닙니다.
+            </li>
+            <li>
+              별도 데모 테스트는 Chromium CDP의 실제 일시정지·재개 후 타이머
+              지연 신호를 확인했습니다. 다른 두 엔진에는 CDP가 없으므로 이 특정
+              도구 시험은 명시적으로 건너뜁니다. 이는 모든 DevTools 열림을
+              탐지하거나 닫았다는 결과가 아닙니다.
+            </li>
+          </ul>
+          <p>
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/runtime-vite-consumer-verification.json"
+              >새 Vite 설치 기록</a
+            >
+            ·
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/runtime-next-consumer-verification.json"
+              >새 Next 설치 기록</a
+            >. DOM 감시는 선택한 작은 정적 light-DOM에만 적용하며 서버 권한
+            검증·브라우저 제어 경계가 아닙니다.
+          </p>
+          <h2 id="자동-관찰-추가-후-설치-검증">자동 관찰 추가 후 설치 검증</h2>
+          <p>
+            같은 미게시 후보 tarball을 새 Vite와 Next 프로젝트에 설치해 자동
+            관찰까지 확인했습니다. SDK 소비자 기본값은 OFF이며, 공개 사이트는
+            보고 모드의 자동 관찰을 기본 ON으로 설정합니다.
+          </p>
+          <ul>
+            <li>
+              Vite 8.3.4: 빌드 설정의 debugging.watch: true만으로 자동
+              시작합니다. Chromium·Firefox·WebKit에서 수동 검사 버튼을 누르기 전
+              getDebuggingState().samples 증가를 확인했습니다. 기존 CSS
+              클래스·스타일·CSP/SRI·정적 DOM 감시·수동 검사·단일 SDK 검사도 함께
+              통과했습니다.
+            </li>
+            <li>
+              Next 16.4.2 / React 19.3.1: 같은 runtime 옵션으로 자동 관찰 상태를
+              hydration 후 확인했습니다. 세 엔진에서 SSR 클래스와 실제
+              스타일·요청별 nonce CSP·카운터·지연 로딩·클라이언트 이동을
+              유지했고 오류·실패 요청은 없었습니다.
+            </li>
+            <li>
+              별도 Chromium CDP 시험은 수동 검사 호출 없이 실제 디버거 정지·재개
+              후 자동 신호, 정상 관찰 후에도 유지되는 최근 신호, 선택적 페이지
+              안내와 종료를 확인했습니다. CDP 전용 시험은 다른 두 엔진에서
+              명시적으로 건너뜁니다. DevTools가 단지 열려 있는 상황을 모두
+              알아내는 시험은 아닙니다.
+            </li>
+            <li>
+              Next 공개 JavaScript는 20개이며, 비압축 변환 전 977,091 → 변환 후
+              7,138,757바이트입니다. 이는 실행·호환성 검증이며 성능 벤치마크가
+              아닙니다.
+            </li>
+          </ul>
+          <p>
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/automatic-watch-vite-consumer-verification.json"
+              >자동 관찰 Vite 설치 기록</a
+            >
+            ·
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/evidence/automatic-watch-next-consumer-verification.json"
+              >자동 관찰 Next 설치 기록</a
+            >.
+          </p>
+          <h2 id="검증-범위">검증 범위</h2>
+          <p>
+            데스크톱 브라우저 엔진의 로컬 자동 실행 결과입니다. 모든 프레임워크
+            버전·Pages Router·CDN·서버 플랫폼·물리 Safari/Chrome·운영
+            인증·부하까지 보증하지 않습니다. Django·Flask·Laravel·Spring
+            Boot·ASP.NET·Nginx 전용 자동 연결이나 서버 언어 자체의 난독화를
+            제공한다는 주장도 하지 않습니다.
+            <a href="/docs/ENVIRONMENTS.ko.html">환경별 적용법</a>을 확인하세요.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -2,6 +2,10 @@
 
 ## 0.3.0 local candidate — npm publication held
 
+- Reject inherited policy overrides, accessor configuration and sparse string lists before resolving core protection settings.
+- Render complete Korean guides with safe static HTML, consistent navigation and working guide links while preserving text downloads.
+- Gate fresh installed Vite 7/8, generic and Next consumer projects plus workspace SSR fixtures in CI using one temporary candidate; never replace the held release archive.
+
 - Exclude editor/backup artifacts and refuse them in Next public compiler output; verify common backup alternatives and show them in the deployed-resource demo.
 - Revalidate Vite's finalized output directory before writing, including late post-order plugin changes.
 - Apply final-byte SRI to case-insensitive and multi-token stylesheet/modulepreload links; verify actual CSS tamper rejection in browsers.

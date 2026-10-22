@@ -1,5 +1,6 @@
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, readFile, writeFile } from "node:fs/promises";
 import { prepareNpmPackageMetadata } from "./npm-metadata.mjs";
+import { generatePublicGuides } from "./public-guides.mjs";
 const descriptions = {
   shared: "Shared threat-event types.",
   core: "Typed configuration, validation and policy presets.",
@@ -33,13 +34,4 @@ console.log(
 );
 // The public facade is independently packed; internal workspace names stay private to this repo.
 await prepareNpmPackageMetadata();
-await mkdir("apps/docs/public", { recursive: true });
-await copyFile("docs/INSTALL.ko.md", "apps/docs/public/INSTALL.ko.txt");
-await copyFile(
-  "docs/ENVIRONMENTS.ko.md",
-  "apps/docs/public/ENVIRONMENTS.ko.txt",
-);
-await copyFile(
-  "docs/SSR_VERIFICATION.md",
-  "apps/docs/public/SSR_VERIFICATION.txt",
-);
+await generatePublicGuides();

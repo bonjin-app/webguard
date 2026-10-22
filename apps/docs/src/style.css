@@ -765,3 +765,57 @@ footer {
     margin: 8px 0 0 20px;
   }
 }
+
+/* Complete guides share the docs theme and render without JavaScript. */
+.docs-outline a[aria-current="page"] {
+  color: #0753df;
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+.guide-intro {
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 13px;
+}
+
+.guide-tools a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.guide-content h1 {
+  font-size: clamp(30px, 4vw, 44px);
+}
+
+.guide-content h2 {
+  padding-top: 40px;
+  margin: 48px 0 22px;
+  border-top: 1px solid var(--line);
+}
+
+.guide-content blockquote {
+  margin: 24px 0;
+  padding: 8px 24px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+}
+
+.guide-content pre:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.guide-page footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}

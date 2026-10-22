@@ -13,6 +13,7 @@ const browserTests = [
   "**/e2e/site-guard.spec.ts",
   "**/e2e/product-presence.spec.ts",
   "**/e2e/docs-site-guard.spec.ts",
+  "**/e2e/public-guides.spec.ts",
   "**/e2e/diagnostics.spec.ts",
   "**/e2e/resources.spec.ts",
   "**/e2e/policy-demo.spec.ts",

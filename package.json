@@ -21,6 +21,7 @@
     "dev": "pnpm --filter @webguard/playground dev",
     "benchmark:browser": "node scripts/benchmark-browser.mjs",
     "test:package": "node scripts/verify-package-consumer.mjs",
+    "test:consumers": "node scripts/verify-installations.mjs",
     "demo:build": "pnpm build && node scripts/build-demo.mjs",
     "demo": "pnpm demo:build && node scripts/demo-server.mjs",
     "deploy:prepare": "node scripts/prepare-deployment.mjs",
