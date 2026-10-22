@@ -100,6 +100,8 @@ installAutoGuard(options: WebGuardOptions): WebGuardInstance
 
 SSR에서는 전역에 등록하지 않고 호출마다 격리된 수동 인스턴스를 반환합니다. SSR에서 `getAutoGuard()`는 계속 `undefined`입니다. 자동 빌드 통합이 이미 SDK를 시작한다면 앱에서 이를 다시 설치하기보다 `getWebGuard()`로 조회해 수정하세요. `installAutoGuard()`의 재호출은 기존 정책을 병합하므로 `{}`를 전달해도 기존 옵션이 초기화되지는 않습니다.
 
+브라우저에서는 초기 관찰이 호스트 콜백을 호출하기 전에 자동 인스턴스의 소유권을 등록합니다. 따라서 동기 초기화 콜백에서 다시 `installAutoGuard()`를 호출해도 기존 소유자를 재사용하며 추적되지 않는 두 번째 인스턴스를 만들지 않습니다. 등록·시작 중 오류가 발생하면 생성한 리소스를 정리합니다. 수동 `WebGuard.init()`의 반환값을 아직 대입하기 전 참조할 수 있다는 뜻은 아니며, 일반 앱 코드는 시작 후 `getAutoGuard()`로 조회해 변경하세요.
+
 ```ts
 import { installAutoGuard, getAutoGuard } from "uulab-webguard/browser";
 

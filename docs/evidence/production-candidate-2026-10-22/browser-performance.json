@@ -1,0 +1,882 @@
+{
+  "measuredAt": "2026-10-22T05:14:06.827Z",
+  "status": "passed",
+  "fixture": "react-vite",
+  "environment": {
+    "node": "v22.23.2",
+    "vite": "8.3.4",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M5 Max",
+    "logicalCpus": 18
+  },
+  "buildSettings": {
+    "target": "es2022",
+    "minify": "oxc",
+    "sourcemap": false
+  },
+  "protection": {
+    "preset": "strict",
+    "obfuscation": {
+      "seed": 42
+    },
+    "runtime": "automatic SDK; shortcut/context-menu opt-in",
+    "headers": "automatic generated HTTP CSP",
+    "configFile": false
+  },
+  "builds": {
+    "baseline": {
+      "buildWallMs": 90.80812500000002,
+      "assets": [
+        {
+          "path": "assets/index-339pYI_S.js",
+          "sha256": "d7a2d552178d2652970315ca7f10aaa0b7603dfbf4f4d8cb5eacc0e14cef875c",
+          "bytes": 225326,
+          "javascriptBytes": {
+            "raw": 225326,
+            "gzip": 69853,
+            "brotli": 60129
+          }
+        },
+        {
+          "path": "assets/index-65KBRBiT.css",
+          "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "bytes": 1851
+        },
+        {
+          "path": "assets/lazy-8Qd4FIzM.js",
+          "sha256": "ecf030f15aae3a587badbec5e30ac25c5523a7019942d585b6a7fefdd664d1ea",
+          "bytes": 87,
+          "javascriptBytes": {
+            "raw": 87,
+            "gzip": 102,
+            "brotli": 86
+          }
+        },
+        {
+          "path": "index.html",
+          "sha256": "ab3c46c37e4ae0151ccf1b6969f90138a7d4a25aa388f354a27d18f1ffca54c5",
+          "bytes": 407
+        }
+      ],
+      "javascriptBytes": {
+        "raw": 225413,
+        "gzip": 69955,
+        "brotli": 60215
+      }
+    },
+    "protected": {
+      "buildWallMs": 4584.9895,
+      "assets": [
+        {
+          "path": "_headers",
+          "sha256": "0265752b49357c3fc7e54c00608db7d53cec5dcfc26a68d3f35496c464f1df9c",
+          "bytes": 385
+        },
+        {
+          "path": "assets/index-65KBRBiT.css",
+          "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+          "bytes": 1851
+        },
+        {
+          "path": "assets/index-DgYpWznH.js",
+          "sha256": "4f23fa189ed579b728fa97c5eede3568c22cb8ed6a242e1c81591ff4f5b710c7",
+          "bytes": 1931453,
+          "javascriptBytes": {
+            "raw": 1931453,
+            "gzip": 823128,
+            "brotli": 691060
+          }
+        },
+        {
+          "path": "assets/lazy-BHjP9qaS.js",
+          "sha256": "90f006c48b490a83cc485d535b3a541835ef42a12011fd80d12746e7a0c25ecb",
+          "bytes": 2615,
+          "javascriptBytes": {
+            "raw": 2615,
+            "gzip": 1526,
+            "brotli": 1409
+          }
+        },
+        {
+          "path": "index.html",
+          "sha256": "5a43711af1208ff520d347a31f17d53414141b871ec10a439e8a470c835fae44",
+          "bytes": 869
+        },
+        {
+          "path": "webguard-headers.json",
+          "sha256": "d2eaaf56d3e8f6eced0224691ae8d8b2babbf6a407894672848f2965bca024e7",
+          "bytes": 405
+        },
+        {
+          "path": "webguard-manifest.json",
+          "sha256": "34ba10a9e98ae5b9911717d76cb1e97cbb5fcb5d7c67f7d5a512a5464f43559e",
+          "bytes": 665
+        },
+        {
+          "path": "webguard-report.json",
+          "sha256": "a613118ec9b2d085355eebaa0308b0512165becb39e4cfbcd964a78e6633bb67",
+          "bytes": 1839
+        }
+      ],
+      "javascriptBytes": {
+        "raw": 1934068,
+        "gzip": 824654,
+        "brotli": 692469
+      }
+    }
+  },
+  "samplesPerCase": 5,
+  "warmupsPerCase": 1,
+  "warmups": [
+    {
+      "kind": "baseline",
+      "navigation": {
+        "domContentLoadedMs": 30.399999998509884,
+        "loadMs": 30.399999998509884,
+        "responseEndMs": 6.5
+      },
+      "startup": "SDK starts in protected builds; development stays unrestricted",
+      "cspHeader": null,
+      "lazyInPageMs": 15.900000005960464,
+      "resourceTransferBytes": 228164,
+      "lazyPlaywrightWallMs": 61.26154200000019,
+      "cpuSeconds": {
+        "navigationThroughLoad": {
+          "TaskDuration": 0.023111,
+          "ScriptDuration": 0.012218,
+          "LayoutDuration": 0.000034,
+          "RecalcStyleDuration": 0.001095
+        },
+        "lazyInteraction": {
+          "TaskDuration": 0.020027000000000003,
+          "ScriptDuration": 0.0009900000000000013,
+          "LayoutDuration": 0.00011099999999999999,
+          "RecalcStyleDuration": 0.000053999999999999795
+        },
+        "navigationThroughLazy": {
+          "TaskDuration": 0.082508,
+          "ScriptDuration": 0.019151,
+          "LayoutDuration": 0.00904,
+          "RecalcStyleDuration": 0.002241
+        }
+      },
+      "jsHeapUsedBytes": {
+        "load": 1460880,
+        "lazy": 3181604
+      }
+    },
+    {
+      "kind": "protected",
+      "navigation": {
+        "domContentLoadedMs": 117.60000000149012,
+        "loadMs": 117.60000000149012,
+        "responseEndMs": 2.4000000059604645
+      },
+      "startup": "Automatic SDK ready before React render",
+      "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+      "lazyInPageMs": 15.699999995529652,
+      "resourceTransferBytes": 1936819,
+      "lazyPlaywrightWallMs": 64.59454200000073,
+      "cpuSeconds": {
+        "navigationThroughLoad": {
+          "TaskDuration": 0.091434,
+          "ScriptDuration": 0.084808,
+          "LayoutDuration": 0.000033,
+          "RecalcStyleDuration": 0.000175
+        },
+        "lazyInteraction": {
+          "TaskDuration": 0.021399,
+          "ScriptDuration": 0.0032999999999999974,
+          "LayoutDuration": 0.00007799999999999994,
+          "RecalcStyleDuration": 0.00005400000000000001
+        },
+        "navigationThroughLazy": {
+          "TaskDuration": 0.154887,
+          "ScriptDuration": 0.111593,
+          "LayoutDuration": 0.006145,
+          "RecalcStyleDuration": 0.000623
+        }
+      },
+      "jsHeapUsedBytes": {
+        "load": 9236588,
+        "lazy": 12107672
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair": 1,
+      "order": ["baseline", "protected"],
+      "samples": [
+        {
+          "kind": "baseline",
+          "navigation": {
+            "domContentLoadedMs": 17.899999998509884,
+            "loadMs": 17.899999998509884,
+            "responseEndMs": 1.3999999985098839
+          },
+          "startup": "SDK starts in protected builds; development stays unrestricted",
+          "cspHeader": null,
+          "lazyInPageMs": 15.900000005960464,
+          "resourceTransferBytes": 228164,
+          "lazyPlaywrightWallMs": 52.36487500000112,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.010975,
+              "ScriptDuration": 0.007797,
+              "LayoutDuration": 0.000035,
+              "RecalcStyleDuration": 0.00017
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.016950000000000007,
+              "ScriptDuration": 0.0006560000000000003,
+              "LayoutDuration": 0.00010599999999999932,
+              "RecalcStyleDuration": 0.00004700000000000006
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.048558000000000004,
+              "ScriptDuration": 0.012219,
+              "LayoutDuration": 0.005925,
+              "RecalcStyleDuration": 0.000568
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 1456100,
+            "lazy": 3175848
+          }
+        },
+        {
+          "kind": "protected",
+          "navigation": {
+            "domContentLoadedMs": 107.09999999403954,
+            "loadMs": 107.09999999403954,
+            "responseEndMs": 1.0999999940395355
+          },
+          "startup": "Automatic SDK ready before React render",
+          "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+          "lazyInPageMs": 13.100000001490116,
+          "resourceTransferBytes": 1936819,
+          "lazyPlaywrightWallMs": 52.734042000000045,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.08780600000000001,
+              "ScriptDuration": 0.0831,
+              "LayoutDuration": 0.00003,
+              "RecalcStyleDuration": 0.000158
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.027649000000000007,
+              "ScriptDuration": 0.003162999999999999,
+              "LayoutDuration": 0.00010000000000000026,
+              "RecalcStyleDuration": 0.000058
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.154728,
+              "ScriptDuration": 0.108098,
+              "LayoutDuration": 0.006079,
+              "RecalcStyleDuration": 0.000586
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 9142532,
+            "lazy": 12088748
+          }
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "order": ["protected", "baseline"],
+      "samples": [
+        {
+          "kind": "protected",
+          "navigation": {
+            "domContentLoadedMs": 112.10000000149012,
+            "loadMs": 112.10000000149012,
+            "responseEndMs": 1.7999999970197678
+          },
+          "startup": "Automatic SDK ready before React render",
+          "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+          "lazyInPageMs": 15.899999998509884,
+          "resourceTransferBytes": 1936819,
+          "lazyPlaywrightWallMs": 49.61433299999953,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.087978,
+              "ScriptDuration": 0.083067,
+              "LayoutDuration": 0.000031,
+              "RecalcStyleDuration": 0.000158
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.021541000000000005,
+              "ScriptDuration": 0.0032310000000000116,
+              "LayoutDuration": 0.00009699999999999986,
+              "RecalcStyleDuration": 0.000085
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.148123,
+              "ScriptDuration": 0.107604,
+              "LayoutDuration": 0.006243,
+              "RecalcStyleDuration": 0.000607
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 9061664,
+            "lazy": 12090300
+          }
+        },
+        {
+          "kind": "baseline",
+          "navigation": {
+            "domContentLoadedMs": 14.199999995529652,
+            "loadMs": 14.199999995529652,
+            "responseEndMs": 1
+          },
+          "startup": "SDK starts in protected builds; development stays unrestricted",
+          "cspHeader": null,
+          "lazyInPageMs": 15.700000002980232,
+          "resourceTransferBytes": 228164,
+          "lazyPlaywrightWallMs": 52.927582999998776,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.009848,
+              "ScriptDuration": 0.007061,
+              "LayoutDuration": 0.000025,
+              "RecalcStyleDuration": 0.000131
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.015830999999999998,
+              "ScriptDuration": 0.0006029999999999994,
+              "LayoutDuration": 0.00008700000000000027,
+              "RecalcStyleDuration": 0.00004500000000000001
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.04539,
+              "ScriptDuration": 0.011115,
+              "LayoutDuration": 0.005968,
+              "RecalcStyleDuration": 0.00046
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 1456100,
+            "lazy": 3169560
+          }
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "order": ["baseline", "protected"],
+      "samples": [
+        {
+          "kind": "baseline",
+          "navigation": {
+            "domContentLoadedMs": 13.600000001490116,
+            "loadMs": 13.700000002980232,
+            "responseEndMs": 1
+          },
+          "startup": "SDK starts in protected builds; development stays unrestricted",
+          "cspHeader": null,
+          "lazyInPageMs": 16.80000000447035,
+          "resourceTransferBytes": 228164,
+          "lazyPlaywrightWallMs": 52.57929200000035,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.010036000000000002,
+              "ScriptDuration": 0.007187,
+              "LayoutDuration": 0.000026,
+              "RecalcStyleDuration": 0.00014
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.019528999999999998,
+              "ScriptDuration": 0.0007300000000000015,
+              "LayoutDuration": 0.00006800000000000035,
+              "RecalcStyleDuration": 0.00004000000000000005
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.04934,
+              "ScriptDuration": 0.011232,
+              "LayoutDuration": 0.006178,
+              "RecalcStyleDuration": 0.000492
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 1458652,
+            "lazy": 3186508
+          }
+        },
+        {
+          "kind": "protected",
+          "navigation": {
+            "domContentLoadedMs": 92.60000000149012,
+            "loadMs": 92.60000000149012,
+            "responseEndMs": 1.1000000014901161
+          },
+          "startup": "Automatic SDK ready before React render",
+          "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+          "lazyInPageMs": 16.19999999552965,
+          "resourceTransferBytes": 1936819,
+          "lazyPlaywrightWallMs": 49.64145800000006,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.074719,
+              "ScriptDuration": 0.070473,
+              "LayoutDuration": 0.000025,
+              "RecalcStyleDuration": 0.000138
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.019152000000000002,
+              "ScriptDuration": 0.002839000000000008,
+              "LayoutDuration": 0.00007300000000000015,
+              "RecalcStyleDuration": 0.00004700000000000006
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.129158,
+              "ScriptDuration": 0.092909,
+              "LayoutDuration": 0.00561,
+              "RecalcStyleDuration": 0.000528
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 9066716,
+            "lazy": 12094652
+          }
+        }
+      ]
+    },
+    {
+      "pair": 4,
+      "order": ["protected", "baseline"],
+      "samples": [
+        {
+          "kind": "protected",
+          "navigation": {
+            "domContentLoadedMs": 94.5,
+            "loadMs": 94.60000000149012,
+            "responseEndMs": 1.1000000014901161
+          },
+          "startup": "Automatic SDK ready before React render",
+          "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+          "lazyInPageMs": 16.799999997019768,
+          "resourceTransferBytes": 1936819,
+          "lazyPlaywrightWallMs": 49.63854100000026,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.076082,
+              "ScriptDuration": 0.071717,
+              "LayoutDuration": 0.000027,
+              "RecalcStyleDuration": 0.000151
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.021424999999999986,
+              "ScriptDuration": 0.002798000000000009,
+              "LayoutDuration": 0.00007000000000000062,
+              "RecalcStyleDuration": 0.000047999999999999974
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.13208099999999998,
+              "ScriptDuration": 0.09374,
+              "LayoutDuration": 0.005635,
+              "RecalcStyleDuration": 0.00052
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 9122564,
+            "lazy": 12096268
+          }
+        },
+        {
+          "kind": "baseline",
+          "navigation": {
+            "domContentLoadedMs": 12.900000005960464,
+            "loadMs": 12.900000005960464,
+            "responseEndMs": 0.9000000059604645
+          },
+          "startup": "SDK starts in protected builds; development stays unrestricted",
+          "cspHeader": null,
+          "lazyInPageMs": 11.700000002980232,
+          "resourceTransferBytes": 228164,
+          "lazyPlaywrightWallMs": 55.722874999999476,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.00939,
+              "ScriptDuration": 0.006682,
+              "LayoutDuration": 0.00003,
+              "RecalcStyleDuration": 0.000148
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.023807000000000002,
+              "ScriptDuration": 0.0006179999999999988,
+              "LayoutDuration": 0.00009900000000000013,
+              "RecalcStyleDuration": 0.00004199999999999999
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.052773,
+              "ScriptDuration": 0.010738,
+              "LayoutDuration": 0.005695,
+              "RecalcStyleDuration": 0.00053
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 1458656,
+            "lazy": 3161624
+          }
+        }
+      ]
+    },
+    {
+      "pair": 5,
+      "order": ["baseline", "protected"],
+      "samples": [
+        {
+          "kind": "baseline",
+          "navigation": {
+            "domContentLoadedMs": 13.299999997019768,
+            "loadMs": 13.299999997019768,
+            "responseEndMs": 1
+          },
+          "startup": "SDK starts in protected builds; development stays unrestricted",
+          "cspHeader": null,
+          "lazyInPageMs": 15.599999994039536,
+          "resourceTransferBytes": 228164,
+          "lazyPlaywrightWallMs": 53.70112499999959,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.009944999999999999,
+              "ScriptDuration": 0.007061,
+              "LayoutDuration": 0.000025,
+              "RecalcStyleDuration": 0.000136
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.017023,
+              "ScriptDuration": 0.0007220000000000004,
+              "LayoutDuration": 0.00007599999999999968,
+              "RecalcStyleDuration": 0.00004199999999999999
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.04684,
+              "ScriptDuration": 0.011143,
+              "LayoutDuration": 0.005886,
+              "RecalcStyleDuration": 0.000509
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 1461132,
+            "lazy": 3166108
+          }
+        },
+        {
+          "kind": "protected",
+          "navigation": {
+            "domContentLoadedMs": 101.09999999403954,
+            "loadMs": 101.09999999403954,
+            "responseEndMs": 1.1999999955296516
+          },
+          "startup": "Automatic SDK ready before React render",
+          "cspHeader": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+          "lazyInPageMs": 16.80000000447035,
+          "resourceTransferBytes": 1936819,
+          "lazyPlaywrightWallMs": 48.69283400000131,
+          "cpuSeconds": {
+            "navigationThroughLoad": {
+              "TaskDuration": 0.082353,
+              "ScriptDuration": 0.077877,
+              "LayoutDuration": 0.000028,
+              "RecalcStyleDuration": 0.000156
+            },
+            "lazyInteraction": {
+              "TaskDuration": 0.01914700000000001,
+              "ScriptDuration": 0.00302100000000001,
+              "LayoutDuration": 0.00009699999999999986,
+              "RecalcStyleDuration": 0.000047999999999999974
+            },
+            "navigationThroughLazy": {
+              "TaskDuration": 0.140672,
+              "ScriptDuration": 0.102704,
+              "LayoutDuration": 0.006477,
+              "RecalcStyleDuration": 0.000567
+            }
+          },
+          "jsHeapUsedBytes": {
+            "load": 9155676,
+            "lazy": 12092364
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Local headless Chromium on this host, not physical devices or production network performance.",
+    "One warmup per case; each measured navigation uses a fresh context, CDP cache disabled. Pair order alternates to expose order/host noise.",
+    "Runtime samples are observational: no universal percentage/time gate or statistical significance claim. Scheduling, frames, GC and host contention introduce noise.",
+    "CPU durations are CDP metric deltas in seconds at named checkpoints; heap is point-in-time used JS heap, not peak memory.",
+    "Lazy completion uses in-page performance marks from the capture-phase click to observed DOM completion; Playwright wall latency includes automation and polling.",
+    "Payload ceilings apply only to this maintained fixture; gzip level 9 and Brotli quality 11 are computed per emitted JS asset, then summed, not observed HTTP compression."
+  ],
+  "source": [
+    {
+      "path": "index.html",
+      "sha256": "8367976e7a19860ac17c14ba5151aac7363c09f26e06dc3c9d6c795b46f18b82"
+    },
+    {
+      "path": "package.json",
+      "sha256": "80f900e51d5e3060b99f14380fd09a6a1f94f7de159e34d288abf9522238e062"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "ddc87b271bfd6d6dd54a3e0c3c301ba52c90f17065bd0943c451378269791dc0"
+    },
+    {
+      "path": "src/lazy.ts",
+      "sha256": "50555b3e46c4d7c8f04b8a8cc00f63e0d0eaabca5db89d6ed9ad86ba68d70dcc"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "78289a945e34675d33ea2d1b80ee8b85e57a3c44e9ea572c2ae679e0c8b1991c"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "638870dcf88426f688e110d0c40ee3bbb467a66715ceffdcba19734a7f39111c"
+    }
+  ],
+  "lockfileSha256": "fcf39da5dc25b6bab1c9ec52ad9dc02bd06cc3bd13c220e4b2a99d225b96835f",
+  "toolArtifacts": [
+    {
+      "path": "packages/browser/dist/index.js",
+      "sha256": "d511b8c88a9d9cec9961e8b2eb827e082e8161f29502e7217f0f67465ac054ca"
+    },
+    {
+      "path": "packages/browser/dist/webguard.global.js",
+      "sha256": "82e49f0d9d2fd699477946d0a3105c9f6e4507af3a2b076fa31fd3ff87fa3ab4"
+    },
+    {
+      "path": "packages/cli/dist/bin.js",
+      "sha256": "875048cf41c439c1c69eb7a613fced3fedc952d374f03aa3d40b5c4ae864b9e4"
+    },
+    {
+      "path": "packages/cli/dist/chunk-F6WDJ2CP.js",
+      "sha256": "fee1c89958f32f6ee98e8fddcaf8fcd66e0f5c58039df5db0b8a57b017cf8ef6"
+    },
+    {
+      "path": "packages/cli/dist/index.js",
+      "sha256": "d1ee4a145946cf2d49c3b3cd9fa48f984936b16664581a072d966fa450ffb178"
+    },
+    {
+      "path": "packages/core/dist/index.js",
+      "sha256": "87f949638fb83a4ae142372d370eb0b570ff83d93d10e5c1ca7da6fb4eeedaf0"
+    },
+    {
+      "path": "packages/integrity/dist/index.js",
+      "sha256": "21aeef599f4d99149e5c004ea4bd5cc5fa5dbeda8d24f9fafae151f2a6cd9ab7"
+    },
+    {
+      "path": "packages/npm/dist/browser.global.js",
+      "sha256": "f615477d3011a4ba8c977ec1f0ef570b4d8772c014e53f46b1d06629bbd1270b"
+    },
+    {
+      "path": "packages/npm/dist/browser.js",
+      "sha256": "9022a7f6865fabe656f3d97bbc70d547946f736fa2a89bb7aface0be915118cc"
+    },
+    {
+      "path": "packages/npm/dist/build.js",
+      "sha256": "ac788f56ddc86586892ea928700b58e6034a2fb2f66421135c00f385cebb2ced"
+    },
+    {
+      "path": "packages/npm/dist/check.js",
+      "sha256": "0d7003a3b4ee6003192d755ce2bd701afe3ed94111c7f1249f6ea5dc1697d365"
+    },
+    {
+      "path": "packages/npm/dist/cli.js",
+      "sha256": "881de61c1459d83131b93883b00f654f77cf32856e30f5bae669487b0872aae4"
+    },
+    {
+      "path": "packages/npm/dist/client.js",
+      "sha256": "5bbdc9007e00555396594e56b920982aeaff7ee775c78ca1bab304805e3e732f"
+    },
+    {
+      "path": "packages/npm/dist/headers.js",
+      "sha256": "42cbdda6c76e894c2c8d3ee08b111b77f2d7a30c5adfb0be3e40b57f4708d9bd"
+    },
+    {
+      "path": "packages/npm/dist/index.js",
+      "sha256": "073a730f2ff43f428d18cfd126b902da30c829773c10bf438a0a79902ab13935"
+    },
+    {
+      "path": "packages/npm/dist/next-runtime.js",
+      "sha256": "4eeeb19989584babc4216f3770eaa2844d27f63f33ae59444411af94cca51b65"
+    },
+    {
+      "path": "packages/npm/dist/next.js",
+      "sha256": "46973d87e1febed62471c7977fc7598a205c35412918b3bb8378ee5efd95da1c"
+    },
+    {
+      "path": "packages/npm/dist/serve.js",
+      "sha256": "1028884aba829f5eb3a647a1fe50dfba24c67f6b619a5fd81eebc579323c3ae9"
+    },
+    {
+      "path": "packages/npm/dist/server.js",
+      "sha256": "60c633986bb00f53631338f56afbd65e171db64e3aef2c5f485f35a16c743bab"
+    },
+    {
+      "path": "packages/npm/dist/verify.js",
+      "sha256": "2dbb4843c77d0b7c923b495c750f3b2e6edd8e70e72076d213657db505d52015"
+    },
+    {
+      "path": "packages/obfuscator/dist/chunk-GDGLX7VC.js",
+      "sha256": "30a906bf7ee862ec8233c29b5b7b41e6a6d64328fff261e51e4f465eb2d8367e"
+    },
+    {
+      "path": "packages/obfuscator/dist/index.js",
+      "sha256": "8e6285cb2c623b6eceb85af48385aa4b0b56a40df647a8b3523456af85352c76"
+    },
+    {
+      "path": "packages/obfuscator/dist/options.js",
+      "sha256": "c24f358239dc252afd64dcf17797c04dce3e4dae99b90ab060d89c3c729d9e5b"
+    },
+    {
+      "path": "packages/shared/dist/index.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "packages/vite-plugin/dist/client.js",
+      "sha256": "ed3be0593cba4d1bb2af2e9e39df85c5793eaebdf3a7aa478578944c86a152d1"
+    },
+    {
+      "path": "packages/vite-plugin/dist/index.js",
+      "sha256": "f7bb8e04e533d157ae6039f766573763e0ad9009cca2da004aab5a7063a83963"
+    }
+  ],
+  "expectedHeaders": {
+    "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer"
+  },
+  "budget": {
+    "path": "/Users/uulab/Documents/workspace/uulab/webguard/benchmarks/react-vite-budget.json",
+    "sha256": "852721778e72001dcf4517b90a8d757eebb4b75645c230b0e7ae39dd3dc7e20f",
+    "passed": true,
+    "checks": [
+      {
+        "kind": "baseline",
+        "encoding": "raw",
+        "actual": 225413,
+        "ceiling": 300000,
+        "passed": true
+      },
+      {
+        "kind": "baseline",
+        "encoding": "gzip",
+        "actual": 69955,
+        "ceiling": 100000,
+        "passed": true
+      },
+      {
+        "kind": "baseline",
+        "encoding": "brotli",
+        "actual": 60215,
+        "ceiling": 90000,
+        "passed": true
+      },
+      {
+        "kind": "protected",
+        "encoding": "raw",
+        "actual": 1934068,
+        "ceiling": 2400000,
+        "passed": true
+      },
+      {
+        "kind": "protected",
+        "encoding": "gzip",
+        "actual": 824654,
+        "ceiling": 1000000,
+        "passed": true
+      },
+      {
+        "kind": "protected",
+        "encoding": "brotli",
+        "actual": 692469,
+        "ceiling": 850000,
+        "passed": true
+      }
+    ]
+  },
+  "browser": "156.0.8078.4",
+  "summary": {
+    "baseline": {
+      "sampleCount": 5,
+      "loadMs": {
+        "median": 13.700000002980232,
+        "min": 12.900000005960464,
+        "max": 17.899999998509884
+      },
+      "navigationCpuTaskSeconds": {
+        "median": 0.009944999999999999,
+        "min": 0.00939,
+        "max": 0.010975
+      },
+      "lazyInPageMs": {
+        "median": 15.700000002980232,
+        "min": 11.700000002980232,
+        "max": 16.80000000447035
+      },
+      "lazyCpuTaskSeconds": {
+        "median": 0.017023,
+        "min": 0.015830999999999998,
+        "max": 0.023807000000000002
+      },
+      "jsHeapUsedBytes": {
+        "load": {
+          "median": 1458652,
+          "min": 1456100,
+          "max": 1461132
+        },
+        "lazy": {
+          "median": 3169560,
+          "min": 3161624,
+          "max": 3186508
+        }
+      }
+    },
+    "protected": {
+      "sampleCount": 5,
+      "loadMs": {
+        "median": 101.09999999403954,
+        "min": 92.60000000149012,
+        "max": 112.10000000149012
+      },
+      "navigationCpuTaskSeconds": {
+        "median": 0.082353,
+        "min": 0.074719,
+        "max": 0.087978
+      },
+      "lazyInPageMs": {
+        "median": 16.19999999552965,
+        "min": 13.100000001490116,
+        "max": 16.80000000447035
+      },
+      "lazyCpuTaskSeconds": {
+        "median": 0.021424999999999986,
+        "min": 0.01914700000000001,
+        "max": 0.027649000000000007
+      },
+      "jsHeapUsedBytes": {
+        "load": {
+          "median": 9122564,
+          "min": 9061664,
+          "max": 9155676
+        },
+        "lazy": {
+          "median": 12092364,
+          "min": 12088748,
+          "max": 12096268
+        }
+      }
+    }
+  },
+  "cleanup": {
+    "temporaryDirectoryRemoved": true,
+    "errors": []
+  }
+}

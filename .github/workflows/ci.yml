@@ -23,13 +23,15 @@ jobs:
       - run: pnpm format:check
       - run: pnpm test:e2e
       - run: pnpm benchmark
+      - run: pnpm benchmark:browser --budget benchmarks/react-vite-budget.json --evidence test-results/rc/browser-performance.json
+      - run: pnpm audit --prod
       - run: node scripts/prepare-jsp.mjs
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
           cache: maven
-      - run: mvn -B -f examples/jsp-servlet/pom.xml package
+      - run: mvn -B -f examples/jsp-servlet/pom.xml -Dwebguard.browser=true package
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,0 +1,165 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T05:12:32.758Z",
+  "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-generic-consumer-rpZxzQ",
+  "tarball": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-installations-fiKnsp/uulab-webguard-0.3.0.tgz",
+  "integrity": "sha512-yHBPUZGGrErnfkQ/DUR9Lzt23Z8BCHJEoMXbPjb40t7v5rQjiv8nwcOCeGO4t6ojbUegswqzRCpgDuV+GUMW4A==",
+  "versions": {
+    "webpack": "5.112.0",
+    "esbuild": "0.28.2",
+    "jquery": "4.0.0"
+  },
+  "viteInstalled": false,
+  "builds": [
+    {
+      "name": "webpack",
+      "url": "http://127.0.0.1:58608",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    },
+    {
+      "name": "esbuild",
+      "url": "http://127.0.0.1:58620",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    },
+    {
+      "name": "plain-html",
+      "url": "http://127.0.0.1:58646",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    }
+  ],
+  "browserCases": [
+    {
+      "engine": "chromium",
+      "tool": "webpack",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "chromium",
+      "tool": "esbuild",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "chromium",
+      "tool": "plain-html",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": false,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "chromium",
+      "tool": "manual-classic-script",
+      "noAutomaticStartup": true,
+      "explicitInitialization": true,
+      "trustedShortcutBlocked": true
+    },
+    {
+      "engine": "firefox",
+      "tool": "webpack",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "firefox",
+      "tool": "esbuild",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "firefox",
+      "tool": "plain-html",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": false,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "firefox",
+      "tool": "manual-classic-script",
+      "noAutomaticStartup": true,
+      "explicitInitialization": true,
+      "trustedShortcutBlocked": true
+    },
+    {
+      "engine": "webkit",
+      "tool": "webpack",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "webkit",
+      "tool": "esbuild",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": true,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "webkit",
+      "tool": "plain-html",
+      "sdkBeforeApp": true,
+      "calculation": true,
+      "dynamicImport": false,
+      "defaultOff": true,
+      "trustedInputs": 5,
+      "contextRestriction": true,
+      "sriTamperRejected": true
+    },
+    {
+      "engine": "webkit",
+      "tool": "manual-classic-script",
+      "noAutomaticStartup": true,
+      "explicitInitialization": true,
+      "trustedShortcutBlocked": true
+    }
+  ],
+  "typesWithoutVite": true
+}

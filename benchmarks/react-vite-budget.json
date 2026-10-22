@@ -1,0 +1,7 @@
+{
+  "fixture": "react-vite",
+  "maxJavaScriptBytes": {
+    "baseline": { "raw": 300000, "gzip": 100000, "brotli": 90000 },
+    "protected": { "raw": 2400000, "gzip": 1000000, "brotli": 850000 }
+  }
+}

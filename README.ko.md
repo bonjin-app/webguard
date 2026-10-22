@@ -193,6 +193,8 @@ pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
 
+[프로덕션 후보 기준 (한국어)](docs/PRODUCTION_READINESS.ko.md) · [지원·업데이트·롤백 (영어)](docs/SUPPORT.md)
+
 [기술 가이드](docs/TECHNICAL_GUIDE.en.md) · [설치 가이드 (한국어)](docs/INSTALL.ko.md) · [환경 가이드 (한국어)](docs/ENVIRONMENTS.ko.md) · [아키텍처](ARCHITECTURE.md) · [위협 모델](THREAT_MODEL.md) · [보안 정책](SECURITY.md) · [변경 내역](docs/CHANGELOG.md)
 
 네 언어의 README는 모두 동일한 설치 경로를 다룹니다. 상세 API·옵션 레퍼런스는 현재 한국어로 제공됩니다. WebGuard 원본 코드는 [MIT 라이선스](LICENSE)를 따릅니다. 의존성에는 각각의 라이선스가 적용되며, javascript-obfuscator는 BSD-2-Clause입니다. [제삼자 고지](THIRD_PARTY_NOTICES.md)를 참고하세요.

@@ -314,6 +314,7 @@ function editableEvent(event: Event): boolean {
 function createGuard(
   initial: WebGuardOptions,
   onDestroy?: () => void,
+  beforeStart?: (instance: WebGuardInstance) => void,
 ): WebGuardInstance {
   let options = validatedOptions(initial);
   const browserWindow = typeof window !== "undefined" ? window : undefined;
@@ -457,13 +458,17 @@ function createGuard(
     }
     const revision = policyRevision;
     const result = blocker.show(reason);
-    if (destroyed) return;
+    // A nested request owns any modal and state established by a focus callback.
+    if (destroyed || result === "superseded") return;
     if (revision !== policyRevision) {
       // A focus handler may have changed an unrelated option while the modal opened.
       if (result !== "unavailable" && shouldBlock(reason)) blockPage(reason);
       return;
     }
-    if (result === "shown" || (result === "existing" && !blocked)) {
+    if (
+      result === "shown" ||
+      (result === "existing" && (!blocked || blockedReason !== reason))
+    ) {
       blocked = true;
       blockedReason = reason;
       unavailableReported = false;
@@ -506,6 +511,7 @@ function createGuard(
   }
 
   function installListeners() {
+    if (destroyed) return;
     if (browserWindow && browserDocument) {
       function listen(
         target: EventTarget,
@@ -643,9 +649,7 @@ function createGuard(
     domMonitor = next;
     next.rebaseline();
   }
-  installListeners();
-  installDomMonitor();
-  return {
+  const instance: WebGuardInstance = {
     update(patch) {
       if (destroyed) return;
       const validated = validatedOptions(patch);
@@ -879,6 +883,17 @@ function createGuard(
       }
     },
   };
+  try {
+    // Publish automatic ownership before any initial signal can call host code.
+    beforeStart?.(instance);
+    installListeners();
+    // A reentrant update may already have installed the current DOM policy.
+    if (!domMonitor) installDomMonitor();
+  } catch (error) {
+    instance.destroy();
+    throw error;
+  }
+  return instance;
 }
 function init(options: WebGuardOptions = {}): WebGuardInstance {
   return createGuard(options);
@@ -954,33 +969,34 @@ export function installAutoGuard(options: WebGuardOptions): WebGuardInstance {
   if (slot && (!record || !slot.configurable))
     throw new TypeError("WebGuard automatic registry is unavailable");
   let active = true;
-  const instance = createGuard(options, () => {
-    active = false;
-    const current = Object.getOwnPropertyDescriptor(host, autoGuardKey);
-    if (
-      current &&
-      Object.hasOwn(current, "value") &&
-      current.value === next &&
-      current.configurable
-    )
-      Reflect.deleteProperty(host, autoGuardKey);
-  });
-  const next: AutoGuardRecord = Object.freeze({
-    instance,
-    isActive: () => active,
-  });
-  try {
-    Object.defineProperty(host, autoGuardKey, {
-      value: next,
-      configurable: true,
-      writable: false,
-      enumerable: false,
-    });
-  } catch {
-    instance.destroy();
-    throw new TypeError("WebGuard automatic registry is unavailable");
-  }
-  return instance;
+  let next: AutoGuardRecord;
+  return createGuard(
+    options,
+    () => {
+      active = false;
+      const current = Object.getOwnPropertyDescriptor(host, autoGuardKey);
+      if (
+        current &&
+        Object.hasOwn(current, "value") &&
+        current.value === next &&
+        current.configurable
+      )
+        Reflect.deleteProperty(host, autoGuardKey);
+    },
+    (instance) => {
+      next = Object.freeze({ instance, isActive: () => active });
+      try {
+        Object.defineProperty(host, autoGuardKey, {
+          value: next,
+          configurable: true,
+          writable: false,
+          enumerable: false,
+        });
+      } catch {
+        throw new TypeError("WebGuard automatic registry is unavailable");
+      }
+    },
+  );
 }
 export const WebGuard = { init };
 export default WebGuard;

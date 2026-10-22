@@ -5,8 +5,10 @@ export type BlockReason =
 export function createPageBlocker(document: Document, recheck: () => void) {
   let dialog: HTMLDialogElement | undefined;
   let shownReason: BlockReason | undefined;
+  let revision = 0;
   const preventCancel = (event: Event) => event.preventDefault();
   function clear() {
+    revision++;
     const current = dialog;
     dialog = undefined;
     shownReason = undefined;
@@ -21,10 +23,15 @@ export function createPageBlocker(document: Document, recheck: () => void) {
   }
   return {
     clear,
-    show(reason: BlockReason): "shown" | "existing" | "unavailable" {
+    show(
+      reason: BlockReason,
+    ): "shown" | "existing" | "unavailable" | "superseded" {
       if (dialog?.isConnected && dialog.open && shownReason === reason)
         return "existing";
+      const clearingRevision = revision + 1;
       clear();
+      // close() restores focus synchronously. A host handler may cancel or replace this request.
+      if (revision !== clearingRevision) return "superseded";
       const node = document.createElement("dialog");
       if (typeof node.showModal !== "function") return "unavailable";
       node.setAttribute("data-webguard-blocker", "");
@@ -131,7 +138,7 @@ export function createPageBlocker(document: Document, recheck: () => void) {
           shownReason = undefined;
         }
         node.remove();
-        return "unavailable";
+        return revision !== clearingRevision ? "superseded" : "unavailable";
       }
     },
   };

@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-22",
+  "command": "pnpm audit --prod --json",
+  "lockfileSha256": "fcf39da5dc25b6bab1c9ec52ad9dc02bd06cc3bd13c220e4b2a99d225b96835f",
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 149,
+    "devDependencies": 0,
+    "optionalDependencies": 57,
+    "totalDependencies": 206
+  },
+  "advisories": {},
+  "scope": "Current workspace production dependency lockfile and registry advisory snapshot; not proof of absence of vulnerabilities or audit of arbitrary consumer dependencies."
+}

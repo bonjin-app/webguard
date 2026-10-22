@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T05:12:22.336Z",
+  "tarballSha512": "c8704f519186ac4ae77e443f0d447d2f3b76dd9f01087244a0c5db3e36f8d2deefe6b4238aff27c1c3827863b8b7aa236d47a0b30ab3442a600ee57e194316e0",
+  "versions": {
+    "vite": "8.3.4",
+    "uulab-webguard": "0.3.0"
+  },
+  "checks": {
+    "singleConfigBuild": true,
+    "sriMatchesFinalBytes": true,
+    "noPublicSourceMapArtifacts": true,
+    "realProtectedServerCSP": true,
+    "httpEntrySRI": true,
+    "privatePathsDenied": [
+      "/assets/index-DFXNn7zv.js.map",
+      "/webguard-report.json",
+      "/webguard-headers.json",
+      "/_headers",
+      "/package.json",
+      "/.env",
+      "/src/main.js"
+    ]
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "errors": [],
+      "failedRequests": [],
+      "automaticWatchWithoutManualSample": true,
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    },
+    {
+      "engine": "firefox",
+      "errors": [],
+      "failedRequests": [],
+      "automaticWatchWithoutManualSample": true,
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    },
+    {
+      "engine": "webkit",
+      "errors": [],
+      "failedRequests": [],
+      "automaticWatchWithoutManualSample": true,
+      "opaqueCSSModulesWithComputedStyle": true,
+      "textAttributesRemovalReplacementDetected": true,
+      "synchronousRestoreAndRebaseline": true,
+      "liveDisableEnable": true,
+      "normalTimerSample": true,
+      "oneAutoGuardInstance": true
+    }
+  ],
+  "scope": "Fresh installed Vite build with one webguardApp configuration; opt-in CSS Modules naming, static DOM monitoring, automatic visible-page deadline watch and explicit normal timer sample. Does not prove DevTools detection, closure or resistance to a user controlling the browser."
+}

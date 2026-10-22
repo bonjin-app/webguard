@@ -580,7 +580,7 @@ it("keeps lifecycle knowledge after first activation when pagehide happens while
   expect(instance.getDebuggingState().state).toBe("watching");
   expect(vi.getTimerCount()).toBe(1);
 });
-it("retains only two lifecycle handlers after first activation and removes all on destroy", () => {
+it("owns exactly one watch timer and two lifecycle handlers through 100 synthetic lifecycle toggles", () => {
   const win = browser();
   clock();
   const addWindow = vi.spyOn(win, "addEventListener");
@@ -593,7 +593,10 @@ it("retains only two lifecycle handlers after first activation and removes all o
   expect(count(addWindow.mock.calls, "pagehide")).toBe(0);
   expect(count(addWindow.mock.calls, "pageshow")).toBe(0);
   instance.update({ debugging: { watch: true } });
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 100; i++) {
+    win.dispatchEvent(new win.Event("pagehide"));
+    expect(instance.getDebuggingState().state).toBe("suspended");
+    expect(vi.getTimerCount()).toBe(0);
     instance.update({ debugging: { watch: false } });
     expect(vi.getTimerCount()).toBe(0);
     expect(
@@ -601,6 +604,11 @@ it("retains only two lifecycle handlers after first activation and removes all o
         count(removeDocument.mock.calls, "visibilitychange"),
     ).toBe(0);
     instance.update({ debugging: { watch: true } });
+    visibility(win, true);
+    expect(vi.getTimerCount()).toBe(0);
+    win.dispatchEvent(new win.Event("pageshow"));
+    expect(instance.getDebuggingState().state).toBe("watching");
+    expect(vi.getTimerCount()).toBe(1);
     expect(
       count(addDocument.mock.calls, "visibilitychange") -
         count(removeDocument.mock.calls, "visibilitychange"),
@@ -617,5 +625,26 @@ it("retains only two lifecycle handlers after first activation and removes all o
     count(addDocument.mock.calls, "visibilitychange") -
       count(removeDocument.mock.calls, "visibilitychange"),
   ).toBe(0);
+  for (const type of ["pagehide", "pageshow"]) {
+    const registration = addWindow.mock.calls.find(
+      ([event]) => event === type,
+    )!;
+    const removal = removeWindow.mock.calls.find(([event]) => event === type)!;
+    expect(removal[1]).toBe(registration[1]);
+    expect(removal[2]).toBe(registration[2]);
+  }
+  const registrations = addDocument.mock.calls.filter(
+    ([type]) => type === "visibilitychange",
+  );
+  const removals = removeDocument.mock.calls.filter(
+    ([type]) => type === "visibilitychange",
+  );
+  expect(removals).toHaveLength(registrations.length);
+  registrations.forEach((registration, index) => {
+    expect(removals[index]?.[1]).toBe(registration[1]);
+    expect(removals[index]?.[2]).toBe(registration[2]);
+  });
+  win.dispatchEvent(new win.Event("pageshow"));
+  visibility(win, true);
   expect(vi.getTimerCount()).toBe(0);
 });
