@@ -1,0 +1,351 @@
+$ pnpm build && pnpm readme:check && pnpm typecheck && pnpm lint && pnpm test
+$ node scripts/package-metadata.mjs && turbo run build
+Prepared local package documentation and license notices; nothing published.
+
+   • turbo 2.11.9
+   • Packages in scope: @webguard/browser, @webguard/cli, @webguard/core, @webguard/docs, @webguard/example-react-vite, @webguard/example-vanilla-js, @webguard/example-vanilla-ts, @webguard/integrity, @webguard/obfuscator, @webguard/playground, @webguard/shared, @webguard/vite-plugin, uulab-webguard
+   • Running build in 13 packages
+   • Remote caching disabled
+
+uulab-webguard:build: cache miss, executing ae1b6c4369cada2e
+@webguard/integrity:build: cache miss, executing 4152580c5092f022
+@webguard/shared:build: cache miss, executing 0d9f89df92955616
+uulab-webguard:build: $ node build.mjs
+@webguard/shared:build: $ tsup src/index.ts --format esm --dts --clean
+@webguard/integrity:build: $ tsup src/index.ts --format esm --dts --clean
+@webguard/shared:build: CLI Building entry: src/index.ts
+@webguard/integrity:build: CLI Building entry: src/index.ts
+@webguard/shared:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/shared:build: CLI tsup v8.5.0
+@webguard/integrity:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/integrity:build: CLI tsup v8.5.0
+@webguard/shared:build: CLI Target: es2022
+@webguard/integrity:build: CLI Target: es2022
+@webguard/shared:build: CLI Cleaning output folder
+@webguard/integrity:build: CLI Cleaning output folder
+@webguard/shared:build: ESM Build start
+@webguard/integrity:build: ESM Build start
+@webguard/shared:build: ESM dist/index.js 0 B
+@webguard/shared:build: ESM ⚡️ Build success in 42ms
+@webguard/integrity:build: ESM dist/index.js 4.72 KB
+@webguard/integrity:build: ESM ⚡️ Build success in 42ms
+uulab-webguard:build: CLI Building entry: {"index":"src/index.ts","headers":"src/headers.ts","verify":"src/verify.ts","check":"src/check.ts","server":"src/server.ts","serve":"src/serve.ts","build":"src/build.ts","cli":"src/cli.ts","next":"src/next.ts"}
+uulab-webguard:build: CLI Using tsconfig: ../../tsconfig.json
+uulab-webguard:build: CLI Building entry: {"browser":"src/browser.ts","client":"src/client.ts","next-runtime":"src/next-runtime.ts"}
+uulab-webguard:build: CLI Using tsconfig: ../../tsconfig.json
+uulab-webguard:build: CLI Building entry: {"browser.global":"src/browser.ts"}
+uulab-webguard:build: CLI Using tsconfig: ../../tsconfig.json
+uulab-webguard:build: CLI tsup v8.5.0
+uulab-webguard:build: CLI Using tsup config: /Users/uulab/Documents/workspace/uulab/webguard/packages/npm/tsup.config.ts
+uulab-webguard:build: CLI tsup v8.5.0
+uulab-webguard:build: CLI Using tsup config: /Users/uulab/Documents/workspace/uulab/webguard/packages/npm/tsup.config.ts
+uulab-webguard:build: CLI tsup v8.5.0
+uulab-webguard:build: CLI Using tsup config: /Users/uulab/Documents/workspace/uulab/webguard/packages/npm/tsup.config.ts
+uulab-webguard:build: CLI Target: es2022
+uulab-webguard:build: ESM Build start
+uulab-webguard:build: CLI Target: es2022
+uulab-webguard:build: ESM Build start
+uulab-webguard:build: CLI Target: es2022
+uulab-webguard:build: IIFE Build start
+uulab-webguard:build: IIFE dist/browser.global.js 48.32 KB
+uulab-webguard:build: IIFE ⚡️ Build success in 12ms
+uulab-webguard:build: ESM dist/next-runtime.js 44.79 KB
+uulab-webguard:build: ESM dist/client.js       1.38 KB
+uulab-webguard:build: ESM dist/browser.js      44.93 KB
+uulab-webguard:build: ESM ⚡️ Build success in 14ms
+uulab-webguard:build: ESM dist/verify.js  15.53 KB
+uulab-webguard:build: ESM dist/headers.js 4.04 KB
+uulab-webguard:build: ESM dist/server.js  7.04 KB
+uulab-webguard:build: ESM dist/build.js   117.32 KB
+uulab-webguard:build: ESM dist/next.js    73.42 KB
+uulab-webguard:build: ESM dist/index.js   123.56 KB
+uulab-webguard:build: ESM dist/cli.js     124.84 KB
+uulab-webguard:build: ESM dist/check.js   16.40 KB
+uulab-webguard:build: ESM dist/serve.js   7.95 KB
+uulab-webguard:build: ESM ⚡️ Build success in 19ms
+@webguard/shared:build: DTS Build start
+@webguard/integrity:build: DTS Build start
+uulab-webguard:build: DTS Build start
+uulab-webguard:build: DTS Build start
+@webguard/shared:build: DTS ⚡️ Build success in 839ms
+@webguard/shared:build: DTS dist/index.d.ts 183.00 B
+@webguard/browser:build: cache miss, executing 94da4333eef50502
+@webguard/core:build: cache miss, executing e41be8ce392a1b9e
+@webguard/integrity:build: DTS ⚡️ Build success in 928ms
+@webguard/integrity:build: DTS dist/index.d.ts 514.00 B
+@webguard/core:build: $ tsup src/index.ts --format esm --dts --clean
+@webguard/browser:build: $ tsup
+@webguard/core:build: CLI Building entry: src/index.ts
+@webguard/core:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/core:build: CLI tsup v8.5.0
+@webguard/core:build: CLI Target: es2022
+@webguard/core:build: CLI Cleaning output folder
+@webguard/core:build: ESM Build start
+@webguard/browser:build: CLI Building entry: src/index.ts
+@webguard/browser:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/browser:build: CLI tsup v8.5.0
+@webguard/browser:build: CLI Using tsup config: /Users/uulab/Documents/workspace/uulab/webguard/packages/browser/tsup.config.ts
+@webguard/core:build: ESM dist/index.js 9.72 KB
+@webguard/core:build: ESM ⚡️ Build success in 16ms
+@webguard/browser:build: CLI Target: es2022
+@webguard/browser:build: CLI Cleaning output folder
+@webguard/browser:build: ESM Build start
+@webguard/browser:build: IIFE Build start
+@webguard/browser:build: IIFE dist/webguard.global.js 48.28 KB
+@webguard/browser:build: IIFE ⚡️ Build success in 12ms
+@webguard/browser:build: ESM dist/index.js 44.89 KB
+@webguard/browser:build: ESM ⚡️ Build success in 12ms
+@webguard/core:build: DTS Build start
+@webguard/browser:build: DTS Build start
+uulab-webguard:build: DTS ⚡️ Build success in 1946ms
+uulab-webguard:build: DTS dist/next-runtime.d.ts 13.00 B
+uulab-webguard:build: DTS dist/browser.d.ts      4.04 KB
+uulab-webguard:build: DTS dist/client.d.ts       161.00 B
+@webguard/core:build: DTS ⚡️ Build success in 951ms
+@webguard/core:build: DTS dist/index.d.ts 2.62 KB
+@webguard/obfuscator:build: cache miss, executing 049da20d776e46af
+uulab-webguard:build: DTS ⚡️ Build success in 2687ms
+uulab-webguard:build: DTS dist/check.d.ts           20.00 B
+uulab-webguard:build: DTS dist/cli.d.ts             1.97 KB
+uulab-webguard:build: DTS dist/next.d.ts            1.20 KB
+uulab-webguard:build: DTS dist/server.d.ts          241.00 B
+uulab-webguard:build: DTS dist/verify.d.ts          300.00 B
+uulab-webguard:build: DTS dist/index.d.ts           1.30 KB
+uulab-webguard:build: DTS dist/build.d.ts           3.02 KB
+uulab-webguard:build: DTS dist/headers.d.ts         847.00 B
+uulab-webguard:build: DTS dist/serve.d.ts           20.00 B
+uulab-webguard:build: DTS dist/remote-DQ-50pm6.d.ts 1.37 KB
+uulab-webguard:build: DTS dist/index-pEhdlKbC.d.ts  3.96 KB
+@webguard/browser:build: DTS ⚡️ Build success in 1149ms
+@webguard/browser:build: DTS dist/index.d.ts 3.97 KB
+@webguard/obfuscator:build: $ tsup src/index.ts src/options.ts --format esm --dts --clean
+@webguard/obfuscator:build: CLI Building entry: src/index.ts, src/options.ts
+@webguard/obfuscator:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/obfuscator:build: CLI tsup v8.5.0
+@webguard/obfuscator:build: CLI Target: es2022
+@webguard/obfuscator:build: CLI Cleaning output folder
+@webguard/obfuscator:build: ESM Build start
+@webguard/obfuscator:build: ESM dist/chunk-42COF73V.js 6.77 KB
+@webguard/obfuscator:build: ESM dist/index.js          7.14 KB
+@webguard/obfuscator:build: ESM dist/options.js        157.00 B
+@webguard/obfuscator:build: ESM ⚡️ Build success in 14ms
+@webguard/obfuscator:build: DTS Build start
+@webguard/obfuscator:build: DTS ⚡️ Build success in 999ms
+@webguard/obfuscator:build: DTS dist/index.d.ts   978.00 B
+@webguard/obfuscator:build: DTS dist/options.d.ts 1016.00 B
+@webguard/cli:build: cache miss, executing 938c484cb938997e
+@webguard/cli:build: $ tsup src/index.ts src/bin.ts --format esm --dts --clean
+@webguard/cli:build: CLI Building entry: src/bin.ts, src/index.ts
+@webguard/cli:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/cli:build: CLI tsup v8.5.0
+@webguard/cli:build: CLI Target: es2022
+@webguard/cli:build: CLI Cleaning output folder
+@webguard/cli:build: ESM Build start
+@webguard/cli:build: ESM dist/chunk-F6WDJ2CP.js 32.62 KB
+@webguard/cli:build: ESM dist/index.js          18.63 KB
+@webguard/cli:build: ESM dist/bin.js            6.52 KB
+@webguard/cli:build: ESM ⚡️ Build success in 20ms
+@webguard/cli:build: DTS Build start
+@webguard/cli:build: DTS ⚡️ Build success in 1434ms
+@webguard/cli:build: DTS dist/bin.d.ts   20.00 B
+@webguard/cli:build: DTS dist/index.d.ts 4.03 KB
+@webguard/vite-plugin:build: cache miss, executing 296a65653bc77e39
+@webguard/vite-plugin:build: $ tsup src/index.ts src/client.ts --format esm --dts --clean
+@webguard/vite-plugin:build: CLI Building entry: src/client.ts, src/index.ts
+@webguard/vite-plugin:build: CLI Using tsconfig: ../../tsconfig.json
+@webguard/vite-plugin:build: CLI tsup v8.5.0
+@webguard/vite-plugin:build: CLI Target: es2022
+@webguard/vite-plugin:build: CLI Cleaning output folder
+@webguard/vite-plugin:build: ESM Build start
+@webguard/vite-plugin:build: ESM dist/client.js 109.00 B
+@webguard/vite-plugin:build: ESM dist/index.js  28.01 KB
+@webguard/vite-plugin:build: ESM ⚡️ Build success in 17ms
+@webguard/vite-plugin:build: DTS Build start
+@webguard/vite-plugin:build: DTS ⚡️ Build success in 1478ms
+@webguard/vite-plugin:build: DTS dist/client.d.ts 166.00 B
+@webguard/vite-plugin:build: DTS dist/index.d.ts  1.26 KB
+@webguard/example-react-vite:build: cache miss, executing 855ca9f01e7cfa56
+@webguard/example-vanilla-js:build: cache miss, executing 6e854f920da3f4a9
+@webguard/example-vanilla-ts:build: cache miss, executing 49e4b85a2a5f3af1
+@webguard/playground:build: cache miss, executing c497cadcfda11d3c
+@webguard/docs:build: cache miss, executing f81cc239103a83a7
+@webguard/playground:build: $ vite build
+@webguard/example-react-vite:build: $ vite build
+@webguard/docs:build: $ vite build
+@webguard/example-vanilla-ts:build: $ vite build
+@webguard/example-vanilla-js:build: $ vite build
+@webguard/docs:build: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@webguard/docs:build:   - import "../site-guard-options" without a file extension (vite.config.ts:3:34). Add the file extension
+@webguard/docs:build: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@webguard/playground:build: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@webguard/playground:build:   - import "../site-guard-options" without a file extension (vite.config.ts:3:34). Add the file extension
+@webguard/playground:build: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@webguard/playground:build: vite v8.3.4 building client environment for production...
+@webguard/docs:build: vite v8.3.4 building client environment for production...
+@webguard/example-react-vite:build: vite v8.3.4 building client environment for production...
+@webguard/example-vanilla-js:build: vite v8.3.4 building client environment for production...
+@webguard/example-vanilla-ts:build: vite v8.3.4 building client environment for production...
+@webguard/docs:build: transforming...
+@webguard/playground:build: transforming...
+@webguard/example-react-vite:build: transforming...
+@webguard/example-vanilla-js:build: transforming...
+@webguard/example-vanilla-ts:build: transforming...
+@webguard/docs:build: ✓ 10 modules transformed.
+@webguard/example-vanilla-ts:build: ✓ 8 modules transformed.
+@webguard/example-vanilla-js:build: ✓ 9 modules transformed.
+@webguard/example-vanilla-ts:build: rendering chunks...
+@webguard/example-vanilla-js:build: rendering chunks...
+@webguard/docs:build: rendering chunks...
+@webguard/example-react-vite:build: ✓ 20 modules transformed.
+@webguard/example-react-vite:build: rendering chunks...
+@webguard/example-vanilla-ts:build: computing gzip size...
+@webguard/example-vanilla-ts:build: dist/_headers                    0.38 kB
+@webguard/example-vanilla-ts:build: dist/webguard-headers.json       0.40 kB │ gzip:  0.22 kB
+@webguard/example-vanilla-ts:build: dist/index.html                  2.45 kB │ gzip:  1.01 kB
+@webguard/example-vanilla-ts:build: dist/assets/index-BzABUnnU.css   1.84 kB │ gzip:  0.84 kB
+@webguard/example-vanilla-ts:build: dist/assets/lazy-BSCZEOwE.js     1.13 kB │ gzip:  0.73 kB
+@webguard/example-vanilla-ts:build: dist/assets/index-pR8CL14x.js   28.24 kB │ gzip: 13.31 kB
+@webguard/example-vanilla-ts:build: 
+@webguard/example-vanilla-ts:build: ✓ built in 292ms
+@webguard/example-vanilla-js:build: computing gzip size...
+@webguard/example-vanilla-js:build: dist/_headers                    0.38 kB
+@webguard/example-vanilla-js:build: dist/webguard-headers.json       0.40 kB │ gzip:  0.22 kB
+@webguard/example-vanilla-js:build: dist/about/index.html            1.46 kB │ gzip:  0.86 kB
+@webguard/example-vanilla-js:build: dist/index.html                  2.45 kB │ gzip:  1.01 kB
+@webguard/example-vanilla-js:build: dist/assets/style-BzABUnnU.css   1.84 kB │ gzip:  0.84 kB
+@webguard/example-vanilla-js:build: dist/assets/about-D54W1n2l.js    0.56 kB │ gzip:  0.35 kB
+@webguard/example-vanilla-js:build: dist/assets/lazy-BdhSoEbk.js     0.67 kB │ gzip:  0.41 kB
+@webguard/example-vanilla-js:build: dist/assets/index-BX0ccLta.js   26.68 kB │ gzip: 11.37 kB
+@webguard/example-vanilla-js:build: 
+@webguard/example-vanilla-js:build: ✓ built in 294ms
+@webguard/docs:build: computing gzip size...
+@webguard/docs:build: dist/third-party-licenses.md      0.06 kB
+@webguard/docs:build: dist/index.html                   4.83 kB │ gzip:   1.36 kB
+@webguard/docs:build: dist/assets/index-C46xAjz4.css   11.81 kB │ gzip:   3.06 kB
+@webguard/docs:build: dist/assets/index-XwZbV9jG.js   366.54 kB │ gzip: 180.84 kB
+@webguard/docs:build: 
+@webguard/docs:build: ✓ built in 901ms
+@webguard/example-react-vite:build: computing gzip size...
+@webguard/example-react-vite:build: dist/_headers                       0.38 kB
+@webguard/example-react-vite:build: dist/webguard-headers.json          0.40 kB │ gzip:   0.22 kB
+@webguard/example-react-vite:build: dist/index.html                     0.70 kB │ gzip:   0.41 kB
+@webguard/example-react-vite:build: dist/third-party-licenses.md        3.42 kB
+@webguard/example-react-vite:build: dist/assets/index-65KBRBiT.css      1.85 kB │ gzip:   0.84 kB
+@webguard/example-react-vite:build: dist/assets/lazy-B9h7B41F.js        2.50 kB │ gzip:   1.48 kB
+@webguard/example-react-vite:build: dist/assets/index-McvODJzG.js   1,953.41 kB │ gzip: 841.71 kB
+@webguard/example-react-vite:build: 
+@webguard/example-react-vite:build: [plugin builtin:vite-reporter] 
+@webguard/example-react-vite:build: (!) Some chunks are larger than 500 kB after minification. Consider:
+@webguard/example-react-vite:build: - Using dynamic import() to code-split the application
+@webguard/example-react-vite:build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+@webguard/example-react-vite:build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+@webguard/example-react-vite:build: ✓ built in 5.02s
+@webguard/example-react-vite:build: [33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 5.1s. The build took 5.0s. Callbacks such as `closeBundle` run after the build ends, so callback time can be more than build time.
+@webguard/example-react-vite:build: The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+@webguard/example-react-vite:build:   - plugin webguard renderChunk (96%, 4.8s, 2 calls)
+@webguard/example-react-vite:build: Additional callback time came from callbacks under 1s.
+@webguard/example-react-vite:build: See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+@webguard/example-react-vite:build: 
+@webguard/playground:build: [33m[EVAL] [0mUse of direct `eval` function is strongly discouraged as it poses security risks and may cause issues with minification.
+@webguard/playground:build:  - Use of direct `eval` here. in ../../node_modules/.pnpm/javascript-obfuscator@5.9.0/node_modules/javascript-obfuscator/dist/index.browser.js at 751675..751679
+@webguard/playground:build:  [38;5;240m │[0m 
+@webguard/playground:build:  [38;5;240m │[0m [38;5;115mHelp[0m: Consider using indirect eval. For more information, check the documentation: https://rolldown.rs/guide/troubleshooting#avoiding-direct-eval
+@webguard/playground:build: 
+@webguard/playground:build: [33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 6.3s of this 6.5s build (97%).
+@webguard/playground:build: The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+@webguard/playground:build:   - plugin webguard renderChunk (70%, 4.5s, 2 calls)
+@webguard/playground:build:   - plugin webguard renderChunk (27%, 1.7s, 2 calls)
+@webguard/playground:build: See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+@webguard/playground:build: 
+@webguard/playground:build: ✓ 29 modules transformed.
+@webguard/playground:build: rendering chunks...
+@webguard/playground:build: computing gzip size...
+@webguard/playground:build: dist/third-party-licenses.md                  0.06 kB
+@webguard/playground:build: dist/index.html                               4.76 kB │ gzip:   1.53 kB
+@webguard/playground:build: dist/demo.html                                4.78 kB │ gzip:   1.54 kB
+@webguard/playground:build: dist/assets/sky-background-BT0G8_Wo.webp     11.06 kB
+@webguard/playground:build: dist/assets/sdk-cube-BfW27hof.webp           48.93 kB
+@webguard/playground:build: dist/assets/input-try-C8omM10O.webp          57.15 kB
+@webguard/playground:build: dist/assets/transform.worker-BFMAnUVw.js    968.23 kB
+@webguard/playground:build: dist/assets/index.browser-BymflySG.js     1,808.70 kB
+@webguard/playground:build: dist/assets/main-C4xVEOuQ.css                50.20 kB │ gzip:  10.48 kB
+@webguard/playground:build: dist/assets/demo-DJdJ_7KJ.js                  2.34 kB │ gzip:   1.40 kB
+@webguard/playground:build: dist/assets/home-4wOSfe2b.js                  2.57 kB │ gzip:   1.51 kB
+@webguard/playground:build: dist/assets/main-DIXoaSbG.js                892.51 kB │ gzip: 432.53 kB
+@webguard/playground:build: 
+@webguard/playground:build: [plugin builtin:vite-reporter] 
+@webguard/playground:build: (!) Some chunks are larger than 500 kB after minification. Consider:
+@webguard/playground:build: - Using dynamic import() to code-split the application
+@webguard/playground:build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+@webguard/playground:build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+@webguard/playground:build: ✓ built in 8.06s
+@webguard/playground:build: [33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 8.3s. The build took 8.1s. Callbacks such as `closeBundle` run after the build ends, so callback time can be more than build time.
+@webguard/playground:build: The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+@webguard/playground:build:   - plugin vite:worker-import-meta-url transform (81%, 6.5s, 1 call)
+@webguard/playground:build:   - plugin webguard renderChunk (18%, 1.4s, 3 calls)
+@webguard/playground:build: Additional callback time came from the callbacks below and from callbacks under 1s.
+@webguard/playground:build: 3 callbacks are listed without a time. Their calls overlapped, so the time inside one call includes work from other calls. To find their cost, profile the build with `node --cpu-prof`:
+@webguard/playground:build:   - plugin vite:css transform (5 calls)
+@webguard/playground:build:   - plugin vite:build-html transform (2 calls)
+@webguard/playground:build:   - plugin vite:asset-import-meta-url transform (2 calls)
+@webguard/playground:build: See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+@webguard/playground:build: 
+
+ Tasks:    13 successful, 13 total
+Cached:    0 cached, 13 total
+  Time:    18.651s 
+
+$ node scripts/check-readmes.mjs
+README verification: {"languages":4,"relativeLinks":140,"codeBlocks":52,"typedExamples":5}
+$ tsc --noEmit
+$ eslint .
+$ vitest run
+
+ RUN  v5.0.5 /Users/uulab/Documents/workspace/uulab/webguard
+
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 5 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 5 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+
+ Test Files  52 passed (52)
+      Tests  659 passed (659)
+   Start at  15:07:01
+   Duration  8.41s (tests 70%, import 29%, transform 1%)
+

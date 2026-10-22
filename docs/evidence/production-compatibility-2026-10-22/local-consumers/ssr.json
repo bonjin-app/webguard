@@ -1,0 +1,125 @@
+{
+  "checkedAt": "2026-10-22T06:03:50.602Z",
+  "http": [
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "api/status",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/app.js",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "missing",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/app.js.map",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "private/policy.json",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "template.html",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/webguard-report.json",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "assets/../template.html",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": ".env",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "router.php",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "server.py",
+      "status": 404
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "runtime": "Python WSGI",
+      "path": "/",
+      "method": "POST",
+      "status": 405
+    }
+  ],
+  "browsers": [
+    {
+      "runtime": "Python WSGI",
+      "engine": "chromium",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "Python WSGI",
+      "engine": "firefox",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    },
+    {
+      "runtime": "Python WSGI",
+      "engine": "webkit",
+      "status": "passed",
+      "checks": [
+        "SSR dynamic greeting",
+        "protected client counter",
+        "API",
+        "guard policy toggle (trusted Meta+Alt+I input)",
+        "HTTP CSP injection rejection",
+        "SRI tamper rejection"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "runtime": "PHP",
+      "reason": "Runtime executable unavailable; not verified"
+    }
+  ],
+  "status": "passed-with-skips"
+}

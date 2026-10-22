@@ -8,7 +8,7 @@ Run `pnpm readme:check` after documentation edits. It checks language navigation
 
 ## Development
 
-Use Node 22.12+ and pnpm 11.10.0. Install with `pnpm install --frozen-lockfile` and run `pnpm verify`, `pnpm format:check`, then `pnpm test:e2e` after installing the three Playwright engines. Build outputs are generated and not committed.
+Use Node 22.13+ and pnpm 11.10.0 for this source workspace. Installed public-package consumers retain the Node 22.12+ requirement and are tested separately using Node/npm; pnpm 11 itself does not support that floor. Install with `pnpm install --frozen-lockfile` and run `pnpm verify`, `pnpm format:check`, then `pnpm test:e2e` after installing the three Playwright engines. Build outputs are generated and not committed.
 
 Write behavioral regression tests before changing transformations, path validation or browser hooks. Avoid tests that merely assert implementation text. Preserve ESM exports, dynamic import, serialization, async behavior, keyboard accessibility and cleanup. Never introduce debugger loops, hidden telemetry or claims of absolute source secrecy.
 

@@ -11,6 +11,28 @@ import { chromium, firefox, webkit } from "@playwright/test";
 
 const run = promisify(execFile);
 const repository = fileURLToPath(new URL("../", import.meta.url));
+const args = process.argv.slice(2);
+let evidence;
+let requireNativeRuntimes = false;
+for (let index = 0; index < args.length; index++) {
+  if (args[index] === "--require-native-runtimes" && !requireNativeRuntimes)
+    requireNativeRuntimes = true;
+  else if (
+    args[index] === "--evidence" &&
+    !evidence &&
+    args[index + 1] &&
+    !args[index + 1].startsWith("--")
+  )
+    evidence = resolve(args[++index]);
+  else
+    throw new Error(
+      "Usage: verify-ssr-templates.mjs [--require-native-runtimes] [--evidence PATH]",
+    );
+}
+const nativeCommands = {
+  python: process.env.WEBGUARD_PYTHON ?? "python3",
+  php: process.env.WEBGUARD_PHP ?? "php",
+};
 const temp = await mkdtemp(join(tmpdir(), "webguard-ssr-"));
 const result = {
   checkedAt: new Date().toISOString(),
@@ -19,10 +41,6 @@ const result = {
   skipped: [],
 };
 const children = [];
-const args = process.argv.slice(2);
-const evidence = args.includes("--evidence")
-  ? resolve(args[args.indexOf("--evidence") + 1])
-  : undefined;
 async function freePort() {
   const server = createServer();
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -53,6 +71,24 @@ async function waitFor(url, child) {
   throw new Error("SSR server readiness deadline exceeded");
 }
 try {
+  if (requireNativeRuntimes) {
+    result.requiredNativeRuntimes = await Promise.all(
+      [
+        ["Python WSGI", nativeCommands.python],
+        ["PHP", nativeCommands.php],
+      ].map(async ([name, command]) => ({
+        name,
+        available: await available(command),
+      })),
+    );
+    const missing = result.requiredNativeRuntimes.filter(
+      (runtime) => !runtime.available,
+    );
+    if (missing.length)
+      throw new Error(
+        `Required native runtime unavailable: ${missing.map((runtime) => runtime.name).join(", ")}`,
+      );
+  }
   await run(
     process.execPath,
     ["scripts/prepare-ssr-templates.mjs", "--output", temp],
@@ -87,7 +123,7 @@ try {
   const runtimes = [
     {
       name: "Python WSGI",
-      command: process.env.WEBGUARD_PYTHON ?? "python3",
+      command: nativeCommands.python,
       parameters: (port) => [
         "examples/ssr-templates/python/server.py",
         "--port",
@@ -96,7 +132,7 @@ try {
     },
     {
       name: "PHP",
-      command: process.env.WEBGUARD_PHP ?? "php",
+      command: nativeCommands.php,
       parameters: (port) => [
         "-S",
         `127.0.0.1:${port}`,

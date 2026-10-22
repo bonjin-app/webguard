@@ -42,6 +42,10 @@ jobs:
             docs/evidence/
           retention-days: 7
   installed-consumers:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["22.12.0", "22"]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -51,16 +55,41 @@ jobs:
           version: 11.10.0
       - uses: actions/setup-node@v4
         with:
+          # pnpm 11 requires Node >=22.13; bootstrap/build on supported current 22.x.
           node-version: 22
           cache: pnpm
+      - name: Provision required native SSR interpreters
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli python3
+          python3 --version
+          php --version
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm build
       - run: pnpm test:package --isolated-store --evidence test-results/consumers/internal-package.json
-      - run: pnpm test:consumers
+      - name: Pack candidate before selecting the consumer runtime
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { appendFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const [packed] = JSON.parse(execFileSync('npm', ['pack', '--ignore-scripts', '--pack-destination', process.env.RUNNER_TEMP, '--json'], { cwd: 'packages/npm', encoding: 'utf8' }));
+          appendFileSync(process.env.GITHUB_ENV, `WEBGUARD_CONSUMER_TARBALL=${join(process.env.RUNNER_TEMP, packed.filename)}\n`);
+          NODE
+      - name: Select actual package consumer runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node scripts/verify-installations.mjs --require-native-runtimes --tarball "$WEBGUARD_CONSUMER_TARBALL"
+      - name: Restore supported pnpm runtime for post-job cleanup
+        if: always()
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: installed-consumer-evidence
+          name: installed-consumer-evidence-node-${{ matrix.node }}
           path: test-results/consumers/
           retention-days: 7

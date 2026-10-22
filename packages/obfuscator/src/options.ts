@@ -16,8 +16,32 @@ export interface ObfuscateOptions {
   seed?: number;
   sourceMap?: boolean;
   inputFileName?: string;
-  /** Namespace generated helper globals when separately transforming script blocks. */
+  /** Override the automatic generated-helper namespace; callers own uniqueness when explicit. */
   identifiersPrefix?: string;
+}
+// A namespace fingerprint only, not an integrity or security hash. Hash UTF-16 code units
+// so even distinct source strings containing lone surrogates keep distinct input identities.
+function namespaceFingerprint(value: string): string {
+  let fingerprint = 0x6c62272e07bb014262b821756295c58dn;
+  for (let index = 0; index < value.length; index++)
+    fingerprint = BigInt.asUintN(
+      128,
+      (fingerprint ^ BigInt(value.charCodeAt(index))) *
+        0x1000000000000000000013bn,
+    );
+  return fingerprint.toString(16).padStart(32, "0");
+}
+let namespaceSequence = 0n;
+function freshNamespace(): string {
+  const words = new Uint32Array(4);
+  if (typeof globalThis.crypto?.getRandomValues === "function")
+    globalThis.crypto.getRandomValues(words);
+  else
+    for (let index = 0; index < words.length; index++)
+      words[index] = Math.floor(Math.random() * 0x100000000);
+  // Retain process-local uniqueness even when an embedding host supplies constant entropy.
+  namespaceSequence++;
+  return `${Array.from(words, (word) => word.toString(16).padStart(8, "0")).join("")}_${namespaceSequence.toString(36)}`;
 }
 /** Preserve module URLs and bundler filename placeholders for later bundle finalization.
  * These strings intentionally remain plaintext, even when other strings are encoded.
@@ -134,6 +158,20 @@ export function createObfuscatorOptions(
     ...input
   } = options;
   const config = resolveConfig({ obfuscation: input }).obfuscation;
+  const identifiersPrefix =
+    options.identifiersPrefix ??
+    `_wg_${
+      source !== undefined && config.seed !== 0
+        ? namespaceFingerprint(
+            JSON.stringify([
+              source,
+              config,
+              options.inputFileName ?? "input.js",
+              options.sourceMap ?? false,
+            ]),
+          )
+        : freshNamespace()
+    }_`;
   const basic = config.level === "basic";
   const high = config.level === "high";
   return {
@@ -142,7 +180,7 @@ export function createObfuscatorOptions(
     simplify: !basic,
     identifierNamesGenerator: "hexadecimal",
     renameGlobals: false,
-    identifiersPrefix: options.identifiersPrefix ?? "",
+    identifiersPrefix,
     renameProperties: config.renameProperties,
     renamePropertiesMode: "safe",
     reservedNames: [...config.reservedNames, ...config.reservedProperties],

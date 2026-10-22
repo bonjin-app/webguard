@@ -185,7 +185,7 @@ pnpm install --frozen-lockfile
 pnpm demo
 ```
 
-Use Node 22.12+ and pnpm 11.10.0. Open `http://127.0.0.1:4173`. For verification:
+For this source workspace, use Node 22.13+ and pnpm 11.10.0; installed package consumers require Node 22.12+. Open `http://127.0.0.1:4173`. For verification:
 
 ```sh
 pnpm verify

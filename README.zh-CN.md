@@ -185,7 +185,7 @@ pnpm install --frozen-lockfile
 pnpm demo
 ```
 
-使用 Node 22.12+ 和 pnpm 11.10.0。打开 `http://127.0.0.1:4173`。执行验证：
+此源码工作区使用 Node 22.13+ 和 pnpm 11.10.0；安装后的软件包使用环境要求 Node 22.12+。打开 `http://127.0.0.1:4173`。执行验证：
 
 ```sh
 pnpm verify

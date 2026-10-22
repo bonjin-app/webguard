@@ -16,7 +16,7 @@
 
 1. **소스와 배포 식별:** 커밋, SDK/설치 패키지 해시와 브라우저 버전을 기록합니다. 고정 CDN 파일은 바꾸지 않고 새 릴리스를 추가하며, 보류된 npm 파일을 보존합니다.
 2. **기본 검사:** `pnpm verify`, `pnpm format:check` 통과. 네 언어 README의 링크·예제·실제 API 타입이 일치해야 합니다.
-3. **실제 설치:** `pnpm test:consumers`로 같은 임시 tarball을 새 Vite 7/8·Webpack·esbuild·HTML·Next 프로젝트에 설치합니다. SSR 템플릿은 워크스페이스 빌드 검증으로 별도 표시합니다. 누락된 런타임은 성공으로 계산하지 않습니다.
+3. **실제 설치:** `pnpm test:consumers --require-native-runtimes`로 같은 임시 tarball을 새 Vite 7/8·Webpack·esbuild·HTML·Next 프로젝트에 설치합니다. 최소 Node 22.12.0과 현재 22.x에서 각각 실행합니다. SSR 템플릿은 워크스페이스 빌드 검증으로 별도 표시하며, 네이티브 Python·PHP가 없으면 필수 검증이 실패합니다. WASM은 네이티브 PHP 검증의 대체가 아닙니다. 로컬 선택 검사에서 제외가 있으면 집계도 `passed-with-skips`로 표시합니다.
 4. **브라우저와 복구:** `pnpm test:e2e`에서 Chromium·Firefox·WebKit의 앱 실행·가드 ON/OFF·무결성·UI 복구를 확인합니다. 모달 교체 중 해제/정책 변경, 재진입 초기화와 반복 수명 주기의 회귀 검사가 필요합니다. CDP 전용 검사의 다른 엔진 제외는 명시합니다.
 5. **반복 수명 주기:** 반복 초기화·업데이트·해제 후 입력 제한·모달·소유 리소스가 남지 않아야 합니다. 실제 타이머 표본과 합성 pagehide/pageshow 검사를 구분하며, 이를 실제 BFCache나 수 시간 안정성으로 표현하지 않습니다.
 6. **성능과 크기:** `pnpm benchmark:browser --budget benchmarks/react-vite-budget.json`는 같은 소스를 실행 시점에 보호 전후로 각각 빌드하고 실제 정책을 적용한 뒤 비교합니다. 워밍업과 교대 표본, 빌드 시간과 브라우저 실행 비용을 분리합니다. 유지하는 예제의 전송 크기 예산을 초과하면 실패하고, 타이밍·힙 관측은 호스트 의존 측정으로 남깁니다. 난독화 강도를 몰래 낮추지 않습니다.
@@ -41,7 +41,7 @@ pnpm verify
 pnpm format:check
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
-pnpm test:consumers
+pnpm test:consumers --require-native-runtimes
 pnpm benchmark:browser --budget benchmarks/react-vite-budget.json --evidence test-results/rc/browser-performance.json
 pnpm audit --prod
 ```

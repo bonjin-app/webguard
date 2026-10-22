@@ -9,9 +9,29 @@ import { promisify } from "node:util";
 // Pack once without lifecycle hooks. Never prepare or publish a release candidate.
 const root = fileURLToPath(new URL("../", import.meta.url));
 const args = process.argv.slice(2);
-if (args.length > 1)
-  throw new Error("Usage: pnpm test:consumers [EVIDENCE_DIRECTORY]");
-const evidence = resolve(args[0] ?? join(root, "test-results/consumers"));
+let requireNativeRuntimes = false;
+let providedTarball;
+let evidenceDirectory;
+for (let index = 0; index < args.length; index++) {
+  const arg = args[index];
+  if (arg === "--require-native-runtimes" && !requireNativeRuntimes)
+    requireNativeRuntimes = true;
+  else if (
+    arg === "--tarball" &&
+    !providedTarball &&
+    args[index + 1] &&
+    !args[index + 1].startsWith("--")
+  )
+    providedTarball = resolve(args[++index]);
+  else if (!arg.startsWith("--") && !evidenceDirectory) evidenceDirectory = arg;
+  else
+    throw new Error(
+      "Usage: pnpm test:consumers [--require-native-runtimes] [--tarball PATH] [EVIDENCE_DIRECTORY]",
+    );
+}
+const evidence = resolve(
+  evidenceDirectory ?? join(root, "test-results/consumers"),
+);
 const directory = await mkdtemp(join(tmpdir(), "webguard-installations-"));
 const digest = (bytes) => createHash("sha512").update(bytes).digest("hex");
 const metadata = JSON.parse(
@@ -38,11 +58,18 @@ const before = await heldSnapshot();
 const receipt = {
   status: "running",
   checkedAt: new Date().toISOString(),
+  environment: {
+    node: process.version,
+    platform: process.platform,
+    arch: process.arch,
+  },
   packageSha512: null,
+  packageSource: providedTarball ? "provided-tarball" : "temporary-pack",
   scope:
     "Vite 7/8, generic and Next install one temporary tarball; SSR templates use the workspace build. Browser engines are desktop automation, not physical-device certification.",
   suites: [],
   heldReleaseUnchanged: null,
+  requireNativeRuntimes,
 };
 await mkdir(evidence, { recursive: true });
 const save = () =>
@@ -67,19 +94,22 @@ async function run(parameters) {
 let failure;
 try {
   await save();
-  const { stdout } = await promisify(execFile)(
-    "npm",
-    ["pack", "--ignore-scripts", "--pack-destination", directory, "--json"],
-    {
-      cwd: join(root, "packages/npm"),
-      timeout: 60000,
-      maxBuffer: 2 * 1024 * 1024,
-    },
-  );
-  const [packed] = JSON.parse(stdout);
-  if (!packed || packed.filename !== candidateFilename)
-    throw new Error("Unexpected package candidate");
-  const tarball = join(directory, packed.filename);
+  let tarball = providedTarball;
+  if (!tarball) {
+    const { stdout } = await promisify(execFile)(
+      "npm",
+      ["pack", "--ignore-scripts", "--pack-destination", directory, "--json"],
+      {
+        cwd: join(root, "packages/npm"),
+        timeout: 60000,
+        maxBuffer: 2 * 1024 * 1024,
+      },
+    );
+    const [packed] = JSON.parse(stdout);
+    if (!packed || packed.filename !== candidateFilename)
+      throw new Error("Unexpected package candidate");
+    tarball = join(directory, packed.filename);
+  }
   receipt.packageSha512 = digest(await readFile(tarball));
   const suites = [
     ["vite7", "scripts/verify-npm-consumer.mjs", "--vite", "7.3.1"],
@@ -96,6 +126,9 @@ try {
       await run([
         script,
         ...(name === "ssr" ? [] : ["--tarball", tarball]),
+        ...(name === "ssr" && requireNativeRuntimes
+          ? ["--require-native-runtimes"]
+          : []),
         ...extra,
         "--evidence",
         join(evidence, `${name}.json`),
@@ -107,15 +140,22 @@ try {
           await readFile(join(evidence, `${name}.json`), "utf8"),
         );
         item.skipped = details.skipped ?? [];
+        if (
+          !["passed", "passed-with-skips"].includes(details.status) ||
+          (requireNativeRuntimes && item.skipped.length)
+        )
+          throw new Error("SSR acceptance did not satisfy the runtime policy");
       }
-      item.status = "passed";
+      item.status = item.skipped?.length ? "passed-with-skips" : "passed";
     } catch (error) {
       item.status = "failed";
       throw error;
     }
     await save();
   }
-  receipt.status = "passed";
+  receipt.status = receipt.suites.some((suite) => suite.skipped?.length)
+    ? "passed-with-skips"
+    : "passed";
 } catch (error) {
   receipt.status = "failed";
   failure = error;

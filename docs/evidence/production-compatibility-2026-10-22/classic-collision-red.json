@@ -1,0 +1,17 @@
+{
+  "seed": 19,
+  "firstIndex": 107,
+  "secondIndex": 5,
+  "helpersA": ["_0x48c0", "_0x1877", "_0x305808"],
+  "helpersB": ["_0x5557", "_0x48c0", "_0x22c135"],
+  "before": "first private price 107:41",
+  "error": "TypeError: Cannot read properties of undefined (reading 'charAt')",
+  "prefixedControl": {
+    "first": "first private price 107:41",
+    "second": "second private price 5:82"
+  },
+  "hashes": {
+    "first": "e932beb4ebecd40cce8bf499d235fb0ee8ef16495b77c65765736444996cd351",
+    "second": "94c6ca7e1c164794b78df0ed6da95c111c9443bc364feb8aa3896125eb6ce6b7"
+  }
+}

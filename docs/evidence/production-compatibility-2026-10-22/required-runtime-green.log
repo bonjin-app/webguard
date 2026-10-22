@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 /Users/uulab/Documents/workspace/uulab/webguard
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  14:50:16
+   Duration  217ms (tests 95%, import 3%, transform 1%, worker 1%)
+

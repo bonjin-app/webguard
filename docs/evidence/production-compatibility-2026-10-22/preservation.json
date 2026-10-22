@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-10-22",
+  "heldAndConfigHashesUnchanged": true,
+  "retainedPinnedFiles": [
+    {
+      "path": "distributions/releases/0.3.0-30866cd3e8598f48/THIRD_PARTY_NOTICES.txt",
+      "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74"
+    },
+    {
+      "path": "distributions/releases/0.3.0-30866cd3e8598f48/uulab-webguard-0.3.0.tgz",
+      "sha256": "277a71c83e630fce57f2a892f5ac11672cdc01f9b50272d6fdb3ecf7c73e3e06"
+    },
+    {
+      "path": "distributions/releases/0.3.0-30866cd3e8598f48/webguard-init.js",
+      "sha256": "9f344ba23f40349cefcbd45150a33380681d343ec4f0454c061981ad6d084fa8"
+    },
+    {
+      "path": "distributions/releases/0.3.0-30866cd3e8598f48/webguard.global.js",
+      "sha256": "8dcfead1bf6d539a5cb4fd3e7ebfeb5cd412b829615deeca771239d970e297d4"
+    },
+    {
+      "path": "distributions/releases/0.3.0-745829e10a136e23/THIRD_PARTY_NOTICES.txt",
+      "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74"
+    },
+    {
+      "path": "distributions/releases/0.3.0-745829e10a136e23/uulab-webguard-0.3.0.tgz",
+      "sha256": "277a71c83e630fce57f2a892f5ac11672cdc01f9b50272d6fdb3ecf7c73e3e06"
+    },
+    {
+      "path": "distributions/releases/0.3.0-745829e10a136e23/webguard-init.js",
+      "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b"
+    },
+    {
+      "path": "distributions/releases/0.3.0-745829e10a136e23/webguard.global.js",
+      "sha256": "8dcfead1bf6d539a5cb4fd3e7ebfeb5cd412b829615deeca771239d970e297d4"
+    },
+    {
+      "path": "distributions/releases/0.3.0-f200caff650d6cd5/THIRD_PARTY_NOTICES.txt",
+      "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74"
+    },
+    {
+      "path": "distributions/releases/0.3.0-f200caff650d6cd5/uulab-webguard-0.3.0.tgz",
+      "sha256": "15ff87294ad50123588af22a5e07a0eea8875c76d49dc4057840a7850d905578"
+    },
+    {
+      "path": "distributions/releases/0.3.0-f200caff650d6cd5/webguard-init.js",
+      "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b"
+    },
+    {
+      "path": "distributions/releases/0.3.0-f200caff650d6cd5/webguard.global.js",
+      "sha256": "8dcfead1bf6d539a5cb4fd3e7ebfeb5cd412b829615deeca771239d970e297d4"
+    },
+    {
+      "path": "distributions/releases/0.3.0-d1ed5a80dd1ea138/THIRD_PARTY_NOTICES.txt",
+      "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74"
+    },
+    {
+      "path": "distributions/releases/0.3.0-d1ed5a80dd1ea138/uulab-webguard-0.3.0.tgz",
+      "sha256": "84bfa09a034f77e40c8dbd7ce74ee5f73837cbbe91bfb2ee76b984e420061293"
+    },
+    {
+      "path": "distributions/releases/0.3.0-d1ed5a80dd1ea138/webguard-init.js",
+      "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b"
+    },
+    {
+      "path": "distributions/releases/0.3.0-d1ed5a80dd1ea138/webguard.global.js",
+      "sha256": "402686f8d4d69175897fdd293488594029828737f73099781bd1f447eefcac6e"
+    }
+  ]
+}

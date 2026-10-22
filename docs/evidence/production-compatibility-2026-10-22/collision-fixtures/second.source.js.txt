@@ -1,0 +1,1 @@
+globalThis.readSecond=function(){const item={label:"second private price 5",amount:82};return item.label+":"+item.amount;};

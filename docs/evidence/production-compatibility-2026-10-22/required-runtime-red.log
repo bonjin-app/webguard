@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /Users/uulab/Documents/workspace/uulab/webguard
+
+ ❯ tests/integration/required-runtimes.test.ts (1 test | 1 failed) 8468ms
+   × fails native SSR acceptance when required PHP is unavailable instead of passing with skips 8467ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/required-runtimes.test.ts > fails native SSR acceptance when required PHP is unavailable instead of passing with skips
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/integration/required-runtimes.test.ts:36:30
+     34|       () => ({ failed: true }),
+     35|     );
+     36|     expect(execution.failed).toBe(true);
+       |                              ^
+     37|     const receipt = JSON.parse(await readFile(evidence, "utf8"));
+     38|     expect(receipt).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:47:45
+   Duration  8.55s (tests 100%)
+

@@ -4,18 +4,30 @@ WebGuard 0.3.0 is an unpublished candidate. npm publication remains paused. No s
 
 ## Candidate integration scope
 
-| Integration                    | Requirement / contract                                                              | Reference verification                                                     |
-| ------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Build tools                    | Node >=22.12; repository pnpm 11.10.0                                               | Current CI Node 22; exact runtime in its logs                              |
-| Vite browser apps              | Vite >=7 <9; preserve existing plugins                                              | Installed Vite 7.3.1 and 8.3.4 fixtures                                    |
-| React + Vite                   | Compiled browser application                                                        | React fixture, state/forms/lazy imports; not every third-party component   |
-| Next App Router                | Production Webpack; explicit `next build --webpack`                                 | Installed Next 16.4.2 / React 19.3.1 fixture, SSR/hydration/navigation/API |
-| Webpack / esbuild / plain HTML | Postprocess compiled static assets                                                  | Installed static-output fixtures; no native Webpack adapter                |
-| Java / JSP                     | External browser assets, server policies; Java 17 / Jakarta Servlet 6 / Tomcat 10.1 | Embedded Tomcat and optional native desktop-engine checks                  |
-| Python / PHP                   | External browser assets, server-rendered tags and headers                           | WSGI / PHP interpreter fixtures; not Django/Laravel/FPM certification      |
-| ASP.NET / Nginx                | Explicit static asset and policy integration                                        | Recipes; server execution is not certified by those recipes                |
+| Integration                    | Requirement / contract                                                              | Reference verification                                                        |
+| ------------------------------ | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Build tools                    | Node >=22.12; repository pnpm 11.10.0                                               | CI requires both Node 22.12.0 and current 22.x; inspect the matching receipts |
+| Vite browser apps              | Vite >=7 <9; preserve existing plugins                                              | Installed Vite 7.3.1 and 8.3.4 fixtures                                       |
+| React + Vite                   | Compiled browser application                                                        | React fixture, state/forms/lazy imports; not every third-party component      |
+| Next App Router                | Production Webpack; explicit `next build --webpack`                                 | Installed Next 16.4.2 / React 19.3.1 fixture, SSR/hydration/navigation/API    |
+| Webpack / esbuild / plain HTML | Postprocess compiled static assets                                                  | Installed static-output fixtures; no native Webpack adapter                   |
+| Java / JSP                     | External browser assets, server policies; Java 17 / Jakarta Servlet 6 / Tomcat 10.1 | Embedded Tomcat and optional native desktop-engine checks                     |
+| Python / PHP                   | External browser assets, server-rendered tags and headers                           | WSGI / PHP interpreter fixtures; not Django/Laravel/FPM certification         |
+| ASP.NET / Nginx                | Explicit static asset and policy integration                                        | Recipes; server execution is not certified by those recipes                   |
 
 Playwright Chromium/Firefox/WebKit evidence describes those automated desktop engines. It is not physical Chrome/Edge/Safari/mobile certification. Nuxt/Angular native SSR adapters and Next Turbopack are not supported. Java/JSP/Python/PHP server source is not JavaScript obfuscation input. Exact fixtures and their versions are evidence boundaries, not claims about all intervening or future versions.
+
+The pinned Playwright 1.64.1 manifest selects Chromium 156.0.8078.4, Firefox 157.0 and WebKit 27.2. These identify the automated reference engines, not minimum supported versions or physical Safari certification. Do not infer support for earlier browser versions from successful compilation. Physical-browser smoke receipts identify the actual installed browser/OS and the limited flows exercised separately.
+
+Required consumer CI provisions native Python/PHP and runs `pnpm test:consumers --require-native-runtimes`. An unavailable interpreter fails acceptance before preparing SSR fixtures or launching browsers. Optional local verification can report `passed-with-skips`, including at the aggregate level; that is incomplete production acceptance. A WASM interpreter cannot satisfy the native-runtime gate.
+
+The repository's pinned pnpm 11 requires Node >=22.13. CI builds the workspace on current Node 22.x, then switches to the actual consumer runtime and runs `node scripts/verify-installations.mjs --require-native-runtimes` using Node/npm, including the 22.12.0 floor. Receipts record the executing Node version. This is package-consumer floor verification; it does not claim pnpm 11 can bootstrap the repository on Node 22.12.0.
+
+## Multiple scripts and reproducibility
+
+Generated decoder helpers receive automatic namespaces so loading a second separately transformed classic script does not overwrite helpers used by delayed calls into the first. Application globals are preserved. Nonzero fixed seeds use a deterministic namespace derived from source, normalized settings and input filename; seed zero uses an independent namespace per transformation. Internal engine callers overriding `identifiersPrefix` own uniqueness. The namespace fingerprint is not an integrity/authenticity primitive.
+
+Regenerate final SRI, manifests, external signatures and cache/precache identities after protection. A fixed seed preserves repeatability for identical inputs/options, not identical bytes across different SDK/compiler versions. Preserve a complete versioned deployment for rollback.
 
 ## Candidate updates
 
