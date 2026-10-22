@@ -1,6 +1,16 @@
+/** Precompressed code cannot be trusted to match the transformed public bytes. */
+export function isPrecompressedCodePath(path) {
+  return /\.(?:[cm]?js|css)(?:\.(?:gz|br))+$/i.test(path);
+}
+
 /** Raw development/server files and local deployment controls are not public payload. */
 export function isPrivatePath(path) {
-  const normalized = path.replaceAll("\\", "/");
+  if (isPrecompressedCodePath(path)) return true;
+  // Classify the underlying filename without decoding untrusted compressed bytes.
+  // All terminal wrappers are removed, including mixed/repeated gzip/Brotli suffixes.
+  const normalized = path
+    .replaceAll("\\", "/")
+    .replace(/(?:\.(?:gz|br))+$/i, "");
   // Distribution notices must accompany the application that embeds these libraries.
   if (
     ["third-party-licenses.md", "/third-party-licenses.md"].includes(

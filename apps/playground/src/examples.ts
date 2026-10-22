@@ -55,6 +55,24 @@ export const integrations = [
     }).code,
   },
   {
+    id: "next",
+    title: "Next.js / React SSR",
+    hint: "Next App Router의 운영 클라이언트 청크에 적용합니다. SSR·RSC·서버 코드는 유지하며 Next 16은 Webpack 빌드가 필요합니다. 기존 CSP·nonce·HTTP 정책은 앱에서 관리합니다. 미게시 0.3.0 후보 기준입니다.",
+    code: `// next.config.mjs — 기존 설정을 첫 번째 인수에 유지
+import { withWebGuard } from 'uulab-webguard/next';
+
+export default withWebGuard({ reactStrictMode: true }, {
+  preset: 'strict',
+  runtime: {
+    devtools: { blockShortcuts: true, blockContextMenu: true },
+  },
+});
+
+// package.json scripts: "build": "next build --webpack"
+// CSP·nonce·SRI는 기존 Next 앱/호스트에서 관리
+// .next 전체를 protect-app 입력으로 지정하지 마세요.`,
+  },
+  {
     id: "generic",
     title: "범용 빌드",
     hint: "Webpack·esbuild·일반 정적 HTML에서 기존 빌드 다음에 실행합니다. Vite 설치가 필요 없습니다. 출력은 새 경로를 사용하고, 서버 헤더를 실제 적용하세요. Next.js·Nuxt SSR 자동 통합은 포함하지 않습니다.",

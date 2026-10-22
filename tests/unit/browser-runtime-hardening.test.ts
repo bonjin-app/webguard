@@ -1,6 +1,10 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { JSDOM } from "jsdom";
 import {
+  createPageBlocker,
+  type BlockReason,
+} from "../../packages/browser/src/blocker";
+import {
   WebGuard,
   getAutoGuard,
   installAutoGuard,
@@ -121,6 +125,65 @@ it.each(["text", "attribute", "remove", "replace", "ancestor"])(
     );
   },
 );
+it.each(["prepend", "append"] as const)(
+  "detects selected static anchors reordered with same-parent %s",
+  async (method) => {
+    const win = browser(
+      '<div>Before</div><section id="anchor"><b>Private receipt</b></section><div>After</div>',
+    );
+    const events: ThreatEvent[] = [];
+    guard({
+      domIntegrity: { enabled: true, selectors: ["#anchor"] },
+      onThreat: (event) => events.push(event),
+    });
+    win.document.body[method](win.document.querySelector("#anchor")!);
+    await mutations();
+    expect(events.map((event) => event.type)).toEqual([
+      "dom-integrity-mismatch",
+    ]);
+    expect(JSON.stringify(events)).not.toMatch(/receipt|Private/);
+  },
+);
+it("detects same-parent reorder of a selected anchor's ancestor", async () => {
+  const win = browser(
+    '<div>Before</div><main><section id="anchor">Static</section></main><div>After</div>',
+  );
+  const events: ThreatEvent[] = [];
+  guard({
+    domIntegrity: { enabled: true, selectors: ["#anchor"] },
+    onThreat: (event) => events.push(event),
+  });
+  win.document.body.prepend(win.document.querySelector("main")!);
+  await mutations();
+  expect(events.map((event) => event.type)).toEqual(["dom-integrity-mismatch"]);
+});
+it("ignores unrelated sibling changes and accepts synchronous movement rebaseline", async () => {
+  const win = browser();
+  const events: ThreatEvent[] = [];
+  const instance = guard({
+    domIntegrity: { enabled: true, selectors: ["#anchor"] },
+    onThreat: (event) => events.push(event),
+  });
+  const body = win.document.body;
+  const sibling = win.document.createElement("aside");
+  body.prepend(sibling);
+  await mutations();
+  body.append(sibling);
+  await mutations();
+  sibling.remove();
+  win.document.querySelector("#other")!.replaceWith(sibling);
+  await mutations();
+  expect(events).toEqual([]);
+
+  const anchor = win.document.querySelector("#anchor")!;
+  body.append(anchor);
+  expect(instance.rebaselineDom()).toBe(true);
+  await mutations();
+  expect(events).toEqual([]);
+  body.prepend(anchor);
+  await mutations();
+  expect(events.map((event) => event.type)).toEqual(["dom-integrity-mismatch"]);
+});
 it("ignores unrelated DOM and deduplicates a failed baseline until explicit rebaseline", async () => {
   const win = browser();
   const events: ThreatEvent[] = [];
@@ -247,6 +310,108 @@ function nativeDialogs(win: ReturnType<typeof browser>) {
     },
   });
 }
+it("presents only the current blocker reason with a matching accessible name and action", () => {
+  const win = browser();
+  nativeDialogs(win);
+  const blocker = createPageBlocker(win.document, () => {});
+  cleanup.push(() => blocker.clear());
+  const cases: [BlockReason, string, string, string][] = [
+    [
+      "shortcut",
+      "검사 단축키 입력을 감지했습니다",
+      "확인 후 계속",
+      "단축키 입력만으로 개발자도구 열림을 확정할 수 없습니다.",
+    ],
+    [
+      "geometry",
+      "창 크기 변화 신호를 확인해 주세요",
+      "창 크기 다시 확인",
+      "창 크기·확대 설정으로 잘못 감지될 수 있습니다.",
+    ],
+    [
+      "dom-tamper",
+      "페이지 변경을 확인해 주세요",
+      "복구 후 기준 상태 확인",
+      "정적 영역의 정상 갱신도 변경으로 감지됩니다.",
+    ],
+    [
+      "debugging-suspicion",
+      "실행 지연이 감지됐어요",
+      "확인 후 계속",
+      "실행 지연만으로 개발자도구 열림을 확정할 수 없습니다.",
+    ],
+    [
+      "shortcut",
+      "검사 단축키 입력을 감지했습니다",
+      "확인 후 계속",
+      "단축키 입력만으로 개발자도구 열림을 확정할 수 없습니다.",
+    ],
+  ];
+  for (const [reason, heading, action, limitation] of cases) {
+    expect(blocker.show(reason)).toBe("shown");
+    const dialog = win.document.querySelector("dialog")!;
+    expect(win.document.querySelectorAll("dialog")).toHaveLength(1);
+    expect(dialog.querySelector("h2")?.textContent).toBe(heading);
+    expect(dialog.getAttribute("aria-label")).toBe(heading);
+    expect(dialog.querySelector("button")?.textContent).toBe(action);
+    expect(dialog.textContent).toContain(limitation);
+    expect(dialog.textContent).not.toMatch(
+      /개발자도구를 닫아 주세요|닫은 뒤 다시 확인|개발자도구가 열려 있다면/,
+    );
+    if (reason !== "geometry")
+      expect(dialog.textContent).not.toContain("창 크기");
+    if (reason === "debugging-suspicion") {
+      expect(dialog.textContent).toContain(
+        "보이는 페이지에서 타이머 실행이 지연되어",
+      );
+      expect(dialog.textContent).not.toContain("일회성");
+    }
+    expect(blocker.show(reason)).toBe("existing");
+  }
+});
+it("requires explicit rebaseline to clear a static-anchor movement block", async () => {
+  const win = browser();
+  nativeDialogs(win);
+  const instance = guard({
+    domIntegrity: { enabled: true, selectors: ["#anchor"], response: "block" },
+  });
+  const anchor = win.document.querySelector("#anchor")!;
+  win.document.body.append(anchor);
+  await mutations();
+  expect(win.document.querySelector("dialog[open]")).not.toBeNull();
+  const recheck = () =>
+    (
+      win.document.querySelector("[data-webguard-recheck]") as HTMLButtonElement
+    ).click();
+  recheck();
+  expect(win.document.querySelector("dialog[open]")).not.toBeNull();
+  // Content and ancestry cannot establish restoration of the original position.
+  win.document.body.prepend(anchor);
+  recheck();
+  expect(win.document.querySelector("dialog[open]")).not.toBeNull();
+  expect(instance.rebaselineDom()).toBe(true);
+  expect(win.document.querySelector("dialog")).toBeNull();
+  await mutations();
+  expect(win.document.querySelector("dialog")).toBeNull();
+});
+it("still clears a cross-parent movement block after restoring the original ancestry", async () => {
+  const win = browser();
+  nativeDialogs(win);
+  guard({
+    domIntegrity: { enabled: true, selectors: ["#anchor"], response: "block" },
+  });
+  const anchor = win.document.querySelector("#anchor")!;
+  win.document.querySelector("#other")!.append(anchor);
+  await mutations();
+  expect(win.document.querySelector("dialog[open]")).not.toBeNull();
+  win.document.body.prepend(anchor);
+  (
+    win.document.querySelector("[data-webguard-recheck]") as HTMLButtonElement
+  ).click();
+  expect(win.document.querySelector("dialog")).toBeNull();
+  await mutations();
+  expect(win.document.querySelector("dialog")).toBeNull();
+});
 it("keeps static-DOM block independent of geometry and only reopens after restoration or explicit rebaseline", async () => {
   const win = browser();
   nativeDialogs(win);
@@ -493,7 +658,7 @@ it("keeps a shortcut restriction after the independent DOM baseline is restored"
   );
   instance.rebaselineDom();
   expect(win.document.querySelector("dialog")?.getAttribute("aria-label")).toBe(
-    "개발자도구를 닫아 주세요",
+    "검사 단축키 입력을 감지했습니다",
   );
   (
     win.document.querySelector("[data-webguard-recheck]") as HTMLButtonElement
@@ -560,7 +725,7 @@ it("retains independent reasons while waiting for a body to become available", a
   );
   instance.update({ domIntegrity: { enabled: false } });
   expect(win.document.querySelector("dialog")?.getAttribute("aria-label")).toBe(
-    "개발자도구를 닫아 주세요",
+    "검사 단축키 입력을 감지했습니다",
   );
   instance.update({ devtools: { response: "monitor" } });
   expect(Boolean(win.document.querySelector("dialog"))).toBe(false);

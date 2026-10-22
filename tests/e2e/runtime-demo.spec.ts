@@ -439,7 +439,17 @@ test("default page protection cancels trusted Mac inspection input inside an edi
     .toEqual({ trusted: true, prevented: true });
   const blocker = page.locator("dialog[data-webguard-blocker]");
   await expect(blocker).toBeVisible();
-  await expect(blocker).toContainText("개발자도구를 닫아 주세요");
+  await expect(blocker).toHaveAccessibleName("검사 단축키 입력을 감지했습니다");
+  await expect(
+    blocker.getByRole("heading", {
+      name: "검사 단축키 입력을 감지했습니다",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    blocker.getByRole("button", { name: "확인 후 계속", exact: true }),
+  ).toBeVisible();
+  await expect(blocker).not.toContainText("개발자도구를 닫아 주세요");
   await expect(blocker).toHaveJSProperty("open", true);
   expect(await blocker.evaluate((node) => node.matches(":modal"))).toBe(true);
   await page.keyboard.press("Escape");
@@ -510,6 +520,19 @@ test("simulated docked-window geometry opens the page dialog and recheck waits f
   });
   const blocker = page.locator("dialog[data-webguard-blocker]");
   await expect(blocker).toBeVisible();
+  await expect(blocker).toHaveAccessibleName(
+    "창 크기 변화 신호를 확인해 주세요",
+  );
+  await expect(
+    blocker.getByRole("heading", {
+      name: "창 크기 변화 신호를 확인해 주세요",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    blocker.getByRole("button", { name: "창 크기 다시 확인", exact: true }),
+  ).toBeVisible();
+  await expect(blocker).not.toContainText("개발자도구를 닫아 주세요");
   await blocker.locator("[data-webguard-recheck]").click();
   await expect(blocker).toBeVisible();
   await expect(blocker.locator("[data-demo-block-exit]")).toHaveCount(1);

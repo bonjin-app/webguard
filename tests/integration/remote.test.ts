@@ -25,7 +25,7 @@ it("reports network failures per asset and continues checking remaining paths", 
   vi.stubGlobal("fetch", request);
   const result = await verifyDeployment("https://example.com/app/", manifest);
   expect(result.valid).toBe(false);
-  expect(result.checked).toBe(3);
+  expect(result.checked).toBe(9);
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
 });
 
@@ -47,7 +47,7 @@ it("checks generated headers on the entry route, assets and missing source respo
           headers: { "X-Content-Type-Options": "nosniff" },
         });
       return new Response(null, {
-        status: input.pathname.endsWith(".map") ? 404 : 200,
+        status: /\.map(?:\.(?:gz|br)){0,2}$/.test(input.pathname) ? 404 : 200,
       });
     }),
   );
@@ -62,7 +62,7 @@ it("checks generated headers on the entry route, assets and missing source respo
       },
     },
   );
-  expect(result.checked).toBe(3);
+  expect(result.checked).toBe(9);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain(
     "Missing response header on /: Content-Security-Policy",
@@ -104,7 +104,9 @@ it("rejects a changed CSP value even when the header name is present", async () 
         new Response(
           input.pathname.endsWith("main.js") ? "globalThis.ok=true;" : null,
           {
-            status: input.pathname.endsWith(".map") ? 404 : 200,
+            status: /\.map(?:\.(?:gz|br)){0,2}$/.test(input.pathname)
+              ? 404
+              : 200,
             headers: {
               "Content-Security-Policy":
                 "default-src *; script-src 'unsafe-inline'",
@@ -124,7 +126,7 @@ it("rejects a changed CSP value even when the header name is present", async () 
 
 it("records HTTP timeout as a failed check and completes the source probes", async () => {
   const s = createServer((req, res) => {
-    if (req.url?.endsWith(".map")) {
+    if (/\.map(?:\.(?:gz|br)){0,2}$/.test(req.url ?? "")) {
       res.statusCode = 404;
       res.end();
     }
@@ -139,7 +141,7 @@ it("records HTTP timeout as a failed check and completes the source probes", asy
     [],
     { timeoutMs: 50 },
   );
-  expect(result).toMatchObject({ valid: false, checked: 3 });
+  expect(result).toMatchObject({ valid: false, checked: 9 });
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
   s.closeAllConnections();
 });
@@ -176,7 +178,7 @@ const manifest = {
 };
 it("compares deployed bytes and confirms source-map URL absence", async () => {
   const result = await verifyDeployment(await server(), manifest, ["main.ts"]);
-  expect(result).toEqual({ valid: true, errors: [], checked: 4 });
+  expect(result).toEqual({ valid: true, errors: [], checked: 16 });
 });
 it("does not mistake successful SPA fallback URLs for confirmed source-map absence", async () => {
   const result = await verifyDeployment(await server(true), manifest);
@@ -232,7 +234,7 @@ it("rejects a tampered mount root even when index.html and assets match without 
   const result = await verifyDeployment(deployed.base, deployed.manifest);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain("Deployed hash mismatch: /");
-  expect(result.checked).toBe(4);
+  expect(result.checked).toBe(10);
 });
 
 it("rejects an unsuccessful mount root even when index.html and assets match", async () => {
@@ -251,7 +253,7 @@ it("checks mount root status even when the manifest has no index.html", async ()
   expect(result.errors).toContain(
     "Deployment entry does not respond successfully (404)",
   );
-  expect(result.checked).toBe(3);
+  expect(result.checked).toBe(9);
 });
 
 it("accepts matching mount root and assets without optional header comparisons", async () => {
@@ -260,6 +262,6 @@ it("accepts matching mount root and assets without optional header comparisons",
   expect(await verifyDeployment(deployed.base, deployed.manifest)).toEqual({
     valid: true,
     errors: [],
-    checked: 4,
+    checked: 10,
   });
 });

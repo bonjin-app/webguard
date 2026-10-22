@@ -1,3 +1,9 @@
+import {
+  capturePackageSnapshot,
+  captureSourceSnapshot,
+  assertPackageFreshness,
+  assertSourceFreshness,
+} from "./release-freshness.mjs";
 import { verifyRegistryRelease } from "./release-readback.mjs";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -76,6 +82,8 @@ async function remote(pkg) {
 }
 async function prepare() {
   const pkg = await metadata();
+  const sourceSnapshot = await captureSourceSnapshot(root);
+  const packageSnapshot = await capturePackageSnapshot(directory);
   await mkdir(release, { recursive: true });
   const stage = await mkdtemp(join(release, "stage-"));
   try {
@@ -119,6 +127,9 @@ async function prepare() {
       "dist/browser.global.js",
       "dist/build.js",
       "dist/build.d.ts",
+      "dist/next.js",
+      "dist/next.d.ts",
+      "dist/next-runtime.js",
       "dist/cli.js",
       "dist/headers.js",
       "dist/verify.js",
@@ -130,6 +141,17 @@ async function prepare() {
     ])
       if (!paths.includes(path))
         throw new Error(`Missing public file: ${path}`);
+    // Verify the exact archived bytes against the reviewed current file snapshot.
+    run("tar", ["-xzf", join(stage, packed.filename), "-C", stage]);
+    const archived = await capturePackageSnapshot(join(stage, "package"), {
+      listFiles: () => paths,
+    });
+    if (JSON.stringify(archived) !== JSON.stringify(packageSnapshot))
+      throw new Error(
+        "Packed files differ from current public package snapshot",
+      );
+    await assertPackageFreshness(directory, { packageSnapshot });
+    await assertSourceFreshness(root, { sourceSnapshot });
     const target = join(release, packed.filename);
     await writeFile(target, bytes);
     const record = {
@@ -138,6 +160,8 @@ async function prepare() {
       filename: packed.filename,
       integrity: integrity(bytes),
       files: paths,
+      packageSnapshot,
+      sourceSnapshot,
       preparedAt: new Date().toISOString(),
     };
     await writeFile(
@@ -155,7 +179,7 @@ async function prepare() {
     await rm(stage, { recursive: true, force: true });
   }
 }
-async function reviewed() {
+async function reviewed({ freshness = false } = {}) {
   const pkg = await metadata();
   const record = JSON.parse(
     await readFile(join(release, "release.json"), "utf8"),
@@ -169,10 +193,32 @@ async function reviewed() {
   const tarball = join(release, record.filename);
   if (integrity(await readFile(tarball)) !== record.integrity)
     throw new Error("Prepared tarball changed after review");
+  if (freshness) {
+    await assertPackageFreshness(directory, record);
+    await assertSourceFreshness(root, record);
+    if (
+      JSON.stringify([...record.files].sort()) !==
+      JSON.stringify(record.packageSnapshot.files.map((file) => file.path))
+    )
+      throw new Error(
+        "Prepared file inventory differs from snapshot; run release:prepare again",
+      );
+  }
   return { pkg, record, tarball };
 }
+export async function check() {
+  const { pkg, tarball } = await reviewed({ freshness: true });
+  console.log(
+    JSON.stringify({
+      status: "fresh",
+      name: pkg.name,
+      version: pkg.version,
+      tarball,
+    }),
+  );
+}
 export async function publish(readbackOptions = {}) {
-  const { pkg, record, tarball } = await reviewed();
+  const { pkg, record, tarball } = await reviewed({ freshness: true });
   const publisher = run("npm", ["whoami", `--registry=${registry}`]);
   const existing = await remote(pkg);
   if (
@@ -191,6 +237,12 @@ export async function publish(readbackOptions = {}) {
       "Version already exists with different bytes; never overwrite/unpublish",
     );
   }
+  // Authentication/registry checks may take time. Pin the candidate selected before them.
+  const confirmed = await reviewed({ freshness: true });
+  if (JSON.stringify(confirmed.record) !== JSON.stringify(record))
+    throw new Error(
+      "Prepared release record changed during publication checks; review the candidate again",
+    );
   // The exact prepared tarball is the only publish target. Authentication stays in npm.
   const result = spawnSync(
     "npm",
@@ -276,11 +328,12 @@ if (
   const action = process.argv[2] ?? "prepare";
   try {
     if (action === "prepare") await prepare();
+    else if (action === "check") await check();
     else if (action === "publish") await publish();
     else if (action === "readback") await readback();
     else
       throw new Error(
-        "Usage: node scripts/release-npm.mjs prepare|publish|readback",
+        "Usage: node scripts/release-npm.mjs prepare|check|publish|readback",
       );
   } catch (error) {
     console.error(error.message);

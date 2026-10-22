@@ -9,7 +9,12 @@ import {
   chmod,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import {
+  sourceInputs,
+  capturePackageSnapshot,
+  captureSourceSnapshot,
+} from "../../scripts/release-freshness.mjs";
+import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
@@ -21,7 +26,11 @@ async function releaseFixture(allowPublish = false) {
   const root = await mkdtemp(join(tmpdir(), "webguard-release-retry-"));
   for (const name of ["scripts", "packages/npm", ".npm-release", "bin"])
     await mkdir(join(root, name), { recursive: true });
-  for (const name of ["release-npm.mjs", "release-readback.mjs"])
+  for (const name of [
+    "release-npm.mjs",
+    "release-readback.mjs",
+    "release-freshness.mjs",
+  ])
     await copyFile("scripts/" + name, join(root, "scripts", name));
   await writeFile(
     join(root, "packages/npm/package.json"),
@@ -38,6 +47,18 @@ async function releaseFixture(allowPublish = false) {
       },
     }),
   );
+  for (const input of sourceInputs) {
+    await mkdir(dirname(join(root, input)), { recursive: true });
+    await writeFile(
+      join(root, input),
+      input === "package.json" ? "{}" : "fixture build input",
+    );
+  }
+  const packageSnapshot = await capturePackageSnapshot(
+    join(root, "packages/npm"),
+    { listFiles: () => ["package.json"] },
+  );
+  const sourceSnapshot = await captureSourceSnapshot(root);
   const tarball = join(
     root,
     `.npm-release/${target.name}-${target.version}.tgz`,
@@ -47,6 +68,9 @@ async function releaseFixture(allowPublish = false) {
     join(root, ".npm-release/release.json"),
     JSON.stringify({
       ...target,
+      packageSnapshot,
+      sourceSnapshot,
+      files: ["package.json"],
       filename: `${target.name}-${target.version}.tgz`,
     }),
   );
@@ -55,6 +79,7 @@ async function releaseFixture(allowPublish = false) {
     join(root, "bin/npm"),
     `#!/usr/bin/env node
 const fs=require('node:fs');
+if(process.argv[2]==='pack'){console.log(JSON.stringify([{files:[{path:'package.json'}]}]));process.exit(0);}
 if(process.argv[2]==='whoami'){console.log('release-test-user');process.exit(0);}
 if(process.argv[2]==='publish'&&${JSON.stringify(allowPublish)}){fs.appendFileSync(${JSON.stringify(publications)},${JSON.stringify("published\n")});process.exit(0);}
 process.exit(91);`,
@@ -74,7 +99,7 @@ globalThis.fetch=async(url)=>{if(String(url)==='https://registry.npmjs.org/uulab
     evidence: join(root, "docs/evidence/npm-release.json"),
     setDocuments: (documents: unknown[]) =>
       writeFile(registryFile, JSON.stringify(documents)),
-    run: (action: "publish" | "readback") =>
+    run: (action: "publish" | "readback" | "check") =>
       execute(
         process.execPath,
         [
@@ -95,6 +120,138 @@ globalThis.fetch=async(url)=>{if(String(url)==='https://registry.npmjs.org/uulab
       ),
   };
 }
+it("checks a fresh fixture without authentication, registry lookup or candidate writes", async () => {
+  const fixture = await releaseFixture(true);
+  try {
+    const recordPath = join(fixture.root, ".npm-release/release.json");
+    const before = await readFile(recordPath, "utf8");
+    const npmPath = join(fixture.root, "bin/npm");
+    await writeFile(
+      npmPath,
+      (await readFile(npmPath, "utf8")).replace(
+        "console.log('release-test-user')",
+        "console.error('unexpected-authentication');process.exit(92)",
+      ),
+    );
+    const result = await fixture.run("check");
+    expect(JSON.parse(result.stdout)).toMatchObject({ status: "fresh" });
+    expect(await readFile(recordPath, "utf8")).toBe(before);
+    await expect(readFile(fixture.publications)).rejects.toMatchObject({
+      code: "ENOENT",
+    });
+    await expect(readFile(fixture.evidence)).rejects.toMatchObject({
+      code: "ENOENT",
+    });
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
+
+it("rejects a legacy candidate before npm authentication or registry lookup", async () => {
+  const fixture = await releaseFixture(true);
+  try {
+    const recordPath = join(fixture.root, ".npm-release/release.json");
+    const record = JSON.parse(await readFile(recordPath, "utf8"));
+    delete record.packageSnapshot;
+    await writeFile(recordPath, JSON.stringify(record));
+    await writeFile(
+      join(fixture.root, "bin/npm"),
+      "#!/bin/sh\necho unexpected-authentication >&2\nexit 91\n",
+    );
+    await expect(fixture.run("publish")).rejects.toMatchObject({
+      stderr: expect.stringMatching(/snapshot.*release:prepare/),
+    });
+    await expect(readFile(fixture.publications)).rejects.toMatchObject({
+      code: "ENOENT",
+    });
+    // Standalone readback intentionally accepts historical candidates without freshness metadata.
+    await fixture.setDocuments([documentFor()]);
+    await fixture.run("readback");
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
+
+it.each(["package", "source"])(
+  "rejects stale %s bytes before authentication",
+  async (kind) => {
+    const fixture = await releaseFixture(true);
+    try {
+      if (kind === "package") {
+        const path = join(fixture.root, "packages/npm/package.json");
+        const pkg = JSON.parse(await readFile(path, "utf8"));
+        pkg.description = "changed at the same version";
+        await writeFile(path, JSON.stringify(pkg));
+      } else {
+        await mkdir(join(fixture.root, "packages/npm/src"));
+        await writeFile(
+          join(fixture.root, "packages/npm/src/added.ts"),
+          "new source without rebuilding",
+        );
+      }
+      const npmPath = join(fixture.root, "bin/npm");
+      const original = await readFile(npmPath, "utf8");
+      await writeFile(
+        npmPath,
+        original.replace(
+          "console.log('release-test-user')",
+          "console.error('unexpected-authentication');process.exit(92)",
+        ),
+      );
+      await expect(fixture.run("publish")).rejects.toMatchObject({
+        stderr: expect.stringMatching(/changed.*release:prepare/),
+      });
+      await expect(readFile(fixture.publications)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+    } finally {
+      await rm(fixture.root, { recursive: true, force: true });
+    }
+  },
+);
+
+it.each(["tarball", "source", "record"])(
+  "rejects %s mutation during registry lookup before publication",
+  async (kind) => {
+    const fixture = await releaseFixture(true);
+    try {
+      await fixture.setDocuments([null]);
+      const preload = join(fixture.root, "registry-fixture.mjs");
+      const mutationPath =
+        kind === "tarball"
+          ? join(
+              fixture.root,
+              `.npm-release/${target.name}-${target.version}.tgz`,
+            )
+          : join(fixture.root, "README.md");
+      const original = await readFile(preload, "utf8");
+      const mutation =
+        kind === "record"
+          ? `const recordPath=${JSON.stringify(join(fixture.root, ".npm-release/release.json"))};const record=JSON.parse(await readFile(recordPath));record.preparedAt='changed';await writeFile(recordPath,JSON.stringify(record));`
+          : `await writeFile(${JSON.stringify(mutationPath)}, 'changed during lookup');`;
+      await writeFile(
+        preload,
+        original
+          .replace("import {readFile}", "import {readFile,writeFile}")
+          .replace(
+            "globalThis.fetch=async(url)=>{",
+            `globalThis.fetch=async(url)=>{${mutation}`,
+          ),
+      );
+      await expect(fixture.run("publish")).rejects.toMatchObject({
+        stderr: expect.stringMatching(
+          /(?:tarball changed|inputs changed|record changed)/i,
+        ),
+      });
+      await expect(readFile(fixture.publications)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+    } finally {
+      await rm(fixture.root, { recursive: true, force: true });
+    }
+  },
+);
+
 it("verifies already-published bytes and still rejects a stale latest tag without another publication", async () => {
   const fixture = await releaseFixture();
   try {

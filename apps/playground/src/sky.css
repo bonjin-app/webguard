@@ -581,18 +581,45 @@ main.sdk-site {
 }
 
 .is-demo-page .demo-hub {
-  padding-top: 28px;
+  padding-top: 16px;
 }
 
 .is-demo-page .demo-heading {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+}
+
+.is-demo-page .demo-heading h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(27px, 3vw, 34px);
+  line-height: 1.4;
+}
+
+.is-demo-page .demo-heading p {
+  margin: 8px 0;
+  font-size: 14px;
 }
 
 .is-demo-page .demo-tabs {
   justify-content: flex-start;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
+  margin-bottom: 0;
   border-bottom: 1px solid var(--line);
+}
+
+.is-demo-page #live-demo {
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.is-demo-page .site-protection-strip {
+  margin-top: 12px;
+  padding: 10px 24px;
+}
+
+.is-demo-page .site-protection-strip p {
+  margin: 4px 0 0;
+  font-size: 12px;
 }
 
 .is-demo-page .runtime-intro {

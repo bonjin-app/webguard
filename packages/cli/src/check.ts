@@ -143,7 +143,12 @@ export async function checkDeployment(
       probes,
       { expectedHeaders: headers },
     );
-  } catch {
-    return localFailure("Deployment verification request failed");
+  } catch (error) {
+    return localFailure(
+      error instanceof Error &&
+        error.message.startsWith("Non-public deployment asset:")
+        ? error.message
+        : "Deployment verification request failed",
+    );
   }
 }

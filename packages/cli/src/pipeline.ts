@@ -21,7 +21,7 @@ import {
 } from "./fs-utils.js";
 import { scanDirectory, type Finding } from "./scan.js";
 import { addSubresourceIntegrity, sanitizeInlineSources } from "./html.js";
-import { isPrivatePath } from "./private-path.mjs";
+import { isPrecompressedCodePath, isPrivatePath } from "./private-path.mjs";
 export interface ProtectionReport {
   version: 1;
   preset: string;
@@ -75,6 +75,11 @@ export async function protectDirectory(
   if (policy.sourceMaps.privateArtifacts) await assertAbsent(privatePath);
   await listFiles(resolve(input));
   const paths = await listFiles(source);
+  const precompressedCode = paths.find(isPrecompressedCodePath);
+  if (precompressedCode)
+    throw new Error(
+      `Precompressed JavaScript/CSS is not supported: ${precompressedCode}. Remove precompressed code before protection and compress only the final protected bytes at delivery.`,
+    );
   const originalFindings = await scanDirectory(source);
   if (originalFindings.some((f) => f.category === "potential-secret"))
     throw new Error(
@@ -121,7 +126,7 @@ export async function protectDirectory(
     for (const path of paths) {
       const from = join(source, path),
         to = join(stage, path);
-      if (/\.map$/i.test(path)) {
+      if (/\.map(?:\.(?:gz|br))*$/i.test(path)) {
         report.removedMaps.push(path);
         if (privateStage) {
           const dest = join(privateStage, "input-maps", path);

@@ -46,6 +46,12 @@ npx --no-install webguard-check dist-protected --url http://127.0.0.1:4173/
 
 기본은 Strict이며 입력 제한은 별도로 켜야 합니다. `--no-runtime`은 자동 SDK만, `--no-headers`는 정책 생성만 끕니다. `webguard protect`·`protectDirectory()`는 SDK·정책 자동 통합을 하지 않는 빌드 보호 경로입니다.
 
+## 미리 압축된 파일과 배포 압축
+
+범용 보호 입력에 `.js.gz`·`.mjs.br`·`.cjs.gz`·`.css.br` 등 미리 압축된 코드가 있으면 빌드를 거부합니다. `.gz.br`처럼 여러 겹인 이름도 같습니다. 난독화 전 원본이 압축 파일로 함께 배포되는 것을 막기 위한 검사입니다. 압축 플러그인의 사전 압축 출력을 끄고, 보호가 끝난 파일을 서버·CDN의 HTTP `Content-Encoding: gzip`·`br`로 전송하세요.
+
+압축 소스맵·서버 소스·환경 파일·로컬 제어 파일도 공개 출력에서 제외합니다. 선택한 비공개 소스맵 보관 경로에는 원래 압축 바이트를 보존합니다. Next 어댑터는 공개 `static/`의 압축 코드와 압축 소스맵을 변환 전과 최종 검사에서 거부하며 서버 컴파일은 유지합니다. 배포 검사는 한 겹·두 겹의 `.gz`·`.br` 대체 경로와 보고서에 기록한 제거 경로를 확인합니다. 임의의 모든 원격 파일명을 열거하지는 못합니다.
+
 ## 자동 연결과 수동 SDK
 
 실제 정적 HTML의 앱 스크립트보다 먼저 외부 SDK를 시작하고, 선택된 JavaScript를 난독화합니다. 공개 소스맵을 제거하며 **최종** 자산의 SRI와 SHA-384 매니페스트를 만듭니다. HTTP 정책은 `webguard-headers.json`·`_headers`로 출력합니다. HTML 메타가 지원하는 CSP와 실제 HTTP 헤더의 역할은 다릅니다. 호스트에서 HTTP 정책과 비공개 경로 제한을 적용해야 합니다.
@@ -97,7 +103,7 @@ export default withWebGuard(
 { "scripts": { "build": "next build --webpack", "start": "next start" } }
 ```
 
-운영 클라이언트 컴파일에 SDK를 연결하고 청크를 난독화합니다. SSR·React Server Components·Route Handler·Node/Edge 서버 코드와 개발/HMR은 변환하지 않습니다. 기존 동기 Webpack 설정 콜백은 유지합니다. Next 자체가 기다리지 않는 비동기 Webpack 콜백은 오류로 안내합니다. 비동기 준비는 Next 설정 함수에서 완료한 뒤 결과 객체를 `withWebGuard()`로 감싸세요. `runtime: false`는 SDK 자동 시작을 끄며 난독화와 구분됩니다.
+운영 클라이언트 컴파일에 SDK를 연결하고 청크를 난독화합니다. 공개 JavaScript에서 공통 휴리스틱이 식별한 잠재 자격 증명은 난독화 전에 값 없이 오류로 보고하고 빌드를 중단합니다. 이 검사는 모든 비밀값의 부재를 보증하지 않습니다. SSR·React Server Components·Route Handler·Node/Edge 서버 코드와 개발/HMR은 변환하지 않습니다. 기존 동기 Webpack 설정 콜백은 유지합니다. Next 자체가 기다리지 않는 비동기 Webpack 콜백은 오류로 안내합니다. 비동기 준비는 Next 설정 함수에서 완료한 뒤 결과 객체를 `withWebGuard()`로 감싸세요. `runtime: false`는 SDK 자동 시작을 끄며 난독화와 구분됩니다.
 
 앱 코드가 포함되거나 출처가 불명확한 청크는 선택한 프리셋을 그대로 사용합니다. 모듈 그래프 전체가 외부 프레임워크·의존성 코드임을 확인한 청크는 기본적으로 최대 Standard로 변환해 비용을 줄입니다. Basic을 선택하면 외부 코드도 Basic입니다. `frameworkPreset: "inherit"`를 지정하면 외부 코드도 앱과 같은 프리셋을 사용합니다. 모든 청크를 Strict로 변환하면 React·Next 공통 코드까지 크게 늘어날 수 있으므로 실제 전송량과 초기 실행 시간을 확인하세요. 난독화 프리셋은 보안 등급을 뜻하지 않습니다.
 

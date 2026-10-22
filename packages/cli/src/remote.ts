@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { validateHeaderName, validateHeaderValue } from "node:http";
 import type { IntegrityManifest } from "@webguard/integrity";
+import { isPrivatePath } from "./private-path.mjs";
 export interface DeploymentCheck {
   valid: boolean;
   errors: string[];
@@ -53,6 +54,8 @@ export async function verifyDeployment(
   // not turn a partial verification into requests outside the deployment mount.
   const assets = files.map(([path, entry]) => {
     const url = safe(path);
+    if (isPrivatePath(path))
+      throw new Error(`Non-public deployment asset: ${path}`);
     if (
       !Number.isSafeInteger(entry.size) ||
       entry.size < 0 ||
@@ -62,12 +65,22 @@ export async function verifyDeployment(
     return { path, entry, url };
   });
   const probes = [
-    ...new Set([
-      ...files
-        .filter(([path]) => /\.[cm]?js$|\.css$/i.test(path))
-        .map(([path]) => `${path}.map`),
-      ...removedSources,
-    ]),
+    ...new Set(
+      [
+        ...files
+          .filter(([path]) => /\.[cm]?js$|\.css$/i.test(path))
+          .map(([path]) => `${path}.map`),
+        ...removedSources,
+      ].flatMap((path) => [
+        path,
+        `${path}.gz`,
+        `${path}.br`,
+        `${path}.gz.gz`,
+        `${path}.gz.br`,
+        `${path}.br.gz`,
+        `${path}.br.br`,
+      ]),
+    ),
   ].map((path) => ({ path, url: safe(path) }));
   const headers = Object.entries(options.expectedHeaders ?? {});
   const seenHeaders = new Set<string>();

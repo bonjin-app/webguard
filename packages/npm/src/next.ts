@@ -2,6 +2,8 @@ import { fileURLToPath } from "node:url";
 import { WebGuard, type WebGuardOptions } from "@webguard/browser";
 import { resolveConfig, type Preset } from "@webguard/core";
 import { createDomIdentifierGenerator } from "../../cli/src/dom-identifiers.js";
+import { hasPotentialCredential } from "../../cli/src/scan.js";
+import { isPrecompressedCodePath } from "../../cli/src/private-path.mjs";
 import JavaScriptObfuscator from "javascript-obfuscator";
 import {
   createObfuscatorOptions,
@@ -237,6 +239,19 @@ class NextProtectionPlugin {
       }).apply(compiler);
     compiler.hooks.thisCompilation.tap(name, (compilation) => {
       const transformed = new Set<string>();
+      const validatePublicAssets = () => {
+        for (const asset of compilation.getAssets()) {
+          if (!asset.name.startsWith("static/")) continue;
+          if (/\.map(?:\.(?:gz|br))*$/i.test(asset.name))
+            throw new Error(
+              `WebGuard Next refuses public source maps: ${asset.name}`,
+            );
+          if (isPrecompressedCodePath(asset.name))
+            throw new Error(
+              `WebGuard Next refuses precompressed code: ${asset.name}; use HTTP compression of protected output`,
+            );
+        }
+      };
       compilation.hooks.processAssets.tapPromise(
         {
           name,
@@ -245,6 +260,7 @@ class NextProtectionPlugin {
             compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE + 1,
         },
         async () => {
+          validatePublicAssets();
           const origins = new Map<string, boolean>();
           for (const chunk of compilation.chunks) {
             let pure = false;
@@ -279,6 +295,10 @@ class NextProtectionPlugin {
               typeof source === "string"
                 ? source
                 : Buffer.from(source).toString("utf8");
+            if (hasPotentialCredential(code, asset.name))
+              throw new Error(
+                `Potential credentials detected before protection: ${asset.name}`,
+              );
             const settings = createObfuscatorOptions(
               {
                 level: policy.obfuscation.level,
@@ -337,11 +357,8 @@ class NextProtectionPlugin {
           stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_REPORT,
         },
         () => {
-          for (const asset of compilation.getAssets())
-            if (asset.name.startsWith("static/") && /\.map$/i.test(asset.name))
-              throw new Error(
-                `WebGuard Next refuses public source maps: ${asset.name}`,
-              );
+          // Compression plugins may emit sidecars after the protection stage.
+          validatePublicAssets();
           // Metadata follows RealContentHash renames. Reject late, unprotected
           // chunk assets instead of silently declaring a partial build protected.
           const assets = new Map(

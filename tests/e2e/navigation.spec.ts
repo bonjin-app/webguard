@@ -3,10 +3,12 @@ import { expect, test } from "@playwright/test";
 test("opens /demo directly on operable controls and preserves the home introduction", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/demo");
   await expect(page.locator("#demo-heading")).toHaveJSProperty("tagName", "H1");
   await expect(page.locator("#demo-heading")).toBeInViewport();
-  await expect(page.locator("#shortcuts")).toBeInViewport();
+  for (const id of ["runtime-page-block", "shortcuts", "context"])
+    await expect(page.locator(`#${id}`)).toBeInViewport({ ratio: 1 });
   await expect(page.locator("#shortcuts")).toBeEnabled();
   expect(
     await page

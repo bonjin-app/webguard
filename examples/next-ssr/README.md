@@ -2,7 +2,13 @@
 
 브라우저로 보내는 프로덕션 JavaScript를 난독화하고 SDK를 자동 시작합니다. React 소스에 별도 초기화 컴포넌트를 추가하지 않습니다. 서버 컴파일, RSC, API, Edge 코드와 개발 모드는 변환하지 않습니다.
 
+이 체크아웃 예제는 로컬 `packages/npm` 패키지를 사용합니다. 먼저 저장소 루트에서 의존성과 공개 패키지 빌드를 준비한 뒤 예제 폴더에서 실행하세요.
+
 ```sh
+# 저장소 루트
+pnpm install --frozen-lockfile
+pnpm build
+cd examples/next-ssr
 npm install
 npm run build
 npm start

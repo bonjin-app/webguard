@@ -234,6 +234,7 @@ export function createDomIntegrityMonitor(
   let observer: MutationObserver | undefined;
   let anchors: Anchor[] = [];
   let baseline = "";
+  let positionChanged = false;
   let active = true;
   const stop = () => {
     observer?.disconnect();
@@ -249,6 +250,13 @@ export function createDomIntegrityMonitor(
     }
     return parents;
   };
+  const ancestryChanged = ({ node, parents }: Anchor) =>
+    !node.isConnected ||
+    parents.some((parent, index) =>
+      index === 0
+        ? node.parentNode !== parent
+        : parents[index - 1]!.parentNode !== parent,
+    );
   const snapshot = () => {
     let nodes = 0,
       bytes = 0;
@@ -333,16 +341,30 @@ export function createDomIntegrityMonitor(
         observer = new Observer((records) => {
           if (!active || !observer) return;
           try {
-            const moved = anchors.some(
-              ({ node, parents }) =>
-                !node.isConnected ||
-                parents.some((parent, index) =>
-                  index === 0
-                    ? node.parentNode !== parent
-                    : parents[index - 1]!.parentNode !== parent,
-                ),
-            );
+            // Moving an existing anchor within its parent preserves ancestry and
+            // contents. Match node identities rather than sibling indices, which
+            // also change when unrelated siblings are inserted or removed.
+            const reordered = records.some((record) => {
+              if (record.type !== "childList") return false;
+              for (const nodes of [record.removedNodes, record.addedNodes])
+                for (const changed of nodes)
+                  if (
+                    anchors.some(
+                      (anchor) =>
+                        (changed === anchor.node ||
+                          anchor.parents.includes(changed)) &&
+                        !ancestryChanged(anchor),
+                    )
+                  )
+                    return true;
+              return false;
+            });
+            const moved = anchors.some(ancestryChanged);
+            // Content/ancestry checks cannot prove the original sibling position
+            // was restored. Require a trusted explicit rebaseline after reorder.
+            if (reordered) positionChanged = true;
             const relevant =
+              reordered ||
               moved ||
               records.some((record) =>
                 anchors.some(
@@ -351,7 +373,7 @@ export function createDomIntegrityMonitor(
                 ),
               );
             if (!relevant) return;
-            if (moved || snapshot() !== baseline)
+            if (reordered || moved || snapshot() !== baseline)
               failure(
                 "dom-integrity-mismatch",
                 "A selected static DOM anchor changed, moved, was removed or replaced. No page contents are included.",
@@ -376,6 +398,7 @@ export function createDomIntegrityMonitor(
         }
         for (const [target, options] of targets)
           observer.observe(target, options);
+        positionChanged = false;
         return true;
       } catch (error) {
         failure(
@@ -391,15 +414,8 @@ export function createDomIntegrityMonitor(
       if (
         !active ||
         !baseline ||
-        anchors.some(
-          ({ node, parents }) =>
-            !node.isConnected ||
-            parents.some((parent, index) =>
-              index === 0
-                ? node.parentNode !== parent
-                : parents[index - 1]!.parentNode !== parent,
-            ),
-        )
+        positionChanged ||
+        anchors.some(ancestryChanged)
       )
         return false;
       try {

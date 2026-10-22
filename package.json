@@ -31,14 +31,15 @@
     "deploy": "pnpm deploy:build && wrangler deploy",
     "test:public": "playwright test -c playwright.public.config.ts",
     "release:prepare": "pnpm build && node scripts/release-npm.mjs prepare",
-    "release:publish": "npm exec --yes --package=npm@11.21.0 -- node scripts/release-npm.mjs publish",
+    "release:publish": "node scripts/release-npm.mjs check && npm exec --yes --package=npm@11.21.0 -- node scripts/release-npm.mjs publish",
     "release:readback": "node scripts/release-npm.mjs readback",
     "test:npm": "node scripts/verify-npm-consumer.mjs --prepared",
     "test:npm:registry": "node scripts/verify-npm-consumer.mjs --registry",
     "test:generic": "node scripts/verify-generic-consumer.mjs",
     "test:ssr": "node scripts/verify-ssr-templates.mjs",
     "test:next": "node scripts/verify-next-consumer.mjs",
-    "test:meta": "node scripts/verify-meta-guards.mjs"
+    "test:meta": "node scripts/verify-meta-guards.mjs",
+    "release:check": "node scripts/release-npm.mjs check"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

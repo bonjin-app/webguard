@@ -177,13 +177,13 @@ test("repeatedly restores canonical content when DOM monitoring is enabled after
   }
 });
 
-test("restores the connected canonical notice after Elements replacement, removal, and movement", async ({
+test("restores the connected canonical notice after Elements replacement, removal, and movement including sibling reorder", async ({
   page,
 }) => {
   await page.goto("/#runtime-hardening");
   const notice = page.locator("#dom-protected-notice");
   const canonicalClass = await notice.getAttribute("class");
-  for (const mutation of ["replace", "remove", "move"] as const) {
+  for (const mutation of ["replace", "remove", "move", "reorder"] as const) {
     await notice.evaluate((element, kind) => {
       if (kind === "replace") {
         const replacement = document.createElement("aside");
@@ -193,7 +193,12 @@ test("restores the connected canonical notice after Elements replacement, remova
         replacement.textContent = "승인되지 않은 교체 안내";
         element.replaceWith(replacement);
       } else if (kind === "remove") element.remove();
-      else document.body.append(element);
+      else if (kind === "reorder") {
+        const sibling = document.createElement("span");
+        sibling.textContent = "Unrelated sibling";
+        element.parentElement!.append(sibling);
+        element.parentElement!.append(element);
+      } else document.body.append(element);
     }, mutation);
     await expect(page.locator("#dom-monitor")).not.toBeChecked();
     if (mutation === "remove") await page.locator("#dom-restore").click();

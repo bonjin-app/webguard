@@ -122,3 +122,25 @@ test("copies the selected configuration and keeps choices when integration tabs 
     ),
   ).toBe(true);
 });
+
+test("provides a scoped Next configuration and links server-rendered environments", async ({
+  page,
+}) => {
+  await page.goto("/#setup");
+  await page
+    .getByRole("button", { name: "Next.js / React SSR", exact: true })
+    .click();
+  await expect(page.locator("#setup-options")).toBeHidden();
+  await expect(page.locator("#setup-code")).toContainText(
+    "uulab-webguard/next",
+  );
+  await expect(page.locator("#setup-code")).toContainText(
+    "next build --webpack",
+  );
+  await expect(page.locator("#setup-hint")).toContainText("SSR");
+  await expect(page.locator("#setup-hint")).toContainText("CSP");
+  await page.locator(".setup-support a").click();
+  await expect(page.locator("#environments")).toBeVisible();
+  await expect(page.locator("#environments")).toContainText("Python");
+  await expect(page.locator("#environments")).toContainText("JSP");
+});

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 local candidate — npm publication held
+
+- Reject precompressed code before transformation; exclude compressed source maps, private source and deployment controls from public output and verify their known remote alternatives.
+- Give Next.js production client chunks the same credential pre-scan and early/final compressed-output checks while preserving server helpers.
+- Detect same-parent DOM movement, retain the positional mismatch until explicit trusted rebaselining, and use reason-specific protection messages.
+- Validate package bytes and build inputs before publishing, reject legacy/stale candidates before authentication, and recheck after registry lookup.
+- Add Next.js installation examples, clarify environment/compression guidance, and bring live demo controls closer to the first screen.
+
+These changes are local and demonstrated on the public website; npm publication remains paused. The held archive is preserved until a separately authorized release is prepared.
+
 ## 0.1.0 — Unreleased
 
 - Strict TypeScript monorepo, typed presets and output-path selection.
@@ -16,4 +26,4 @@
 
 - Runnable example hub with one-click High samples, live SDK trials, copyable integration snippets and same-origin protected applications via `pnpm demo`.
 
-No packages or hosted applications have been published by this work.
+The entries above describe the implementation scope; publication evidence is tracked separately in the release and deployment records.
