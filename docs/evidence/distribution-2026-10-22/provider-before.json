@@ -1,0 +1,39 @@
+{
+  "id": "144e98d1-6771-45d9-9970-320cade7d25c",
+  "number": 37,
+  "metadata": {
+    "created_on": "2026-10-22T01:26:46.025062Z",
+    "source": "wrangler",
+    "author_id": "f85b113ca1403cdf8d8444ca700dc3eb",
+    "author_email": "uulab.official@gmail.com",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/message": "WebGuard configuration safety and unified Korean SDK guides; source 4a26a29; npm paused",
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "5c175f0b2404d58c0dc47c74db1883d0ab939a51f58ca347a1c0b377e55bd9b0",
+      "handlers": ["fetch"],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "assets": {
+        "html_handling": "none",
+        "not_found_handling": "none",
+        "serve_directly": false,
+        "raw_run_worker_first": true,
+        "base_path": "/"
+      },
+      "compatibility_date": "2026-10-20",
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "name": "ASSETS",
+        "type": "assets"
+      }
+    ]
+  }
+}

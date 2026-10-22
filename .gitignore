@@ -8,6 +8,8 @@ test-results/
 .webguard-private/
 .superpowers/
 *.tgz
+!distributions/releases/*/uulab-webguard-*.tgz
+distributions.lock/
 examples/jsp-servlet/src/main/webapp/assets/
 examples/jsp-servlet/src/main/webapp/WEB-INF/webguard-assets.jspf
 examples/jsp-servlet/target/

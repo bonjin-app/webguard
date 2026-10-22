@@ -11,6 +11,7 @@ import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { validateDistribution } from "./distribution.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = join(root, ".demo-dist");
@@ -31,12 +32,8 @@ export async function buildDemo() {
     const { build } = await import(
       pathToFileURL(requireVite.resolve("vite")).href
     );
-    await cp(join(root, "apps/playground/dist"), join(stage, "playground"), {
-      recursive: true,
-      force: false,
-      errorOnExist: true,
-    });
     for (const [source, target, base] of [
+      ["apps/playground", "playground", "/"],
       ["apps/docs", "docs", "/docs/"],
       ["examples/react-vite", "react", "/examples/react/"],
       ["examples/vanilla-js", "vanilla-js", "/examples/vanilla-js/"],
@@ -48,6 +45,13 @@ export async function buildDemo() {
         build: { outDir: join(stage, target), emptyOutDir: true },
       });
     }
+    await validateDistribution(join(root, "distributions"));
+    await cp(join(root, "distributions"), join(stage, "distribution"), {
+      recursive: true,
+      force: false,
+      errorOnExist: true,
+    });
+    await validateDistribution(join(stage, "distribution"));
     // Reports describe the published demo, not the temporary staging paths.
     for (const name of [
       "playground",

@@ -8,6 +8,34 @@
 
 **현재 npm 공개 버전은 0.2.0이며, 0.3.0은 아직 게시하지 않은 로컬 후보입니다.** 아래 새 동작은 0.3.0 후보 기준입니다. npm의 0.2.0에 동일하게 제공된다고 판단하지 마세요. 게시와 별개로 로컬 검토를 진행합니다.
 
+## 직접 다운로드와 CDN 선택
+
+[다운로드·CDN 안내](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 독립 SDK JavaScript, 외부 초기화 예제, 빌드 도구 포함 `.tgz`, 라이선스를 내려받을 수 있습니다. [다운로드 목록 JSON](https://webguard.uulab.co.kr/downloads/catalog.json)은 현재 후보와 보존된 릴리스의 고정 주소·바이트 수·파일 해시를 제공합니다. 직접 배포하는 0.3.0 후보이며 **npm 게시를 뜻하지 않습니다.**
+
+- **파일 다운로드:** `webguard.global.js`와 초기화 예제를 내 서버에 보관합니다. SDK를 읽은 다음 외부 초기화 파일에서 `WebGuardSDK.WebGuard.init()`을 호출하세요.
+- **CDN 연결:** 안내 화면에서 현재 고정 SDK URL·SRI가 포함된 두 개의 `defer` 스크립트 태그를 복사합니다. 초기화 예제는 내 서버의 `/assets/webguard-init.js`에 저장합니다. SDK → 초기화 → 앱 스크립트 순서를 유지하세요.
+- **자동 난독화:** SDK 파일이나 CDN 연결만으로 앱 코드는 바뀌지 않습니다. 로컬 패키지를 설치하고 Vite·Next 연결 또는 정적 빌드 후처리를 사용합니다.
+
+내려받은 패키지를 별도 시험 앱에 설치합니다. Node.js 22.12 이상이 필요하며, 패키지 의존성 설치에는 네트워크가 필요합니다. 모든 의존성이 포함된 오프라인 설치 파일은 아닙니다.
+
+```sh
+npm install -D ./uulab-webguard-0.3.0.tgz
+```
+
+외부 초기화 파일의 최소 예제입니다. SDK 파일은 로드만으로 자동 시작하지 않습니다. 서비스에 필요한 옵션을 검토하고, 자동 빌드 통합을 이미 사용한다면 수동 인스턴스를 중복 생성하지 마세요.
+
+```js
+// /assets/webguard-init.js
+const guard = WebGuardSDK.WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+});
+// 앱 수명 주기가 끝나면 guard.destroy()
+```
+
+CDN의 `/cdn/releases/<릴리스 ID>/webguard.global.js`는 해당 릴리스의 고정 주소이며 이전 릴리스 경로를 유지합니다. 현재 목록이 바뀌어도 이미 복사한 고정 URL·SRI를 자동 교체하지 않습니다. 업그레이드할 때 주소와 SRI를 함께 갱신하고 실제 앱에서 시험하세요. `crossorigin="anonymous"`와 SRI를 유지하고, 앱의 기존 CSP에 CDN 출처와 내 초기화 파일을 허용해야 합니다. SDK는 런타임 가드만 제공하며 서버 CSP·SRI 전체 설정·권한 검증을 자동 구성하지 않습니다.
+
+파일의 SHA-256·패키지 SHA-512는 다운로드 목록과 바이트를 비교하는 용도입니다. 같은 사이트의 목록 자체를 독립적으로 인증하는 기능은 아니므로, 배포 승인에 사용할 해시는 신뢰하는 별도 경로로 검토하세요. 고정 CDN 주소도 개발자도구를 닫거나 브라우저에 전달한 코드를 숨기지 않습니다.
+
 ## 1. 설치
 
 Node.js **22.12 이상**이 필요합니다. Vite 통합은 **Vite 7 또는 8의 ESM 웹 앱**에 적용합니다. Vite가 없는 환경은 범용 빌드 API·CLI를 사용합니다. 브라우저용 정적 산출물이 대상이며 SSR 서버 코드·라이브러리 빌드 자동 보호는 지원하지 않습니다.
@@ -78,6 +106,8 @@ export default defineConfig({
   ],
 });
 ```
+
+정적 HTML에 포함된 실행 가능한 classic·module 스크립트는 빌드에서 제자리 변환하고, 자동 정책이 소유한 CSP 해시는 최종 코드 바이트에 맞춥니다. 파일로 추출하는 방식은 아닙니다. 서버가 요청마다 만드는 템플릿·Next Flight 데이터는 이 정적 HTML 변환 대상이 아니며, 감지된 미지원 동적 코드 구성은 빌드 오류로 안내합니다. 인라인 이벤트 핸들러와 스타일은 자동 CSP와 충돌할 수 있으므로 외부 파일·이벤트 리스너로 연결하거나 앱 정책을 명시적으로 관리하세요.
 
 기본 프로덕션 빌드는 다음을 적용합니다.
 
@@ -391,7 +421,7 @@ export default withWebGuard(
 
 Next 16에서는 `next build --webpack`으로 빌드합니다. 서버/RSC/API와 개발 모드는 변환하지 않고 운영 브라우저 청크를 보호합니다. Next의 CSP·요청별 nonce·SRI·HTTP 정책을 자동 생성하지 않으므로 기존 정책과 hydration을 함께 검증하세요. Turbopack은 지원하지 않습니다.
 
-JSP·Java·Python·PHP는 브라우저 자산만 별도로 빌드·보호한 뒤 외부 SDK·초기화 파일·앱 JS와 최종 SRI를 서버 템플릿에 연결합니다. 템플릿·서버 언어 자체와 인라인 스크립트를 자동 난독화하지 않습니다. 서버 공개 루트에는 허용 자산만 배치하고 정책·보고서·매니페스트·소스맵은 밖에 보관하세요.
+JSP·Java·Python·PHP는 브라우저 자산만 별도로 빌드·보호한 뒤 외부 SDK·초기화 파일·앱 JS와 최종 SRI를 서버 템플릿에 연결합니다. 템플릿·서버 언어 자체와 요청별로 생성하는 인라인 스크립트는 자동 난독화하지 않습니다. 정적 HTML로 출력한 인라인 스크립트는 정적 빌드 후처리 범위에 포함됩니다. 서버 공개 루트에는 허용 자산만 배치하고 정책·보고서·매니페스트·소스맵은 밖에 보관하세요.
 
 [환경별 전체 적용법](ENVIRONMENTS.ko.md), [Next 실행 예제](../examples/next-ssr/README.md), [JSP 실행 예제](../examples/jsp-servlet/README.md), [Python·PHP 실행 예제](../examples/ssr-templates/README.md)를 참고하세요. 현재 미게시 로컬 후보에서 검증하며 npm 배포는 보류합니다.
 

@@ -95,7 +95,9 @@ getWebGuard()?.update({ devtools: { blockShortcuts: false } });
 
 Webpack·esbuild·일반 HTML은 기존 빌드 뒤에 범용 후처리를 연결합니다. PHP·JSP·ASP.NET은 서버 템플릿 대신 정적 자산만 보호하고 외부 SDK와 서버 헤더를 직접 연결합니다. Next.js App Router + Webpack에는 `uulab-webguard/next`의 `withWebGuard()`를 연결합니다. 운영 클라이언트 청크만 난독화하고 SDK를 자동 시작하며 서버/RSC/API·개발 빌드는 유지합니다. Next 16은 `next build --webpack`이 필요하고 Turbopack은 지원하지 않습니다. Next의 기존 CSP를 유지하며 nonce·SRI·HTTP 정책은 자동 생성하지 않습니다. Nuxt·Angular 네이티브 SSR 어댑터는 제공하지 않습니다. 자체 서비스 워커·해시·프리캐시·서명 매니페스트는 최종 보호 바이트로 갱신해야 합니다.
 
-정적 HTML의 인라인 스크립트·이벤트 속성은 외부화하세요. 기존 CSP가 있으면 정책 소유자를 정하고 충돌을 해결해야 합니다. Trusted Types 관찰 모드도 CSP의 인라인 실행 제한을 풀지 않습니다. 서버별 레시피와 실제 브라우저 검증 범위는 저장소의 `docs/ENVIRONMENTS.ko.md`를 참고하세요. 서버 레시피 제공은 실제 PHP·ASP.NET·Nginx 서버 실행 검증을 뜻하지 않습니다.
+정적 HTML의 일반·모듈 인라인 스크립트는 위치·순서를 유지하며 자동 난독화하고, 자동 생성 CSP에는 최종 바이트의 해시를 반영합니다. 이벤트 속성, 동적 코드 문자열과 서버 템플릿에서 생성하는 코드는 외부 파일로 분리하세요. 지원하지 않는 선택된 인라인 코드는 위치와 함께 빌드를 실패시킵니다. 기존 CSP가 있으면 정책 소유자를 정하고 충돌을 해결해야 합니다. Trusted Types 관찰 모드도 CSP의 인라인 실행 제한을 풀지 않습니다. 서버별 레시피와 실제 브라우저 검증 범위는 동봉한 `ENVIRONMENTS.ko.md`를 참고하세요. 서버 레시피 제공은 실제 PHP·ASP.NET·Nginx 서버 실행 검증을 뜻하지 않습니다.
+
+[직접 다운로드·CDN 안내](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 고정 SDK 파일과 SRI, 로컬 설치용 `.tgz`를 확인할 수 있습니다. CDN은 런타임 가드용이며 앱 코드 난독화는 빌드 도구로 적용합니다. 0.3.0의 npm 게시는 계속 보류 중입니다.
 
 범용 자동 통합의 인스턴스는 `WebGuardSDK.getAutoGuard()`로 조회합니다. 독립 `/browser.global.js` 파일은 로드만으로 시작되지 않으므로 외부 초기화 파일에서 `WebGuardSDK.WebGuard.init()`을 호출하세요. 자동 SDK와 수동 초기화를 중복하지 마세요.
 

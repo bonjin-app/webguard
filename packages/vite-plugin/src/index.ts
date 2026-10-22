@@ -47,7 +47,11 @@ function validateOutputDirectory(
 }
 
 /** Build-only protection. Transform before Vite finalizes content-hashed filenames. */
-export function webguard(input: WebGuardConfigInput = {}): Plugin {
+export function webguard(
+  input: WebGuardConfigInput = {},
+  /** Internal: only webguardApp owns and may synchronize these generated policies. */
+  ownedHeaders?: Record<string, string>,
+): Plugin {
   const policy = resolveConfig(input);
   let vite: ResolvedConfig;
   let written = false;
@@ -189,13 +193,17 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
           ".webguard-private",
           `${output.split(/[\\/]/).pop()}-${id}`,
         );
-        await protectDirectory(output, {
-          output: staged,
-          privateArtifactsDir,
-          config: policy,
-          alreadyTransformed: true,
-          publicBase: vite.base,
-        });
+        await protectDirectory(
+          output,
+          {
+            output: staged,
+            privateArtifactsDir,
+            config: policy,
+            alreadyTransformed: true,
+            publicBase: vite.base,
+          },
+          ownedHeaders ? { ownedHeaders } : {},
+        );
         // protectDirectory's output field describes its staging target; rewrite before publication.
         const { readFile, writeFile } = await import("node:fs/promises");
         const reportPath = join(staged, "webguard-report.json");

@@ -1,3 +1,5 @@
+import { downloadsMarkup, initDownloads } from "../../downloads";
+import "../../downloads.css";
 import { getAutoGuard, installAutoGuard } from "@webguard/browser";
 import { siteGuardOptions } from "../../site-guard-options";
 import { runIsolated, type RunResult } from "./sandbox";
@@ -36,7 +38,7 @@ const webArt = new URL("./assets/web-app.webp", import.meta.url).href;
 const guard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 let selectedExample: (typeof examples)[number] = examples[0];
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-<header class="site-header"><a class="brand" href="/" aria-label="WebGuard 데모 홈"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-strengths">SDK 강점</a><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
+<header class="site-header"><a class="brand" href="/" aria-label="WebGuard 데모 홈"><span class="logo">W</span>WebGuard</a><nav class="site-links" aria-label="주요 메뉴"><a href="#sdk-strengths">SDK 강점</a><a href="#sdk-demo">데모 체험</a><a class="docs-link" href="/docs/">사용 가이드 ↗</a><a href="#sdk-downloads">다운로드·CDN</a><a class="primary" href="#sdk-install">SDK 적용하기</a></nav></header>
 <main class="sdk-site">
 <aside id="site-protection-status" class="site-protection-strip" aria-label="이 페이지의 실제 보호 상태"><div><strong>이 페이지에도 WebGuard가 적용되어 있습니다.</strong><p id="site-protection-summary" aria-live="polite"></p></div><a href="#live-demo">이 페이지의 보호 설정 <span aria-hidden="true">↗</span></a></aside>
 <section class="sdk-hero" aria-labelledby="hero-heading"><div class="hero-content"><div class="eyebrow">웹 보호 SDK</div><h1 id="hero-heading">웹 코드 보호를,<br><span>빌드부터 런타임까지.</span></h1><p>JavaScript 난독화부터 실행 가드·배포 검증까지.<br>내 프로젝트의 빌드 흐름에 연결하는 웹 보호 SDK입니다.</p><p class="hero-environments">Vite 자동 통합 · Webpack / esbuild 후처리 · HTML SDK</p><div class="hero-actions"><a class="primary" href="#sdk-install">SDK 적용하기</a><a class="demo-link" href="#sdk-demo">데모 체험하기</a></div><div class="hero-flow"><div class="flow-art"><img src="${cubeArt}" alt="WebGuard SDK 패키지" width="180" height="180"><strong>WebGuard</strong><p class="flow-caption">내 앱에 설치하는 개발자 SDK</p></div><div class="hero-code-block"><div class="hero-code"><div class="code-filename">vite.config.ts</div><pre><code>import { defineConfig } from 'vite';
@@ -59,6 +61,7 @@ ${protectionOverviewMarkup}
 <section class="metrics" aria-label="실측 비교"><article><h2>코드 크기</h2><strong id="size-change">—</strong><p id="size-detail">UTF-8 바이트 · 원본 → 난독화 후</p></article><article><h2>실행 시간</h2><strong id="timing">—</strong><p>원본 → 난독화 후 · 각 1회 측정으로, 반복 성능 벤치마크가 아닙니다.</p></article><article><h2>출력 비교</h2><strong id="equivalence">실행 전</strong><p>수집한 콘솔 출력과 실행 완료 상태 비교</p></article></section>
 <section class="results"><div><h2>실행 출력 <span class="badge">격리 실행</span></h2><pre id="logs">// 난독화 후 콘솔 출력이 표시됩니다.</pre></div><div><h2>로컬 난독화 보고서</h2><pre id="report">아직 보고서가 없습니다.</pre></div></section>
 </div></section>
+${downloadsMarkup}
 <section id="sdk-install" class="integration-start" aria-labelledby="install-heading"><div class="integration-content"><div class="eyebrow">SDK 적용</div><h2 id="install-heading">이제 내 프로젝트에 연결하세요.</h2><p>설치한 SDK와 빌드 설정으로 내 앱에 적용합니다.</p><ol class="integration-steps"><li><span>1</span><div><strong>패키지 설치</strong><p>검토한 로컬 후보로 시작</p></div></li><li><span>2</span><div><strong>빌드 연결</strong><p>Vite 플러그인 또는 범용 후처리</p></div></li><li><span>3</span><div><strong>앱 빌드</strong><p>보호한 결과와 배포 정책 확인</p></div></li></ol><div class="integration-actions"><a class="primary" href="/docs/#install">한국어 적용 가이드 보기</a><a class="demo-link" href="#setup">내 앱 설정 만들기</a><a class="demo-link" href="/docs/#environments">Webpack·esbuild·HTML 안내</a></div><p class="local">데모: 0.3.0 미게시 후보 · npm 공개 버전: 0.2.0</p><details class="setup-details" id="setup-details"><summary>적용 코드와 보호된 예제 앱 보기</summary><section id="setup" class="demo-section" aria-labelledby="setup-heading"><div class="section-heading"><div><h2 id="setup-heading">0.3.0 로컬 후보 적용 방법</h2><p>0.3.0은 미게시 후보이며 현재 npm 공개 버전은 0.2.0입니다. 로컬 tgz 검토 또는 게시 후 설치 절차는 <a href="/docs/#install">한국어 설치 가이드</a>에서 확인하세요. 자동 HTML 정책·HTTP 서버 정책·SDK의 적용 범위는 서로 다릅니다.</p></div></div><pre><code id="setup-install"># 미게시 0.3.0 후보 · 검토한 tgz의 실제 경로로 바꾸세요
 npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz</code></pre><div class="setup-tabs" role="group" aria-label="적용 코드 선택">${integrations.map((item, index) => `<button data-integration="${item.id}" aria-pressed="${index === 0}">${item.title}</button>`).join("")}</div><p class="setup-support"><a href="/docs/#environments">Next.js · JSP/Java · Python · PHP 지원 범위와 예제 확인 →</a></p><p id="setup-hint"></p>${setupOptionsMarkup}<div class="code-panel"><pre><code id="setup-code"></code></pre><button id="copy-setup" class="sample-run">적용 코드 복사</button></div><p id="copy-setup-status" aria-live="polite"></p><details><summary>이 데모를 직접 실행하려면</summary><pre><code>pnpm install --frozen-lockfile
 pnpm demo</code></pre><p>하나의 로컬 주소에서 Playground·세 가지 웹앱·문서를 제공합니다. JSP는 위 준비 명령으로 WAR를 만든 뒤 별도 Tomcat에서 실행하세요.</p></details></section>
@@ -447,3 +450,5 @@ window.addEventListener("pagehide", (event) => {
   cleanupOverview();
   guard.destroy();
 });
+
+void initDownloads();

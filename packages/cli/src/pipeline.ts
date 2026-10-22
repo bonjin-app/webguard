@@ -20,7 +20,14 @@ import {
   stripCssSourceMaps,
 } from "./fs-utils.js";
 import { scanDirectory, type Finding } from "./scan.js";
-import { addSubresourceIntegrity, sanitizeInlineSources } from "./html.js";
+import {
+  addSubresourceIntegrity,
+  protectInlineScripts,
+  inlineScriptHashes,
+  addInlineScriptHashes,
+  synchronizeOwnedPolicy,
+  type InlineScriptRecord,
+} from "./html.js";
 import { isPrecompressedCodePath, isPrivatePath } from "./private-path.mjs";
 export interface ProtectionReport {
   version: 1;
@@ -36,6 +43,7 @@ export interface ProtectionReport {
   removedSources: string[];
   removedMaps: string[];
   findings: Finding[];
+  inlineScripts?: InlineScriptRecord[];
   privateArtifactsDir?: string;
   limitations: string[];
 }
@@ -49,6 +57,8 @@ export interface ProtectOptions {
 export async function protectDirectory(
   input: string,
   options: ProtectOptions = {},
+  /** Internal integration context; public application options never accept arbitrary policies. */
+  context: { ownedHeaders?: Record<string, string> } = {},
 ): Promise<ProtectionReport> {
   const policy = resolveConfig(options.config);
   const source = await canonicalPath(resolve(input));
@@ -81,6 +91,17 @@ export async function protectDirectory(
       `Precompressed JavaScript/CSS is not supported: ${precompressedCode}. Remove precompressed code before protection and compress only the final protected bytes at delivery.`,
     );
   const originalFindings = await scanDirectory(source);
+  let unmanagedHeaders = false;
+  if (!context.ownedHeaders)
+    for (const path of ["_headers", "webguard-headers.json"]) {
+      if (
+        paths.includes(path) &&
+        /content-security-policy/i.test(
+          await readFile(join(source, path), "utf8"),
+        )
+      )
+        unmanagedHeaders = true;
+    }
   if (originalFindings.some((f) => f.category === "potential-secret"))
     throw new Error(
       `Potential credentials detected in source deployment files: ${originalFindings
@@ -189,8 +210,35 @@ export async function protectDirectory(
         } else content = Buffer.from(cleaned);
       } else if (/\.css$/i.test(path))
         content = Buffer.from(stripCssSourceMaps(original.toString("utf8")));
-      else if (/\.html?$/i.test(path))
-        content = Buffer.from(sanitizeInlineSources(original.toString("utf8")));
+      else if (/\.html?$/i.test(path)) {
+        const result = await protectInlineScripts(
+          original.toString("utf8"),
+          path,
+          policy.obfuscation,
+          (virtualPath) => include(virtualPath) && !exclude(virtualPath),
+          Boolean(context.ownedHeaders),
+          Boolean(privateStage),
+          unmanagedHeaders,
+        );
+        content = Buffer.from(result.html);
+        if (result.records.length)
+          (report.inlineScripts ??= []).push(...result.records);
+        transformed = result.records.some((record) => record.transformed);
+        durationMs = result.records.reduce(
+          (total, record) => total + record.durationMs,
+          0,
+        );
+        if (privateStage)
+          for (const map of result.maps) {
+            const destination = join(
+              privateStage,
+              "generated-inline-maps",
+              map.path,
+            );
+            await mkdir(dirname(destination), { recursive: true });
+            await writeFile(destination, map.source);
+          }
+      }
       await writeFile(to, content, { flag: "wx" });
       report.files.push({
         path,
@@ -199,6 +247,51 @@ export async function protectDirectory(
         transformed,
         durationMs,
       });
+    }
+    if (context.ownedHeaders) {
+      const htmlFiles = report.files.filter((file) =>
+        /\.html?$/i.test(file.path),
+      );
+      const documents = await Promise.all(
+        htmlFiles.map(async (file) => ({
+          file,
+          source: await readFile(join(stage, file.path), "utf8"),
+        })),
+      );
+      const hashes = [
+        ...new Set(
+          documents.flatMap(({ source }) => inlineScriptHashes(source)),
+        ),
+      ];
+      const headers = addInlineScriptHashes(context.ownedHeaders, hashes);
+      for (const { file, source } of documents) {
+        const final = synchronizeOwnedPolicy(
+          source,
+          context.ownedHeaders["Content-Security-Policy"]!,
+          headers["Content-Security-Policy"]!,
+          file.path,
+        );
+        await writeFile(join(stage, file.path), final);
+        file.outputBytes = Buffer.byteLength(final);
+      }
+      for (const [path, content] of [
+        ["webguard-headers.json", JSON.stringify(headers, null, 2) + "\n"],
+        [
+          "_headers",
+          "/*\n" +
+            Object.entries(headers)
+              .map(([name, value]) => `  ${name}: ${value}`)
+              .join("\n") +
+            "\n",
+        ],
+      ]) {
+        await writeFile(join(stage, path!), content!);
+        const file = report.files.find((file) => file.path === path);
+        if (file) file.outputBytes = Buffer.byteLength(content!);
+      }
+      report.limitations.push(
+        "Inline CSP hashes form a shared allowlist across this static output; arbitrary runtime-generated code is not transformed.",
+      );
     }
     if (policy.integrity.enabled) {
       const assets = new Map<string, Uint8Array>();

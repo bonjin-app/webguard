@@ -3,7 +3,10 @@ import { handleDemoApi, handleNetworkProbe } from "./demo-api.mjs";
 export interface DeploymentManifest {
   version: number;
   mounts: { prefix: string; headers: Partial<Record<string, string>> }[];
-  assets: Record<string, { path: string; mount: string }>;
+  assets: Record<
+    string,
+    { path: string; mount: string; headers?: Partial<Record<string, string>> }
+  >;
 }
 export interface AssetBinding {
   fetch(request: Request): Promise<Response>;
@@ -98,6 +101,9 @@ export async function handleRequest(
       return error(502, "Asset unavailable");
     if (request.method === "HEAD" && asset.body) await asset.body.cancel();
     const responseHeaders = headersFor(asset.headers);
+    // Only deployment preparation generates these overrides for validated distribution assets.
+    for (const [name, value] of Object.entries(entry.headers ?? {}))
+      if (value !== undefined) responseHeaders.set(name, value);
     // Prepared HTML is UTF-8; asset-store MIME metadata may omit the encoding.
     if (entry.path.endsWith(".html"))
       responseHeaders.set("Content-Type", "text/html; charset=utf-8");

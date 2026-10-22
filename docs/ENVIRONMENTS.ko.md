@@ -2,19 +2,31 @@
 
 WebGuard는 웹 앱에 설치하는 SDK와 빌드 보호 도구입니다. Vite 전용 서비스가 아니며 웹사이트는 보호 전후를 확인하는 데모입니다. 새 기능은 **게시하지 않은 0.3.0 로컬 후보** 기준입니다. npm 배포는 보류 중이며 검토한 로컬 `.tgz`로 설치합니다. [전체 설치 안내](INSTALL.ko.md).
 
-| 환경                           | 연결 방법                                   | 지원 경계                                                          |
-| ------------------------------ | ------------------------------------------- | ------------------------------------------------------------------ |
-| Vite 7/8 브라우저 앱           | `webguardApp()` 한 번 설정                  | 개발/HMR 제외. SSR·라이브러리 빌드 제외                            |
-| Webpack 정적 웹 앱             | 빌드 후 `protect-app` 또는 `/build` API     | Webpack 전용 플러그인은 아님. 최종 파일 후처리                     |
-| esbuild 정적 웹 앱             | 빌드 후 같은 후처리                         | 모듈·동적 import의 최종 실행을 확인                                |
-| 일반 HTML·JavaScript           | 정적 디렉터리를 `protect-app`으로 처리      | 인라인 스크립트·이벤트 속성은 외부화                               |
-| React + Vite                   | 브라우저 빌드에 `webguardApp()`             | SSR 서버 빌드에는 적용하지 않음. React SSR은 아래 Next 예제로 검증 |
-| Next.js App Router + Webpack   | `withWebGuard()`                            | 운영 클라이언트 청크만 변환. 개발·Node·Edge 서버 컴파일 제외       |
-| JSP + Java Servlet             | 보호된 외부 자산 + JSP SRI include + Filter | 실제 JSP 컴파일·Servlet API·응답 정책·브라우저 예제 제공           |
-| Python WSGI·PHP                | 보호된 외부 자산 + 서버 렌더링 예제         | 서버 소스는 유지. 실제 런타임별 검증 결과는 아래 기록 참조         |
-| ASP.NET·Nginx                  | 정적 자산 보호 + 서버 정책 레시피           | 레시피 제공. 해당 서버 실행 검증은 별도                            |
-| Nuxt·Angular 등                | 정적 출력이 있는 경우 조건부 후처리 검토    | 네이티브 SSR 어댑터·hydration 자동 지원을 주장하지 않음            |
-| 다른 번들러·정적 사이트 생성기 | 실제 HTML·JS 출력에 범용 API 적용           | 자체 해시·프리캐시·서명·동적 URL 계약을 별도 점검                  |
+| 환경                           | 연결 방법                                   | 지원 경계                                                                |
+| ------------------------------ | ------------------------------------------- | ------------------------------------------------------------------------ |
+| Vite 7/8 브라우저 앱           | `webguardApp()` 한 번 설정                  | 개발/HMR 제외. SSR·라이브러리 빌드 제외                                  |
+| Webpack 정적 웹 앱             | 빌드 후 `protect-app` 또는 `/build` API     | Webpack 전용 플러그인은 아님. 최종 파일 후처리                           |
+| esbuild 정적 웹 앱             | 빌드 후 같은 후처리                         | 모듈·동적 import의 최종 실행을 확인                                      |
+| 일반 HTML·JavaScript           | 정적 디렉터리를 `protect-app`으로 처리      | 정적 classic·module 인라인은 제자리 변환. 이벤트·스타일 정책은 별도 검토 |
+| React + Vite                   | 브라우저 빌드에 `webguardApp()`             | SSR 서버 빌드에는 적용하지 않음. React SSR은 아래 Next 예제로 검증       |
+| Next.js App Router + Webpack   | `withWebGuard()`                            | 운영 클라이언트 청크만 변환. 개발·Node·Edge 서버 컴파일 제외             |
+| JSP + Java Servlet             | 보호된 외부 자산 + JSP SRI include + Filter | 실제 JSP 컴파일·Servlet API·응답 정책·브라우저 예제 제공                 |
+| Python WSGI·PHP                | 보호된 외부 자산 + 서버 렌더링 예제         | 서버 소스는 유지. 실제 런타임별 검증 결과는 아래 기록 참조               |
+| ASP.NET·Nginx                  | 정적 자산 보호 + 서버 정책 레시피           | 레시피 제공. 해당 서버 실행 검증은 별도                                  |
+| Nuxt·Angular 등                | 정적 출력이 있는 경우 조건부 후처리 검토    | 네이티브 SSR 어댑터·hydration 자동 지원을 주장하지 않음                  |
+| 다른 번들러·정적 사이트 생성기 | 실제 HTML·JS 출력에 범용 API 적용           | 자체 해시·프리캐시·서명·동적 URL 계약을 별도 점검                        |
+
+## SDK 파일·CDN과 빌드 도구의 차이
+
+[직접 다운로드·CDN 화면](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 독립 SDK, 외부 초기화 예제와 `uulab-webguard-0.3.0.tgz`를 받습니다. [다운로드 목록](https://webguard.uulab.co.kr/downloads/catalog.json)의 현재 후보와 보존된 릴리스는 고정 파일 주소·해시로 구분합니다. npm 게시는 계속 보류 중입니다.
+
+- 일반 HTML·JSP·PHP 등의 **수동 SDK 연결**은 다운로드 파일을 직접 호스팅하거나 고정 CDN URL·SRI로 읽은 다음, 내 서버의 외부 초기화 파일에서 `WebGuardSDK.WebGuard.init()`을 호출합니다. SDK → 초기화 → 앱 스크립트 순서로 `defer`를 사용하고 앱 CSP에서 CDN 출처를 허용하세요.
+- **앱 코드 자동 난독화**에는 Node.js 22.12 이상의 빌드 도구가 필요합니다. 내려받은 `.tgz`를 `npm install -D ./uulab-webguard-0.3.0.tgz`로 설치하고 아래 빌드 연결을 적용합니다. 의존성은 네트워크로 별도 설치합니다.
+- CDN SDK는 런타임 가드만 제공합니다. 내 앱의 빌드 변환·서버 응답 정책·인증·인가를 대신하지 않습니다. 파일을 읽는 것만으로 수동 SDK가 시작되지 않으며, 자동 SDK가 이미 있으면 중복 초기화하지 않습니다.
+
+정적 HTML의 실행 가능한 classic·module 인라인 스크립트는 제자리 변환하며, 자동 정책이 소유한 CSP 해시는 최종 바이트에 맞춥니다. 서버의 요청별 템플릿·Next Flight 데이터는 재작성하지 않습니다. 감지된 미지원 동적 코드 구성은 빌드에서 거부하며, 인라인 이벤트 핸들러·스타일은 자동 CSP와의 호환성을 별도로 처리해야 합니다. 서버 언어를 JavaScript 난독화기에 넣지 마세요.
+
+고정 CDN 릴리스 주소는 보존되며 최신 후보로 자동 이동하지 않습니다. 업데이트할 때 URL·SRI를 함께 변경하고 런타임 호환성을 다시 확인하세요. [다운로드와 연결 절차](INSTALL.ko.md#직접-다운로드와-cdn-선택)를 참고하세요.
 
 ## 한 번 연결하는 후처리
 

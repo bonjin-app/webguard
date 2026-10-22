@@ -16,6 +16,8 @@ export interface ObfuscateOptions {
   seed?: number;
   sourceMap?: boolean;
   inputFileName?: string;
+  /** Namespace generated helper globals when separately transforming script blocks. */
+  identifiersPrefix?: string;
 }
 /** Preserve module URLs and bundler filename placeholders for later bundle finalization.
  * These strings intentionally remain plaintext, even when other strings are encoded.
@@ -105,6 +107,7 @@ export function createObfuscatorOptions(
     "seed",
     "sourceMap",
     "inputFileName",
+    "identifiersPrefix",
   ];
   for (const key of Object.keys(options))
     if (!allowed.includes(key))
@@ -116,9 +119,18 @@ export function createObfuscatorOptions(
     (typeof options.inputFileName !== "string" || !options.inputFileName.trim())
   )
     throw new TypeError("inputFileName must be a non-empty string");
+  if (
+    options.identifiersPrefix !== undefined &&
+    (typeof options.identifiersPrefix !== "string" ||
+      !/^[$A-Z_a-z][$\w]*$/.test(options.identifiersPrefix))
+  )
+    throw new TypeError(
+      "identifiersPrefix must be a JavaScript identifier prefix",
+    );
   const {
     sourceMap: _sourceMap,
     inputFileName: _inputFileName,
+    identifiersPrefix: _identifiersPrefix,
     ...input
   } = options;
   const config = resolveConfig({ obfuscation: input }).obfuscation;
@@ -130,6 +142,7 @@ export function createObfuscatorOptions(
     simplify: !basic,
     identifierNamesGenerator: "hexadecimal",
     renameGlobals: false,
+    identifiersPrefix: options.identifiersPrefix ?? "",
     renameProperties: config.renameProperties,
     renamePropertiesMode: "safe",
     reservedNames: [...config.reservedNames, ...config.reservedProperties],

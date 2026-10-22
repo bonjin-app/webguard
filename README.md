@@ -12,6 +12,8 @@ The product and service name is **WebGuard**. `uulab-webguard` is the npm packag
 
 **0.3.0 is an unpublished local candidate; the currently published npm version is 0.2.0.** The behavior below describes the candidate, not the published 0.2.0 package. Review it in a separate application using a reviewed local tarball, for example `npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz`. One candidate package supplies the plugin, SDK, deployment checker and Node protection server.
 
+[Direct SDK/package downloads and pinned CDN setup](https://webguard.uulab.co.kr/docs/#sdk-downloads) are available separately from npm publication. The CDN SDK supplies runtime guards; obfuscating your application still requires the build integration. Pinned URLs include a content identifier and the CDN example includes SRI. [Distribution maintenance](docs/DISTRIBUTION.md).
+
 ```sh
 # Review a supplied local candidate; replace this with its actual path.
 npm install -D /absolute/path/to/uulab-webguard-0.3.0.tgz
@@ -105,7 +107,7 @@ Connect this after the existing build command and deploy only the protected outp
 
 Webpack, esbuild and plain HTML have dedicated consumer fixtures. PHP/JSP/ASP.NET templates use protected static assets, an external SDK initialization file and server-applied response headers; server templates are never obfuscated. [한국어 환경별 가이드](docs/ENVIRONMENTS.ko.md) and [server recipes](examples/server-templates/README.md). Server recipes are not executed server verification.
 
-Externalize inline scripts and event handlers before injecting strict CSP. Resolve existing CSP ownership explicitly; report-only Trusted Types does not permit inline execution. Update framework-owned hashes, precache lists and signatures against final protected bytes. Next.js App Router has a dedicated client-only Webpack adapter (`uulab-webguard/next`); use `next build --webpack` on Next 16. It preserves server/RSC/API code and existing CSP; nonce, SRI and HTTP header generation are not part of that adapter. Nuxt/Angular native SSR adapters are not provided.
+Static HTML classic/module inline scripts are transformed in place, preserving script order and global bindings. Automatically owned CSP policies receive hashes of the final script bytes, before the manifest is generated. Inline event handlers and unsupported dynamic-code strings must be externalized; arbitrary runtime-generated programs and server-template insertions are not recursively transformed. Unsupported selected blocks fail with their virtual file location. Resolve existing CSP ownership explicitly; report-only Trusted Types does not permit inline execution. Update framework-owned hashes, precache lists and signatures against final protected bytes. Next.js App Router has a dedicated client-only Webpack adapter (`uulab-webguard/next`); use `next build --webpack` on Next 16. It preserves server/RSC/API code and existing CSP; nonce, SRI and HTTP header generation are not part of that adapter. Nuxt/Angular native SSR adapters are not provided.
 
 The original `protectDirectory()` API is also available from `/build`, and `webguard protect` retains build-only behavior without automatic runtime/header integration.
 

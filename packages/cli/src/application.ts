@@ -115,6 +115,10 @@ function prepareHtml(
   enforcement: string | false,
   runtimeUrl: string | false,
 ): string {
+  if (enforcement && /<%|<\?(?:php|=)/i.test(source))
+    throw new Error(
+      `Unsupported server template in ${filename}; render static HTML before protection`,
+    );
   const document = parse(source);
   let head: Element | undefined;
   const encodings: Element[] = [],
@@ -188,7 +192,10 @@ function prepareHtml(
           const code = node.childNodes.some(
             (child) => "value" in child && child.value.trim(),
           );
-          if (!dataOnly && code) incompatible("Inline script");
+          // Static classic/module bodies are transformed and hash-authorized in the
+          // final staged HTML pass. Non-JavaScript policy blocks need their own handling.
+          if (!dataOnly && code && type === "speculationrules")
+            incompatible(`Unsupported inline script ${type}`);
         }
         if (
           node.tagName === "style" &&
@@ -407,14 +414,18 @@ export function createApplicationProtector(
           { flag: "wx" },
         );
       }
-      return await protectDirectory(clone, {
-        ...options,
-        config: policy,
-        output: outputPath,
-        ...(policy.sourceMaps.privateArtifacts || options.privateArtifactsDir
-          ? { privateArtifactsDir: privatePath }
-          : {}),
-      });
+      return await protectDirectory(
+        clone,
+        {
+          ...options,
+          config: policy,
+          output: outputPath,
+          ...(policy.sourceMaps.privateArtifacts || options.privateArtifactsDir
+            ? { privateArtifactsDir: privatePath }
+            : {}),
+        },
+        responseHeaders ? { ownedHeaders: responseHeaders } : {},
+      );
     } finally {
       await rm(clone, { recursive: true, force: true });
     }

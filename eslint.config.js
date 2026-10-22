@@ -10,6 +10,7 @@ export default tseslint.config(
       ".deployment-backup-*/**",
       ".wrangler/**",
       ".npm-release/**",
+      "distributions/releases/**",
       "deployment/worker-configuration.d.ts",
       ".demo-stage-*/**",
       ".demo-backup-*/**",

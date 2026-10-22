@@ -91,22 +91,26 @@ it("serves the exact /demo alias with the playground policy and rejects child fa
 function get(
   port: number,
   path: string,
+  method = "GET",
 ): Promise<{ status: number; headers: IncomingHttpHeaders; body: string }> {
   return new Promise((resolve, reject) => {
-    const req = request({ host: "127.0.0.1", port, path }, (response) => {
-      let body = "";
-      response.setEncoding("utf8");
-      response.on("data", (chunk) => {
-        body += chunk;
-      });
-      response.on("end", () =>
-        resolve({
-          status: response.statusCode!,
-          headers: response.headers,
-          body,
-        }),
-      );
-    });
+    const req = request(
+      { host: "127.0.0.1", port, path, method },
+      (response) => {
+        let body = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          body += chunk;
+        });
+        response.on("end", () =>
+          resolve({
+            status: response.statusCode!,
+            headers: response.headers,
+            body,
+          }),
+        );
+      },
+    );
     req.on("error", reject);
     req.end();
   });
@@ -203,4 +207,76 @@ it("fails startup if any app or its header artifact is missing or escapes the de
   await rm(join(root, "vanilla-ts"), { recursive: true });
   await symlink(join(root, "docs"), join(root, "vanilla-ts"));
   await expect(create(root)).rejects.toThrow();
+});
+
+async function addDistribution(root: string) {
+  const { publishDistribution } = await import(
+    new URL("../../scripts/distribution.mjs", import.meta.url).href
+  );
+  return publishDistribution(join(root, "distribution"), {
+    version: "0.3.0",
+    sdk: Buffer.from("var WebGuardSDK={fixture:true};"),
+    packageArchive: Buffer.from("fixture package archive"),
+    example: Buffer.from("WebGuardSDK.WebGuard.init({});"),
+    licenses: Buffer.from("MIT notice"),
+  });
+}
+it("serves exact validated distribution GET/HEAD paths with CDN and download headers", async () => {
+  const root = await fixture();
+  const release = await addDistribution(root);
+  const port = await start(root);
+  const sdk = await get(port, release.sdk.url + "?cache=1");
+  expect(sdk.body).toBe("var WebGuardSDK={fixture:true};");
+  expect(sdk.headers["content-type"]).toMatch(
+    /(?:text|application)\/javascript/,
+  );
+  expect(sdk.headers["access-control-allow-origin"]).toBe("*");
+  expect(sdk.headers["cross-origin-resource-policy"]).toBe("cross-origin");
+  expect(sdk.headers["cache-control"]).toContain("immutable");
+  expect(sdk.headers["x-content-type-options"]).toBe("nosniff");
+  const head = await get(port, release.sdk.url, "HEAD");
+  expect(head.status).toBe(200);
+  expect(head.body).toBe("");
+  expect(head.headers["content-length"]).toBe(
+    String(Buffer.byteLength(sdk.body)),
+  );
+  for (const url of [
+    release.sdk.download,
+    release.package.url,
+    release.example.url,
+    release.licenses.url,
+  ]) {
+    const download = await get(port, url);
+    expect(download.status).toBe(200);
+    expect(download.headers["content-disposition"]).toContain("attachment");
+  }
+  const catalog = await get(port, "/downloads/catalog.json");
+  expect(catalog.headers["cache-control"]).toBe("no-store");
+  expect(JSON.parse(catalog.body).current.id).toBe(release.id);
+  expect((await get(port, release.sdk.url, "POST")).status).toBe(405);
+  for (const path of [
+    "/cdn/catalog.json",
+    "/distribution/catalog.json",
+    "/downloads/releases/",
+    "/downloads/../distribution/catalog.json",
+    "/downloads/%2e%2e/catalog.json",
+    "/cdn/releases/" + release.id + "/private.map",
+  ])
+    expect((await get(port, path)).status, path).toBe(404);
+  await writeFile(
+    join(root, "distribution/releases", release.id, "webguard.global.js"),
+    "tampered after startup",
+  );
+  expect((await get(port, release.sdk.url)).body).toBe(sdk.body);
+  await expect(create(root)).rejects.toThrow(/integrity|digest|size/i);
+});
+it("fails demo startup on distribution extras or escaping symlinks", async () => {
+  const root = await fixture();
+  const release = await addDistribution(root);
+  const extra = join(root, "distribution/releases", release.id, "secret.txt");
+  await writeFile(extra, "private");
+  await expect(create(root)).rejects.toThrow(/unexpected/i);
+  await rm(extra);
+  await symlink(join(root, "playground/index.html"), extra);
+  await expect(create(root)).rejects.toThrow(/unexpected|symbolic/i);
 });

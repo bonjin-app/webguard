@@ -483,3 +483,160 @@ it("serves the branded demo entry with query-preserving canonical redirects and 
   );
   expect(post.status).toBe(405);
 });
+
+it("applies validated distribution headers after mount policy for GET and HEAD", async () => {
+  const path = "/cdn/releases/0.3.0-0123456789abcdef/webguard.global.js";
+  const manifest = {
+    version: 1,
+    mounts: [
+      {
+        prefix: "/",
+        headers: {
+          "Cross-Origin-Resource-Policy": "same-origin",
+          "Cache-Control": "no-store",
+        },
+      },
+    ],
+    assets: {
+      [path]: {
+        path,
+        mount: "/",
+        headers: {
+          "Content-Type": "text/javascript; charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+          "Cross-Origin-Resource-Policy": "cross-origin",
+          "Cache-Control": "public, max-age=31536000, immutable",
+          "X-Content-Type-Options": "nosniff",
+        },
+      },
+    },
+  } as DeploymentManifest;
+  const binding = {
+    fetch: async () =>
+      new Response("SDK", {
+        headers: { "Content-Type": "application/octet-stream" },
+      }),
+  };
+  for (const method of ["GET", "HEAD"]) {
+    const response = await handleRequest(
+      new Request("https://demo.test" + path, { method }),
+      binding,
+      manifest,
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe(
+      "text/javascript; charset=utf-8",
+    );
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
+    expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe(
+      "cross-origin",
+    );
+    expect(response.headers.get("Cache-Control")).toContain("immutable");
+    expect(await response.text()).toBe(method === "HEAD" ? "" : "SDK");
+  }
+  for (const path of [
+    "/cdn/catalog.json",
+    "/downloads/private.txt",
+    "/cdn/releases/%2e%2e/secret",
+    "/downloads/releases/secret.tgz",
+  ])
+    expect(
+      (
+        await handleRequest(
+          new Request("https://demo.test" + path),
+          binding,
+          manifest,
+        )
+      ).status,
+    ).toBe(404);
+});
+
+async function addDistribution(input: string) {
+  const { publishDistribution } = await import(
+    new URL("../../scripts/distribution.mjs", import.meta.url).href
+  );
+  return publishDistribution(join(input, "distribution"), {
+    version: "0.3.0",
+    sdk: Buffer.from("var WebGuardSDK={fixture:true};"),
+    packageArchive: Buffer.from("fixture package archive"),
+    example: Buffer.from("WebGuardSDK.WebGuard.init({});"),
+    licenses: Buffer.from("MIT notice"),
+  });
+}
+it("stages only validated distribution files and serves downloads with exact policies", async () => {
+  const { input, output } = await fixture();
+  const release = await addDistribution(input);
+  await prepare(input, output);
+  const manifest = await routes(output);
+  const binding = {
+    fetch: async (request: Request) =>
+      new Response(
+        await readFile(join(output, "public", new URL(request.url).pathname)),
+      ),
+  };
+  const sdk = await handleRequest(
+    new Request("https://demo.test" + release.sdk.url),
+    binding,
+    manifest,
+  );
+  expect(await sdk.text()).toBe("var WebGuardSDK={fixture:true};");
+  expect(sdk.headers.get("Access-Control-Allow-Origin")).toBe("*");
+  expect(sdk.headers.get("Cross-Origin-Resource-Policy")).toBe("cross-origin");
+  for (const url of [
+    release.sdk.download,
+    release.package.url,
+    release.example.url,
+    release.licenses.url,
+  ]) {
+    const response = await handleRequest(
+      new Request("https://demo.test" + url),
+      binding,
+      manifest,
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Disposition")).toContain("attachment");
+    expect(response.headers.get("Cache-Control")).toContain("immutable");
+    expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
+  }
+  const catalog = await handleRequest(
+    new Request("https://demo.test/downloads/catalog.json"),
+    binding,
+    manifest,
+  );
+  expect(catalog.headers.get("Cache-Control")).toBe("no-store");
+  expect((await catalog.json()).current.id).toBe(release.id);
+  for (const path of [
+    "/distribution/catalog.json",
+    "/downloads/releases/",
+    "/downloads/private.txt",
+    "/cdn/releases/" + release.id + "/private.map",
+    "/downloads/%2e%2e/catalog.json",
+  ])
+    expect(
+      (
+        await handleRequest(
+          new Request("https://demo.test" + path),
+          binding,
+          manifest,
+        )
+      ).status,
+    ).toBe(404);
+});
+it("preserves previous deployment when optional distribution validation fails", async () => {
+  const { input, output } = await fixture();
+  const release = await addDistribution(input);
+  await prepare(input, output);
+  const originalRoutes = await readFile(join(output, "routes.json"));
+  const originalSdk = await readFile(join(output, "public", release.sdk.url));
+  await writeFile(
+    join(input, "distribution/releases", release.id, "webguard.global.js"),
+    "tampered",
+  );
+  await expect(prepare(input, output)).rejects.toThrow(
+    /integrity|digest|size/i,
+  );
+  expect(await readFile(join(output, "routes.json"))).toEqual(originalRoutes);
+  expect(await readFile(join(output, "public", release.sdk.url))).toEqual(
+    originalSdk,
+  );
+});

@@ -40,7 +40,9 @@
           >설치·적용 전체 가이드</a
         ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
         ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
-        ><span>이 문서의 목차</span><a href="#1-설치">1. 설치</a
+        ><span>이 문서의 목차</span
+        ><a href="#직접-다운로드와-cdn-선택">직접 다운로드와 CDN 선택</a
+        ><a href="#1-설치">1. 설치</a
         ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
         ><a href="#설정-입력-검증">설정 입력 검증</a
         ><a href="#2-vite-플러그인-하나로-적용">2. Vite 플러그인 하나로 적용</a
@@ -100,6 +102,78 @@
             >
             아래 새 동작은 0.3.0 후보 기준입니다. npm의 0.2.0에 동일하게
             제공된다고 판단하지 마세요. 게시와 별개로 로컬 검토를 진행합니다.
+          </p>
+          <h2 id="직접-다운로드와-cdn-선택">직접 다운로드와 CDN 선택</h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >다운로드·CDN 안내</a
+            >에서 독립 SDK JavaScript, 외부 초기화 예제, 빌드 도구 포함
+            <code>.tgz</code>, 라이선스를 내려받을 수 있습니다.
+            <a href="https://webguard.uulab.co.kr/downloads/catalog.json"
+              >다운로드 목록 JSON</a
+            >은 현재 후보와 보존된 릴리스의 고정 주소·바이트 수·파일 해시를
+            제공합니다. 직접 배포하는 0.3.0 후보이며
+            <strong>npm 게시를 뜻하지 않습니다.</strong>
+          </p>
+          <ul>
+            <li>
+              <strong>파일 다운로드:</strong> <code>webguard.global.js</code>와
+              초기화 예제를 내 서버에 보관합니다. SDK를 읽은 다음 외부 초기화
+              파일에서 <code>WebGuardSDK.WebGuard.init()</code>을 호출하세요.
+            </li>
+            <li>
+              <strong>CDN 연결:</strong> 안내 화면에서 현재 고정 SDK URL·SRI가
+              포함된 두 개의 <code>defer</code> 스크립트 태그를 복사합니다.
+              초기화 예제는 내 서버의 <code>/assets/webguard-init.js</code>에
+              저장합니다. SDK → 초기화 → 앱 스크립트 순서를 유지하세요.
+            </li>
+            <li>
+              <strong>자동 난독화:</strong> SDK 파일이나 CDN 연결만으로 앱
+              코드는 바뀌지 않습니다. 로컬 패키지를 설치하고 Vite·Next 연결 또는
+              정적 빌드 후처리를 사용합니다.
+            </li>
+          </ul>
+          <p>
+            내려받은 패키지를 별도 시험 앱에 설치합니다. Node.js 22.12 이상이
+            필요하며, 패키지 의존성 설치에는 네트워크가 필요합니다. 모든
+            의존성이 포함된 오프라인 설치 파일은 아닙니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npm install -D ./uulab-webguard-0.3.0.tgz
+</code></pre>
+          <p>
+            외부 초기화 파일의 최소 예제입니다. SDK 파일은 로드만으로 자동
+            시작하지 않습니다. 서비스에 필요한 옵션을 검토하고, 자동 빌드 통합을
+            이미 사용한다면 수동 인스턴스를 중복 생성하지 마세요.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>// /assets/webguard-init.js
+const guard = WebGuardSDK.WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+});
+// 앱 수명 주기가 끝나면 guard.destroy()
+</code></pre>
+          <p>
+            CDN의
+            <code>/cdn/releases/&lt;릴리스 ID&gt;/webguard.global.js</code>는
+            해당 릴리스의 고정 주소이며 이전 릴리스 경로를 유지합니다. 현재
+            목록이 바뀌어도 이미 복사한 고정 URL·SRI를 자동 교체하지 않습니다.
+            업그레이드할 때 주소와 SRI를 함께 갱신하고 실제 앱에서 시험하세요.
+            <code>crossorigin=&quot;anonymous&quot;</code>와 SRI를 유지하고,
+            앱의 기존 CSP에 CDN 출처와 내 초기화 파일을 허용해야 합니다. SDK는
+            런타임 가드만 제공하며 서버 CSP·SRI 전체 설정·권한 검증을 자동
+            구성하지 않습니다.
+          </p>
+          <p>
+            파일의 SHA-256·패키지 SHA-512는 다운로드 목록과 바이트를 비교하는
+            용도입니다. 같은 사이트의 목록 자체를 독립적으로 인증하는 기능은
+            아니므로, 배포 승인에 사용할 해시는 신뢰하는 별도 경로로 검토하세요.
+            고정 CDN 주소도 개발자도구를 닫거나 브라우저에 전달한 코드를 숨기지
+            않습니다.
           </p>
           <h2 id="1-설치">1. 설치</h2>
           <p>
@@ -222,6 +296,15 @@ export default defineConfig({
   ],
 });
 </code></pre>
+          <p>
+            정적 HTML에 포함된 실행 가능한 classic·module 스크립트는 빌드에서
+            제자리 변환하고, 자동 정책이 소유한 CSP 해시는 최종 코드 바이트에
+            맞춥니다. 파일로 추출하는 방식은 아닙니다. 서버가 요청마다 만드는
+            템플릿·Next Flight 데이터는 이 정적 HTML 변환 대상이 아니며, 감지된
+            미지원 동적 코드 구성은 빌드 오류로 안내합니다. 인라인 이벤트
+            핸들러와 스타일은 자동 CSP와 충돌할 수 있으므로 외부 파일·이벤트
+            리스너로 연결하거나 앱 정책을 명시적으로 관리하세요.
+          </p>
           <p>기본 프로덕션 빌드는 다음을 적용합니다.</p>
           <ul>
             <li>Strict/High 난독화와 RC4 문자열 인코딩</li>
@@ -993,8 +1076,9 @@ export default withWebGuard(
           <p>
             JSP·Java·Python·PHP는 브라우저 자산만 별도로 빌드·보호한 뒤 외부
             SDK·초기화 파일·앱 JS와 최종 SRI를 서버 템플릿에 연결합니다.
-            템플릿·서버 언어 자체와 인라인 스크립트를 자동 난독화하지 않습니다.
-            서버 공개 루트에는 허용 자산만 배치하고
+            템플릿·서버 언어 자체와 요청별로 생성하는 인라인 스크립트는 자동
+            난독화하지 않습니다. 정적 HTML로 출력한 인라인 스크립트는 정적 빌드
+            후처리 범위에 포함됩니다. 서버 공개 루트에는 허용 자산만 배치하고
             정책·보고서·매니페스트·소스맵은 밖에 보관하세요.
           </p>
           <p>

@@ -306,7 +306,7 @@ export function createWebGuardApp(
           ),
         ),
     ),
-    webguard(policy),
+    webguard(policy, responseHeaders || undefined),
     protectedPreview(responseHeaders),
   ];
 }

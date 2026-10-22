@@ -41,6 +41,8 @@
           >환경별 적용 가이드</a
         ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
         ><span>이 문서의 목차</span
+        ><a href="#sdk-파일cdn과-빌드-도구의-차이"
+          >SDK 파일·CDN과 빌드 도구의 차이</a
         ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
         ><a href="#미리-압축된-파일과-배포-압축">미리 압축된 파일과 배포 압축</a
         ><a href="#자동-연결과-수동-sdk">자동 연결과 수동 SDK</a
@@ -109,7 +111,10 @@
                 <tr>
                   <td>일반 HTML·JavaScript</td>
                   <td>정적 디렉터리를 <code>protect-app</code>으로 처리</td>
-                  <td>인라인 스크립트·이벤트 속성은 외부화</td>
+                  <td>
+                    정적 classic·module 인라인은 제자리 변환. 이벤트·스타일
+                    정책은 별도 검토
+                  </td>
                 </tr>
                 <tr>
                   <td>React + Vite</td>
@@ -160,6 +165,56 @@
               </tbody>
             </table>
           </div>
+          <h2 id="sdk-파일cdn과-빌드-도구의-차이">
+            SDK 파일·CDN과 빌드 도구의 차이
+          </h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >직접 다운로드·CDN 화면</a
+            >에서 독립 SDK, 외부 초기화 예제와
+            <code>uulab-webguard-0.3.0.tgz</code>를 받습니다.
+            <a href="https://webguard.uulab.co.kr/downloads/catalog.json"
+              >다운로드 목록</a
+            >의 현재 후보와 보존된 릴리스는 고정 파일 주소·해시로 구분합니다.
+            npm 게시는 계속 보류 중입니다.
+          </p>
+          <ul>
+            <li>
+              일반 HTML·JSP·PHP 등의 <strong>수동 SDK 연결</strong>은 다운로드
+              파일을 직접 호스팅하거나 고정 CDN URL·SRI로 읽은 다음, 내 서버의
+              외부 초기화 파일에서 <code>WebGuardSDK.WebGuard.init()</code>을
+              호출합니다. SDK → 초기화 → 앱 스크립트 순서로 <code>defer</code>를
+              사용하고 앱 CSP에서 CDN 출처를 허용하세요.
+            </li>
+            <li>
+              <strong>앱 코드 자동 난독화</strong>에는 Node.js 22.12 이상의 빌드
+              도구가 필요합니다. 내려받은 <code>.tgz</code>를
+              <code>npm install -D ./uulab-webguard-0.3.0.tgz</code>로 설치하고
+              아래 빌드 연결을 적용합니다. 의존성은 네트워크로 별도 설치합니다.
+            </li>
+            <li>
+              CDN SDK는 런타임 가드만 제공합니다. 내 앱의 빌드 변환·서버 응답
+              정책·인증·인가를 대신하지 않습니다. 파일을 읽는 것만으로 수동
+              SDK가 시작되지 않으며, 자동 SDK가 이미 있으면 중복 초기화하지
+              않습니다.
+            </li>
+          </ul>
+          <p>
+            정적 HTML의 실행 가능한 classic·module 인라인 스크립트는 제자리
+            변환하며, 자동 정책이 소유한 CSP 해시는 최종 바이트에 맞춥니다.
+            서버의 요청별 템플릿·Next Flight 데이터는 재작성하지 않습니다.
+            감지된 미지원 동적 코드 구성은 빌드에서 거부하며, 인라인 이벤트
+            핸들러·스타일은 자동 CSP와의 호환성을 별도로 처리해야 합니다. 서버
+            언어를 JavaScript 난독화기에 넣지 마세요.
+          </p>
+          <p>
+            고정 CDN 릴리스 주소는 보존되며 최신 후보로 자동 이동하지 않습니다.
+            업데이트할 때 URL·SRI를 함께 변경하고 런타임 호환성을 다시
+            확인하세요.
+            <a href="/docs/INSTALL.ko.html#직접-다운로드와-cdn-선택"
+              >다운로드와 연결 절차</a
+            >를 참고하세요.
+          </p>
           <h2 id="한-번-연결하는-후처리">한 번 연결하는 후처리</h2>
           <p>
             이 경로는 <strong>정적 브라우저 출력</strong>용입니다.

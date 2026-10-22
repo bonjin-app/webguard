@@ -7,3 +7,4 @@ docs/reference/
 examples/jsp-servlet/src/main/webapp/assets/
 examples/jsp-servlet/target/
 .playwright-cli/
+distributions/releases/

@@ -302,9 +302,6 @@ it("archives maps separately and preserves an existing private artifact director
 });
 
 it.each([
-  ["<script>alert(1)</script>", /inline.*script/i],
-  ['<script type="module">export const a = 1;</script>', /inline.*script/i],
-  ['<script type="importmap">{"imports":{}}</script>', /inline.*script/i],
   ['<button ONCLICK="alert(1)">Run</button>', /inline.*handler/i],
   ['<a href=" java&#x0A;script:alert(1)">Run</a>', /javascript.*URL/i],
   ["<style>body{color:red}</style>", /inline.*style/i],

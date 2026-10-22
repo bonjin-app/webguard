@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+import { validateDistribution } from "./distribution.mjs";
 import { createServer } from "node:http";
 import { lstat, readFile, realpath } from "node:fs/promises";
 import { join, resolve } from "node:path";
@@ -28,6 +30,28 @@ export async function createDemoServer(outputDirectory) {
     );
     mounts.push({ prefix, server, headers });
   }
+  // Keep validated bytes in memory so later filesystem changes cannot alter served releases.
+  const distributionAssets = new Map();
+  const distribution = join(root, "distribution");
+  let distributionExists = false;
+  try {
+    await lstat(distribution);
+    distributionExists = true;
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  if (distributionExists) {
+    const { assets } = await validateDistribution(distribution);
+    for (const asset of assets) {
+      const bytes = await readFile(asset.file);
+      if (
+        bytes.length !== asset.bytes ||
+        createHash("sha256").update(bytes).digest("hex") !== asset.sha256
+      )
+        throw new Error("Distribution asset changed during demo startup");
+      distributionAssets.set(asset.url, { bytes, headers: asset.headers });
+    }
+  }
   const playground = mounts[0].server;
   const gateway = createServer(async (request, response) => {
     const raw = request.url ?? "";
@@ -43,6 +67,33 @@ export async function createDemoServer(outputDirectory) {
     const queryIndex = raw.indexOf("?");
     const path = queryIndex < 0 ? raw : raw.slice(0, queryIndex);
     const query = queryIndex < 0 ? "" : raw.slice(queryIndex);
+    if (/^\/(?:cdn|downloads)(?:\/|$)/.test(path)) {
+      for (const [name, value] of Object.entries(mounts[0].headers))
+        response.setHeader(name, value);
+      response.setHeader("X-Content-Type-Options", "nosniff");
+      const asset = distributionAssets.get(path);
+      if (!asset) {
+        response.writeHead(404, {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store",
+        });
+        response.end(request.method === "HEAD" ? undefined : "Not found\n");
+      } else if (!["GET", "HEAD"].includes(request.method)) {
+        response.writeHead(405, {
+          Allow: "GET, HEAD",
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store",
+        });
+        response.end("Method not allowed\n");
+      } else {
+        response.writeHead(200, {
+          ...asset.headers,
+          "Content-Length": asset.bytes.length,
+        });
+        response.end(request.method === "HEAD" ? undefined : asset.bytes);
+      }
+      return;
+    }
     // Match the public Worker's exact alias without enabling an SPA fallback.
     if (path === "/demo/") {
       for (const [name, value] of Object.entries(mounts[0].headers))

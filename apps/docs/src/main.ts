@@ -1,3 +1,5 @@
+import { downloadsMarkup, initDownloads } from "../../downloads";
+import "../../downloads.css";
 import "./style.css";
 import { getAutoGuard, installAutoGuard } from "@webguard/browser";
 import { siteGuardOptions } from "../../site-guard-options";
@@ -8,7 +10,7 @@ const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
 <header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
-<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#runtime-hardening">클래스·DOM·실행 지연</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a><span>전체 문서</span><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a></nav><main id="main-content" tabindex="-1">
+<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#sdk-downloads">다운로드·CDN</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#runtime-hardening">클래스·DOM·실행 지연</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a><span>전체 문서</span><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a></nav><main id="main-content" tabindex="-1">
 <aside class="site-protection" aria-label="이 문서의 실제 보호 설정">
   <details id="site-protection-controls">
     <summary><span>이 문서에도 WebGuard 적용 중</span><span class="site-protection-action">실제 설정 바꾸기</span></summary>
@@ -26,6 +28,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </details>
 </aside>
 <section id="overview" class="docs-intro"><div class="eyebrow">WEBGUARD GUIDE</div><h1>내 웹 앱에,<br><span>WebGuard를 연결하세요.</span></h1><p class="lead">빌드할 때 코드를 난독화하고, 배포할 때 정책을 연결하고,<br>실행 중에는 브라우저 가드를 제어하는 SDK입니다.</p><div class="docs-actions"><a class="primary" href="#install">설치부터 시작하기</a><a class="secondary" href="#environments">다른 환경에 적용하기</a></div><p class="docs-meta">Node.js 22.12+ · Vite와 범용 빌드 지원 · 별도 서비스 계정 없이 사용</p><aside>난독화는 코드 분석을 어렵게 합니다. 브라우저에 전달된 파일은 관찰할 수 있으므로 비밀값과 권한 검증은 서버에서 관리하세요.</aside></section>
+${downloadsMarkup}
 <section id="security-strengths" aria-labelledby="strengths-heading"><div class="eyebrow">WHAT WEBGUARD ADDS</div><h2 id="strengths-heading">코드·실행·배포를 함께 다룹니다</h2><p>WebGuard의 강점은 난독화 결과만 만드는 데서 끝나지 않고, SDK 초기화와 배포 검사를 같은 빌드 흐름에 연결하는 것입니다. 아래 내용은 공개 데모에 적용된 미게시 0.3.0 후보 기준입니다. npm 게시는 보류 중입니다.</p>
 <div class="protection-path">
 <article><span class="protection-phase">BUILD</span><div><h3>읽기 쉬운 코드가 그대로 배포되지 않도록</h3><p>Strict / High는 RC4 문자열 인코딩·문자열 분할·제어 흐름 변환을 적용하고 공개 소스맵을 제거합니다. 앱 코드를 분석하는 비용을 높이며, 문자열은 실행 중 복원됩니다.</p><a href="/demo#try-examples">원본과 난독화 결과 비교 →</a></div></article>
@@ -51,7 +54,7 @@ await protectAppDirectory('dist', {
   output: 'dist-protected',
   runtime: { devtools: { blockShortcuts: true, blockContextMenu: true } },
   headers: { trustedTypes: 'report-only' },
-});</code></pre><p>Strict 난독화가 기본이고 입력 제한은 명시적으로 켭니다. report-only는 Trusted Types 호환성 관찰 설정이며 인라인 스크립트를 허용하거나 HTML을 정화하지 않습니다. 기존 출력은 덮어쓰지 않습니다. 인라인 코드·이벤트·스타일은 외부화하거나 관리할 정책을 명시하세요.</p><p>HTML·JSP·PHP·ASP.NET 템플릿에서는 패키지의 <code>uulab-webguard/browser.global.js</code>를 외부 스크립트로 복사하고 별도 파일에서 <code>WebGuardSDK.WebGuard.init()</code>을 호출할 수 있습니다. SDK만 연결하면 난독화는 생기지 않습니다. 서버 템플릿 자체는 JavaScript 난독화 대상이 아닙니다.</p><h3>React·Next.js의 서버 렌더링</h3><p>React + Vite는 브라우저 빌드에만 연결합니다. Next.js App Router에는 전용 Webpack 어댑터를 제공합니다. 운영 클라이언트 청크를 변환하고 SDK를 연결하며, SSR·React Server Components·API·개발 모드는 변환하지 않습니다.</p><pre><code>import { withWebGuard } from 'uulab-webguard/next';
+});</code></pre><p>Strict 난독화가 기본이고 입력 제한은 명시적으로 켭니다. report-only는 Trusted Types 호환성 관찰 설정이며 인라인 스크립트를 허용하거나 HTML을 정화하지 않습니다. 기존 출력은 덮어쓰지 않습니다. 정적 HTML의 classic·module 인라인 스크립트는 제자리 변환하고 자동 CSP 해시를 최종 코드에 맞춥니다. 서버 템플릿·Next Flight는 재작성하지 않습니다. 감지된 미지원 동적 코드는 빌드에서 거부하며 인라인 이벤트·스타일은 별도 호환성 조정이 필요합니다.</p><p>HTML·JSP·PHP·ASP.NET 템플릿에서는 패키지의 <code>uulab-webguard/browser.global.js</code>를 외부 스크립트로 복사하고 별도 파일에서 <code>WebGuardSDK.WebGuard.init()</code>을 호출할 수 있습니다. SDK만 연결하면 난독화는 생기지 않습니다. 서버 템플릿 자체는 JavaScript 난독화 대상이 아닙니다.</p><h3>React·Next.js의 서버 렌더링</h3><p>React + Vite는 브라우저 빌드에만 연결합니다. Next.js App Router에는 전용 Webpack 어댑터를 제공합니다. 운영 클라이언트 청크를 변환하고 SDK를 연결하며, SSR·React Server Components·API·개발 모드는 변환하지 않습니다.</p><pre><code>import { withWebGuard } from 'uulab-webguard/next';
 export default withWebGuard({ reactStrictMode: true }, {
   preset: 'strict',
   runtime: { devtools: { detect: false, blockShortcuts: true } },
@@ -282,3 +285,5 @@ window.addEventListener("pagehide", (event) => {
     siteGuard.destroy();
   }
 });
+
+void initDownloads();

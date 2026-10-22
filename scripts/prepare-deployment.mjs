@@ -14,7 +14,8 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { validateHeaderName, validateHeaderValue } from "node:http";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
+import { validateDistribution } from "./distribution.mjs";
 import {
   basename,
   dirname,
@@ -184,10 +185,10 @@ export async function prepareDeployment(
     const manifest = { version: 1, mounts: [], assets: Object.create(null) };
     const publicRoot = join(stage, "public");
     await mkdir(publicRoot);
-    const add = (url, path, mount) => {
+    const add = (url, path, mount, headers) => {
       if (Object.hasOwn(manifest.assets, url))
         throw new Error(`Duplicate deployment URL: ${url}`);
-      manifest.assets[url] = { path, mount };
+      manifest.assets[url] = { path, mount, ...(headers ? { headers } : {}) };
     };
     for (const [name, prefix] of mounts) {
       const directory = join(input, name);
@@ -250,6 +251,31 @@ export async function prepareDeployment(
           prefix + "webguard-manifest.json",
           prefix,
         );
+      }
+    }
+    const distribution = join(input, "distribution");
+    let distributionExists = false;
+    try {
+      await lstat(distribution);
+      distributionExists = true;
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+    if (distributionExists) {
+      const { assets } = await validateDistribution(distribution);
+      for (const asset of assets) {
+        const bytes = await readFile(asset.file);
+        if (
+          bytes.length !== asset.bytes ||
+          createHash("sha256").update(bytes).digest("hex") !== asset.sha256
+        )
+          throw new Error(
+            "Distribution asset changed during deployment preparation",
+          );
+        add(asset.url, asset.url, "/", asset.headers);
+        const target = join(publicRoot, asset.url);
+        await mkdir(dirname(target), { recursive: true });
+        await writeFile(target, bytes);
       }
     }
     await writeFile(
