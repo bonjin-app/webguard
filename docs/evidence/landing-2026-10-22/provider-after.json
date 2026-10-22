@@ -1,0 +1,39 @@
+{
+  "id": "51eccbb7-a81d-4963-87f9-5df54515d7a8",
+  "number": 41,
+  "metadata": {
+    "created_on": "2026-10-22T03:58:22.823073Z",
+    "source": "wrangler",
+    "author_id": "f85b113ca1403cdf8d8444ca700dc3eb",
+    "author_email": "uulab.official@gmail.com",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/message": "WebGuard SDK-first blue landing, dedicated demo entry and responsive documentation flow; source pending verified readback; npm paused",
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "368be1665048d67a8be82acd680de6a98d427c285ac138a4b7475af00e7344e6",
+      "handlers": ["fetch"],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "assets": {
+        "html_handling": "none",
+        "not_found_handling": "none",
+        "serve_directly": false,
+        "raw_run_worker_first": true,
+        "base_path": "/"
+      },
+      "compatibility_date": "2026-10-20",
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "name": "ASSETS",
+        "type": "assets"
+      }
+    ]
+  }
+}

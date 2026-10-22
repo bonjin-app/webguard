@@ -1,0 +1,39 @@
+{
+  "id": "58be7569-77a6-472e-9d94-3e8e8077799e",
+  "number": 40,
+  "metadata": {
+    "created_on": "2026-10-22T03:19:33.854525Z",
+    "source": "wrangler",
+    "author_id": "f85b113ca1403cdf8d8444ca700dc3eb",
+    "author_email": "uulab.official@gmail.com",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/message": "WebGuard complete Korean API reference; 58 exports, 8 SDK methods and 3 CLIs; source 3f80258; npm paused",
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "365704c02a9e8ea3ed77980a2fa06a64bb8d25e3b278711e4d08f0c920abed70",
+      "handlers": ["fetch"],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "assets": {
+        "html_handling": "none",
+        "not_found_handling": "none",
+        "serve_directly": false,
+        "raw_run_worker_first": true,
+        "base_path": "/"
+      },
+      "compatibility_date": "2026-10-20",
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "name": "ASSETS",
+        "type": "assets"
+      }
+    ]
+  }
+}

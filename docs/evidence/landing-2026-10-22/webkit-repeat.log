@@ -1,0 +1,35 @@
+
+Running 10 tests using 3 workers
+
+(node:44706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44707) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.6s)
+(node:44779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.0s)
+  ✓   1 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.2s)
+(node:44787) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.5s)
+(node:44842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.5s)
+(node:44852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.8s)
+(node:44868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.6s)
+(node:44885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.8s)
+  ✓  10 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.8s)
+  ✓   9 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (3.1s)
+
+  10 passed (9.7s)

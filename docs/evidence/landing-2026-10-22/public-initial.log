@@ -1,0 +1,460 @@
+$ playwright test -c playwright.public.config.ts
+
+Running 330 tests using 3 workers
+
+(node:37181) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    2 [http] › tests/public/deployment.spec.ts:4:1 › public network-policy fixture returns a fixed credential-free response only (348ms)
+  ✓    1 [chromium] › tests/e2e/cdn.spec.ts:6:1 › loads the pinned CDN SDK with SRI across origins and rejects changed bytes (1.3s)
+  ✓    4 [http] › tests/public/deployment.spec.ts:24:1 › SDK landing and demo use their protected HTML entries with safe redirects (2.1s)
+  ✓    5 [chromium] › tests/e2e/demo.spec.ts:4:3 › vanilla-js keeps controls disabled until its module is ready (1.4s)
+  ✓    7 [chromium] › tests/e2e/demo.spec.ts:4:3 › vanilla-ts keeps controls disabled until its module is ready (1.4s)
+  ✓    3 [chromium] › tests/e2e/compat-demo.spec.ts:77:1 › checks the real multipage, charset, headers, query redirect and fixed API over HTTP (4.2s)
+  ✓    9 [chromium] › tests/e2e/compat-demo.spec.ts:117:1 › renders actual responses and completes a valid fixture (217ms)
+  ✓   10 [chromium] › tests/e2e/compat-demo.spec.ts:134:1 › does not count HTTP/API failures or a successful SPA fallback as compatibility success (242ms)
+  ✓   11 [chromium] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset after CSP instead of showing a false success (215ms)
+  ✓   12 [chromium] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset beyond byte 1024 instead of showing a false success (209ms)
+  ✓    6 [http] › tests/public/deployment.spec.ts:57:1 › public demo serves each application with its intended headers and rejects nonpublic files (3.0s)
+  ✓   13 [chromium] › tests/e2e/compat-demo.spec.ts:190:3 › rejects source phrase corrupted instead of showing a false success (200ms)
+  ✓   15 [chromium] › tests/e2e/compat-demo.spec.ts:190:3 › rejects head inserted after body instead of showing a false success (199ms)
+  ✓   16 [chromium] › tests/e2e/compat-demo.spec.ts:190:3 › rejects fake commented charset instead of showing a false success (191ms)
+  ✓   17 [chromium] › tests/e2e/compat-demo.spec.ts:219:1 › rejects missing enforced headers, wrong API markers and a redirect with a changed query (203ms)
+  ✓   18 [chromium] › tests/e2e/compat-demo.spec.ts:265:1 › keeps retry available after persisted lifecycle cancellation without duplicate runs (367ms)
+  ✓   19 [chromium] › tests/e2e/compat-demo.spec.ts:301:1 › rejects a MIME value containing text/html without being text/html (200ms)
+  ✓    8 [chromium] › tests/e2e/demo.spec.ts:29:1 › runs a ready-made strong example and shows its real output (3.5s)
+  ✓   14 [http] › tests/public/deployment.spec.ts:97:1 › denies compressed siblings of the deployed entry and private reports (2.8s)
+  ✓   20 [chromium] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (2.4s)
+  ✓   21 [chromium] › tests/e2e/demo.spec.ts:44:1 › demonstrates live SDK controls and provides selectable integration code (3.5s)
+  ✓   23 [chromium] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (7.7s)
+  ✓   25 [chromium] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (2.3s)
+  ✓   24 [chromium] › tests/e2e/demo.spec.ts:73:1 › opens working protected examples and documentation through same-origin links (8.5s)
+  ✓   26 [chromium] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (3.4s)
+  ✓   27 [chromium] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (2.9s)
+  ✓   29 [chromium] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (2.8s)
+  ✓   28 [chromium] › tests/e2e/lab.spec.ts:2:1 › executes real policy, integrity and server tampering scenarios (4.2s)
+  ✓   30 [chromium] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (2.6s)
+  ✓   22 [http] › tests/public/deployment.spec.ts:119:1 › deployment checker verifies trusted bytes, actual policies and private URL absence (20.0s)
+  ✓   33 [http] › tests/public/deployment.spec.ts:135:1 › public demo API rejects tampered prices and cross-origin or malformed input (635ms)
+(node:38151) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   32 [chromium] › tests/e2e/navigation.spec.ts:3:1 › opens /demo directly on operable controls and preserves the home introduction (1.6s)
+  ✓   31 [chromium] › tests/e2e/lab.spec.ts:60:1 › checks eval and inline handlers under CSP and resets local results (4.7s)
+  ✓   34 [chromium] › tests/e2e/playground.spec.ts:3:1 › protects locally, compares real output, and creates a local integrity report (3.4s)
+  ✓   36 [chromium] › tests/e2e/lab.spec.ts:89:1 › does not accept forged scenario messages or execute user markup (2.6s)
+  ✓   35 [chromium] › tests/e2e/navigation.spec.ts:35:1 › opens public code inspection and real security comparisons directly from the protection overview (5.3s)
+  ✓   37 [chromium] › tests/e2e/playground.spec.ts:44:1 › rejects invalid JavaScript without executing it (3.7s)
+  ✓   38 [chromium] › tests/e2e/lab.spec.ts:123:1 › reports a network failure without claiming verification success and permits retry (2.8s)
+  ✓   39 [chromium] › tests/e2e/navigation.spec.ts:71:1 › starts with a quiet browser guard surface and preserves choices across keyboard navigation (2.0s)
+  ✓   42 [chromium] › tests/e2e/navigation.spec.ts:128:1 › routes existing deep links to their tabs and opens setup disclosures (2.0s)
+  ✓   41 [chromium] › tests/e2e/lab.spec.ts:141:1 › compares actual network responses against connect-src blocking and fails closed without a baseline (4.0s)
+  ✓   40 [chromium] › tests/e2e/playground.spec.ts:57:1 › terminates infinite execution and keeps the main app responsive (5.2s)
+  ✓   43 [chromium] › tests/e2e/navigation.spec.ts:163:1 › allows every tab to be selected without overflowing a 390px viewport (2.4s)
+  ✓   44 [chromium] › tests/e2e/lab.spec.ts:168:1 › compares actual innerHTML assignment with Trusted Types enforcement or reports unsupported explicitly (2.6s)
+  ✓   46 [chromium] › tests/e2e/policy-demo.spec.ts:3:1 › compares all policies, mixed settings and all-off using real sandbox operations (3.6s)
+  ✓   45 [chromium] › tests/e2e/playground.spec.ts:75:1 › blocks network requests from source and protected execution (4.1s)
+  ✓   47 [chromium] › tests/e2e/lab.spec.ts:204:1 › never counts an unavailable Trusted Types API as successful verification (2.6s)
+  ✓   48 [chromium] › tests/e2e/policy-demo.spec.ts:51:1 › reports failed baseline networking instead of claiming a successful block and ignores forged messages (2.2s)
+  ✓   50 [chromium] › tests/e2e/product-presence.spec.ts:5:1 › serves complete social metadata and genuine PNG previews without running JavaScript (1.7s)
+  ✓   49 [chromium] › tests/e2e/playground.spec.ts:96:1 › ignores forged window messages and prevents worker access to the page (3.5s)
+  ✓   51 [chromium] › tests/e2e/policy-demo.spec.ts:83:1 › cancels pending frames on pagehide and can run again after page restoration (2.4s)
+  ✓   53 [chromium] › tests/e2e/playground.spec.ts:120:1 › has a usable narrow layout and accessible controls (2.4s)
+  ✓   54 [chromium] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (3.9s)
+  ✓   52 [chromium] › tests/e2e/product-presence.spec.ts:113:1 › connects SDK strengths to real interactive panels and keeps product scope readable on mobile (6.3s)
+  ✓   55 [chromium] › tests/e2e/playground.spec.ts:135:1 › explains empty input and invalidates changed source in Korean (3.0s)
+  ✓   56 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (811ms)
+  ✓   59 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (1.0s)
+  ✓   60 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (635ms)
+  ✓   57 [chromium] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.1s)
+  ✓   62 [chromium] › tests/e2e/resources.spec.ts:51:1 › previews verified downloaded bytes as inert text and removes stale code after a mismatch (354ms)
+  ✓   61 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (863ms)
+  ✓   64 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (786ms)
+  ✓   58 [chromium] › tests/e2e/playground.spec.ts:162:1 › preset result validity changes only when selecting a different preset (4.0s)
+  ✓   65 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (915ms)
+  ✓   67 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (842ms)
+  ✓   63 [chromium] › tests/e2e/resources.spec.ts:79:1 › audits actual deployed source URLs and matches the document entry SRI against fetched bytes (3.8s)
+  ✓   69 [chromium] › tests/e2e/resources.spec.ts:116:1 › does not report success for exposed source, SPA fallback or 410 responses (238ms)
+  ✓   66 [chromium] › tests/e2e/runtime-demo.spec.ts:71:1 › reaches live SDK controls from the hero and applies both policy buttons (2.6s)
+  ✓   70 [chromium] › tests/e2e/resources.spec.ts:142:1 › detects changed asset bytes using the unchanged document SRI and prevents concurrent runs (459ms)
+  ✓   72 [chromium] › tests/e2e/resources.spec.ts:168:1 › rejects missing SRI and an entry outside the same-origin assets prefix (260ms)
+  ✓   73 [chromium] › tests/e2e/resources.spec.ts:202:1 › preserves resource auditing across persisted page lifecycle events and releases a cancelled run (320ms)
+  ✓   74 [chromium] › tests/e2e/resources.spec.ts:251:1 › rejects an exposed backup even when the public entry hash matches (230ms)
+  ✓   75 [chromium] › tests/e2e/resources.spec.ts:275:1 › enforces generated SRI for mixed-case and multi-token stylesheet links in a real browser (122ms)
+  ✓   71 [chromium] › tests/e2e/runtime-demo.spec.ts:108:1 › blocks actual F12 and right-click input outside an editor while preserving editable context menus (2.8s)
+  ✓   76 [chromium] › tests/e2e/runtime-hardening.spec.ts:3:1 › uses opaque CSS module names without breaking the rendered notice (1.9s)
+  ✓   68 [chromium] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (6.2s)
+  ✓   77 [chromium] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Mac inspect shortcuts only while restrictions are enabled (3.6s)
+  ✓   78 [chromium] › tests/e2e/runtime-hardening.spec.ts:15:1 › defaults to live observation and detects repeated DOM changes after explicit restoration (3.4s)
+  ✓   79 [chromium] › tests/e2e/sandbox-errors.spec.ts:3:1 › reports empty thrown values as execution failures instead of matching outputs (4.2s)
+  ✓   81 [chromium] › tests/e2e/runtime-hardening.spec.ts:44:1 › compares OFF and ON without accepting a response-only baseline change (2.6s)
+  ✓   80 [chromium] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Windows inspect shortcuts only while restrictions are enabled (3.7s)
+  ✓   83 [chromium] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (2.0s)
+  ✓   84 [chromium] › tests/e2e/runtime-demo.spec.ts:193:1 › labels synthetic F12 trials honestly and caps then clears the local event history (2.1s)
+  ✓   85 [chromium] › tests/e2e/runtime-hardening.spec.ts:90:1 › offers one visible protection flow and restores defaults (2.3s)
+  ✓   86 [chromium] › tests/e2e/runtime-demo.spec.ts:229:1 › checks a real manifest and file through the SDK with matching and different expected hashes (1.5s)
+  ✓   82 [chromium] › tests/e2e/sandbox-startup.spec.ts:32:1 › does not charge slow real Worker startup against the code execution budget (6.1s)
+  ✓   88 [chromium] › tests/e2e/runtime-demo.spec.ts:269:1 › reports a real mismatch when the manifest-listed SDK file response is changed (2.1s)
+  ✓   87 [chromium] › tests/e2e/runtime-hardening.spec.ts:109:1 › keeps manual timer results separate from automatic observation and cancels on OFF (3.3s)
+  ✓   90 [chromium] › tests/e2e/runtime-demo.spec.ts:304:1 › does not request application resources when the SDK integrity policy is disabled (1.2s)
+  ✓   91 [chromium] › tests/e2e/runtime-hardening.spec.ts:123:1 › response switches preserve watch progress and an active manual sample (5.2s)
+  ✓   89 [chromium] › tests/e2e/sandbox-startup.spec.ts:46:1 › allows bounded iframe startup before starting execution (7.8s)
+  ✓   92 [chromium] › tests/e2e/runtime-demo.spec.ts:334:1 › runs the complete feature tour with real SDK, scenario, and High protection results (7.0s)
+  ✓   93 [chromium] › tests/e2e/runtime-hardening.spec.ts:151:1 › repeatedly restores canonical content when DOM monitoring is enabled after tampering (2.2s)
+  ✓   95 [chromium] › tests/e2e/runtime-demo.spec.ts:418:1 › default page protection cancels trusted Mac inspection input inside an editor and permits rechecking (2.2s)
+  ✓   96 [chromium] › tests/e2e/runtime-hardening.spec.ts:180:1 › restores the connected canonical notice after Elements replacement, removal, and movement including sibling reorder (3.3s)
+  ✓   97 [chromium] › tests/e2e/runtime-demo.spec.ts:473:1 › demo-only exit disables page protection and cleans up its modal without disabling explicit shortcut restrictions (2.1s)
+  ✓   99 [chromium] › tests/e2e/runtime-demo.spec.ts:508:1 › simulated docked-window geometry opens the page dialog and recheck waits for the signal to clear (2.0s)
+  ✓  100 [chromium] › tests/e2e/runtime-demo.spec.ts:555:1 › default protection switches remain independent and repeatable with real input (2.5s)
+  ✓  101 [chromium] › tests/e2e/runtime-demo.spec.ts:602:1 › invalid advanced threshold preserves actual threshold without blocking basic toggles (2.8s)
+  ✓   94 [chromium] › tests/e2e/sandbox-startup.spec.ts:64:1 › reports unavailable startup separately and cleans up instead of claiming code ran (13.3s)
+  ✓  102 [chromium] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (2.5s)
+  ✓   98 [chromium] › tests/e2e/runtime-hardening.spec.ts:231:1 › automatic watch reports an actual debugger pause without manual sampling and latches the signal (10.7s)
+  ✓  105 [chromium] › tests/e2e/site-guard.spec.ts:36:1 › the site starts protected outside the demo test area and offers a modal-only exit (1.3s)
+  ✓  104 [chromium] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (2.1s)
+  ✓  106 [chromium] › tests/e2e/site-guard.spec.ts:68:1 › the default context policy cancels a trusted right click on the hero (977ms)
+  ✓  107 [chromium] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (2.1s)
+  ✓  108 [chromium] › tests/e2e/site-guard.spec.ts:80:1 › large window dimensions do not lock the site while heuristic detection is disabled (1.9s)
+  ✓  103 [chromium] › tests/e2e/sandbox-startup.spec.ts:85:1 › still terminates infinite code after delayed startup at the execution deadline (7.8s)
+  ✓  110 [chromium] › tests/e2e/site-guard.spec.ts:109:1 › turning off the live policy removes the auto runtime restrictions without a second hidden guard (2.1s)
+  ✓  109 [chromium] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (2.1s)
+(node:39248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  112 [chromium] › tests/e2e/site-guard.spec.ts:132:1 › restoring site defaults updates the active SDK and all visible controls (2.5s)
+(node:39263) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  113 [firefox] › tests/e2e/cdn.spec.ts:6:1 › loads the pinned CDN SDK with SRI across origins and rejects changed bytes (2.2s)
+  ✓  114 [firefox] › tests/e2e/demo.spec.ts:4:3 › vanilla-js keeps controls disabled until its module is ready (625ms)
+  ✓  116 [firefox] › tests/e2e/demo.spec.ts:4:3 › vanilla-ts keeps controls disabled until its module is ready (571ms)
+  ✓  111 [chromium] › tests/e2e/sandbox-startup.spec.ts:106:1 › Worker ready spam cannot extend the execution deadline (5.1s)
+  ✓  117 [firefox] › tests/e2e/demo.spec.ts:29:1 › runs a ready-made strong example and shows its real output (1.9s)
+  ✓  115 [firefox] › tests/e2e/compat-demo.spec.ts:77:1 › checks the real multipage, charset, headers, query redirect and fixed API over HTTP (2.8s)
+  ✓  120 [firefox] › tests/e2e/compat-demo.spec.ts:117:1 › renders actual responses and completes a valid fixture (306ms)
+  ✓  121 [firefox] › tests/e2e/compat-demo.spec.ts:134:1 › does not count HTTP/API failures or a successful SPA fallback as compatibility success (256ms)
+  ✓  122 [firefox] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset after CSP instead of showing a false success (237ms)
+  ✓  119 [firefox] › tests/e2e/demo.spec.ts:44:1 › demonstrates live SDK controls and provides selectable integration code (1.3s)
+  ✓  123 [firefox] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset beyond byte 1024 instead of showing a false success (259ms)
+  ✓  125 [firefox] › tests/e2e/compat-demo.spec.ts:190:3 › rejects source phrase corrupted instead of showing a false success (234ms)
+  ✓  126 [firefox] › tests/e2e/compat-demo.spec.ts:190:3 › rejects head inserted after body instead of showing a false success (250ms)
+  ✓  118 [chromium] › tests/e2e/sandbox-startup.spec.ts:127:1 › cleans up failed Worker construction and keeps the controls available (3.3s)
+  ✓  127 [firefox] › tests/e2e/compat-demo.spec.ts:190:3 › rejects fake commented charset instead of showing a false success (240ms)
+  ✓  129 [firefox] › tests/e2e/compat-demo.spec.ts:219:1 › rejects missing enforced headers, wrong API markers and a redirect with a changed query (291ms)
+  ✓  130 [firefox] › tests/e2e/compat-demo.spec.ts:265:1 › keeps retry available after persisted lifecycle cancellation without duplicate runs (746ms)
+  ✓  131 [firefox] › tests/e2e/compat-demo.spec.ts:301:1 › rejects a MIME value containing text/html without being text/html (245ms)
+  ✓  132 [firefox] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (1.9s)
+  ✓  124 [firefox] › tests/e2e/demo.spec.ts:73:1 › opens working protected examples and documentation through same-origin links (4.4s)
+  ✓  134 [firefox] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (3.4s)
+  ✓  128 [chromium] › tests/e2e/sandbox-startup.spec.ts:151:1 › cancels pending startup on pagehide and supports another run (8.3s)
+  ✓  135 [firefox] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (1.3s)
+(node:39475) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  136 [firefox] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (1.6s)
+  ✓  133 [firefox] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (6.8s)
+  ✓  139 [firefox] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (924ms)
+  ✓  138 [firefox] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (1.4s)
+  ✓  137 [firefox] › tests/e2e/lab.spec.ts:2:1 › executes real policy, integrity and server tampering scenarios (3.0s)
+  ✓  140 [firefox] › tests/e2e/navigation.spec.ts:3:1 › opens /demo directly on operable controls and preserves the home introduction (1.4s)
+  ✓  141 [firefox] › tests/e2e/playground.spec.ts:3:1 › protects locally, compares real output, and creates a local integrity report (1.8s)
+  ✓  144 [firefox] › tests/e2e/playground.spec.ts:44:1 › rejects invalid JavaScript without executing it (1.7s)
+  ✓  142 [firefox] › tests/e2e/lab.spec.ts:60:1 › checks eval and inline handlers under CSP and resets local results (3.2s)
+  ✓  146 [firefox] › tests/e2e/lab.spec.ts:89:1 › does not accept forged scenario messages or execute user markup (960ms)
+  ✓  147 [firefox] › tests/e2e/lab.spec.ts:123:1 › reports a network failure without claiming verification success and permits retry (1.3s)
+  ✓  143 [firefox] › tests/e2e/navigation.spec.ts:35:1 › opens public code inspection and real security comparisons directly from the protection overview (5.2s)
+  ✓  145 [firefox] › tests/e2e/playground.spec.ts:57:1 › terminates infinite execution and keeps the main app responsive (4.1s)
+  ✓  149 [firefox] › tests/e2e/navigation.spec.ts:71:1 › starts with a quiet browser guard surface and preserves choices across keyboard navigation (1.5s)
+  ✓  148 [firefox] › tests/e2e/lab.spec.ts:141:1 › compares actual network responses against connect-src blocking and fails closed without a baseline (2.6s)
+  ✓  150 [firefox] › tests/e2e/playground.spec.ts:75:1 › blocks network requests from source and protected execution (1.8s)
+  ✓  151 [firefox] › tests/e2e/navigation.spec.ts:128:1 › routes existing deep links to their tabs and opens setup disclosures (1.9s)
+  ✓  154 [firefox] › tests/e2e/navigation.spec.ts:163:1 › allows every tab to be selected without overflowing a 390px viewport (1.1s)
+  ✓  152 [firefox] › tests/e2e/lab.spec.ts:168:1 › compares actual innerHTML assignment with Trusted Types enforcement or reports unsupported explicitly (2.3s)
+  ✓  153 [firefox] › tests/e2e/playground.spec.ts:96:1 › ignores forged window messages and prevents worker access to the page (2.5s)
+  ✓  157 [firefox] › tests/e2e/playground.spec.ts:120:1 › has a usable narrow layout and accessible controls (967ms)
+  ✓  156 [firefox] › tests/e2e/lab.spec.ts:204:1 › never counts an unavailable Trusted Types API as successful verification (2.1s)
+  ✓  155 [firefox] › tests/e2e/policy-demo.spec.ts:3:1 › compares all policies, mixed settings and all-off using real sandbox operations (2.4s)
+  ✓  160 [firefox] › tests/e2e/policy-demo.spec.ts:51:1 › reports failed baseline networking instead of claiming a successful block and ignores forged messages (1.0s)
+  ✓  158 [firefox] › tests/e2e/playground.spec.ts:135:1 › explains empty input and invalidates changed source in Korean (1.7s)
+  ✓  159 [firefox] › tests/e2e/product-presence.spec.ts:5:1 › serves complete social metadata and genuine PNG previews without running JavaScript (1.8s)
+  ✓  161 [firefox] › tests/e2e/policy-demo.spec.ts:83:1 › cancels pending frames on pagehide and can run again after page restoration (1.2s)
+  ✓  163 [firefox] › tests/e2e/product-presence.spec.ts:113:1 › connects SDK strengths to real interactive panels and keeps product scope readable on mobile (2.3s)
+  ✓  162 [firefox] › tests/e2e/playground.spec.ts:162:1 › preset result validity changes only when selecting a different preset (2.7s)
+  ✓  166 [firefox] › tests/e2e/resources.spec.ts:51:1 › previews verified downloaded bytes as inert text and removes stale code after a mismatch (325ms)
+  ✓  164 [firefox] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (3.0s)
+  ✓  168 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (796ms)
+  ✓  165 [firefox] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (2.3s)
+  ✓  169 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (1.0s)
+  ✓  167 [firefox] › tests/e2e/resources.spec.ts:79:1 › audits actual deployed source URLs and matches the document entry SRI against fetched bytes (2.6s)
+  ✓  172 [firefox] › tests/e2e/resources.spec.ts:116:1 › does not report success for exposed source, SPA fallback or 410 responses (241ms)
+  ✓  170 [firefox] › tests/e2e/runtime-demo.spec.ts:71:1 › reaches live SDK controls from the hero and applies both policy buttons (1.8s)
+  ✓  173 [firefox] › tests/e2e/resources.spec.ts:142:1 › detects changed asset bytes using the unchanged document SRI and prevents concurrent runs (503ms)
+  ✓  171 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (971ms)
+  ✓  175 [firefox] › tests/e2e/resources.spec.ts:168:1 › rejects missing SRI and an entry outside the same-origin assets prefix (305ms)
+  ✓  177 [firefox] › tests/e2e/resources.spec.ts:202:1 › preserves resource auditing across persisted page lifecycle events and releases a cancelled run (319ms)
+  ✓  176 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (758ms)
+  ✓  178 [firefox] › tests/e2e/resources.spec.ts:251:1 › rejects an exposed backup even when the public entry hash matches (341ms)
+  ✓  180 [firefox] › tests/e2e/resources.spec.ts:275:1 › enforces generated SRI for mixed-case and multi-token stylesheet links in a real browser (239ms)
+  ✓  179 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (824ms)
+  ✓  174 [firefox] › tests/e2e/runtime-demo.spec.ts:108:1 › blocks actual F12 and right-click input outside an editor while preserving editable context menus (2.1s)
+  ✓  181 [firefox] › tests/e2e/runtime-hardening.spec.ts:3:1 › uses opaque CSS module names without breaking the rendered notice (826ms)
+  ✓  182 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (1.8s)
+  ✓  183 [firefox] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Mac inspect shortcuts only while restrictions are enabled (1.4s)
+  ✓  186 [firefox] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Windows inspect shortcuts only while restrictions are enabled (1.4s)
+  ✓  184 [firefox] › tests/e2e/runtime-hardening.spec.ts:15:1 › defaults to live observation and detects repeated DOM changes after explicit restoration (2.8s)
+  ✓  185 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (1.8s)
+  ✓  188 [firefox] › tests/e2e/runtime-hardening.spec.ts:44:1 › compares OFF and ON without accepting a response-only baseline change (1.1s)
+  ✓  190 [firefox] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (1.3s)
+  ✓  187 [firefox] › tests/e2e/runtime-demo.spec.ts:193:1 › labels synthetic F12 trials honestly and caps then clears the local event history (2.9s)
+  ✓  191 [firefox] › tests/e2e/runtime-hardening.spec.ts:90:1 › offers one visible protection flow and restores defaults (1.1s)
+  ✓  192 [firefox] › tests/e2e/runtime-demo.spec.ts:229:1 › checks a real manifest and file through the SDK with matching and different expected hashes (1.9s)
+  ✓  193 [firefox] › tests/e2e/runtime-hardening.spec.ts:109:1 › keeps manual timer results separate from automatic observation and cancels on OFF (2.3s)
+  ✓  194 [firefox] › tests/e2e/runtime-demo.spec.ts:269:1 › reports a real mismatch when the manifest-listed SDK file response is changed (2.0s)
+  ✓  196 [firefox] › tests/e2e/runtime-demo.spec.ts:304:1 › does not request application resources when the SDK integrity policy is disabled (1.9s)
+  ✓  195 [firefox] › tests/e2e/runtime-hardening.spec.ts:123:1 › response switches preserve watch progress and an active manual sample (7.5s)
+  ✓  198 [firefox] › tests/e2e/runtime-hardening.spec.ts:151:1 › repeatedly restores canonical content when DOM monitoring is enabled after tampering (1.6s)
+  ✓  197 [firefox] › tests/e2e/runtime-demo.spec.ts:334:1 › runs the complete feature tour with real SDK, scenario, and High protection results (6.1s)
+  ✓  200 [firefox] › tests/e2e/runtime-demo.spec.ts:418:1 › default page protection cancels trusted Mac inspection input inside an editor and permits rechecking (1.5s)
+  ✓  199 [firefox] › tests/e2e/runtime-hardening.spec.ts:180:1 › restores the connected canonical notice after Elements replacement, removal, and movement including sibling reorder (1.6s)
+  -  202 [firefox] › tests/e2e/runtime-hardening.spec.ts:231:1 › automatic watch reports an actual debugger pause without manual sampling and latches the signal
+  ✘  189 [firefox] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (16.2s)
+(node:39819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  201 [firefox] › tests/e2e/runtime-demo.spec.ts:473:1 › demo-only exit disables page protection and cleans up its modal without disabling explicit shortcut restrictions (1.2s)
+  ✓  205 [firefox] › tests/e2e/runtime-demo.spec.ts:508:1 › simulated docked-window geometry opens the page dialog and recheck waits for the signal to clear (1.0s)
+  ✓  203 [firefox] › tests/e2e/sandbox-errors.spec.ts:3:1 › reports empty thrown values as execution failures instead of matching outputs (2.8s)
+  ✓  206 [firefox] › tests/e2e/runtime-demo.spec.ts:555:1 › default protection switches remain independent and repeatable with real input (1.5s)
+  ✓  207 [firefox] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (1.5s)
+  ✓  208 [firefox] › tests/e2e/runtime-demo.spec.ts:602:1 › invalid advanced threshold preserves actual threshold without blocking basic toggles (1.1s)
+  ✓  209 [firefox] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (1.0s)
+  ✓  210 [firefox] › tests/e2e/site-guard.spec.ts:36:1 › the site starts protected outside the demo test area and offers a modal-only exit (1.3s)
+  ✓  204 [firefox] › tests/e2e/sandbox-startup.spec.ts:32:1 › does not charge slow real Worker startup against the code execution budget (5.4s)
+  ✓  212 [firefox] › tests/e2e/site-guard.spec.ts:68:1 › the default context policy cancels a trusted right click on the hero (967ms)
+  ✓  211 [firefox] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (1.5s)
+  ✓  214 [firefox] › tests/e2e/site-guard.spec.ts:80:1 › large window dimensions do not lock the site while heuristic detection is disabled (1.0s)
+  ✓  215 [firefox] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (1.4s)
+(node:39981) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  216 [firefox] › tests/e2e/site-guard.spec.ts:109:1 › turning off the live policy removes the auto runtime restrictions without a second hidden guard (1.1s)
+  ✓  218 [firefox] › tests/e2e/site-guard.spec.ts:132:1 › restoring site defaults updates the active SDK and all visible controls (1.2s)
+(node:40020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  217 [webkit] › tests/e2e/cdn.spec.ts:6:1 › loads the pinned CDN SDK with SRI across origins and rejects changed bytes (1.4s)
+  ✓  220 [webkit] › tests/e2e/demo.spec.ts:4:3 › vanilla-js keeps controls disabled until its module is ready (546ms)
+  ✓  221 [webkit] › tests/e2e/demo.spec.ts:4:3 › vanilla-ts keeps controls disabled until its module is ready (542ms)
+  ✓  219 [webkit] › tests/e2e/compat-demo.spec.ts:77:1 › checks the real multipage, charset, headers, query redirect and fixed API over HTTP (2.3s)
+  ✓  223 [webkit] › tests/e2e/compat-demo.spec.ts:117:1 › renders actual responses and completes a valid fixture (304ms)
+  ✓  224 [webkit] › tests/e2e/compat-demo.spec.ts:134:1 › does not count HTTP/API failures or a successful SPA fallback as compatibility success (291ms)
+  ✓  225 [webkit] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset after CSP instead of showing a false success (275ms)
+  ✓  226 [webkit] › tests/e2e/compat-demo.spec.ts:190:3 › rejects charset beyond byte 1024 instead of showing a false success (268ms)
+  ✓  227 [webkit] › tests/e2e/compat-demo.spec.ts:190:3 › rejects source phrase corrupted instead of showing a false success (253ms)
+  ✓  228 [webkit] › tests/e2e/compat-demo.spec.ts:190:3 › rejects head inserted after body instead of showing a false success (254ms)
+  ✓  229 [webkit] › tests/e2e/compat-demo.spec.ts:190:3 › rejects fake commented charset instead of showing a false success (261ms)
+  ✓  230 [webkit] › tests/e2e/compat-demo.spec.ts:219:1 › rejects missing enforced headers, wrong API markers and a redirect with a changed query (256ms)
+  ✓  231 [webkit] › tests/e2e/compat-demo.spec.ts:265:1 › keeps retry available after persisted lifecycle cancellation without duplicate runs (483ms)
+  ✓  232 [webkit] › tests/e2e/compat-demo.spec.ts:301:1 › rejects a MIME value containing text/html without being text/html (269ms)
+  ✓  213 [firefox] › tests/e2e/sandbox-startup.spec.ts:46:1 › allows bounded iframe startup before starting execution (10.6s)
+  ✓  233 [webkit] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (1.6s)
+  ✓  222 [webkit] › tests/e2e/demo.spec.ts:29:1 › runs a ready-made strong example and shows its real output (6.0s)
+  ✓  236 [webkit] › tests/e2e/demo.spec.ts:44:1 › demonstrates live SDK controls and provides selectable integration code (1.5s)
+  ✓  235 [webkit] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (10.5s)
+  ✓  234 [firefox] › tests/e2e/sandbox-startup.spec.ts:64:1 › reports unavailable startup separately and cleans up instead of claiming code ran (12.1s)
+  ✓  238 [webkit] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (1.1s)
+  ✓  237 [webkit] › tests/e2e/demo.spec.ts:73:1 › opens working protected examples and documentation through same-origin links (11.4s)
+  ✓  241 [webkit] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (1.8s)
+  ✓  240 [webkit] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (3.6s)
+  ✓  242 [webkit] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (1.5s)
+  ✓  244 [webkit] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (1.4s)
+  ✓  243 [webkit] › tests/e2e/lab.spec.ts:2:1 › executes real policy, integrity and server tampering scenarios (2.8s)
+  ✓  239 [firefox] › tests/e2e/sandbox-startup.spec.ts:85:1 › still terminates infinite code after delayed startup at the execution deadline (8.4s)
+  ✓  245 [webkit] › tests/e2e/navigation.spec.ts:3:1 › opens /demo directly on operable controls and preserves the home introduction (1.4s)
+  ✓  246 [webkit] › tests/e2e/lab.spec.ts:60:1 › checks eval and inline handlers under CSP and resets local results (3.3s)
+  ✓  249 [webkit] › tests/e2e/lab.spec.ts:89:1 › does not accept forged scenario messages or execute user markup (1.9s)
+  ✓  248 [webkit] › tests/e2e/navigation.spec.ts:35:1 › opens public code inspection and real security comparisons directly from the protection overview (4.2s)
+  ✓  250 [webkit] › tests/e2e/lab.spec.ts:123:1 › reports a network failure without claiming verification success and permits retry (1.5s)
+  ✓  251 [webkit] › tests/e2e/navigation.spec.ts:71:1 › starts with a quiet browser guard surface and preserves choices across keyboard navigation (1.3s)
+  ✓  247 [firefox] › tests/e2e/sandbox-startup.spec.ts:106:1 › Worker ready spam cannot extend the execution deadline (5.8s)
+  ✓  252 [webkit] › tests/e2e/lab.spec.ts:141:1 › compares actual network responses against connect-src blocking and fails closed without a baseline (2.7s)
+  ✓  253 [webkit] › tests/e2e/navigation.spec.ts:128:1 › routes existing deep links to their tabs and opens setup disclosures (2.5s)
+  ✓  254 [firefox] › tests/e2e/sandbox-startup.spec.ts:127:1 › cleans up failed Worker construction and keeps the controls available (3.2s)
+  ✓  255 [webkit] › tests/e2e/lab.spec.ts:168:1 › compares actual innerHTML assignment with Trusted Types enforcement or reports unsupported explicitly (2.0s)
+  ✓  256 [webkit] › tests/e2e/navigation.spec.ts:163:1 › allows every tab to be selected without overflowing a 390px viewport (3.2s)
+  ✓  258 [webkit] › tests/e2e/lab.spec.ts:204:1 › never counts an unavailable Trusted Types API as successful verification (1.9s)
+  ✓  260 [webkit] › tests/e2e/policy-demo.spec.ts:3:1 › compares all policies, mixed settings and all-off using real sandbox operations (2.4s)
+  ✓  259 [webkit] › tests/e2e/playground.spec.ts:3:1 › protects locally, compares real output, and creates a local integrity report (4.1s)
+  ✓  261 [webkit] › tests/e2e/policy-demo.spec.ts:51:1 › reports failed baseline networking instead of claiming a successful block and ignores forged messages (1.2s)
+  ✓  263 [webkit] › tests/e2e/policy-demo.spec.ts:83:1 › cancels pending frames on pagehide and can run again after page restoration (1.3s)
+  ✓  257 [firefox] › tests/e2e/sandbox-startup.spec.ts:151:1 › cancels pending startup on pagehide and supports another run (8.5s)
+  ✓  262 [webkit] › tests/e2e/playground.spec.ts:44:1 › rejects invalid JavaScript without executing it (2.3s)
+(node:41112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  264 [webkit] › tests/e2e/product-presence.spec.ts:5:1 › serves complete social metadata and genuine PNG previews without running JavaScript (1.4s)
+  ✓  267 [webkit] › tests/e2e/product-presence.spec.ts:113:1 › connects SDK strengths to real interactive panels and keeps product scope readable on mobile (2.4s)
+  ✓  265 [webkit] › tests/e2e/playground.spec.ts:57:1 › terminates infinite execution and keeps the main app responsive (4.3s)
+  ✓  266 [webkit] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (4.0s)
+  ✓  270 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (1.4s)
+  ✓  271 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (936ms)
+  ✓  269 [webkit] › tests/e2e/playground.spec.ts:75:1 › blocks network requests from source and protected execution (3.1s)
+  ✓  273 [webkit] › tests/e2e/playground.spec.ts:96:1 › ignores forged window messages and prevents worker access to the page (3.8s)
+  ✓  274 [webkit] › tests/e2e/playground.spec.ts:120:1 › has a usable narrow layout and accessible controls (1.2s)
+  ✓  275 [webkit] › tests/e2e/playground.spec.ts:135:1 › explains empty input and invalidates changed source in Korean (1.7s)
+  ✓  276 [webkit] › tests/e2e/playground.spec.ts:162:1 › preset result validity changes only when selecting a different preset (3.9s)
+  ✓  277 [webkit] › tests/e2e/resources.spec.ts:51:1 › previews verified downloaded bytes as inert text and removes stale code after a mismatch (333ms)
+  ✓  278 [webkit] › tests/e2e/resources.spec.ts:79:1 › audits actual deployed source URLs and matches the document entry SRI against fetched bytes (2.0s)
+  ✓  279 [webkit] › tests/e2e/resources.spec.ts:116:1 › does not report success for exposed source, SPA fallback or 410 responses (245ms)
+  ✓  280 [webkit] › tests/e2e/resources.spec.ts:142:1 › detects changed asset bytes using the unchanged document SRI and prevents concurrent runs (521ms)
+  ✓  281 [webkit] › tests/e2e/resources.spec.ts:168:1 › rejects missing SRI and an entry outside the same-origin assets prefix (304ms)
+  ✓  282 [webkit] › tests/e2e/resources.spec.ts:202:1 › preserves resource auditing across persisted page lifecycle events and releases a cancelled run (356ms)
+  ✓  283 [webkit] › tests/e2e/resources.spec.ts:251:1 › rejects an exposed backup even when the public entry hash matches (245ms)
+  ✓  284 [webkit] › tests/e2e/resources.spec.ts:275:1 › enforces generated SRI for mixed-case and multi-token stylesheet links in a real browser (205ms)
+  ✓  285 [webkit] › tests/e2e/runtime-demo.spec.ts:71:1 › reaches live SDK controls from the hero and applies both policy buttons (1.9s)
+  ✓  286 [webkit] › tests/e2e/runtime-demo.spec.ts:108:1 › blocks actual F12 and right-click input outside an editor while preserving editable context menus (1.9s)
+  ✓  287 [webkit] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Mac inspect shortcuts only while restrictions are enabled (1.7s)
+  ✓  288 [webkit] › tests/e2e/runtime-demo.spec.ts:156:3 › cancels actual Windows inspect shortcuts only while restrictions are enabled (1.6s)
+  ✓  289 [webkit] › tests/e2e/runtime-demo.spec.ts:193:1 › labels synthetic F12 trials honestly and caps then clears the local event history (2.6s)
+  ✓  290 [webkit] › tests/e2e/runtime-demo.spec.ts:229:1 › checks a real manifest and file through the SDK with matching and different expected hashes (1.6s)
+  ✓  291 [webkit] › tests/e2e/runtime-demo.spec.ts:269:1 › reports a real mismatch when the manifest-listed SDK file response is changed (2.1s)
+  ✓  272 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (30.3s)
+  ✓  292 [webkit] › tests/e2e/runtime-demo.spec.ts:304:1 › does not request application resources when the SDK integrity policy is disabled (1.3s)
+  ✓  293 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (647ms)
+  ✓  295 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (804ms)
+  ✓  296 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (819ms)
+  ✓  297 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (727ms)
+  ✓  298 [webkit] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (2.4s)
+  ✓  294 [webkit] › tests/e2e/runtime-demo.spec.ts:334:1 › runs the complete feature tour with real SDK, scenario, and High protection results (5.7s)
+  ✓  299 [webkit] › tests/e2e/runtime-hardening.spec.ts:3:1 › uses opaque CSS module names without breaking the rendered notice (792ms)
+  ✓  301 [webkit] › tests/e2e/runtime-hardening.spec.ts:15:1 › defaults to live observation and detects repeated DOM changes after explicit restoration (2.8s)
+  ✓  300 [webkit] › tests/e2e/runtime-demo.spec.ts:418:1 › default page protection cancels trusted Mac inspection input inside an editor and permits rechecking (4.2s)
+  ✓  302 [webkit] › tests/e2e/runtime-hardening.spec.ts:44:1 › compares OFF and ON without accepting a response-only baseline change (1.8s)
+  ✘  268 [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens (45.0s)
+  ✓  303 [webkit] › tests/e2e/runtime-demo.spec.ts:473:1 › demo-only exit disables page protection and cleans up its modal without disabling explicit shortcut restrictions (1.1s)
+(node:41464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  305 [webkit] › tests/e2e/runtime-demo.spec.ts:508:1 › simulated docked-window geometry opens the page dialog and recheck waits for the signal to clear (1.2s)
+  ✓  307 [webkit] › tests/e2e/runtime-demo.spec.ts:555:1 › default protection switches remain independent and repeatable with real input (1.7s)
+  ✓  306 [webkit] › tests/e2e/sandbox-errors.spec.ts:3:1 › reports empty thrown values as execution failures instead of matching outputs (2.8s)
+  ✓  308 [webkit] › tests/e2e/runtime-demo.spec.ts:602:1 › invalid advanced threshold preserves actual threshold without blocking basic toggles (1.1s)
+  ✓  310 [webkit] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (1.3s)
+  ✓  311 [webkit] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (1.1s)
+  ✓  312 [webkit] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (1.1s)
+  ✓  313 [webkit] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (1.5s)
+  ✓  309 [webkit] › tests/e2e/sandbox-startup.spec.ts:32:1 › does not charge slow real Worker startup against the code execution budget (6.2s)
+  ✓  314 [webkit] › tests/e2e/site-guard.spec.ts:36:1 › the site starts protected outside the demo test area and offers a modal-only exit (979ms)
+  ✓  316 [webkit] › tests/e2e/site-guard.spec.ts:68:1 › the default context policy cancels a trusted right click on the hero (871ms)
+  ✓  317 [webkit] › tests/e2e/site-guard.spec.ts:80:1 › large window dimensions do not lock the site while heuristic detection is disabled (1.4s)
+  ✓  318 [webkit] › tests/e2e/site-guard.spec.ts:109:1 › turning off the live policy removes the auto runtime restrictions without a second hidden guard (1.6s)
+  ✓  319 [webkit] › tests/e2e/site-guard.spec.ts:132:1 › restoring site defaults updates the active SDK and all visible controls (1.2s)
+  ✓  315 [webkit] › tests/e2e/sandbox-startup.spec.ts:46:1 › allows bounded iframe startup before starting execution (6.2s)
+  ✓  320 [webkit] › tests/e2e/sandbox-startup.spec.ts:64:1 › reports unavailable startup separately and cleans up instead of claiming code ran (12.6s)
+  ✓  321 [webkit] › tests/e2e/sandbox-startup.spec.ts:85:1 › still terminates infinite code after delayed startup at the execution deadline (8.8s)
+  ✓  322 [webkit] › tests/e2e/sandbox-startup.spec.ts:106:1 › Worker ready spam cannot extend the execution deadline (3.7s)
+  ✓  323 [webkit] › tests/e2e/sandbox-startup.spec.ts:127:1 › cleans up failed Worker construction and keeps the controls available (2.3s)
+  ✘  304 [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit (45.0s)
+(node:42755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  325 [webkit] › tests/e2e/runtime-hardening.spec.ts:90:1 › offers one visible protection flow and restores defaults (1.3s)
+  ✓  326 [webkit] › tests/e2e/runtime-hardening.spec.ts:109:1 › keeps manual timer results separate from automatic observation and cancels on OFF (2.3s)
+  ✓  324 [webkit] › tests/e2e/sandbox-startup.spec.ts:151:1 › cancels pending startup on pagehide and supports another run (8.6s)
+  ✓  327 [webkit] › tests/e2e/runtime-hardening.spec.ts:123:1 › response switches preserve watch progress and an active manual sample (5.1s)
+  ✓  328 [webkit] › tests/e2e/runtime-hardening.spec.ts:151:1 › repeatedly restores canonical content when DOM monitoring is enabled after tampering (1.5s)
+  ✓  329 [webkit] › tests/e2e/runtime-hardening.spec.ts:180:1 › restores the connected canonical notice after Elements replacement, removal, and movement including sibling reorder (1.7s)
+  -  330 [webkit] › tests/e2e/runtime-hardening.spec.ts:231:1 › automatic watch reports an actual debugger pause without manual sampling and latches the signal
+
+
+  1) [firefox] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference 
+
+    Error: expect(locator).toBeInViewport() failed
+
+    Locator:  locator('#webguardinstancecheckintegrity')
+    Expected: in viewport
+    Received: viewport ratio 0
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toBeInViewport" locator('#webguardinstancecheckintegrity') with timeout 15000ms
+      - waiting for locator('#webguardinstancecheckintegrity')
+        34 × locator resolved to <h2 id="webguardinstancecheckintegrity">↵            WebGuardInstance.checkIntegrity↵    …</h2>
+           - unexpected value "viewport ratio 0"
+
+
+      142 |   await expect(
+      143 |     page.locator("#webguardinstancecheckintegrity"),
+    > 144 |   ).toBeInViewport();
+          |     ^
+      145 |   await page.goto("/demo#setup");
+      146 |   await page
+      147 |     .locator(".setup-support")
+        at /Users/uulab/Documents/workspace/uulab/webguard/tests/e2e/public-guides.spec.ts:144:5
+
+    Error Context: test-results/e2e-public-guides-connects-ab199--the-complete-API-reference-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-public-guides-connects-ab199--the-complete-API-reference-firefox/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e-public-guides-connects-ab199--the-complete-API-reference-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens 
+
+    Test timeout of 45000ms exceeded.
+
+    Error: page.goto: Test timeout of 45000ms exceeded.
+    Call log:
+      - navigating to "https://webguard.uulab.co.kr/", waiting until "load"
+
+
+      163 |   for (const width of [320, 390, 1280]) {
+      164 |     await page.setViewportSize({ width, height: 844 });
+    > 165 |     await page.goto("/");
+          |                ^
+      166 |     await expect(page).toHaveURL(new URL("/", page.url()).href);
+      167 |     await expect(page.locator("#hero-heading")).toBeInViewport();
+      168 |     await expect(page.locator("#hero-heading")).toContainText("빌드");
+        at /Users/uulab/Documents/workspace/uulab/webguard/tests/e2e/product-presence.spec.ts:165:16
+
+    Error Context: test-results/e2e-product-presence-the-S-9dce2-compact-and-desktop-screens-webkit/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-product-presence-the-S-9dce2-compact-and-desktop-screens-webkit/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e-product-presence-the-S-9dce2-compact-and-desktop-screens-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit 
+
+    Test timeout of 45000ms exceeded.
+
+    Error: page.goto: Test timeout of 45000ms exceeded.
+    Call log:
+      - navigating to "https://webguard.uulab.co.kr/#runtime-hardening", waiting until "load"
+
+
+      74 |   page,
+      75 | }) => {
+    > 76 |   await page.goto("/#runtime-hardening");
+         |              ^
+      77 |   await page.locator("#dom-block").check();
+      78 |   await page.locator("#dom-tamper").click();
+      79 |   const dialog = page.locator("dialog[data-webguard-blocker]");
+        at /Users/uulab/Documents/workspace/uulab/webguard/tests/e2e/runtime-hardening.spec.ts:76:14
+
+    Error Context: test-results/e2e-runtime-hardening-resp-8a275-al-and-provides-a-demo-exit-webkit/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-runtime-hardening-resp-8a275-al-and-provides-a-demo-exit-webkit/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e-runtime-hardening-resp-8a275-al-and-provides-a-demo-exit-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [firefox] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference 
+    [webkit] › tests/e2e/product-presence.spec.ts:160:1 › the SDK landing exposes actionable documentation and fits compact and desktop screens 
+    [webkit] › tests/e2e/runtime-hardening.spec.ts:73:1 › responds to DOM tampering with a real modal and provides a demo exit 
+  2 skipped
+  325 passed (5.5m)
+[ELIFECYCLE] Command failed with exit code 1.

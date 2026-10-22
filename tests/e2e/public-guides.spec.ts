@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const guides = [
   ["INSTALL.ko", "WebGuard 0.3.0 로컬 후보 검토·적용 가이드"],
@@ -9,6 +9,16 @@ const guides = [
   ["API_BUILD.ko", "Node 빌드·헤더·무결성·배포 검증 API"],
   ["API_INTEGRATIONS.ko", "WebGuard 연동 API와 CLI 명세"],
 ] as const;
+
+async function expectGuideReady(page: Page) {
+  // Link navigation can expose text before its stylesheet finishes. Anchor
+  // positioning must use the final styled layout, not the transient bare HTML.
+  await page.waitForLoadState("load");
+  await expect(page.locator(".docs-header")).toHaveCSS(
+    "background-color",
+    "rgb(237, 248, 255)",
+  );
+}
 
 test("opens complete guides from the Korean documentation home", async ({
   page,
@@ -24,11 +34,7 @@ test("opens complete guides from the Korean documentation home", async ({
     .getByRole("link", { name: "설치·적용 전체 가이드" })
     .click();
   await expect(page).toHaveURL(/\/docs\/INSTALL\.ko\.html$/);
-  await page.waitForLoadState("load");
-  await expect(page.locator(".docs-header")).toHaveCSS(
-    "background-color",
-    "rgb(237, 248, 255)",
-  );
+  await expectGuideReady(page);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     guides[0][1],
   );
@@ -36,11 +42,7 @@ test("opens complete guides from the Korean documentation home", async ({
     .getByRole("link", { name: "환경별 적용 가이드", exact: true })
     .click();
   await expect(page).toHaveURL(/\/docs\/ENVIRONMENTS\.ko\.html$/);
-  await page.waitForLoadState("load");
-  await expect(page.locator(".docs-header")).toHaveCSS(
-    "background-color",
-    "rgb(237, 248, 255)",
-  );
+  await expectGuideReady(page);
   await expect(
     page.getByRole("link", { name: "설치 가이드", exact: true }),
   ).toHaveAttribute(
@@ -121,6 +123,12 @@ for (const [name, title] of guides) {
 test("connects the docs and demo setup to the complete API reference", async ({
   page,
 }) => {
+  // Reproduce the Firefox trace: guide text is actionable before CSS arrives.
+  // Readiness below is condition-based; this delay only exercises that race.
+  await page.route("**/docs/guide.css", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    await route.continue();
+  });
   await page.goto("/docs/#api-reference");
   const reference = page.locator("#api-reference");
   for (const name of ["API", "API_BROWSER", "API_BUILD", "API_INTEGRATIONS"]) {
@@ -129,6 +137,8 @@ test("connects the docs and demo setup to the complete API reference", async ({
     ).toBeVisible();
   }
   await reference.getByRole("link", { name: "API 명세 전체 목차" }).click();
+  await expect(page).toHaveURL(/\/docs\/API\.ko\.html$/);
+  await expectGuideReady(page);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "WebGuard API 명세",
   );
@@ -136,6 +146,8 @@ test("connects the docs and demo setup to the complete API reference", async ({
     .getByRole("navigation")
     .getByRole("link", { name: "브라우저 런타임 API", exact: true })
     .click();
+  await expect(page).toHaveURL(/\/docs\/API_BROWSER\.ko\.html$/);
+  await expectGuideReady(page);
   await page
     .locator('.docs-outline a[href="#webguardinstancecheckintegrity"]')
     .click();

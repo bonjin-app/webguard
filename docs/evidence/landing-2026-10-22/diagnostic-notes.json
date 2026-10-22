@@ -1,0 +1,36 @@
+{
+  "scope": "Observations extracted from the initial failed Playwright run; original trace archives were auto-cleaned by the subsequent run, so these are diagnostic notes rather than retained raw traces.",
+  "firefoxGuideAnchor": {
+    "observation": "API browser heading existed and hash matched, but stylesheet completion followed the anchor action; layout then moved the heading outside the viewport.",
+    "anchorClickEndMs": 153135.604,
+    "stylesheetResponseEndMs": 153138.427,
+    "fix": "Wait for load and observed header CSS before subsequent navigation or anchor actions; retain viewport assertion and deliberately delay CSS 400 ms in regression."
+  },
+  "webkitInitialLoads": [
+    {
+      "test": "SDK landing exposes actionable documentation and fits compact and desktop screens",
+      "documentStatus": 200,
+      "documentDurationMs": 157.224,
+      "facadeStatus": 200,
+      "facadeDurationMs": 238.715,
+      "cssStatus": 200,
+      "beaconStatus": 200,
+      "unfinishedObservedUrl": "https://webguard.uulab.co.kr/assets/main-BLfxO41L.js",
+      "observedStatus": -1,
+      "observedDurationMs": -1
+    },
+    {
+      "test": "responds to DOM tampering with a real modal and provides a demo exit",
+      "documentStatus": 200,
+      "documentDurationMs": 307.448,
+      "facadeStatus": 200,
+      "facadeDurationMs": 122.954,
+      "cssStatus": 200,
+      "beaconStatus": 200,
+      "unfinishedObservedUrl": "https://webguard.uulab.co.kr/assets/main-BLfxO41L.js",
+      "observedStatus": -1,
+      "observedDurationMs": -1
+    }
+  ],
+  "webkitEvidenceBoundary": "An unfinished trace request is not proof no response bytes arrived, and does not establish an HTTP/2 or preload-coalescing defect. Same-code serial 2 and parallel repeated 10 checks passed without timeout changes or SRI/preload removal. No root-cause fix is claimed."
+}

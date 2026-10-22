@@ -1,0 +1,47 @@
+
+ ⛅️ wrangler 4.151.2 (update available 4.151.3)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 91 files from the assets directory /Users/uulab/Documents/workspace/uulab/webguard/.cloudflare-dist/public
+🌀 Starting asset upload...
+🌀 Found 24 new or modified static assets to upload. Proceeding with upload...
++ /examples/vanilla-js/assets/lazy-BL7Aa_pz.js
++ /examples/react/webguard-manifest.json
++ /examples/vanilla-ts/assets/lazy-CzJi-wsS.js
++ /examples/vanilla-js/index.html
++ /examples/react/assets/lazy-sVlrdE5R.js
++ /demo.html
++ /assets/main-C4xVEOuQ.css
++ /assets/transform.worker-D0WO5YlC.js
++ /examples/vanilla-js/assets/about-CnpBATc6.js
++ /examples/react/index.html
++ /examples/vanilla-js/about/index.html
++ /examples/vanilla-ts/index.html
++ /docs/index.html
++ /examples/vanilla-js/assets/index-oMcGaM8R.js
++ /docs/assets/index-IYqTAZXZ.js
++ /assets/index.browser-CuiuBj1h.js
++ /examples/vanilla-ts/webguard-manifest.json
++ /examples/vanilla-js/webguard-manifest.json
++ /assets/home-Ds6-_EsW.js
++ /assets/demo-CvUh0Ic2.js
++ /index.html
++ /examples/vanilla-ts/assets/index-CsaKDW97.js
++ /assets/main-BLfxO41L.js
++ /examples/react/assets/index-DMw3qwpn.js
+Uploaded 8 of 24 assets
+Uploaded 16 of 24 assets
+Uploaded 24 of 24 assets
+✨ Success! Uploaded 24 files (46 already uploaded) (2.22 sec)
+
+Total Upload: 17.64 KiB / gzip: 3.39 KiB
+Worker Startup Time: 2 ms
+Your Worker has access to the following bindings:
+Binding            Resource      
+env.ASSETS         Assets        
+
+Uploaded webguard-demo (6.44 sec)
+Deployed webguard-demo triggers (1.97 sec)
+  https://webguard-demo.uulab.workers.dev
+  webguard.uulab.co.kr (custom domain)
+Current Version ID: 51eccbb7-a81d-4963-87f9-5df54515d7a8
