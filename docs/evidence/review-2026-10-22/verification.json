@@ -1,0 +1,97 @@
+{
+  "status": "passed-with-declared-coverage-limits",
+  "checkedAt": "2026-10-22T00:43:29.555Z",
+  "sourceCommit": "3f6fd67b9d9edffa766b6117dd3b5c335419de9d",
+  "origin": "https://webguard.uulab.co.kr",
+  "deployment": {
+    "id": "8d3ee58b-8bf4-437c-8aeb-005f13060032",
+    "version": "a706f45c-3018-4cde-8059-7e29f52935ae",
+    "previousVersion": "33c6a555-d850-4e06-bfab-b1f1257fc725",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "verification": {
+    "unitIntegration": {
+      "passed": 552,
+      "files": 40
+    },
+    "localFeatureBrowser": {
+      "passed": 97,
+      "skipped": 2
+    },
+    "finalLocalFirstScreen": {
+      "passed": 3
+    },
+    "publicHttpBrowser": {
+      "passed": 274,
+      "skipped": 2,
+      "failed": 0,
+      "retries": 0
+    },
+    "skips": "Chromium-only CDP debugger pause/resume verification is skipped on Firefox and WebKit",
+    "build": true,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "publicFilesByteMatched": 40,
+    "packageFilesByteMatched": 34
+  },
+  "candidate": {
+    "tarballSha512": "a257dd430bfd1534fcbdc67aae32f7ceb909a6f539af8e2f7472d6bf0667bbf38c2861017ada0c72b9c74ab27b5baa8af7d2b675b42694223f6e0d4423e91391",
+    "packedFilesMatchCurrentBuild": 34,
+    "npmPublished": false
+  },
+  "consumerCoverage": {
+    "vite": {
+      "vite": "8.3.4",
+      "uulab-webguard": "0.3.0"
+    },
+    "next": {
+      "next": "16.4.2",
+      "react": "19.3.1",
+      "react-dom": "19.3.1",
+      "uulab-webguard": "0.3.0"
+    },
+    "desktopEngines": ["chromium", "firefox", "webkit"],
+    "genericBuilds": ["webpack", "esbuild", "plain-html"],
+    "genericBrowserCases": 12,
+    "pythonHttpChecks": 14,
+    "pythonBrowserCases": 3,
+    "ssrSkipped": [
+      {
+        "runtime": "PHP",
+        "reason": "Runtime executable unavailable; not verified"
+      }
+    ],
+    "java": "Example configuration reviewed; current Maven executable unavailable in PATH. Historical Java runtime proof is separate."
+  },
+  "nativeUI": {
+    "initialImprovementVersion": "500acbb5-fbc8-417d-a1d3-08a3f13ce4fa",
+    "syntheticShortcutTrialOff": "allowed",
+    "syntheticShortcutTrialOn": "modal with cause-specific title",
+    "recheckRestoredUI": true,
+    "nextSetupSelected": true,
+    "highComparison": "outputs match: 90 and 95",
+    "mobileViewport": [390, 844],
+    "mobileViewportReset": true,
+    "finalCapture": "11-entry-final.png",
+    "screenshotsVerifiedFromSavedFiles": true
+  },
+  "release": {
+    "npmPublication": "paused; no authentication or publication attempted",
+    "canonicalArchiveUnchangedSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+    "canonicalRecordUnchangedSha256": "c3f8006e8cd72d2c0c09b94c2d3ff90075bbeb5746fff15e424691bf9ee2b0e6",
+    "legacyCandidateGate": "Refused before authentication; no supported package snapshot",
+    "globalCodexConfigurationModified": false
+  },
+  "limits": [
+    "No universal DevTools open/close detection or forced browser-tool closure",
+    "Deadline watch reports after execution resumes and can produce scheduling/load false positives",
+    "Known public code/map/control/removed-source compression variants are checked up to two gzip/Brotli wrappers; arbitrary unknown remote names are not enumerated",
+    "Credentials pre-scan is a heuristic, not proof of absence of secrets",
+    "PHP runtime not available for this execution; Java historical evidence is not a new runtime verification",
+    "No complete WCAG or physical-device validation claimed"
+  ]
+}

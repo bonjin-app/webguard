@@ -1,0 +1,220 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T00:39:15.831Z",
+  "sourceCommit": "3f6fd67b9d9edffa766b6117dd3b5c335419de9d",
+  "origin": "https://webguard.uulab.co.kr",
+  "version": "a706f45c-3018-4cde-8059-7e29f52935ae",
+  "previousVersion": "33c6a555-d850-4e06-bfab-b1f1257fc725",
+  "deploymentId": "8d3ee58b-8bf4-437c-8aeb-005f13060032",
+  "trafficPercentage": 100,
+  "runtimeAndBindingsUnchanged": true,
+  "publicFiles": [
+    {
+      "path": "assets/index-BGAcWjSv.js",
+      "status": 200,
+      "sha256": "1aed4b18d49e39d139a8bb8d5276aa13e5400b8c67c62458d31ab6c25bb07953"
+    },
+    {
+      "path": "assets/index-CrPIonZd.css",
+      "status": 200,
+      "sha256": "43eee8bb66963ef73f13107e9fa9b83aebe5fbf94bdc414015718198679cdf28"
+    },
+    {
+      "path": "assets/index.browser-1l80SQPS.js",
+      "status": 200,
+      "sha256": "2b5d3791ad543b7a6861ecae7850d39d043a9021827c7ad6e845af249c08a992"
+    },
+    {
+      "path": "assets/input-try-C8omM10O.webp",
+      "status": 200,
+      "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a"
+    },
+    {
+      "path": "assets/sdk-cube-BfW27hof.webp",
+      "status": 200,
+      "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a"
+    },
+    {
+      "path": "assets/sky-background-BT0G8_Wo.webp",
+      "status": 200,
+      "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b"
+    },
+    {
+      "path": "assets/transform.worker-DPZDv99N.js",
+      "status": 200,
+      "sha256": "a28c4def441620b35d8511ad8432f05f8b279aa843f57a26694b984f105528c0"
+    },
+    {
+      "path": "assets/web-app-B46Mgxd8.webp",
+      "status": 200,
+      "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554"
+    },
+    {
+      "path": "docs/assets/index-Bcb_rXpe.js",
+      "status": 200,
+      "sha256": "a5985f63c2dfde04b82841f85a4e13eb2c72d41a814c201863443ca454f42988"
+    },
+    {
+      "path": "docs/assets/index-gal6gU6H.css",
+      "status": 200,
+      "sha256": "f6fbdc8f8364f1a58cb696b7ec724e29157f7f531013de39e2ac6f16d43194db"
+    },
+    {
+      "path": "docs/ENVIRONMENTS.ko.txt",
+      "status": 200,
+      "sha256": "b7a811d53f2878522e1b11ffdea15e371ee9f7653abf7e3ff9685b734037832e"
+    },
+    {
+      "path": "docs/favicon.svg",
+      "status": 200,
+      "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471"
+    },
+    {
+      "path": "docs/index.html",
+      "status": 200,
+      "sha256": "20ca3fb700613fc573b35e43049bf1ba70c2249146b503dcf04d87aa5aca2936"
+    },
+    {
+      "path": "docs/INSTALL.ko.txt",
+      "status": 200,
+      "sha256": "f5a3e465f1152d05e0c9a2696015dc9709f8c6ec3331ec3a15ef1dc1f042c8ab"
+    },
+    {
+      "path": "docs/og-docs.png",
+      "status": 200,
+      "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492"
+    },
+    {
+      "path": "docs/SSR_VERIFICATION.txt",
+      "status": 200,
+      "sha256": "04f29c48127373aa76688441a3265e3a58b094c5c0f4667cad4fbb8961c34a6d"
+    },
+    {
+      "path": "docs/third-party-licenses.md",
+      "status": 200,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "examples/react/assets/index-65KBRBiT.css",
+      "status": 200,
+      "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3"
+    },
+    {
+      "path": "examples/react/assets/index-D4fg3p9k.js",
+      "status": 200,
+      "sha256": "8ffdcac744b973a688d91f17fab832da7cc701c6f03286ff8e18d454ea53ff66"
+    },
+    {
+      "path": "examples/react/assets/lazy-mnG063wO.js",
+      "status": 200,
+      "sha256": "3b2e603f82d889e35c6bc66a49f0260342d38498e8791e792f8e1f42464bde9a"
+    },
+    {
+      "path": "examples/react/index.html",
+      "status": 200,
+      "sha256": "665e3636488dfe19c91322082c9c4ee477f988f304491a6efbb89648227264ca"
+    },
+    {
+      "path": "examples/react/third-party-licenses.md",
+      "status": 200,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "path": "examples/react/webguard-manifest.json",
+      "status": 200,
+      "sha256": "5de2d09f86067e2953be959ff28d4ea40b8449a869f14c31d18e0459f6355f5b"
+    },
+    {
+      "path": "examples/vanilla-js/about/index.html",
+      "status": 200,
+      "sha256": "aa00392645241134afc205b4fabd3cea26dafa1bc69364d8aabef47060944ef6"
+    },
+    {
+      "path": "examples/vanilla-js/assets/about-BKesFsz6.js",
+      "status": 200,
+      "sha256": "3c391411bd68ff0ae5d5b16a30b953008c6a8e858e2cd57d37500edf85488d8c"
+    },
+    {
+      "path": "examples/vanilla-js/assets/index-Bzi-obph.js",
+      "status": 200,
+      "sha256": "340082140c8bb7f93ab075def43b42807201a44ff8bcd0208e9d05ec21127322"
+    },
+    {
+      "path": "examples/vanilla-js/assets/lazy-C_YmGpM9.js",
+      "status": 200,
+      "sha256": "525674705a0ab7a270c8dc98dc43c6ac1ff5b57d1dcab8f0c0dbe25225962214"
+    },
+    {
+      "path": "examples/vanilla-js/assets/style-BzABUnnU.css",
+      "status": 200,
+      "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+    },
+    {
+      "path": "examples/vanilla-js/index.html",
+      "status": 200,
+      "sha256": "1a6bfbe58450a30a8a2b4208f6b7fe9c18785bcc4d1e09027c29144c85efed4b"
+    },
+    {
+      "path": "examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "sha256": "de2b2d7209199f534a79737d55cdb6510e766481e44aa2a9a9763b41b3ff8597"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/index-BSmVxDWK.js",
+      "status": 200,
+      "sha256": "b44d4e5a47cd87f001d3c7db109b79f1a12d30c6373b005ceae8630f98ab5fe3"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+      "status": 200,
+      "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/lazy-DbjPkRmt.js",
+      "status": 200,
+      "sha256": "9eb42d96a7e46031fb56e50d1c0c47393a6d7286c2ee3c106ade56d1bb76507a"
+    },
+    {
+      "path": "examples/vanilla-ts/index.html",
+      "status": 200,
+      "sha256": "60a7879413a4f112264f000cfd32b2f35a4deaa3ec6855ff4b28f7a5c2133631"
+    },
+    {
+      "path": "examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "sha256": "fd46b3392834b015310f24795b822f384b1e400cb039602ed7e284264709dc01"
+    },
+    {
+      "path": "favicon.ico",
+      "status": 200,
+      "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831"
+    },
+    {
+      "path": "favicon.svg",
+      "status": 200,
+      "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "cf3ab4f5f0396ca5627add7a9317b896ce29f2574ed5e7da4f6f0722d056b017"
+    },
+    {
+      "path": "og-demo.png",
+      "status": 200,
+      "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc"
+    },
+    {
+      "path": "third-party-licenses.md",
+      "status": 200,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    }
+  ],
+  "candidate": {
+    "tarballSha512": "a257dd430bfd1534fcbdc67aae32f7ceb909a6f539af8e2f7472d6bf0667bbf38c2861017ada0c72b9c74ab27b5baa8af7d2b675b42694223f6e0d4423e91391",
+    "packedFilesMatchCurrentBuild": 34,
+    "npmPublished": false
+  },
+  "canonicalTarballSha256": "5c8f461fe43cfdfce6ad4f8430e0b8aa3aec53f70b37877a369fe38ee7db2cac",
+  "canonicalReleaseRecordSha256": "c3f8006e8cd72d2c0c09b94c2d3ff90075bbeb5746fff15e424691bf9ee2b0e6"
+}
