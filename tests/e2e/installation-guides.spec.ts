@@ -98,3 +98,53 @@ test("existing direct install-code links reveal the detailed reference", async (
   );
   await expect(page.locator("#docs-install")).toBeInViewport();
 });
+
+test("keeps the requested section below the header after a delayed download catalog expands", async ({
+  page,
+}) => {
+  await page.route("**/downloads/catalog.json", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    await route.continue();
+  });
+  await page.goto("/docs/#configure");
+  await expect(page.locator("[data-download-ready]")).toBeVisible();
+  await expect
+    .poll(async () => (await page.locator("#configure").boundingBox())!.y)
+    .toBeLessThan(180);
+  await expect(
+    page.locator('.docs-outline [aria-current="location"]'),
+  ).toHaveAttribute("href", "#configure");
+});
+
+test("does not pull the reader back after they scroll during catalog loading", async ({
+  page,
+}) => {
+  let releaseCatalog!: () => void;
+  const catalogGate = new Promise<void>((resolve) => {
+    releaseCatalog = resolve;
+  });
+  await page.route("**/downloads/catalog.json", async (route) => {
+    await catalogGate;
+    await route.continue();
+  });
+  try {
+    await page.goto("/docs/#configure");
+    await page.mouse.wheel(0, -800);
+    await expect
+      .poll(async () => (await page.locator("#configure").boundingBox())!.y)
+      .toBeGreaterThan(300);
+    releaseCatalog();
+    await expect(page.locator("[data-download-ready]")).toBeVisible();
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    expect((await page.locator("#configure").boundingBox())!.y).toBeGreaterThan(
+      300,
+    );
+  } finally {
+    releaseCatalog();
+  }
+});

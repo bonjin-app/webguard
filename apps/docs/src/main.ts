@@ -72,17 +72,18 @@ function syncCurrentSection() {
 }
 window.addEventListener("hashchange", syncCurrentSection);
 syncCurrentSection();
-window.addEventListener("load", () => {
+function scrollToCurrentSection(behavior: ScrollBehavior = "auto") {
   if (!window.location.hash) return;
   syncCurrentSection();
   try {
     document
       .getElementById(decodeURIComponent(window.location.hash.slice(1)))
-      ?.scrollIntoView();
+      ?.scrollIntoView({ behavior });
   } catch {
     /* Ignore malformed fragments. */
   }
-});
+}
+window.addEventListener("load", () => scrollToCurrentSection());
 
 const siteSwitch = (id: string) =>
   document.querySelector<HTMLInputElement>(`#${id}`)!;
@@ -224,4 +225,37 @@ window.addEventListener("pagehide", (event) => {
   }
 });
 
-void initDownloads();
+async function loadDownloadsForInitialSection() {
+  const initialHash = window.location.hash;
+  if (!initialHash) return initDownloads();
+  const interaction = new AbortController();
+  let userMoved = false;
+  for (const type of ["wheel", "touchstart", "pointerdown", "keydown"]) {
+    window.addEventListener(
+      type,
+      () => {
+        userMoved = true;
+      },
+      {
+        passive: true,
+        once: true,
+        signal: interaction.signal,
+      },
+    );
+  }
+  try {
+    await initDownloads();
+    // The catalog expands above later sections. Restore the requested anchor
+    // after layout settles, while respecting any navigation or user input.
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => {
+        if (!userMoved && window.location.hash === initialHash)
+          scrollToCurrentSection("instant");
+        resolve();
+      }),
+    );
+  } finally {
+    interaction.abort();
+  }
+}
+void loadDownloadsForInitialSection();
