@@ -1,5 +1,11 @@
 # Contributing
 
+## README translations
+
+Maintain [English](README.md), [한국어](README.ko.md), [日本語](README.ja.md) and [简体中文](README.zh-CN.md) together when installation paths, release status or support boundaries change. Keep package names, exported API identifiers and executable examples equivalent in all four editions. Label links to Korean-only detailed guides clearly. Preserve the npm publication pause until a release is explicitly authorized; README updates do not publish a package.
+
+## Development
+
 Use Node 22.12+ and pnpm 11.10.0. Install with `pnpm install --frozen-lockfile` and run `pnpm verify`, `pnpm format:check`, then `pnpm test:e2e` after installing the three Playwright engines. Build outputs are generated and not committed.
 
 Write behavioral regression tests before changing transformations, path validation or browser hooks. Avoid tests that merely assert implementation text. Preserve ESM exports, dynamic import, serialization, async behavior, keyboard accessibility and cleanup. Never introduce debugger loops, hidden telemetry or claims of absolute source secrecy.
