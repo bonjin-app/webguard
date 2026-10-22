@@ -41,7 +41,14 @@ for (const path of ["/demo", "/docs/"]) {
       path === "/demo" ? "#setup-install" : "#docs-install",
     );
     await expect(setupCode).toHaveText(command);
-    await section.getByLabel("패키지 설치 도구").selectOption("pnpm");
+    const manager = section.getByLabel("패키지 설치 도구");
+    await expect
+      .poll(async () => (await manager.boundingBox())?.height ?? 0)
+      .toBeGreaterThanOrEqual(44);
+    await manager.focus();
+    await manager.press("p");
+    await manager.press("Tab");
+    await expect(manager).toHaveValue("pnpm");
     const selected = command.replace("npm install", "pnpm add");
     await expect(setupCode).toHaveText(selected);
     await section

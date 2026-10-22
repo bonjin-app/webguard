@@ -88,7 +88,37 @@
   font: inherit;
   font-size: 13px;
 }
-.sdk-downloads :is(a, button, summary, pre):focus-visible {
+.sdk-downloads label:has([data-download-manager]) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-block: 20px 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.sdk-downloads [data-download-manager] {
+  min-height: 44px;
+  min-width: 104px;
+  appearance: none;
+  padding: 10px 38px 10px 14px;
+  border: 1px solid #bfd9ff;
+  border-radius: 10px;
+  background-color: #f7faff;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #0753df 50%),
+    linear-gradient(135deg, #0753df 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: #0753df;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.sdk-downloads
+  :is(a, button, summary, pre, [data-download-manager]):focus-visible {
   outline: 3px solid #1266ff;
   outline-offset: 4px;
 }
