@@ -1,29 +1,29 @@
 {
   "version": 1,
   "current": {
-    "id": "0.3.0-7fffc24439d4935b",
+    "id": "0.3.0-0ac755f4ad3099ac",
     "version": "0.3.0",
     "channel": "unpublished-candidate",
     "sdk": {
-      "url": "/cdn/releases/0.3.0-7fffc24439d4935b/webguard.global.js",
-      "download": "/downloads/releases/0.3.0-7fffc24439d4935b/webguard.global.js",
+      "url": "/cdn/releases/0.3.0-0ac755f4ad3099ac/webguard.global.js",
+      "download": "/downloads/releases/0.3.0-0ac755f4ad3099ac/webguard.global.js",
       "integrity": "sha384-GH+Vj4IC8FkwuiSeVMsO+w0UhYCvgsQUtRyiXM+gNu8uRr3ppKGlKjFeeq/joV9L",
       "sha256": "59c4ce0ec657aa7438aba5e791b7c4d6792ce5da28ee9421a6b36434d62d9d6b",
       "bytes": 464066
     },
     "package": {
-      "url": "/downloads/releases/0.3.0-7fffc24439d4935b/uulab-webguard-0.3.0.tgz",
-      "sha512": "c962f4610947e58fb4cf6604966931688c67d2d4932e305f13fffc853cae7130a74dbe38996425ef0ae82f7ec33ee194836bd4b72c6945ff7c0dbfc175c3eb4b",
-      "sha256": "c0af096bf68b4db8634cd3a811fcbecfba56dbb6cf852ca4dbed40affe77c3cf",
-      "bytes": 235687
+      "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/uulab-webguard-0.3.0.tgz",
+      "sha512": "83ac064d291ea3ef6cd9ea30bddacb1bd46c0c7c3ce0521847ea0bdc45e4cdd314e34f98a0c6f81b67ded9640db3cd3d996891c7f5619c4b3132f5e637518c4a",
+      "sha256": "cedb4ae22354c15729b2312c5903b6d0802b108dcf8fadba70d2e96d4db14abb",
+      "bytes": 237966
     },
     "example": {
-      "url": "/downloads/releases/0.3.0-7fffc24439d4935b/webguard-init.js",
+      "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/webguard-init.js",
       "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b",
       "bytes": 781
     },
     "licenses": {
-      "url": "/downloads/releases/0.3.0-7fffc24439d4935b/THIRD_PARTY_NOTICES.txt",
+      "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/THIRD_PARTY_NOTICES.txt",
       "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74",
       "bytes": 3069
     }
@@ -221,6 +221,62 @@
       },
       "licenses": {
         "url": "/downloads/releases/0.3.0-7fffc24439d4935b/THIRD_PARTY_NOTICES.txt",
+        "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74",
+        "bytes": 3069
+      }
+    },
+    {
+      "id": "0.3.0-d293e43697dc1829",
+      "version": "0.3.0",
+      "channel": "unpublished-candidate",
+      "sdk": {
+        "url": "/cdn/releases/0.3.0-d293e43697dc1829/webguard.global.js",
+        "download": "/downloads/releases/0.3.0-d293e43697dc1829/webguard.global.js",
+        "integrity": "sha384-GH+Vj4IC8FkwuiSeVMsO+w0UhYCvgsQUtRyiXM+gNu8uRr3ppKGlKjFeeq/joV9L",
+        "sha256": "59c4ce0ec657aa7438aba5e791b7c4d6792ce5da28ee9421a6b36434d62d9d6b",
+        "bytes": 464066
+      },
+      "package": {
+        "url": "/downloads/releases/0.3.0-d293e43697dc1829/uulab-webguard-0.3.0.tgz",
+        "sha512": "73abab30ca3bc0db74f965c6b03f30e03da95deb309f70fd70b68fbbec9e349ee43ddcc58662111536f490c080af5e9a2a43042c38fcb1dd7499f9d497e4e763",
+        "sha256": "fe1eeadb76a5dc22da52664200fb27b1510b13267187600f7b13f9917ec48f6f",
+        "bytes": 237866
+      },
+      "example": {
+        "url": "/downloads/releases/0.3.0-d293e43697dc1829/webguard-init.js",
+        "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b",
+        "bytes": 781
+      },
+      "licenses": {
+        "url": "/downloads/releases/0.3.0-d293e43697dc1829/THIRD_PARTY_NOTICES.txt",
+        "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74",
+        "bytes": 3069
+      }
+    },
+    {
+      "id": "0.3.0-0ac755f4ad3099ac",
+      "version": "0.3.0",
+      "channel": "unpublished-candidate",
+      "sdk": {
+        "url": "/cdn/releases/0.3.0-0ac755f4ad3099ac/webguard.global.js",
+        "download": "/downloads/releases/0.3.0-0ac755f4ad3099ac/webguard.global.js",
+        "integrity": "sha384-GH+Vj4IC8FkwuiSeVMsO+w0UhYCvgsQUtRyiXM+gNu8uRr3ppKGlKjFeeq/joV9L",
+        "sha256": "59c4ce0ec657aa7438aba5e791b7c4d6792ce5da28ee9421a6b36434d62d9d6b",
+        "bytes": 464066
+      },
+      "package": {
+        "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/uulab-webguard-0.3.0.tgz",
+        "sha512": "83ac064d291ea3ef6cd9ea30bddacb1bd46c0c7c3ce0521847ea0bdc45e4cdd314e34f98a0c6f81b67ded9640db3cd3d996891c7f5619c4b3132f5e637518c4a",
+        "sha256": "cedb4ae22354c15729b2312c5903b6d0802b108dcf8fadba70d2e96d4db14abb",
+        "bytes": 237966
+      },
+      "example": {
+        "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/webguard-init.js",
+        "sha256": "1db6d453a5b8465f8c3e46b7ecae5dfef0862740bdb8316afb7b95ade227b09b",
+        "bytes": 781
+      },
+      "licenses": {
+        "url": "/downloads/releases/0.3.0-0ac755f4ad3099ac/THIRD_PARTY_NOTICES.txt",
         "sha256": "e86164ce18f532386e8e525bc1621ed117796788e047b496ec951afc14f6ad74",
         "bytes": 3069
       }

@@ -3,6 +3,156 @@ import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 
+test("Java guide direct downloads run unchanged in root and /app browser fixtures", async ({
+  page,
+  request,
+  baseURL,
+}) => {
+  await page.goto("/docs/START_JAVA.ko.html");
+  const downloaded = new Map<string, Buffer>();
+  let releaseDirectory: string | undefined;
+  for (const name of ["webguard.global.js", "webguard-init.js"]) {
+    const link = page.getByRole("link", {
+      name: `${name} 다운로드`,
+      exact: true,
+    });
+    await expect(link).toBeVisible({ timeout: 1500 });
+    const href = await link.getAttribute("href");
+    expect(href).toMatch(
+      /^https:\/\/webguard\.uulab\.co\.kr\/downloads\/releases\/[^/]+\//,
+    );
+    const url = new URL(href!);
+    expect(url.pathname.split("/").at(-1)).toBe(name);
+    const directory = url.pathname.slice(0, url.pathname.lastIndexOf("/"));
+    if (releaseDirectory) expect(directory).toBe(releaseDirectory);
+    releaseDirectory = directory;
+    // Follow the guide's exact pinned path on the deployment being tested.
+    const response = await request.get(new URL(url.pathname, baseURL).href);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-disposition"]).toContain("attachment");
+    expect(response.headers()["content-disposition"]).toContain(name);
+    downloaded.set(name, await response.body());
+  }
+
+  const jsp = await page
+    .locator("pre code")
+    .filter({ hasText: "${pageContext.request.contextPath}/assets/webguard/" })
+    .first()
+    .innerText();
+  const tags = await page.evaluate((source) => {
+    const fragment = new DOMParser().parseFromString(source, "text/html");
+    return [...fragment.querySelectorAll("script")].map((script) => ({
+      src: script.getAttribute("src"),
+      integrity: script.integrity,
+      defer: script.defer,
+      crossorigin: script.crossOrigin,
+    }));
+  }, jsp);
+  expect(tags.map((tag) => tag.src)).toEqual([
+    "${pageContext.request.contextPath}/assets/webguard/webguard.global.js",
+    "${pageContext.request.contextPath}/assets/webguard/webguard-init.js",
+  ]);
+  expect(tags.every((tag) => tag.defer)).toBe(true);
+  expect(tags[0]?.crossorigin).toBe("anonymous");
+  expect(tags[0]?.integrity).toBe(
+    "sha384-" +
+      createHash("sha384")
+        .update(downloaded.get("webguard.global.js")!)
+        .digest("base64"),
+  );
+
+  // Browser fixture only: substitute JSP's context expression without compiling
+  // Java/JSP, installing npm packages, or transforming the downloaded scripts.
+  const assetRequests: string[] = [];
+  const server = createServer((incoming, outgoing) => {
+    const path = incoming.url ?? "";
+    for (const contextPath of ["", "/app"]) {
+      for (const [name, bytes] of downloaded) {
+        if (path !== `${contextPath}/assets/webguard/${name}`) continue;
+        assetRequests.push(path);
+        outgoing.writeHead(200, { "Content-Type": "text/javascript" });
+        outgoing.end(bytes);
+        return;
+      }
+      if (path === `${contextPath}/existing-app.js`) {
+        outgoing.writeHead(200, { "Content-Type": "text/javascript" });
+        outgoing.end(`
+          document.querySelector('#ready').textContent = window.webguard ? 'SDK ready' : 'Waiting';
+          let count = 0;
+          document.querySelector('#increment').addEventListener('click', () => {
+            document.querySelector('#counter').textContent = String(++count);
+          });
+          let receipts = 0;
+          document.addEventListener('keydown', event => {
+            document.querySelector('#key').textContent = event.key + ':' + event.defaultPrevented + ':' + (++receipts);
+          });
+        `);
+        return;
+      }
+      if (path === `${contextPath}/`) {
+        outgoing.writeHead(200, {
+          "Content-Type": "text/html",
+          "Content-Security-Policy":
+            "default-src 'none'; script-src 'self'; object-src 'none'; base-uri 'none'",
+        });
+        outgoing.end(`<!doctype html><html><head>${jsp.replaceAll(
+          "${pageContext.request.contextPath}",
+          contextPath,
+        )}<script defer src="${contextPath}/existing-app.js"></script></head><body>
+          <h1 id="ready">Waiting</h1><button id="increment">Increment</button>
+          <output id="counter">0</output><output id="key"></output>
+        </body></html>`);
+        return;
+      }
+    }
+    outgoing.writeHead(404);
+    outgoing.end();
+  });
+  await new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+  try {
+    for (const contextPath of ["", "/app"]) {
+      await page.goto(`${origin}${contextPath}/`);
+      await expect(page.locator("#ready")).toHaveText("SDK ready");
+      await page
+        .getByRole("button", { name: "Increment", exact: true })
+        .click();
+      await expect(page.locator("#counter")).toHaveText("1");
+      await page.keyboard.press("F12");
+      await expect(page.locator("#key")).toHaveText("F12:true:1");
+      await page.evaluate(() => {
+        const scope = window as unknown as {
+          webguard: { update(options: unknown): void };
+        };
+        scope.webguard.update({ devtools: { blockShortcuts: false } });
+      });
+      await page.keyboard.press("F12");
+      await expect(page.locator("#key")).toHaveText("F12:false:2");
+      await page
+        .getByRole("button", { name: "Increment", exact: true })
+        .click();
+      await expect(page.locator("#counter")).toHaveText("2");
+    }
+    expect(assetRequests.sort()).toEqual(
+      ["", "/app"]
+        .flatMap((contextPath) =>
+          [...downloaded.keys()].map(
+            (name) => `${contextPath}/assets/webguard/${name}`,
+          ),
+        )
+        .sort(),
+    );
+  } finally {
+    await page.goto("about:blank");
+    await new Promise<void>((resolve, reject) =>
+      server.close((error) => (error ? reject(error) : resolve())),
+    );
+  }
+});
+
 test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes", async ({
   page,
   request,

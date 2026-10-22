@@ -10,7 +10,13 @@
 
 ## 1. 설치 방식 선택
 
-[다운로드 화면](https://webguard.uulab.co.kr/docs/#sdk-downloads)을 엽니다. 아래 **하나만** 선택합니다.
+바로 받을 수 있는 파일입니다. 아래 두 링크는 같은 고정 릴리스 `0.3.0-7fffc24439d4935b`를 사용합니다.
+
+- [브라우저 SDK 다운로드](https://webguard.uulab.co.kr/downloads/releases/0.3.0-7fffc24439d4935b/webguard.global.js)
+- [초기화 파일 다운로드](https://webguard.uulab.co.kr/downloads/releases/0.3.0-7fffc24439d4935b/webguard-init.js)
+- [라이선스 고지 다운로드](https://webguard.uulab.co.kr/downloads/releases/0.3.0-7fffc24439d4935b/THIRD_PARTY_NOTICES.txt)
+
+현재 후보를 선택하려면 [다운로드 화면](https://webguard.uulab.co.kr/docs/#sdk-downloads)을 이용할 수도 있습니다. 아래 **하나만** 선택합니다.
 
 | 방식          | 가져올 항목                                          | 파일을 놓는 위치             |
 | ------------- | ---------------------------------------------------- | ---------------------------- |

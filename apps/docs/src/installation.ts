@@ -24,7 +24,7 @@ const groups = [
       [
         "JAVA",
         "Java · JSP / Servlet",
-        "보호 자산·SRI 태그 · Servlet Filter 헤더",
+        "npm 없이 파일 복사 · JSP 태그 연결부터",
       ],
       ["PYTHON", "Python · WSGI", "정적 자산 보호 · WSGI 응답 헤더"],
       ["PHP", "PHP", "공개 자산·비공개 템플릿 분리 · PHP 응답 헤더"],
