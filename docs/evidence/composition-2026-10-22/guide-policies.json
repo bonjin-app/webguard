@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T01:28:42.011Z",
+  "pages": [
+    {
+      "path": "/docs/INSTALL.ko.html",
+      "status": 200,
+      "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+      "finalByteSriMatches": true,
+      "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "xContentTypeOptions": "nosniff",
+      "applicationScriptsInRawHttpReadback": 0,
+      "hostCanInjectVerifiedCloudflareBeacon": true
+    },
+    {
+      "path": "/docs/ENVIRONMENTS.ko.html",
+      "status": 200,
+      "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+      "finalByteSriMatches": true,
+      "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "xContentTypeOptions": "nosniff",
+      "applicationScriptsInRawHttpReadback": 0,
+      "hostCanInjectVerifiedCloudflareBeacon": true
+    },
+    {
+      "path": "/docs/SSR_VERIFICATION.html",
+      "status": 200,
+      "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+      "finalByteSriMatches": true,
+      "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "xContentTypeOptions": "nosniff",
+      "applicationScriptsInRawHttpReadback": 0,
+      "hostCanInjectVerifiedCloudflareBeacon": true
+    }
+  ]
+}

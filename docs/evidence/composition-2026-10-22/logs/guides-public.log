@@ -1,0 +1,24 @@
+$ playwright test -c playwright.public.config.ts public-guides
+
+Running 12 tests using 3 workers
+
+(node:86795) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86794) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (1.7s)
+  ✓   3 [firefox] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (1.6s)
+  ✓   5 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (681ms)
+  ✓   2 [chromium] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (2.7s)
+  ✓   4 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (1.1s)
+  ✓   6 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (889ms)
+  ✓   7 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (842ms)
+  ✓   8 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (677ms)
+  ✓  10 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (703ms)
+  ✓  11 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (714ms)
+  ✓   9 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (900ms)
+  ✓  12 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (709ms)
+
+  12 passed (5.3s)

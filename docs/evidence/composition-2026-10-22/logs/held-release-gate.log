@@ -1,0 +1,3 @@
+$ node scripts/release-npm.mjs check
+Prepared release has no supported package snapshot; rebuild and run release:prepare again after publication resumes
+[ELIFECYCLE] Command failed with exit code 1.

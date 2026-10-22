@@ -1,0 +1,75 @@
+[WebServer] (node:58164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:58182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:58184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4175 --strictPort
+[WebServer] (node:58201) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+[WebServer]   - import "../site-guard-options" without a file extension (vite.config.ts:3:34). Add the file extension
+[WebServer] Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+[WebServer] (node:58220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4176 --strictPort --port 4176 --strictPort
+[WebServer] (node:58240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:58266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4177 --strictPort --port 4177 --strictPort
+[WebServer] (node:58285) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 24 tests using 4 workers
+
+(node:58295) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58292) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58293) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (864ms)
+  ✓   3 [chromium] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (1.7s)
+  ✓   4 [chromium] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (1.8s)
+  ✓   6 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (159ms)
+  ✓   7 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (149ms)
+  ✓   8 [chromium] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (123ms)
+(node:58492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58493) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [chromium] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (1.8s)
+(node:58514) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (3.7s)
+(node:58522) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [firefox] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (1.4s)
+  ✓  13 [firefox] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (634ms)
+  ✓  11 [firefox] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (1.2s)
+  ✓  14 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (319ms)
+  ✓  16 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (251ms)
+  ✓  15 [firefox] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (324ms)
+(node:58826) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58825) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [firefox] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (2.6s)
+(node:58847) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [firefox] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (4.6s)
+(node:59098) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [webkit] › tests/e2e/diagnostics.spec.ts:135:1 › does not label server faults as expected rejection (990ms)
+  ✓  18 [webkit] › tests/e2e/diagnostics.spec.ts:3:1 › loads valid brand icons and starts without application or resource errors (1.2s)
+  ✓  22 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › INSTALL.ko is a complete styled static guide with text download (393ms)
+  ✓  21 [webkit] › tests/e2e/public-guides.spec.ts:9:1 › opens complete guides from the Korean documentation home (896ms)
+  ✓  23 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (289ms)
+  ✓  24 [webkit] › tests/e2e/public-guides.spec.ts:38:3 › SSR_VERIFICATION is a complete styled static guide with text download (273ms)
+  ✓  20 [webkit] › tests/e2e/docs-site-guard.spec.ts:3:1 › the documentation applies its own SDK and controls actual page protection (2.0s)
+  ✓  17 [webkit] › tests/e2e/diagnostics.spec.ts:59:1 › explains intentional CSP and 409 diagnostics without uncaught app errors (4.1s)
+
+  24 passed (16.1s)

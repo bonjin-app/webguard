@@ -1,0 +1,241 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T01:47:09.857Z",
+  "sourceCommit": "4a26a29031f3d4c6725a598bc49efb5f4037a107",
+  "verificationCommit": "d6e835a997ff7132dc0bde196c6d63a05a8a642c",
+  "origin": "https://webguard.uulab.co.kr",
+  "version": "144e98d1-6771-45d9-9970-320cade7d25c",
+  "previousVersion": "423bdaa9-7167-4a7e-9adf-ce9d0e908f5a",
+  "deploymentId": "b13da3c6-0432-4738-b190-f3ff885836bb",
+  "trafficPercentage": 100,
+  "runtimeAndBindingsUnchanged": true,
+  "publicFiles": [
+    {
+      "path": "assets/index-CrPIonZd.css",
+      "status": 200,
+      "sha256": "43eee8bb66963ef73f13107e9fa9b83aebe5fbf94bdc414015718198679cdf28"
+    },
+    {
+      "path": "assets/index-LMhShXSF.js",
+      "status": 200,
+      "sha256": "684048a6a06cdb1544365cefc9b410658c1a353dbc0fc0478b05260d3d360791"
+    },
+    {
+      "path": "assets/index.browser-CwuZtRJr.js",
+      "status": 200,
+      "sha256": "8111f81c0b497718491e2dd22c2926aa7e8f100ad012af944dccf9fbc86562c0"
+    },
+    {
+      "path": "assets/input-try-C8omM10O.webp",
+      "status": 200,
+      "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a"
+    },
+    {
+      "path": "assets/sdk-cube-BfW27hof.webp",
+      "status": 200,
+      "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a"
+    },
+    {
+      "path": "assets/sky-background-BT0G8_Wo.webp",
+      "status": 200,
+      "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b"
+    },
+    {
+      "path": "assets/transform.worker-AGVe8Xhd.js",
+      "status": 200,
+      "sha256": "354b09f1e567bd5d967e86c9b1f9b421c1aceddc1363616b9ec090039716b081"
+    },
+    {
+      "path": "assets/web-app-B46Mgxd8.webp",
+      "status": 200,
+      "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554"
+    },
+    {
+      "path": "docs/assets/index-CiuyqclI.css",
+      "status": 200,
+      "sha256": "b908983560390df48217b174cc272b8fc8036ffa3ff8f7953863a67fc311e90b"
+    },
+    {
+      "path": "docs/assets/index-DQmLzHrv.js",
+      "status": 200,
+      "sha256": "80aacb6a26f06fd69dcefa631be33e474889dc3c646e931bf63d98d89344b4c6"
+    },
+    {
+      "path": "docs/ENVIRONMENTS.ko.html",
+      "status": 200,
+      "sha256": "16d3978a877ab6a6a17061d9d412bb5d0a30a10ea0e3548d9a7cb4e90a1437fa"
+    },
+    {
+      "path": "docs/ENVIRONMENTS.ko.txt",
+      "status": 200,
+      "sha256": "13e6f9f84662b4d4cbc9f69a9474794a0cee757912e92741df04ebbff2ce568b"
+    },
+    {
+      "path": "docs/favicon.svg",
+      "status": 200,
+      "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471"
+    },
+    {
+      "path": "docs/guide.css",
+      "status": 200,
+      "sha256": "4519738c1ed407e33507b413281ddec20078a193a674fdda9314175f4721e1eb"
+    },
+    {
+      "path": "docs/index.html",
+      "status": 200,
+      "sha256": "58f88a8131ecc91ec98ee1e21d3704772edbe5b2329018c50288a3a5c9d94669"
+    },
+    {
+      "path": "docs/INSTALL.ko.html",
+      "status": 200,
+      "sha256": "bbed6a4cc13bc598a682edf19c0ced72cc9284fb9fa0d753c739551345df9136"
+    },
+    {
+      "path": "docs/INSTALL.ko.txt",
+      "status": 200,
+      "sha256": "e6487853ddf02badedc35b6ea8ba91acb987d527f6cc06e409730a550fb7a62f"
+    },
+    {
+      "path": "docs/og-docs.png",
+      "status": 200,
+      "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492"
+    },
+    {
+      "path": "docs/SSR_VERIFICATION.html",
+      "status": 200,
+      "sha256": "954d2aede8433d81c500c58941b14402296c08bebfc5261fad041e0b20e2472f"
+    },
+    {
+      "path": "docs/SSR_VERIFICATION.txt",
+      "status": 200,
+      "sha256": "04f29c48127373aa76688441a3265e3a58b094c5c0f4667cad4fbb8961c34a6d"
+    },
+    {
+      "path": "docs/third-party-licenses.md",
+      "status": 200,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    },
+    {
+      "path": "examples/react/assets/index-3LuibcfU.js",
+      "status": 200,
+      "sha256": "cdfe0df15cc9993688532ab875d1fe1a1c5918724b0b4d2aeff3314f0448421b"
+    },
+    {
+      "path": "examples/react/assets/index-65KBRBiT.css",
+      "status": 200,
+      "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3"
+    },
+    {
+      "path": "examples/react/assets/lazy-BbdFe1pp.js",
+      "status": 200,
+      "sha256": "0ae55f45c3a6d2d78acf52faa7b2e835ec3d5b70441d7977d807969f7ccdb8db"
+    },
+    {
+      "path": "examples/react/index.html",
+      "status": 200,
+      "sha256": "fd6c991b0b8d9c8aec63882b99012fb06b7ab6281e81f131497f045dac3bf367"
+    },
+    {
+      "path": "examples/react/third-party-licenses.md",
+      "status": 200,
+      "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609"
+    },
+    {
+      "path": "examples/react/webguard-manifest.json",
+      "status": 200,
+      "sha256": "75aac3a8f7b9526da0c906b38dc3eb269b5e51322fbf33906612fbd292d05fb0"
+    },
+    {
+      "path": "examples/vanilla-js/about/index.html",
+      "status": 200,
+      "sha256": "2120a0fb6ec2b4ee9c88c474a47c2a736dbd9624dba43fecfc9d8c19ced01dc3"
+    },
+    {
+      "path": "examples/vanilla-js/assets/about-ujrnkw3j.js",
+      "status": 200,
+      "sha256": "c96dc7b8de95df15d985eed5bd0d70722af0def2a3b8e4a464a2e625fd2fd8ec"
+    },
+    {
+      "path": "examples/vanilla-js/assets/index-Cpqc8Una.js",
+      "status": 200,
+      "sha256": "afbe73fcc4681a519c2a6ef4564b8d4ebae424efa19945043912b074cce0ad81"
+    },
+    {
+      "path": "examples/vanilla-js/assets/lazy-DVPwdCIy.js",
+      "status": 200,
+      "sha256": "cd83f3bdcb2e74bbf337d2f651bc1ea1077fb903e61f21862d93b32adebdf545"
+    },
+    {
+      "path": "examples/vanilla-js/assets/style-BzABUnnU.css",
+      "status": 200,
+      "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+    },
+    {
+      "path": "examples/vanilla-js/index.html",
+      "status": 200,
+      "sha256": "d5c3952c5618abfb44686e9cf264564542f3b51b51003cacb714453478995ed3"
+    },
+    {
+      "path": "examples/vanilla-js/webguard-manifest.json",
+      "status": 200,
+      "sha256": "c8ecaf4b468587a98bd193887859bf5aee84d8e049c7ac6fe80b5f534bd409bb"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/index-ByXzetMj.js",
+      "status": 200,
+      "sha256": "98ea410047394a7f29e28bec2ee04f50fc66f9d45cfceabf95432a42cb5cd5c5"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/index-BzABUnnU.css",
+      "status": 200,
+      "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce"
+    },
+    {
+      "path": "examples/vanilla-ts/assets/lazy-Bt0YIB8z.js",
+      "status": 200,
+      "sha256": "aab2c10901e0e8f0f9331109053bce8df7ca4dd21a1be9c07675e08bd5f11353"
+    },
+    {
+      "path": "examples/vanilla-ts/index.html",
+      "status": 200,
+      "sha256": "86419254a8ce7ed2f46fc207adfc5bfe90ab1158074b2f55f16f566bd391da69"
+    },
+    {
+      "path": "examples/vanilla-ts/webguard-manifest.json",
+      "status": 200,
+      "sha256": "75d6637cd972dc294bd3582027b47d57cfcfb31c98bc9c73e5cefde0d7945696"
+    },
+    {
+      "path": "favicon.ico",
+      "status": 200,
+      "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831"
+    },
+    {
+      "path": "favicon.svg",
+      "status": 200,
+      "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "a6adc247c47eca47aa1610a6daedfbdc31e8dcdc97a9bf15608719c4cf5043e1"
+    },
+    {
+      "path": "og-demo.png",
+      "status": 200,
+      "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc"
+    },
+    {
+      "path": "third-party-licenses.md",
+      "status": 200,
+      "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df"
+    }
+  ],
+  "candidate": {
+    "tarballSha512": "0265e17edd96ecb4b1334c661208d42650fc4e99e1de65a9713714533e1028d9ae1e4e2bc54c78c7f34c90dae5a017d4cec87d02bb0885e9151105004c5ddf03",
+    "packedFilesMatchCurrentBuild": 34,
+    "npmPublished": false
+  },
+  "canonicalTarballSha256": "5c8f461fe43cfdfce6ad4f8430e0b8aa3aec53f70b37877a369fe38ee7db2cac",
+  "canonicalReleaseRecordSha256": "c3f8006e8cd72d2c0c09b94c2d3ff90075bbeb5746fff15e424691bf9ee2b0e6"
+}

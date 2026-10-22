@@ -1,0 +1,27 @@
+
+ RUN  v5.0.5 /Users/uulab/Documents/workspace/uulab/webguard
+
+ ❯ tests/unit/public-guides.test.ts (5 tests | 1 failed) 5296ms
+   ❯ public static guides (5)
+     × finishes empty ordered and unordered list items without hanging the build 5055ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/public-guides.test.ts > public static guides > finishes empty ordered and unordered list items without hanging the build
+Error: spawnSync /Users/uulab/.hermes/node/bin/node ETIMEDOUT
+ ❯ tests/unit/public-guides.test.ts:15:20
+     13| describe("public static guides", () => {
+     14|   it("finishes empty ordered and unordered list items without hanging …
+     15|     const output = execFileSync(process.execPath, ["--input-type=modul…
+       |                    ^
+     16|       import { renderGuideMarkdown } from './scripts/public-guides.mjs…
+     17|       for (const item of ['- ', '1. ']) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  10:23:17
+   Duration  5.57s (tests 96%, import 4%)
+

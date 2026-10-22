@@ -1,0 +1,25 @@
+{
+  "source": "Preserved Firefox trace and independent trace audit",
+  "failedFullRun": {
+    "passed": 297,
+    "failed": 1,
+    "skipped": 2
+  },
+  "link": "ENVIRONMENTS.ko.html",
+  "hrefCorrect": true,
+  "nextDocumentRequestObserved": false,
+  "unstyledTarget": {
+    "x": 278,
+    "y": 99,
+    "height": 20
+  },
+  "stylesheetCompletedMs": 121778.347,
+  "clickWindowMs": [121772.75, 121796.408],
+  "cause": "Stylesheet completed during click; the target moved from unstyled inline layout into the sidebar",
+  "testFix": "Await document load and applied header CSS before following guide links",
+  "faultInjection": "Delay guide stylesheet by400ms;12public guide cases passed",
+  "applicationChanged": false,
+  "retriesAdded": 0,
+  "timeoutIncreased": false,
+  "testCommit": "d6e835a"
+}

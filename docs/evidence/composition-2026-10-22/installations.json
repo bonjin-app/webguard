@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T01:24:40.863Z",
+  "packageSha512": "0265e17edd96ecb4b1334c661208d42650fc4e99e1de65a9713714533e1028d9ae1e4e2bc54c78c7f34c90dae5a017d4cec87d02bb0885e9151105004c5ddf03",
+  "scope": "Vite 7/8, generic and Next install one temporary tarball; SSR templates use the workspace build. Browser engines are desktop automation, not physical-device certification.",
+  "suites": [
+    {
+      "name": "vite7",
+      "status": "passed"
+    },
+    {
+      "name": "vite8",
+      "status": "passed"
+    },
+    {
+      "name": "generic",
+      "status": "passed"
+    },
+    {
+      "name": "next",
+      "status": "passed"
+    },
+    {
+      "name": "ssr",
+      "status": "passed",
+      "skipped": [
+        {
+          "runtime": "PHP",
+          "reason": "Runtime executable unavailable; not verified"
+        }
+      ]
+    }
+  ],
+  "heldReleaseUnchanged": true
+}

@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-22T01:34:05.794Z",
+  "source": "Observed actual browser DOM; additional host-provided Cloudflare RUM, independent of WebGuard SDK",
+  "src": "https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092",
+  "integrity": "sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==",
+  "bytes": 31853,
+  "status": 200,
+  "accountConfigurationChanged": false,
+  "builtGuidesHaveApplicationScripts": false
+}

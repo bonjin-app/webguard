@@ -1,0 +1,131 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T01:47:09.910Z",
+  "applicationSourceCommit": "4a26a29",
+  "testSourceCommit": "d6e835a",
+  "unitAndIntegration": {
+    "files": 41,
+    "passed": 601
+  },
+  "localBrowser": {
+    "passed": 24,
+    "scope": "Initial local documentation/diagnostics checks; final guide source and readiness adjustments verified on public deployment"
+  },
+  "publicBrowser": {
+    "total": 300,
+    "passed": 298,
+    "skipped": 2,
+    "retries": 0,
+    "engines": ["chromium", "firefox", "webkit"],
+    "skipReason": "Actual debugger pause requires Chromium CDP; Firefox and WebKit equivalents are not claimed"
+  },
+  "installedCandidate": {
+    "sha512": "0265e17edd96ecb4b1334c661208d42650fc4e99e1de65a9713714533e1028d9ae1e4e2bc54c78c7f34c90dae5a017d4cec87d02bb0885e9151105004c5ddf03",
+    "suites": [
+      {
+        "name": "vite7",
+        "status": "passed"
+      },
+      {
+        "name": "vite8",
+        "status": "passed"
+      },
+      {
+        "name": "generic",
+        "status": "passed"
+      },
+      {
+        "name": "next",
+        "status": "passed"
+      },
+      {
+        "name": "ssr",
+        "status": "passed",
+        "skipped": [
+          {
+            "runtime": "PHP",
+            "reason": "Runtime executable unavailable; not verified"
+          }
+        ]
+      }
+    ],
+    "scope": "Vite 7/8, generic and Next install one temporary tarball; SSR templates use the workspace build. Browser engines are desktop automation, not physical-device certification."
+  },
+  "deployment": {
+    "origin": "https://webguard.uulab.co.kr",
+    "version": "144e98d1-6771-45d9-9970-320cade7d25c",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true,
+    "publicAssetsByteMatched": 44,
+    "packedFilesByteMatched": 34
+  },
+  "nativeUI": {
+    "captures": [
+      "public-guide-hub.png",
+      "public-install-guide.png",
+      "public-guide-mobile.png"
+    ],
+    "savedBytesViewed": true,
+    "mobileViewport": [390, 844],
+    "viewportRestored": true
+  },
+  "guidePolicy": {
+    "status": "passed",
+    "checkedAt": "2026-10-22T01:28:42.011Z",
+    "pages": [
+      {
+        "path": "/docs/INSTALL.ko.html",
+        "status": 200,
+        "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+        "finalByteSriMatches": true,
+        "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "xContentTypeOptions": "nosniff",
+        "applicationScriptsInRawHttpReadback": 0,
+        "hostCanInjectVerifiedCloudflareBeacon": true
+      },
+      {
+        "path": "/docs/ENVIRONMENTS.ko.html",
+        "status": 200,
+        "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+        "finalByteSriMatches": true,
+        "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "xContentTypeOptions": "nosniff",
+        "applicationScriptsInRawHttpReadback": 0,
+        "hostCanInjectVerifiedCloudflareBeacon": true
+      },
+      {
+        "path": "/docs/SSR_VERIFICATION.html",
+        "status": 200,
+        "cssIntegrity": "sha384-IEGN7DM1tPZlXPxWwWv5/ufLz8XGIa/ipJYNAPFKgxJ3KsXe3MyloJDE9KVJ8zvo",
+        "finalByteSriMatches": true,
+        "contentSecurityPolicy": "object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "xContentTypeOptions": "nosniff",
+        "applicationScriptsInRawHttpReadback": 0,
+        "hostCanInjectVerifiedCloudflareBeacon": true
+      }
+    ]
+  },
+  "initialFailures": {
+    "hostScript": {
+      "failed": 9,
+      "scope": "Incorrect zero-script DOM assertion; pinned one observed Cloudflare host beacon URL and verified its SRI; no account settings changed"
+    },
+    "navigation": {
+      "failed": 1,
+      "scope": "Pre-style click raced with stylesheet; wait for document/style readiness and delay CSS400ms in regression"
+    }
+  },
+  "release": {
+    "npmPublication": "paused",
+    "canonicalTarballSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+    "canonicalRecordSha256": "c3f8006e8cd72d2c0c09b94c2d3ff90075bbeb5746fff15e424691bf9ee2b0e6",
+    "legacyGate": "Refused missing supported snapshot before authentication; candidate not regenerated",
+    "globalCodexSettingsChanged": false
+  },
+  "limits": [
+    "GitHub Actions job was added and its commands passed locally; remote CI run not claimed",
+    "PHP runtime unavailable and explicitly skipped; no fresh Java runtime verification",
+    "Browser owners can observe delivered code/DOM; no forced DevTools closure",
+    "Static guides need no application JavaScript; host may inject its existing verified RUM beacon"
+  ]
+}
