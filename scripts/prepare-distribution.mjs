@@ -21,24 +21,6 @@ async function heldHash(name) {
     throw error;
   }
 }
-const initializer = `/* WebGuard runtime setup. Host this file under your own /assets/ directory.
- * Load the pinned WebGuard SDK with defer + SRI before this external file.
- * Runtime guards do not obfuscate existing JavaScript; use the build integration.
- * Browser menus and DevTools themselves are controlled by the browser.
- */
-window.webguard = WebGuardSDK.WebGuard.init({
-  preset: "standard",
-  devtools: {
-    blockShortcuts: true,
-    blockContextMenu: true,
-    shortcutScope: "page",
-    detect: false,
-    response: "monitor"
-  },
-  integrity: { enabled: true }
-});
-window.addEventListener("pagehide", function () { window.webguard.destroy(); }, { once: true });
-`;
 
 /** Pack a separate web download candidate. Never touches the held npm release or publishes to npm. */
 export async function prepareDistribution() {
@@ -91,7 +73,7 @@ export async function prepareDistribution() {
       version: pkg.version,
       sdk: Buffer.from(protectedSdk + "\n"),
       packageArchive: archive,
-      example: Buffer.from(initializer),
+      example: await readFile(join(root, "examples/cdn/webguard-init.js")),
       licenses: Buffer.from(
         (await readFile(join(root, "LICENSE"), "utf8")) +
           "\n\n" +

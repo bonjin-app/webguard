@@ -26,13 +26,19 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
   expect(
     (await request.head(current.package.url)).headers()["content-type"],
   ).toBe("application/gzip");
+  const initializer = await request.get(current.example.url);
+  expect(initializer.ok()).toBe(true);
+  const initializationCode = await initializer.text();
 
   // Use an actual second origin so Chromium can classify its loopback address space.
   const server = createServer((incoming, outgoing) => {
     if (incoming.url === "/init.js") {
       outgoing.writeHead(200, { "Content-Type": "text/javascript" });
+      outgoing.end(initializationCode);
+    } else if (incoming.url === "/consumer.js") {
+      outgoing.writeHead(200, { "Content-Type": "text/javascript" });
       outgoing.end(
-        `window.guard = WebGuardSDK.WebGuard.init({devtools:{blockShortcuts:true,shortcutScope:'page',detect:false,response:'monitor'}}); document.querySelector('#ready').textContent='SDK ready'; document.addEventListener('keydown', event => { document.querySelector('#key').textContent=String(event.defaultPrevented); });`,
+        `if (window.webguard) document.querySelector('#ready').textContent='SDK ready'; document.addEventListener('keydown', event => { document.querySelector('#key').textContent=String(event.defaultPrevented); });`,
       );
     } else {
       outgoing.writeHead(200, {
@@ -40,7 +46,7 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
         "Content-Security-Policy": `default-src 'none'; script-src 'self' ${new URL(sdkUrl).origin}; object-src 'none'; base-uri 'none'`,
       });
       outgoing.end(
-        `<h1 id="ready">Waiting</h1><output id="key"></output><script defer src="${sdkUrl}" integrity="${current.sdk.integrity}" crossorigin="anonymous"></script><script defer src="/init.js"></script>`,
+        `<h1 id="ready">Waiting</h1><output id="key"></output><script defer src="${sdkUrl}" integrity="${current.sdk.integrity}" crossorigin="anonymous"></script><script defer src="/init.js"></script><script defer src="/consumer.js"></script>`,
       );
     }
   });
@@ -56,11 +62,22 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
       await page.keyboard.press(shortcut);
       await expect(page.locator("#key")).toHaveText("true");
     }
+    // Native lifecycle events with persisted=true must preserve this published initializer's instance.
+    await page.evaluate(() => {
+      window.dispatchEvent(
+        new PageTransitionEvent("pagehide", { persisted: true }),
+      );
+      window.dispatchEvent(
+        new PageTransitionEvent("pageshow", { persisted: true }),
+      );
+    });
+    await page.keyboard.press("F12");
+    await expect(page.locator("#key")).toHaveText("true");
     await page.evaluate(() => {
       const scope = window as unknown as {
-        guard: { update(options: unknown): void };
+        webguard: { update(options: unknown): void };
       };
-      scope.guard.update({ devtools: { blockShortcuts: false } });
+      scope.webguard.update({ devtools: { blockShortcuts: false } });
     });
     for (const shortcut of ["F12", "Meta+Alt+i", "Control+Shift+j"]) {
       await page.keyboard.press(shortcut);
