@@ -23,7 +23,7 @@ Build tools require **Node.js 22.12+**. The product is **WebGuard**; `uulab-webg
 
 **Release status, checked 2026-10-22:** npm `latest` is **0.2.0**. The integrations below describe the **unpublished 0.3.0 candidate**. npm publication remains paused; do not expect these candidate APIs from `npm install uulab-webguard@latest`.
 
-Download the candidate from [SDK/package downloads](https://webguard.uulab.co.kr/docs/#sdk-downloads) and verify its digest against the [download catalog](https://webguard.uulab.co.kr/downloads/catalog.json). Move the downloaded `.tgz` into your application’s project root before running the command below, or substitute its actual absolute path:
+Copy the pinned npm or pnpm install command from [SDK/package downloads](https://webguard.uulab.co.kr/docs/#sdk-downloads) to install directly in your app without moving files or editing paths. npm publication remains paused. Keep the package URL and the selected manager’s lockfile together: use `npm ci` with package-lock.json or `pnpm install --frozen-lockfile` with pnpm-lock.yaml. pnpm 11 itself requires Node >=22.13; the SDK minimum remains 22.12. Downloading a reviewed `.tgz` and installing it locally remains an alternative.
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
@@ -65,8 +65,11 @@ export default defineConfig({
 
 ```sh
 npm run build
+npx --no-install webguard doctor dist
 npx --no-install webguard-serve dist --port 4173
 ```
+
+`webguard doctor dist --json` gives read-only local static-build diagnostics and next actions. It checks the manifest, final asset hashes and generated header policy; it does not verify browser behavior or deployed HTTP headers. Next `.next` output is excluded. [Install, update and recovery guide](docs/INSTALL.ko.md).
 
 `webguardApp()` defaults to Strict/High, SDK startup, public source-map removal, SRI and generated policies. Development/HMR stays unchanged. Input restrictions are opt-in; this example explicitly enables them. Generated HTTP policies also apply to `vite preview`. Vite SSR, library and in-memory builds are outside this integration.
 

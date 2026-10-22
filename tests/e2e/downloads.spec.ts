@@ -11,6 +11,16 @@ for (const path of ["/demo", "/docs/"]) {
     const response = await request.get("/downloads/catalog.json");
     expect(response.status()).toBe(200);
     const release = parseDownloadCatalog(await response.json());
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: {
+          writeText: async (text: string) => {
+            document.documentElement.dataset.copiedInstall = text;
+          },
+        },
+      });
+    });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${path}#sdk-downloads`);
     const section = page.locator("#sdk-downloads");
@@ -23,6 +33,24 @@ for (const path of ["/demo", "/docs/"]) {
     await expect(
       section.getByRole("link", { name: "로컬 패키지 .tgz 다운로드" }),
     ).toHaveAttribute("href", release.package.url);
+    const command = `npm install -D https://webguard.uulab.co.kr${release.package.url}`;
+    await expect(section.locator("[data-package-install-code]")).toHaveText(
+      command,
+    );
+    const setupCode = page.locator(
+      path === "/demo" ? "#setup-install" : "#docs-install",
+    );
+    await expect(setupCode).toHaveText(command);
+    await section.getByLabel("패키지 설치 도구").selectOption("pnpm");
+    const selected = command.replace("npm install", "pnpm add");
+    await expect(setupCode).toHaveText(selected);
+    await section
+      .getByRole("button", { name: "설치 명령 복사", exact: true })
+      .click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-copied-install",
+      selected,
+    );
     const downloadEvent = page.waitForEvent("download");
     await section
       .getByRole("link", { name: "SDK 파일 다운로드", exact: true })
@@ -81,4 +109,39 @@ test("download catalog failure is explicit and retry restores safe links", async
   await expect(
     section.getByRole("link", { name: "SDK 파일 다운로드", exact: true }),
   ).toBeVisible();
+});
+
+test("install command stays disabled while loading and rejects a hostile catalog", async ({
+  page,
+  request,
+}) => {
+  const catalog = await (await request.get("/downloads/catalog.json")).json();
+  let releaseResponse!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    releaseResponse = resolve;
+  });
+  await page.route("**/downloads/catalog.json", async (route) => {
+    await pending;
+    catalog.current.package.url = "https://untrusted.example/evil.tgz";
+    await route.fulfill({ json: catalog });
+  });
+  await page.goto("/docs/#sdk-downloads", { waitUntil: "domcontentloaded" });
+  const section = page.locator("#sdk-downloads");
+  await expect(
+    section.getByRole("button", { name: "설치 명령 복사", exact: true }),
+  ).toBeDisabled();
+  await expect(page.locator("#docs-install")).toHaveText(
+    "다운로드 목록을 불러오는 중…",
+  );
+  releaseResponse();
+  await expect(section.locator("[data-download-status]")).toContainText(
+    "목록을 불러올 수 없습니다",
+  );
+  await expect(page.locator("#docs-install")).not.toContainText("https:");
+  await expect(
+    section.getByRole("button", { name: "설치 명령 복사", exact: true }),
+  ).toBeDisabled();
+  await expect(section.locator("[data-download-package]")).not.toHaveAttribute(
+    "href",
+  );
 });

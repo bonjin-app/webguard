@@ -23,7 +23,7 @@ WebGuard をビルドに組み込み、保護したブラウザー向けアセ�
 
 **リリース状況（2026-10-22 確認）：** npm の `latest` は **0.2.0** です。以下の連携方法は、**未公開の 0.3.0 候補版**を対象としています。npm への公開は引き続き一時停止中です。`npm install uulab-webguard@latest` で候補版の API が使えるとは考えないでください。
 
-[SDK・パッケージのダウンロード](https://webguard.uulab.co.kr/docs/#sdk-downloads)から候補版を取得し、[ダウンロードカタログ](https://webguard.uulab.co.kr/downloads/catalog.json)とダイジェストを照合します。以下のコマンドを実行する前に、ダウンロードした `.tgz` をアプリのプロジェクトルートへ移動するか、コマンドのパスを実際のファイルの絶対パスに置き換えてください。
+[SDK / パッケージダウンロード](https://webguard.uulab.co.kr/docs/#sdk-downloads)で npm・pnpm の固定 URL インストールコマンドをコピーできます。ファイルの移動やパス編集は不要です。npm 公開は引き続き保留中です。URL と使用するツールの lockfile を一緒に管理し、CI では npm は `npm ci`、pnpm は `pnpm install --frozen-lockfile` を使ってください。pnpm 11 自体には Node 22.13 以上が必要です。SDK の最小要件は 22.12 です。確認済み `.tgz` のローカルインストールも利用できます。
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
@@ -65,8 +65,11 @@ export default defineConfig({
 
 ```sh
 npm run build
+npx --no-install webguard doctor dist
 npx --no-install webguard-serve dist --port 4173
 ```
+
+`webguard doctor dist --json` はマニフェスト・最終ファイルのハッシュ・生成ヘッダーを読み取り専用で診断し、次の対処を示します。ブラウザー動作と配信先の HTTP ポリシーは別途確認します。Next の `.next` は対象外です。[導入・更新・復旧ガイド](docs/INSTALL.ko.md)。
 
 `webguardApp()` の既定値では、Strict/High、SDK 起動、公開ソースマップの削除、SRI、ポリシー生成が有効になります。開発・HMR の動作は変わりません。入力操作の制限はオプトインで、この例では明示的に有効にしています。生成した HTTP ポリシーは `vite preview` にも適用されます。Vite SSR、ライブラリビルド、インメモリビルドはこの連携の対象外です。
 

@@ -10,6 +10,38 @@
 
 **현재 npm 공개 버전은 0.2.0이며, 0.3.0은 아직 게시하지 않은 로컬 후보입니다.** 아래 새 동작은 0.3.0 후보 기준입니다. npm의 0.2.0에 동일하게 제공된다고 판단하지 마세요. 게시와 별개로 로컬 검토를 진행합니다.
 
+## 가장 짧은 적용 순서
+
+1. [설치 명령 복사](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 npm 또는 pnpm을 선택하고 고정 후보 URL 설치 명령을 복사해 **적용할 앱의 폴더**에서 실행합니다. 파일 다운로드·경로 수정 없이 설치할 수 있으며 npm 게시는 필요하지 않습니다. 로컬 `.tgz` 설치도 계속 지원합니다.
+2. 환경 표에서 연결 방식을 선택합니다. Vite는 기존 플러그인을 유지하고 `webguardApp()`을 한 번 추가합니다. Next는 전용 `withWebGuard()`와 Webpack 빌드를 사용하고, 정적 빌드 도구는 보호 후처리를 연결합니다.
+3. 프로덕션 빌드 후 **보호 결과**를 검사하고 실제 앱의 화면·라우팅·폼·동적 로딩을 확인합니다. 개발 서버에는 빌드 난독화가 적용되지 않습니다.
+4. 생성한 HTTP 정책과 비공개 파일 차단을 호스트에 적용하고, 동일한 로컬 빌드로 공개 URL을 검사합니다.
+
+Vite의 기본 출력 `dist`라면 다음 명령을 프로젝트 스크립트에 저장해 반복 사용합니다. 일반 정적 후처리는 경로를 `dist-protected` 등 실제 보호 출력으로 바꾸세요.
+
+```json
+{
+  "scripts": {
+    "guard:doctor": "webguard doctor dist",
+    "guard:preview": "webguard-serve dist --port 4173"
+  }
+}
+```
+
+```sh
+npm run build
+npm run guard:doctor
+# CI용 구조화 결과
+npm run guard:doctor -- --json
+npm run guard:preview
+# 다른 터미널에서 로컬 서버 확인
+npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+```
+
+진단은 파일·설정·네트워크를 수정하지 않고 로컬 매니페스트·최종 자산 해시·생성 헤더 형식을 검사합니다. 종료 코드 1이면 출력의 `Next` 안내를 따라 수정한 뒤 재빌드하세요. 통과는 로컬 산출물 검사이며 실제 앱 동작·서버 권한·공개 배포 보증은 아닙니다. `.next` 서버 출력은 이 정적 진단 대상이 아니므로 Next에서는 `next start`로 hydration·이동·API와 기존 CSP를 확인합니다.
+
+URL 설치는 정확한 고정 릴리스를 사용합니다. `package.json`과 선택한 설치 도구의 lockfile을 함께 커밋하세요. npm의 `package-lock.json`은 `npm ci`, pnpm의 `pnpm-lock.yaml`은 `pnpm install --frozen-lockfile`로 재현합니다. pnpm만 사용한 앱에서 `npm ci`를 실행하지 마세요. pnpm 11 자체는 Node 22.13 이상이 필요하며 SDK 최소 버전은 22.12입니다. npm lockfile의 설치 URL·integrity는 선택한 패키지의 재설치를 추적하지만 최초 신뢰를 대신하지 않습니다. 후보 업데이트는 새 URL 설치 → lockfile 변경 검토 → 빌드·진단·앱 확인 → 배포 순서입니다. 롤백은 검증한 이전 고정 URL과 해당 lockfile·배포 산출물을 함께 복원합니다. [npm URL 설치](https://docs.npmjs.com/cli/v11/commands/npm-install/) · [lockfile 명세](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/).
+
 ## 직접 다운로드와 CDN 선택
 
 [다운로드·CDN 안내](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 독립 SDK JavaScript, 외부 초기화 예제, 빌드 도구 포함 `.tgz`, 라이선스를 내려받을 수 있습니다. [다운로드 목록 JSON](https://webguard.uulab.co.kr/downloads/catalog.json)은 현재 후보와 보존된 릴리스의 고정 주소·바이트 수·파일 해시를 제공합니다. 직접 배포하는 0.3.0 후보이며 **npm 게시를 뜻하지 않습니다.**

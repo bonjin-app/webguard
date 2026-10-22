@@ -319,6 +319,90 @@ WebGuard.init({blockShortcuts:true});\n`,
     [join(directory, "node_modules/vite/bin/vite.js"), "build"],
     directory,
   );
+  const doctorArgs = [
+    join(packageRoot, "dist/cli.js"),
+    "doctor",
+    "dist",
+    "--json",
+  ];
+  const cleanDoctor = JSON.parse(
+    (await command(process.execPath, doctorArgs, directory)).stdout,
+  );
+  check(
+    cleanDoctor.status === "passed" &&
+      cleanDoctor.scope === "local-static-build",
+    "Installed doctor did not accept the protected consumer build",
+  );
+  const doctorManifest = JSON.parse(
+    await readFile(join(directory, "dist/webguard-manifest.json"), "utf8"),
+  );
+  const doctorAsset = Object.keys(doctorManifest.files).find((path) =>
+    /\.[cm]?js$/i.test(path),
+  );
+  check(
+    Boolean(doctorAsset),
+    "Installed doctor fixture has no JavaScript asset",
+  );
+  const doctorAssetPath = join(directory, "dist", doctorAsset);
+  const doctorAssetBytes = await readFile(doctorAssetPath);
+  let tamperExitCode;
+  try {
+    await writeFile(
+      doctorAssetPath,
+      Buffer.concat([
+        doctorAssetBytes,
+        Buffer.from("\n/* doctor tamper probe */\n"),
+      ]),
+    );
+    let tamperedDoctor;
+    try {
+      await run(process.execPath, doctorArgs, {
+        cwd: directory,
+        timeout: 10000,
+        maxBuffer: 1024 * 1024,
+      });
+      throw new Error("Installed doctor accepted a tampered manifest asset");
+    } catch (error) {
+      check(
+        error.code === 1,
+        "Installed doctor tamper probe did not return exit code 1",
+      );
+      check(
+        !error.stderr,
+        "Installed doctor tamper probe wrote unexpected stderr",
+      );
+      tamperExitCode = error.code;
+      tamperedDoctor = JSON.parse(error.stdout);
+    }
+    check(
+      tamperedDoctor.status === "failed" &&
+        tamperedDoctor.checks.some(
+          (entry) => entry.id === "assets" && entry.status === "failed",
+        ),
+      "Installed doctor did not identify the tampered asset",
+    );
+  } finally {
+    await writeFile(doctorAssetPath, doctorAssetBytes);
+  }
+  check(
+    (await readFile(doctorAssetPath)).equals(doctorAssetBytes),
+    "Installed doctor probe did not restore the exact protected asset bytes",
+  );
+  check(
+    JSON.parse((await command(process.execPath, doctorArgs, directory)).stdout)
+      .status === "passed",
+    "Installed doctor did not accept the restored consumer build",
+  );
+  const doctor = {
+    status: "passed",
+    scope: cleanDoctor.scope,
+    tamperExitCode,
+    assetTamperingDetected: true,
+    exactBytesRestored: true,
+  };
+  console.log(
+    "Installed doctor passed clean, tampered and exact restoration checks",
+  );
   const report = JSON.parse(
     await readFile(join(directory, "dist/webguard-report.json"), "utf8"),
   );
@@ -724,6 +808,7 @@ WebGuard.init({blockShortcuts:true});\n`,
     deploymentCheck: true,
     publicServerApi: true,
     installedServerCli: true,
+    doctor,
     protectedPreview: true,
     cspMeta: true,
     headerOptOut: true,

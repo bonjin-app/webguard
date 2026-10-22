@@ -23,7 +23,7 @@
 
 **发布状态（核查于 2026-10-22）：** npm `latest` 版本为 **0.2.0**。下文集成方式针对的是**尚未发布的 0.3.0 候选版本**。npm 发布仍处于暂停状态；通过 `npm install uulab-webguard@latest` 安装的版本不包含这些候选版 API。
 
-从 [SDK / 包下载](https://webguard.uulab.co.kr/docs/#sdk-downloads)获取候选版本，并对照[下载目录](https://webguard.uulab.co.kr/downloads/catalog.json)验证摘要。执行以下命令前，请将下载的 `.tgz` 移至应用的项目根目录，或将命令中的路径替换为文件的实际绝对路径：
+在 [SDK / 包下载](https://webguard.uulab.co.kr/docs/#sdk-downloads)复制 npm 或 pnpm 的固定 URL 安装命令，即可在应用目录安装，无需移动文件或编辑路径。npm 发布仍暂停。请一起管理安装 URL 和所用工具的 lockfile：npm 使用 `npm ci`，pnpm 使用 `pnpm install --frozen-lockfile`。pnpm 11 本身要求 Node 22.13+，SDK 最低要求仍为 22.12。也可以下载经过检查的 `.tgz` 后本地安装。
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
@@ -65,8 +65,11 @@ export default defineConfig({
 
 ```sh
 npm run build
+npx --no-install webguard doctor dist
 npx --no-install webguard-serve dist --port 4173
 ```
+
+`webguard doctor dist --json` 以只读方式诊断清单、最终文件哈希和生成的响应头，并提供处理建议。浏览器运行与部署端 HTTP 策略需另行验证；Next 的 `.next` 不在此静态检查范围内。[安装、更新与恢复指南](docs/INSTALL.ko.md)。
 
 `webguardApp()` 默认启用 Strict/High、SDK 启动、公开源码映射移除、SRI 和策略生成。开发模式 / HMR 保持不变。输入限制需要主动启用；本示例明确开启了这些限制。生成的 HTTP 策略也适用于 `vite preview`。此集成不涵盖 Vite SSR、库构建和内存构建。
 

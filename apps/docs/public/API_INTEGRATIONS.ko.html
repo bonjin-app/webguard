@@ -412,6 +412,11 @@ export default withWebGuard({ reactStrictMode: true }, { preset: &quot;strict&qu
                   <td>로컬 검증과 배포 응답 검증 JSON</td>
                 </tr>
                 <tr>
+                  <td><code>webguard doctor [INPUT] [--json]</code></td>
+                  <td>선택, 기본 <code>dist</code></td>
+                  <td>읽기 전용 정적 산출물 진단·해결 안내</td>
+                </tr>
+                <tr>
                   <td><code>webguard report [INPUT]</code></td>
                   <td>선택, 기본 <code>dist-protected</code></td>
                   <td>저장된 보고서 원문 출력</td>
@@ -434,6 +439,37 @@ npx webguard verify dist-protected --base-url https://example.com/
 npx webguard report dist-protected
 npx webguard headers --trusted-types report-only
 </code></pre>
+          <h3 id="로컬-도입-진단-doctor">로컬 도입 진단: doctor</h3>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx --no-install webguard doctor dist
+npx --no-install webguard doctor dist-protected --json
+</code></pre>
+          <p>
+            경로를 생략하면 <code>dist</code>를 검사합니다. 정적 HTML 출력용이며
+            <code>.next</code> 서버 출력이나 SSR 자산 전용 디렉터리에는 사용하지
+            않습니다. 디렉터리·로컬 매니페스트·최종 파일 해시·생성된
+            <code>webguard-headers.json</code>의 형식을 확인합니다. 파일
+            쓰기·설정 코드 실행·네트워크 요청은 하지 않습니다. 문제의 원문
+            소스·헤더 값은 출력하지 않고 다음 조치로 재빌드·보호 연결·HTTP 정책
+            적용 등을 안내합니다.
+          </p>
+          <p>
+            기본은 사람이 읽는 진단, <code>--json</code>은
+            <code
+              >{version: 1, scope: &quot;local-static-build&quot;, status,
+              checks, limitations}</code
+            >
+            구조입니다. <code>checks</code>의 각 항목은 <code>id</code>,
+            <code>status</code>, <code>message</code>, 실패 시 선택적인
+            <code>nextAction</code>을 가집니다. 성공은 0, 실패·인수 오류는
+            1입니다. 로컬 통과는 난독화 강도·원격 HTTP 헤더·업무 보안·브라우저
+            호환성의 보증이 아니며, 최종 앱 실행과 <code>webguard-check</code>를
+            이어서 확인하세요. <code>headers:false</code>로 헤더를 별도 관리하는
+            앱은 이 자동 정적 정책 진단 기준을 충족하지 않으며 기존 정책을 직접
+            검증해야 합니다.
+          </p>
           <h3 id="cli-옵션">CLI 옵션</h3>
           <div
             class="table-scroll"
@@ -506,6 +542,11 @@ npx webguard headers --trusted-types report-only
                   <td><code>--no-headers</code></td>
                   <td><code>protect-app</code></td>
                   <td>헤더 생성 생략</td>
+                </tr>
+                <tr>
+                  <td><code>--json</code></td>
+                  <td><code>doctor</code></td>
+                  <td>기본 꺼짐. 구조화된 로컬 진단 JSON 출력</td>
                 </tr>
                 <tr>
                   <td><code>--help</code>, <code>-h</code></td>

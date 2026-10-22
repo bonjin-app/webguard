@@ -7,7 +7,10 @@ import { verifyDeployment, type DeploymentCheck } from "./remote.js";
 function object(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
-async function readJson(directory: string, filename: string): Promise<unknown> {
+export async function readLocalCheckJson(
+  directory: string,
+  filename: string,
+): Promise<unknown> {
   const handle = await open(
     join(directory, filename),
     constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK,
@@ -20,7 +23,7 @@ async function readJson(directory: string, filename: string): Promise<unknown> {
     await handle.close();
   }
 }
-function headerPolicy(input: unknown): Record<string, string> {
+export function validateHeaderPolicy(input: unknown): Record<string, string> {
   if (!object(input))
     throw new Error(
       "webguard-headers.json must be a header-name/string record",
@@ -86,7 +89,7 @@ export async function checkDeployment(
 ): Promise<DeploymentCheck> {
   let manifest: unknown;
   try {
-    manifest = await readJson(directory, "webguard-manifest.json");
+    manifest = await readLocalCheckJson(directory, "webguard-manifest.json");
   } catch {
     return localFailure("Unable to read a valid local webguard-manifest.json");
   }
@@ -94,7 +97,9 @@ export async function checkDeployment(
   if (!local.valid) return { ...local, checked: 0 };
   let headers: Record<string, string>;
   try {
-    headers = headerPolicy(await readJson(directory, "webguard-headers.json"));
+    headers = validateHeaderPolicy(
+      await readLocalCheckJson(directory, "webguard-headers.json"),
+    );
   } catch (error) {
     return localFailure(
       error instanceof Error &&
@@ -107,7 +112,7 @@ export async function checkDeployment(
   try {
     let report: unknown;
     try {
-      report = await readJson(directory, "webguard-report.json");
+      report = await readLocalCheckJson(directory, "webguard-report.json");
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     }

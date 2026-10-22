@@ -1,0 +1,42 @@
+{
+  "status": "passed-with-skips",
+  "checkedAt": "2026-10-22T07:08:04.004Z",
+  "environment": {
+    "node": "v22.23.2",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "packageSha512": "7ea530770cf4401ed64ab0aec0609f7402b88344373ceb898ed26c8cc1d68100e9adfb1e2cdfc125f99ecf1f01d7e5aa1bf63c7a8eb1b4b2b539af28054f97ff",
+  "packageSource": "provided-tarball",
+  "scope": "Vite 7/8, generic and Next install one temporary tarball; SSR templates use the workspace build. Browser engines are desktop automation, not physical-device certification.",
+  "suites": [
+    {
+      "name": "vite7",
+      "status": "passed"
+    },
+    {
+      "name": "vite8",
+      "status": "passed"
+    },
+    {
+      "name": "generic",
+      "status": "passed"
+    },
+    {
+      "name": "next",
+      "status": "passed"
+    },
+    {
+      "name": "ssr",
+      "status": "passed-with-skips",
+      "skipped": [
+        {
+          "runtime": "PHP",
+          "reason": "Runtime executable unavailable; not verified"
+        }
+      ]
+    }
+  ],
+  "heldReleaseUnchanged": true,
+  "requireNativeRuntimes": false
+}

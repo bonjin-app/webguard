@@ -130,4 +130,76 @@ describe("direct SDK downloads", () => {
       document.querySelector("[data-download-ready]")?.hasAttribute("hidden"),
     ).toBe(false);
   });
+  it("offers a literal pinned install command and synchronizes setup blocks with manager selection", async () => {
+    const document = fixture(
+      downloadsMarkup +
+        '<code id="setup-install" data-package-install-code></code><code data-package-install-code></code>',
+    );
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { clipboard: { writeText } });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: true, json: async () => catalog() }),
+    );
+    await initDownloads();
+    const command = `npm install -D https://webguard.uulab.co.kr${release().package.url}`;
+    expect(document.querySelector("#setup-install")?.textContent).toBe(command);
+    const select = document.querySelector<HTMLSelectElement>(
+      "[data-download-manager]",
+    )!;
+    select.value = "pnpm";
+    select.dispatchEvent(new window.Event("change"));
+    const selected = command.replace("npm install", "pnpm add");
+    for (const code of document.querySelectorAll("[data-package-install-code]"))
+      expect(code.textContent).toBe(selected);
+    document
+      .querySelector<HTMLButtonElement>("[data-download-install-copy]")!
+      .click();
+    expect(writeText).toHaveBeenLastCalledWith(selected);
+  });
+
+  it("clears stale links, command and copy before reload and rejects a hostile retry catalog", async () => {
+    const document = fixture(
+      downloadsMarkup +
+        '<code id="setup-install" data-package-install-code></code>',
+    );
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { clipboard: { writeText } });
+    let complete!: (value: unknown) => void;
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => catalog() })
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            complete = resolve;
+          }),
+      );
+    vi.stubGlobal("fetch", fetcher);
+    await initDownloads();
+    const loading = initDownloads();
+    expect(document.querySelector("#setup-install")?.textContent).not.toContain(
+      "https:",
+    );
+    expect(
+      document.querySelector("[data-download-package]")?.hasAttribute("href"),
+    ).toBe(false);
+    const copy = document.querySelector<HTMLButtonElement>(
+      "[data-download-install-copy]",
+    )!;
+    expect(copy.disabled).toBe(true);
+    copy.click();
+    expect(writeText).not.toHaveBeenCalled();
+    const hostile = catalog();
+    hostile.current.package.url = "https://evil.example/$(touch hacked).tgz";
+    complete({ ok: true, json: async () => hostile });
+    await loading;
+    expect(document.querySelector("#setup-install")?.textContent).toContain(
+      "다시 불러",
+    );
+    expect(copy.disabled).toBe(true);
+    expect(
+      document.querySelector("[data-download-retry]")?.hasAttribute("hidden"),
+    ).toBe(false);
+  });
 });

@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import metadata from "../package.json";
+import { diagnoseStaticBuild, formatDiagnosis } from "./doctor.js";
 import {
   createSecurityHeaders,
   protectAppDirectory,
@@ -22,6 +23,7 @@ Commands:
   protect-app INPUT --output OUTPUT   Protect static output and add SDK + policy
   protect INPUT --output OUTPUT       Protect assets without SDK injection
   scan INPUT                          Report redacted heuristic findings
+  doctor [INPUT] [--json]              Diagnose local static build (default: dist)
   verify INPUT [--base-url URL]        Check local manifest, optionally deployment
   report [INPUT]                      Read protection report (default: dist-protected)
   headers [--trusted-types MODE]      Print HTTP header JSON
@@ -46,6 +48,7 @@ const definitions = {
   "trusted-types": { type: "string" },
   "no-runtime": { type: "boolean" },
   "no-headers": { type: "boolean" },
+  json: { type: "boolean" },
 } as const;
 const commandOptions: Record<string, string[]> = {
   "protect-app": [
@@ -60,6 +63,7 @@ const commandOptions: Record<string, string[]> = {
   ],
   protect: ["output", "preset", "public-base"],
   scan: [],
+  doctor: ["json"],
   verify: ["base-url"],
   report: [],
   headers: ["trusted-types"],
@@ -109,7 +113,7 @@ export function parseCliArguments(args: string[]) {
   if (
     extra.length ||
     (command === "headers" && directory) ||
-    (!["headers", "report"].includes(command) && !directory)
+    (!["headers", "report", "doctor"].includes(command) && !directory)
   )
     throw new Error(`Invalid directory arguments for ${command}`);
   for (const name of seen) {
@@ -165,6 +169,12 @@ export async function runCli(
         }),
       );
       return 0;
+    }
+    if (command === "doctor") {
+      const result = await diagnoseStaticBuild(directory ?? "dist");
+      if (values.json) emit(result);
+      else io.log(formatDiagnosis(result));
+      return result.status === "passed" ? 0 : 1;
     }
     if (command === "report") {
       io.log(

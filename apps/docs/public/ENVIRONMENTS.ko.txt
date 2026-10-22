@@ -18,6 +18,14 @@ WebGuard는 웹 앱에 설치하는 SDK와 빌드 보호 도구입니다. Vite �
 | Nuxt·Angular 등                | 정적 출력이 있는 경우 조건부 후처리 검토    | 네이티브 SSR 어댑터·hydration 자동 지원을 주장하지 않음                  |
 | 다른 번들러·정적 사이트 생성기 | 실제 HTML·JS 출력에 범용 API 적용           | 자체 해시·프리캐시·서명·동적 URL 계약을 별도 점검                        |
 
+## 설치부터 확인까지 한 흐름
+
+[다운로드 화면](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 npm·pnpm용 고정 URL 설치 명령을 복사하면 패키지 파일을 옮기거나 경로를 수정하지 않아도 됩니다. npm 미게시 후보라는 상태는 그대로이며, 내려받은 `.tgz` 설치도 지원합니다. 이후 위 환경 표의 연결 한 번을 유지하고 빌드마다 같은 보호 단계를 실행합니다.
+
+Vite·범용 정적 HTML 출력은 `npx --no-install webguard doctor dist`로 먼저 진단합니다. 후처리 결과가 `dist-protected`면 그 경로를 사용하세요. `--json`은 CI 결과를 출력하며 파일을 수정하거나 네트워크에 접속하지 않습니다. 누락·변조·유효하지 않은 헤더는 실패와 해결 안내를 반환합니다. 로컬 통과 후 보호 서버와 `webguard-check`로 실제 HTTP 정책·배포 바이트를 별도로 검사합니다.
+
+Next의 `.next` 서버 출력과 자산만 있는 SSR 디렉터리는 이 정적 HTML 진단에 넣지 않습니다. 각 SSR 실행 예제에서 렌더링·hydration·API·최종 SRI·응답 정책을 검증하세요. [반복 실행용 프로젝트 스크립트와 업데이트·복구](INSTALL.ko.md#가장-짧은-적용-순서).
+
 ## SDK 파일·CDN과 빌드 도구의 차이
 
 [직접 다운로드·CDN 화면](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 독립 SDK, 외부 초기화 예제와 `uulab-webguard-0.3.0.tgz`를 받습니다. [다운로드 목록](https://webguard.uulab.co.kr/downloads/catalog.json)의 현재 후보와 보존된 릴리스는 고정 파일 주소·해시로 구분합니다. npm 게시는 계속 보류 중입니다.

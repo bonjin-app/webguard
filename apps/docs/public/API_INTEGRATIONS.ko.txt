@@ -130,6 +130,7 @@ type StringArrayEncoding = "none" | "base64" | "rc4";
 | `webguard scan INPUT`                          | 입력 디렉터리               | 탐지 결과 JSON. error 등급이 있으면 실패 |
 | `webguard verify INPUT`                        | 보호 출력 디렉터리          | 로컬 매니페스트 검증 JSON                |
 | `webguard verify INPUT --base-url URL`         | 출력·공개 URL               | 로컬 검증과 배포 응답 검증 JSON          |
+| `webguard doctor [INPUT] [--json]`             | 선택, 기본 `dist`           | 읽기 전용 정적 산출물 진단·해결 안내     |
 | `webguard report [INPUT]`                      | 선택, 기본 `dist-protected` | 저장된 보고서 원문 출력                  |
 | `webguard headers`                             | 없음                        | 서버 보안 헤더 JSON 출력                 |
 
@@ -141,6 +142,17 @@ npx webguard verify dist-protected --base-url https://example.com/
 npx webguard report dist-protected
 npx webguard headers --trusted-types report-only
 ```
+
+### 로컬 도입 진단: doctor
+
+```sh
+npx --no-install webguard doctor dist
+npx --no-install webguard doctor dist-protected --json
+```
+
+경로를 생략하면 `dist`를 검사합니다. 정적 HTML 출력용이며 `.next` 서버 출력이나 SSR 자산 전용 디렉터리에는 사용하지 않습니다. 디렉터리·로컬 매니페스트·최종 파일 해시·생성된 `webguard-headers.json`의 형식을 확인합니다. 파일 쓰기·설정 코드 실행·네트워크 요청은 하지 않습니다. 문제의 원문 소스·헤더 값은 출력하지 않고 다음 조치로 재빌드·보호 연결·HTTP 정책 적용 등을 안내합니다.
+
+기본은 사람이 읽는 진단, `--json`은 `{version: 1, scope: "local-static-build", status, checks, limitations}` 구조입니다. `checks`의 각 항목은 `id`, `status`, `message`, 실패 시 선택적인 `nextAction`을 가집니다. 성공은 0, 실패·인수 오류는 1입니다. 로컬 통과는 난독화 강도·원격 HTTP 헤더·업무 보안·브라우저 호환성의 보증이 아니며, 최종 앱 실행과 `webguard-check`를 이어서 확인하세요. `headers:false`로 헤더를 별도 관리하는 앱은 이 자동 정적 정책 진단 기준을 충족하지 않으며 기존 정책을 직접 검증해야 합니다.
 
 ### CLI 옵션
 
@@ -155,6 +167,7 @@ npx webguard headers --trusted-types report-only
 | `--trusted-types`         | `protect-app`, `headers` | `enforce`, `report-only`, `off`. 헤더 기본 enforce                             |
 | `--no-runtime`            | `protect-app`            | SDK 자동 시작 생략                                                             |
 | `--no-headers`            | `protect-app`            | 헤더 생성 생략                                                                 |
+| `--json`                  | `doctor`                 | 기본 꺼짐. 구조화된 로컬 진단 JSON 출력                                        |
 | `--help`, `-h`            | 전체 또는 개별 명령      | 사용법 출력                                                                    |
 | `--version`, `-v`         | 단독 실행                | 설치된 패키지 버전 출력                                                        |
 
