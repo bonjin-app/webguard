@@ -29,28 +29,29 @@
 | `uulab-webguard/server`            | `createProtectedServer`                                   | 로컬 Node HTTP 서버                                                                                                |
 | `uulab-webguard/next`              | `withWebGuard`                                            | `WebGuardNextOptions`. Next Webpack 설정용                                                                         |
 
-브라우저 런타임 타입 6개는 `WebGuardOptions`, `WebGuardInstance`, `ThreatEvent`, `DebuggingPolicy`, `DebuggingState`, `DomIntegrityPolicy`입니다. Node 전용 빌드·서버 모듈을 브라우저 앱에 import하지 마세요. 배포된 `dist`에 선언 파일이 있더라도 export map에 없는 `/cli`, `/next-runtime` 같은 내부 경로는 공개 import API가 아닙니다.
+브라우저 런타임 타입 7개는 `WebGuardOptions`, `WebGuardInstance`, `WebGuardStatus`, `ThreatEvent`, `DebuggingPolicy`, `DebuggingState`, `DomIntegrityPolicy`입니다. Node 전용 빌드·서버 모듈을 브라우저 앱에 import하지 마세요. 배포된 `dist`에 선언 파일이 있더라도 export map에 없는 `/cli`, `/next-runtime` 같은 내부 경로는 공개 import API가 아닙니다.
 
 ## 브라우저 함수와 타입
 
-| 이름                                                                                                      | 의미                            |
-| --------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| [WebGuard](API_BROWSER.ko.md#webguard) · [default](API_BROWSER.ko.md#default)                             | 동일한 SDK 객체. 생성자 아님    |
-| [WebGuard.init](API_BROWSER.ko.md#webguardinit)                                                           | 인스턴스 생성                   |
-| [installAutoGuard](API_BROWSER.ko.md#installautoguard)                                                    | 브라우저 자동 인스턴스 설치     |
-| [getAutoGuard](API_BROWSER.ko.md#getautoguard) · [getWebGuard](API_BROWSER.ko.md#getwebguard)             | 같은 자동 인스턴스 조회         |
-| [update](API_BROWSER.ko.md#webguardinstanceupdate)                                                        | 실행 중 정책 갱신               |
-| [getOptions](API_BROWSER.ko.md#webguardinstancegetoptions)                                                | 옵션 스냅샷                     |
-| [checkIntegrity](API_BROWSER.ko.md#webguardinstancecheckintegrity)                                        | 공개 파일 해시 검증             |
-| [checkDebugging](API_BROWSER.ko.md#webguardinstancecheckdebugging)                                        | 디버깅 신호 점검                |
-| [getDebuggingState](API_BROWSER.ko.md#webguardinstancegetdebuggingstate)                                  | 최근 진단 상태                  |
-| [rebaselineDom](API_BROWSER.ko.md#webguardinstancerebaselinedom)                                          | DOM 기준 갱신                   |
-| [destroy](API_BROWSER.ko.md#webguardinstancedestroy)                                                      | 리스너·타이머·진행 중 검사 정리 |
-| [WebGuardOptions](API_BROWSER.ko.md#webguardoptions)                                                      | 모든 런타임 옵션·기본값·범위    |
-| [WebGuardInstance](API_BROWSER.ko.md#webguardinstance)                                                    | 7개 인스턴스 메서드             |
-| [ThreatEvent](API_BROWSER.ko.md#threatevent)                                                              | 이벤트 종류·필드·콜백           |
-| [DebuggingPolicy](API_BROWSER.ko.md#debuggingpolicy) · [DebuggingState](API_BROWSER.ko.md#debuggingstate) | 디버깅 정책·관측값              |
-| [DomIntegrityPolicy](API_BROWSER.ko.md#domintegritypolicy)                                                | DOM 감시 정책                   |
+| 이름                                                                                                      | 의미                                |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| [WebGuard](API_BROWSER.ko.md#webguard) · [default](API_BROWSER.ko.md#default)                             | 동일한 SDK 객체. 생성자 아님        |
+| [WebGuard.init](API_BROWSER.ko.md#webguardinit)                                                           | 인스턴스 생성                       |
+| [installAutoGuard](API_BROWSER.ko.md#installautoguard)                                                    | 브라우저 자동 인스턴스 설치         |
+| [getAutoGuard](API_BROWSER.ko.md#getautoguard) · [getWebGuard](API_BROWSER.ko.md#getwebguard)             | 같은 자동 인스턴스 조회             |
+| [update](API_BROWSER.ko.md#webguardinstanceupdate)                                                        | 실행 중 정책 갱신                   |
+| [getStatus](API_BROWSER.ko.md#webguardinstancegetstatus)                                                  | 실제 실행 상태 · 종료 · 기능 가용성 |
+| [getOptions](API_BROWSER.ko.md#webguardinstancegetoptions)                                                | 옵션 스냅샷                         |
+| [checkIntegrity](API_BROWSER.ko.md#webguardinstancecheckintegrity)                                        | 공개 파일 해시 검증                 |
+| [checkDebugging](API_BROWSER.ko.md#webguardinstancecheckdebugging)                                        | 디버깅 신호 점검                    |
+| [getDebuggingState](API_BROWSER.ko.md#webguardinstancegetdebuggingstate)                                  | 최근 진단 상태                      |
+| [rebaselineDom](API_BROWSER.ko.md#webguardinstancerebaselinedom)                                          | DOM 기준 갱신                       |
+| [destroy](API_BROWSER.ko.md#webguardinstancedestroy)                                                      | 리스너·타이머·진행 중 검사 정리     |
+| [WebGuardOptions](API_BROWSER.ko.md#webguardoptions)                                                      | 모든 런타임 옵션·기본값·범위        |
+| [WebGuardInstance](API_BROWSER.ko.md#webguardinstance)                                                    | 8개 인스턴스 메서드                 |
+| [ThreatEvent](API_BROWSER.ko.md#threatevent)                                                              | 이벤트 종류·필드·콜백               |
+| [DebuggingPolicy](API_BROWSER.ko.md#debuggingpolicy) · [DebuggingState](API_BROWSER.ko.md#debuggingstate) | 디버깅 정책·관측값                  |
+| [DomIntegrityPolicy](API_BROWSER.ko.md#domintegritypolicy)                                                | DOM 감시 정책                       |
 
 ## 빌드·검증 함수와 타입
 

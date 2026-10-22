@@ -111,7 +111,7 @@ import { getWebGuard } from 'uulab-webguard/client';
 const guard=getWebGuard();
 if(!guard)throw new Error('SDK did not start before application');
 const state={automaticBeforeApp:true,sameGuard:true,threats:[],timer:'pending',rebaseline:null};
-const render=()=>{state.sameGuard=getWebGuard()===guard;state.options=guard.getOptions();state.watch=guard.getDebuggingState();document.querySelector('#state').textContent=JSON.stringify(state);};
+const render=()=>{state.sameGuard=getWebGuard()===guard;state.options=guard.getOptions();state.watch=guard.getDebuggingState();state.runtime=guard.getStatus();document.querySelector('#state').textContent=JSON.stringify(state);};
 guard.update({onThreat:event=>{state.threats.push({type:event.type,detail:event.detail});render();}});
 document.querySelector('#style-target').className=styles.confidentialPaymentStatus;
 const anchor=()=>document.querySelector('#static-notice');
@@ -281,6 +281,9 @@ render();\n`,
       assert.equal(initial.options.debugging.enabled, true);
       assert.equal(initial.options.debugging.watch, true);
       assert.equal(initial.watch.state, "watching");
+      assert.equal(initial.runtime.lifecycle, "active");
+      assert.equal(initial.runtime.features.domIntegrity, "watching");
+      assert.equal(initial.runtime.coverage.obfuscation, "not-verified");
       for (let read = 0; read < 40; read++) {
         await page.locator("#read-watch").click();
         if ((await state()).watch.samples > 0) break;
@@ -320,14 +323,17 @@ render();\n`,
           (await state()).threats.at(-1).type,
           "dom-integrity-mismatch",
         );
+        assert.equal((await state()).runtime.features.domIntegrity, "mismatch");
         await page.locator("#restore").click();
         assert.equal((await state()).rebaseline, true);
+        assert.equal((await state()).runtime.features.domIntegrity, "watching");
       }
       record.textAttributesRemovalReplacementDetected = true;
       record.synchronousRestoreAndRebaseline = true;
       const beforeDisabled = (await state()).threats.length;
       await page.locator("#disable").click();
       assert.equal((await state()).options.domIntegrity.enabled, false);
+      assert.equal((await state()).runtime.features.domIntegrity, "off");
       await page.locator("#tamper").click();
       await page.waitForTimeout(100);
       assert.equal((await state()).threats.length, beforeDisabled);
@@ -346,6 +352,7 @@ render();\n`,
       await page.locator("#restore").click();
       assert.equal((await state()).rebaseline, true);
       record.liveDisableEnable = true;
+      record.runtimeStatusTracksObserverLifecycle = true;
       await page.locator("#sample").click();
       await page.waitForFunction(
         () =>

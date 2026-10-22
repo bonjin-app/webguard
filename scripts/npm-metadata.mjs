@@ -23,6 +23,7 @@ export async function prepareNpmPackageMetadata() {
     "START_PYTHON.ko.md",
     "START_PHP.ko.md",
     "START_CDN.ko.md",
+    "OPERATIONS.ko.md",
   ])
     await copyFile(new URL(`docs/${name}`, source), new URL(name, target));
   for (const name of [

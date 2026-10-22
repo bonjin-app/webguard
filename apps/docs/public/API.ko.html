@@ -63,6 +63,7 @@
           <summary>상세 가이드 · API 명세</summary>
           <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
           ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/OPERATIONS.ko.html">개발·검증·운영 정책</a
           ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
           ><a href="/docs/API.ko.html" aria-current="page">API 명세 전체 목차</a
           ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
@@ -289,14 +290,14 @@
             </table>
           </div>
           <p>
-            브라우저 런타임 타입 6개는 <code>WebGuardOptions</code>,
-            <code>WebGuardInstance</code>, <code>ThreatEvent</code>,
-            <code>DebuggingPolicy</code>, <code>DebuggingState</code>,
-            <code>DomIntegrityPolicy</code>입니다. Node 전용 빌드·서버 모듈을
-            브라우저 앱에 import하지 마세요. 배포된 <code>dist</code>에 선언
-            파일이 있더라도 export map에 없는 <code>/cli</code>,
-            <code>/next-runtime</code> 같은 내부 경로는 공개 import API가
-            아닙니다.
+            브라우저 런타임 타입 7개는 <code>WebGuardOptions</code>,
+            <code>WebGuardInstance</code>, <code>WebGuardStatus</code>,
+            <code>ThreatEvent</code>, <code>DebuggingPolicy</code>,
+            <code>DebuggingState</code>, <code>DomIntegrityPolicy</code>입니다.
+            Node 전용 빌드·서버 모듈을 브라우저 앱에 import하지 마세요. 배포된
+            <code>dist</code>에 선언 파일이 있더라도 export map에 없는
+            <code>/cli</code>, <code>/next-runtime</code> 같은 내부 경로는 공개
+            import API가 아닙니다.
           </p>
           <h2 id="브라우저-함수와-타입">브라우저 함수와 타입</h2>
           <div
@@ -355,6 +356,15 @@
                     >
                   </td>
                   <td>실행 중 정책 갱신</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancegetstatus"
+                      >getStatus</a
+                    >
+                  </td>
+                  <td>실제 실행 상태 · 종료 · 기능 가용성</td>
                 </tr>
                 <tr>
                   <td>
@@ -423,7 +433,7 @@
                       >WebGuardInstance</a
                     >
                   </td>
-                  <td>7개 인스턴스 메서드</td>
+                  <td>8개 인스턴스 메서드</td>
                 </tr>
                 <tr>
                   <td>

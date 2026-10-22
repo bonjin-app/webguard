@@ -27,6 +27,7 @@ const apiGuides = [
   "API_BROWSER.ko.md",
   "API_BUILD.ko.md",
   "API_INTEGRATIONS.ko.md",
+  "OPERATIONS.ko.md",
 ];
 afterEach(async () => {
   await Promise.all(

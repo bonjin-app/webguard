@@ -159,7 +159,7 @@ export function createWebGuardApp(
     runtimeOptions = {
       ...validated,
       preset: policy.preset,
-      devtools: { detect: true, ...validated.devtools },
+      devtools: { detect: false, ...validated.devtools },
     };
   }
   const responseHeaders =

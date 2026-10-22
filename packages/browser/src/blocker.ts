@@ -23,6 +23,9 @@ export function createPageBlocker(document: Document, recheck: () => void) {
   }
   return {
     clear,
+    getReason(): BlockReason | undefined {
+      return dialog?.isConnected && dialog.open ? shownReason : undefined;
+    },
     show(
       reason: BlockReason,
     ): "shown" | "existing" | "unavailable" | "superseded" {

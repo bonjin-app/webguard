@@ -6,11 +6,11 @@
 
 ## 공개 내보내기
 
-| 진입점                   | 실행 시 제공하는 값                                                                     | 타입 전용 내보내기                                                                                              |
-| ------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `uulab-webguard/browser` | `WebGuard`, `default`, `installAutoGuard`, `getAutoGuard`                               | `WebGuardOptions`, `WebGuardInstance`, `ThreatEvent`, `DebuggingPolicy`, `DebuggingState`, `DomIntegrityPolicy` |
-| `uulab-webguard/client`  | `getWebGuard`                                                                           | 위와 동일한 여섯 타입                                                                                           |
-| 독립 `browser.global.js` | `WebGuardSDK` 전역의 `WebGuard`, `installAutoGuard`, `getAutoGuard` 등 브라우저 모듈 값 | JavaScript 전역 파일에는 TypeScript 타입이 없음                                                                 |
+| 진입점                   | 실행 시 제공하는 값                                                                     | 타입 전용 내보내기                                                                                                                |
+| ------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `uulab-webguard/browser` | `WebGuard`, `default`, `installAutoGuard`, `getAutoGuard`                               | `WebGuardOptions`, `WebGuardInstance`, `WebGuardStatus`, `ThreatEvent`, `DebuggingPolicy`, `DebuggingState`, `DomIntegrityPolicy` |
+| `uulab-webguard/client`  | `getWebGuard`                                                                           | 위와 동일한 일곱 타입                                                                                                             |
+| 독립 `browser.global.js` | `WebGuardSDK` 전역의 `WebGuard`, `installAutoGuard`, `getAutoGuard` 등 브라우저 모듈 값 | JavaScript 전역 파일에는 TypeScript 타입이 없음                                                                                   |
 
 `/browser`는 내부 브라우저 모듈의 공개 내보내기를 다시 내보내며 기본 내보내기도 제공합니다. `/client`는 이미 자동 시작한 인스턴스를 조회하는 가벼운 진입점입니다. 내부 구현의 `createPauseSampler`, `createPauseWatcher`, `createDomIntegrityMonitor`, `createPageBlocker`, `BlockReason`, `abortable`, `readIntegrityBytes`는 이 패키지 진입점의 공개 API가 아닙니다.
 
@@ -263,6 +263,7 @@ interface DomIntegrityPolicy {
 interface WebGuardInstance {
   update(options: WebGuardOptions): void;
   getOptions(): WebGuardOptions;
+  getStatus(): WebGuardStatus;
   checkIntegrity(url: string, expected: string): Promise<boolean>;
   checkDebugging(): Promise<boolean>;
   getDebuggingState(): DebuggingState;
@@ -319,6 +320,48 @@ const options = guard.getOptions();
 const effectiveTimeout = options.integrity?.timeoutMs ?? 10000;
 const enabled = options.integrity?.enabled === true;
 ```
+
+## WebGuardInstance.getStatus
+
+```ts
+guard.getStatus(): WebGuardStatus
+```
+
+현재 인스턴스가 소유한 **런타임 상태의 분리된 스냅샷**입니다. 설정을 유지하는 `getOptions()`와 달리 종료 여부와 기능의 실행 상태를 구분합니다. 외부 요청·DOM 변경·추가 타이머·이벤트 발행 없이 읽으며, URL·입력값·DOM 내용·선택자·콜백은 포함하지 않습니다. 반환 객체를 수정해도 SDK는 바뀌지 않습니다.
+
+초기 이벤트 전에 자동 통합이 시작했더라도 현재 상태는 읽을 수 있습니다. 과거 이벤트를 재생하거나 누락된 이벤트 이력을 복원하지는 않습니다. 자동 등록에만 연결하려면 `getWebGuard()?.getStatus()`, 수동 연결은 저장한 인스턴스의 `getStatus()`를 사용하세요.
+
+서로 다른 세대의 SDK를 같은 페이지에 중복 연결하지 마세요. 자동 레지스트리에 현재 메서드를 제공하지 않는 구형 인스턴스가 있으면 조회는 `undefined`, 새 설치는 오류로 처리하여 불완전한 인스턴스를 현재 API로 반환하지 않습니다. SDK·앱을 같은 릴리스로 맞춰 전체 페이지를 새로 로드하세요.
+
+## WebGuardStatus
+
+| 필드                                              | 값과 의미                                                                                                                                                               |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `version` / `scope`                               | `1` / `"runtime-only"`                                                                                                                                                  |
+| `lifecycle`                                       | `"active"` 또는 `"destroyed"`. SSR에서도 인스턴스 수명 자체는 active일 수 있음                                                                                          |
+| `environment`                                     | 생성 시점의 `"browser"` 또는 `"server"`                                                                                                                                 |
+| `features.shortcuts` / `contextMenu` / `geometry` | `"off"`, `"listening"`, `"unavailable"`. listening은 SDK의 이벤트 수신 상태이며 브라우저가 모든 입력을 전달한다는 뜻이 아님                                             |
+| `features.integrity`                              | `"off"`, `"ready"`, `"unavailable"`. ready는 fetch·SHA-384 API를 이용할 수 있다는 뜻이며 아직 어떤 파일도 검증하지 않았을 수 있음. SSR은 절대 HTTP(S) URL로만 검사 가능 |
+| `features.domIntegrity`                           | `"off"`, `"watching"`, `"mismatch"`, `"error"`, `"unavailable"`. 변경·오류 후 관찰 중지를 상태로 표시. 성공한 `rebaselineDom()` 후 watching으로 복귀                    |
+| `debugging`                                       | `getDebuggingState()`와 같은 분리된 자동 관찰 스냅샷                                                                                                                    |
+| `pageProtection.state`                            | `"idle"`, `"pending"`(body 준비 대기), `"shown"`(SDK 소유 안내 노드가 연결되고 열려 있음), `"unavailable"`(표시 시도 실패)                                              |
+| `pageProtection.reason`                           | idle이면 `null`, 그 외 `"shortcut"`, `"geometry"`, `"dom-tamper"`, `"debugging-suspicion"` 중 사유                                                                      |
+| `coverage.obfuscation` / `responseHeaders`        | 항상 `"not-verified"`. 이 메서드는 빌드 산출물이나 HTTP 응답을 검사하지 않음                                                                                            |
+| `coverage.devtoolsClosure`                        | 항상 `"unsupported"`. 개발자도구 강제 닫기 기능 없음                                                                                                                    |
+
+종료 후에는 기능 상태가 off, 페이지 상태가 idle입니다. 입력·크기 기능은 설정이 아니라 실제 리스너 설치 상태를 기준으로 합니다. 정책 변경 중 리스너를 재설치하기 전의 동기 콜백에서는 일시적으로 off일 수 있습니다. DOM 감시 unavailable은 브라우저 문서·MutationObserver 부재 등을 나타내며, 기준 선택자 없음·범위 초과는 error입니다. Watching은 기준 수집과 관찰 설치 상태를 뜻하며 전체 페이지가 안전하다는 인증이 아닙니다. DOM 변경은 MutationObserver 콜백이 처리된 뒤 반영됩니다. 외부에서 안내 노드를 제거·닫으면 shown을 계속 보고하지 않습니다.
+
+```js
+const status = guard.getStatus();
+if (status.lifecycle === "destroyed") {
+  // 종료한 인스턴스의 enabled 설정을 실행 중으로 표시하지 않습니다.
+}
+if (["error", "mismatch"].includes(status.features.domIntegrity)) {
+  // 실제 원인을 확인한 뒤 앱이 신뢰하는 상태에서만 재기준화합니다.
+}
+```
+
+개발·검증·운영별 정책과 복구 순서는 [운영 가이드](OPERATIONS.ko.md)를 참고하세요.
 
 ## WebGuardInstance.checkIntegrity
 

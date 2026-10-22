@@ -16,7 +16,8 @@
       "DomIntegrityPolicy": "API_BROWSER.ko.md#domintegritypolicy",
       "ThreatEvent": "API_BROWSER.ko.md#threatevent",
       "WebGuardInstance": "API_BROWSER.ko.md#webguardinstance",
-      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions"
+      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions",
+      "WebGuardStatus": "API_BROWSER.ko.md#webguardstatus"
     },
     "/browser": {
       "WebGuard": "API_BROWSER.ko.md#webguard",
@@ -28,7 +29,8 @@
       "DomIntegrityPolicy": "API_BROWSER.ko.md#domintegritypolicy",
       "ThreatEvent": "API_BROWSER.ko.md#threatevent",
       "WebGuardInstance": "API_BROWSER.ko.md#webguardinstance",
-      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions"
+      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions",
+      "WebGuardStatus": "API_BROWSER.ko.md#webguardstatus"
     },
     "/headers": {
       "createSecurityHeaders": "API_BUILD.ko.md#createsecurityheaders",
@@ -85,7 +87,8 @@
     "WebGuardInstance.getDebuggingState": "API_BROWSER.ko.md#webguardinstancegetdebuggingstate",
     "WebGuardInstance.getOptions": "API_BROWSER.ko.md#webguardinstancegetoptions",
     "WebGuardInstance.rebaselineDom": "API_BROWSER.ko.md#webguardinstancerebaselinedom",
-    "WebGuardInstance.update": "API_BROWSER.ko.md#webguardinstanceupdate"
+    "WebGuardInstance.update": "API_BROWSER.ko.md#webguardinstanceupdate",
+    "WebGuardInstance.getStatus": "API_BROWSER.ko.md#webguardinstancegetstatus"
   },
   "bins": {
     "webguard": "API_INTEGRATIONS.ko.md#webguard-cli",

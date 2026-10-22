@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>WebGuard 운영 가이드 — WebGuard</title>
+    <meta
+      name="description"
+      content="개발·검증·운영 정책: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/OPERATIONS.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#적용-상태-진단">적용 상태 진단</a
+          ><a href="#환경별-적용">환경별 적용</a
+          ><a href="#1-개발-간섭-없이-사용">1. 개발: 간섭 없이 사용</a
+          ><a href="#2-스테이징-관찰부터-시작">2. 스테이징: 관찰부터 시작</a
+          ><a href="#3-운영-보수적으로-적용">3. 운영: 보수적으로 적용</a
+          ><a href="#수동-jspcdn의-환경-선택">수동 JSP·CDN의 환경 선택</a
+          ><a href="#빌드-보호와-배포-검증">빌드 보호와 배포 검증</a
+          ><a href="#장애-진단과-복구">장애 진단과 복구</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments">
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference" open>
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/OPERATIONS.ko.html" aria-current="page"
+            >개발·검증·운영 정책</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>상세 가이드</span
+            ><span aria-hidden="true"> / </span><span>개발·검증·운영 정책</span>
+          </nav>
+          <div class="guide-tools">
+            <a href="/docs/OPERATIONS.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/OPERATIONS.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="webguard-운영-가이드">WebGuard 운영 가이드</h1>
+          <p>
+            개발에서는 디버깅을 그대로 유지하고, 스테이징에서 관찰한 뒤 검증한
+            정책만 운영에 적용합니다. 이 문서는 저장소의 미게시 후보 API
+            기준입니다. npm 게시는 보류 중이므로 설치는
+            <a href="/docs/ENVIRONMENTS.ko.html">환경별 시작 가이드</a>의 고정
+            다운로드·패키지 안내를 따르세요.
+          </p>
+          <h2 id="적용-상태-진단">적용 상태 진단</h2>
+          <p>
+            현재 SDK 후보에는 설정값과 실제 실행 상태를 구분하는
+            <code>guard.getStatus()</code>가 있습니다. 수동 연결은
+            <code>window.webguard.getStatus()</code>, 자동 연결은
+            <code>getWebGuard()?.getStatus()</code>로 읽습니다. 개발자도구 콘솔
+            대신 앱의 진단 화면에도 연결할 수 있습니다.
+          </p>
+          <p>
+            DOM 감시 오류·변경 감지 후 중지, 종료된 인스턴스, 페이지 안내 표시
+            실패를 구분합니다. 파일 검사 ready는 명시적 검사 호출이 가능하다는
+            뜻이며, 난독화·응답 헤더·개발자도구 창 상태의 검증 결과가 아닙니다.
+            <a href="/docs/API_BROWSER.ko.html#webguardinstancegetstatus"
+              >정확한 반환값과 범위</a
+            >를 확인하세요.
+          </p>
+          <p>
+            이 메서드가 없는 과거 SDK를 사용 중이면
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >다운로드 화면</a
+            >에서 새 후보를 선택하고 SDK와 SRI를 함께 갱신합니다. 기존 파일의
+            내용을 덮어써 고정 URL의 의미를 바꾸지 마세요.
+          </p>
+          <h2 id="환경별-적용">환경별 적용</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">환경</th>
+                  <th scope="col">빌드·서버 정책</th>
+                  <th scope="col">브라우저 정책</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>개발</td>
+                  <td>원래 개발 서버·원본 디버깅 유지</td>
+                  <td>SDK를 연결하지 않거나 아래 개발 정책 사용</td>
+                </tr>
+                <tr>
+                  <td>스테이징</td>
+                  <td>
+                    운영과 같은 빌드·배포 경로에서 기능·성능·헤더·SRI 검증
+                  </td>
+                  <td>입력 제한 없이 보고부터 시작, 실행 지연 관찰은 선택</td>
+                </tr>
+                <tr>
+                  <td>운영</td>
+                  <td>
+                    검증한 난독화 결과·HTTP 헤더·최종 바이트 SRI를 함께 배포
+                  </td>
+                  <td>크기·실행 지연 추정으로 기본 차단하지 않음</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <a href="/docs/START_VITE.ko.html">Vite 통합</a>은 빌드에 적용되며
+            개발 서버에는 보호를 적용하지 않습니다.
+            <a href="/docs/START_NEXT.ko.html">Next 통합</a>도 운영 Webpack
+            클라이언트 빌드에 적용됩니다. 개발 중에는 기존 소스맵·중단점·HMR
+            흐름을 유지하고 수동 SDK를 별도로 추가하지 마세요. 스테이징의 운영
+            빌드에는 보호가 적용되므로 개발 서버와 구분합니다.
+          </p>
+          <p>
+            다음 세 예제는 <strong>수동 SDK 연결에서 하나만</strong> 골라 외부
+            초기화 파일에 저장합니다.
+            <a href="/docs/START_CDN.ko.html">CDN</a>·<a
+              href="/docs/START_JAVA.ko.html"
+              >JSP</a
+            >는 <code>SDK → 초기화 → 앱</code> 순서로 외부 스크립트를 연결하고
+            <code>defer</code>를 사용합니다. 자동 통합이 이미 SDK를 시작한다면
+            <code>init()</code>을 다시 호출하지 말고 통합의
+            <code>runtime</code> 옵션에 해당 중첩 정책을 적용하세요.
+            <code>onThreat</code> 콜백은 시작 후
+            <code>getWebGuard()?.update({ onThreat })</code>로 연결할 수
+            있습니다.
+          </p>
+          <p>
+            아래 <code>WebGuard.init()</code> 옵션은 런타임 동작만 정합니다. 앱
+            JavaScript를 난독화하거나 서버 HTTP 헤더·HTML SRI를 생성하지
+            않습니다. <code>preset: &quot;strict&quot;</code>만 추가해도 이러한
+            빌드 작업이 실행되지 않습니다.
+          </p>
+          <h2 id="1-개발-간섭-없이-사용">1. 개발: 간섭 없이 사용</h2>
+          <p>
+            가능하면 개발 레이아웃에서 SDK·초기화 태그를 생략합니다. 공통 연결을
+            유지해야 한다면 개발용 외부 초기화 파일을 다음과 같이 둡니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>window.webguard = WebGuardSDK.WebGuard.init({
+  devtools: {
+    detect: false,
+    blockShortcuts: false,
+    blockContextMenu: false,
+    response: &quot;monitor&quot;,
+  },
+  debugging: { enabled: false, watch: false, response: &quot;report&quot; },
+  domIntegrity: { enabled: false, response: &quot;report&quot; },
+  integrity: { enabled: false },
+});
+</code></pre>
+          <p>
+            검사 단축키·우클릭 제한과 크기·지연·DOM 관찰을 모두 끕니다. 기존
+            인스턴스에 <code>update({})</code>를 호출하면 정책이 초기화되지
+            않으므로, 정책을 바꿀 때는 끌 기능을 명시적으로 <code>false</code>로
+            지정합니다.
+          </p>
+          <h2 id="2-스테이징-관찰부터-시작">2. 스테이징: 관찰부터 시작</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>window.webguard = WebGuardSDK.WebGuard.init({
+  devtools: {
+    detect: true,
+    blockShortcuts: false,
+    blockContextMenu: false,
+    response: &quot;monitor&quot;,
+  },
+  debugging: {
+    enabled: false,
+    watch: false,
+    response: &quot;report&quot;,
+    thresholdMs: 1500,
+    intervalMs: 1000,
+  },
+  domIntegrity: { enabled: false, response: &quot;report&quot; },
+  integrity: { enabled: false },
+  onThreat(event) {
+    console.info(&quot;[WebGuard]&quot;, event.type, event.timestamp);
+  },
+});
+</code></pre>
+          <p>
+            실행 지연도 관찰하려면 <code>debugging.enabled</code>와
+            <code>debugging.watch</code>를
+            <strong>둘 다 <code>true</code></strong
+            >로 바꿉니다. <code>response: &quot;report&quot;</code>를 유지하고
+            느린 기기·CPU 부하·탭 전환·절전 복귀·일반 디버깅 중 신호를
+            확인하세요. 자동 관찰의 상태·표본 수는
+            <code>window.webguard.getDebuggingState()</code>로 읽을 수 있습니다.
+          </p>
+          <p>
+            창 크기 신호는 창 장식·확대·레이아웃으로 오탐할 수 있습니다. 실행
+            지연도 중단점·CPU 부하·브라우저 스케줄링을 구분하지 못하며, 일시
+            정지 중에는 SDK도 멈춥니다. 두 신호는 개발자도구 존재나 악성 사용의
+            확정 증거가 아닙니다. SDK는 <code>debugger</code> 구문이나 반복 정지
+            루프를 삽입하지 않습니다.
+          </p>
+          <p>
+            <code>onThreat</code>는 로컬 콜백이며 위 예제는 서버 전송을 하지
+            않습니다. 운영 수집을 추가한다면 이벤트 종류·시각·앱 릴리스
+            식별자처럼 진단에 필요한 항목만 보내고, 입력값·DOM 원문·인증 정보는
+            담지 마세요.
+          </p>
+          <h2 id="3-운영-보수적으로-적용">3. 운영: 보수적으로 적용</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>window.webguard = WebGuardSDK.WebGuard.init({
+  devtools: {
+    detect: false,
+    blockShortcuts: false,
+    blockContextMenu: false,
+    response: &quot;monitor&quot;,
+    shortcutScope: &quot;non-editable&quot;,
+  },
+  debugging: { enabled: false, watch: false, response: &quot;report&quot; },
+  domIntegrity: { enabled: false, response: &quot;report&quot; },
+  integrity: { enabled: false },
+});
+</code></pre>
+          <p>
+            이 정책은 오탐으로 사용자 조작을 막지 않는 출발점입니다. 관찰이
+            필요하면 스테이징에서 확인한 크기·지연 정책을 보고 모드로
+            적용합니다. 단축키·우클릭 제한은 제품 요구와 편집·접근성 검증을 마친
+            경우에만 각각 켜세요. <code>response: &quot;monitor&quot;</code>라도
+            <code>blockShortcuts</code>·<code>blockContextMenu</code>를 켜면
+            해당 입력 제한은 실행됩니다.
+          </p>
+          <p>
+            DOM 감시는 실제로 고정된 요소에만 별도로 적용하고 정상
+            렌더링·hydration·상태 갱신을 변조로 처리하지 않는지 먼저 확인합니다.
+            <code>integrity.enabled: true</code>만으로 파일 검사가 자동
+            실행되지는 않으며, <code>checkIntegrity()</code>와 신뢰할 기준
+            해시를 별도로 연결해야 합니다. 런타임 파일 검사와 브라우저의
+            <code>&lt;script integrity=&quot;…&quot;&gt;</code> SRI 검증은
+            별개입니다.
+          </p>
+          <h2 id="수동-jspcdn의-환경-선택">수동 JSP·CDN의 환경 선택</h2>
+          <p>
+            개발·스테이징·운영용 초기화 파일을 따로 보관하고
+            <strong
+              >서버 배포 설정이나 서버 템플릿이 환경에 맞는 파일 하나를
+              선택</strong
+            >하게 구성합니다. 예를 들어 배포별 공통 JSP include가 해당 릴리스의
+            외부 <code>webguard-init.js</code> 경로를 출력하도록 합니다. 운영
+            파일에 개발용 초기화를 함께 넣거나 중복 초기화하지 마세요.
+          </p>
+          <p>
+            <code>?debug=1</code> 같은 쿼리, <code>localStorage</code>, 브라우저
+            전역 플래그로 운영 보호를 해제하는 우회 스위치를 만들지 않습니다.
+            운영 진단은 접근을 제한한 별도 환경이나 승인된 서버 배포 설정으로
+            수행합니다. 서버의 환경 선택도 클라이언트 코드를 신뢰 경계로
+            바꾸지는 않으므로 인증·권한·비밀값 검증은 서버에 유지합니다.
+          </p>
+          <h2 id="빌드-보호와-배포-검증">빌드 보호와 배포 검증</h2>
+          <p>
+            수동 CDN·JSP 런타임 연결에는 Node·npm이 필요하지 않습니다.
+            <strong>앱 JS 난독화까지 선택할 때만</strong> 개발 PC·CI에서 Node
+            22.12 이상과 빌드 도구를 사용합니다. pnpm 11을 쓰면 Node 22.13
+            이상이 필요합니다. 운영 Java 서버에 Node를 추가하거나 매 요청에서
+            난독화하지 않습니다.
+          </p>
+          <ol>
+            <li>
+              기존 앱 테스트를 먼저 통과시킨 뒤 별도 릴리스 출력에 난독화를
+              적용합니다. 처음부터 가장 강한 프리셋을 선택하기보다
+              기능·크기·실행 비용을 확인합니다.
+            </li>
+            <li>
+              운영과 같은 호스트에서 로그인·폼·IME·우클릭 편집·키보드
+              접근·페이지 이동·동적 import를 확인합니다. Next는
+              SSR·hydration·RSC 흐름도 확인합니다.
+            </li>
+            <li>
+              최종 파일 바이트에 맞는 SRI와 HTTP 헤더를 적용하고 CSP·SRI 오류,
+              외부 API·폰트 차단 여부를 확인합니다. 기존 CSP·nonce 계약은
+              보존합니다.
+            </li>
+            <li>
+              공개 소스맵·원본·비공개 보고서 경로의 접근 제한과 실제 배포 파일
+              바이트를 확인한 뒤 운영으로 승격합니다.
+            </li>
+          </ol>
+          <p>
+            Vite의 생성 정책 파일도 운영 호스트에 실제 적용해야 합니다. Next
+            어댑터와 수동 SDK 연결은 CSP·SRI·HTTP 헤더를 자동 생성하지 않습니다.
+            기존 Next 서버 정책이나
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/server-templates/README.md"
+              >서버 템플릿</a
+            >을 서비스에 맞춰 적용하세요. <code>.next</code> 전체에 정적
+            디렉터리 보호·진단을 실행하지 않습니다.
+          </p>
+          <h2 id="장애-진단과-복구">장애 진단과 복구</h2>
+          <p>
+            SDK·초기화 파일·앱 파일의 요청 상태와 실행 순서, CSP·SRI 오류를 먼저
+            확인합니다. 가드가 중복 실행되면 자동 통합과 수동
+            <code>init()</code>의 중복 여부를 확인하세요. 이벤트 해석과 개별
+            메서드는 <a href="/docs/API_BROWSER.ko.html">브라우저 API</a>를
+            따릅니다.
+          </p>
+          <p>
+            진단용 원본·소스맵은 공개 자산과 분리한 접근 제한 저장소에 릴리스
+            식별자와 함께 보관합니다. 비공개 맵 경로만 지정했다고 맵이 자동
+            생성·보관된다고 가정하지 말고, 선택한 빌드 API의 수집 옵션과 실제
+            산출물을 확인하세요. 비공개 저장소에서만 오류 위치를 대조하며
+            <code>.map</code>이나 <code>sourcesContent</code>가 담긴 파일을 공개
+            경로에 복원하지 않습니다.
+          </p>
+          <p>
+            추정 신호로 문제가 생기면 <code>update()</code>로 해당 관찰을 끄거나
+            보고 모드로 되돌릴 수 있습니다. <code>destroy()</code>는 그
+            인스턴스가 소유한 런타임 리소스를 정리하지만 앱 난독화·서버
+            헤더·배포 파일을 되돌리지는 않습니다. 공유 자동 인스턴스의 수명은 앱
+            통합 수준에서 관리하세요.
+          </p>
+          <p>
+            릴리스마다
+            <strong
+              >SDK·외부 초기화 파일·앱 자산·HTML의 URL과 SRI·HTTP 정책</strong
+            >을 함께 기록합니다. 롤백도 검증한 이전 묶음으로 수행하고 캐시된
+            HTML이 새 파일과 섞이지 않는지 확인하세요. SDK만 교체하거나 SRI를
+            제거해 오류를 숨기지 않습니다. 복구 후 실제 URL에서 로딩·핵심
+            기능·헤더·최종 바이트를 다시 확인합니다.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -131,6 +131,7 @@ describe("public static guides", () => {
     expect(publicGuides.map((guide) => guide.source)).toEqual([
       "INSTALL.ko.md",
       "ENVIRONMENTS.ko.md",
+      "OPERATIONS.ko.md",
       "SSR_VERIFICATION.md",
       "API.ko.md",
       "API_BROWSER.ko.md",
@@ -174,7 +175,7 @@ describe("public static guides", () => {
           outline.innerHTML.indexOf("guide-nav-environments"),
         );
         expect(environmentGroup.querySelectorAll("a")).toHaveLength(8);
-        expect(referenceGroup.querySelectorAll("a")).toHaveLength(7);
+        expect(referenceGroup.querySelectorAll("a")).toHaveLength(8);
         expect(
           document.querySelector(".guide-breadcrumb")?.textContent,
         ).toContain(isEnvironment ? "환경별 시작" : "상세 가이드");

@@ -68,6 +68,82 @@ async function openBasicDemo(page: Page, path: string) {
   await page.locator("#runtime-page-block").uncheck();
 }
 
+test("runtime diagnostics follow actual guard policy and modal state", async ({
+  page,
+}) => {
+  await page.goto("/demo#live-demo");
+  const panel = page.locator("#runtime-diagnostics");
+  await expect(panel).toBeVisible({ timeout: 1500 });
+  await panel.locator("summary").click();
+  const status = async () =>
+    JSON.parse((await page.locator("#runtime-status").textContent())!);
+  expect(await status()).toMatchObject({
+    lifecycle: "active",
+    environment: "browser",
+    scope: "runtime-only",
+    features: {
+      shortcuts: "listening",
+      contextMenu: "listening",
+      integrity: "ready",
+    },
+    pageProtection: { state: "idle", reason: null },
+    coverage: {
+      obfuscation: "not-verified",
+      responseHeaders: "not-verified",
+      devtoolsClosure: "unsupported",
+    },
+  });
+  await page.getByLabel("본문 시험 영역", { exact: true }).focus();
+  await page.keyboard.press("F12");
+  await expect(page.locator("[data-webguard-blocker]")).toBeVisible();
+  expect((await status()).pageProtection).toEqual({
+    state: "shown",
+    reason: "shortcut",
+  });
+  await page.locator("[data-demo-block-exit]").click();
+  await page.locator("#shortcuts").uncheck();
+  await page.locator("#context").uncheck();
+  await page.locator("#runtime-status-refresh").click();
+  expect(await status()).toMatchObject({
+    features: { shortcuts: "off", contextMenu: "off" },
+    pageProtection: { state: "idle", reason: null },
+  });
+  await page.getByLabel("본문 시험 영역", { exact: true }).focus();
+  await observeNextInput(page, "keydown", "F12");
+  await page.keyboard.press("F12");
+  await expect
+    .poll(() => inputObservation(page))
+    .toEqual({ trusted: true, prevented: false });
+});
+
+test("runtime diagnostics expose stopped DOM observation and explicit recovery", async ({
+  page,
+}) => {
+  await page.goto("/demo#runtime-hardening");
+  await expect(page.locator("#runtime-diagnostics")).toBeVisible({
+    timeout: 1500,
+  });
+  await page.locator("#dom-tamper").click();
+  await expect(page.locator("#dom-integrity-status")).toContainText(
+    "변경 감지",
+  );
+  await page.locator("#runtime-diagnostics > summary").click();
+  await page.locator("#runtime-status-refresh").click();
+  const output = page.locator("#runtime-status");
+  expect(JSON.parse((await output.textContent())!).features.domIntegrity).toBe(
+    "mismatch",
+  );
+  await page.locator("#dom-restore").click();
+  await page.locator("#runtime-status-refresh").click();
+  expect(JSON.parse((await output.textContent())!).features.domIntegrity).toBe(
+    "watching",
+  );
+  await expect(page.locator("#runtime-diagnostics a")).toHaveAttribute(
+    "href",
+    "/docs/OPERATIONS.ko.html",
+  );
+});
+
 test("reaches live SDK controls from the hero and applies both policy buttons", async ({
   page,
 }) => {

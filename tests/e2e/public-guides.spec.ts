@@ -8,6 +8,7 @@ const guides = [
   ["API_BROWSER.ko", "브라우저 런타임 API 참조"],
   ["API_BUILD.ko", "Node 빌드·헤더·무결성·배포 검증 API"],
   ["API_INTEGRATIONS.ko", "WebGuard 연동 API와 CLI 명세"],
+  ["OPERATIONS.ko", "WebGuard 운영 가이드"],
 ] as const;
 
 async function expectGuideReady(page: Page) {

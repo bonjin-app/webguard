@@ -89,7 +89,7 @@ it("covers every actual public value, type and SDK instance method with a real r
   const result = await validateApiReference();
   expect(result.modules).toBe(9);
   expect(result.symbols).toBeGreaterThan(50);
-  expect(result.methods).toBe(8);
+  expect(result.methods).toBe(9);
   expect(result.bins).toBe(3);
   expect(await readFile("docs/API.ko.md", "utf8")).toContain(
     "uulab-webguard/build",

@@ -2,6 +2,7 @@
 export { getAutoGuard as getWebGuard } from "@webguard/browser";
 export type {
   WebGuardInstance,
+  WebGuardStatus,
   WebGuardOptions,
   ThreatEvent,
   DebuggingPolicy,

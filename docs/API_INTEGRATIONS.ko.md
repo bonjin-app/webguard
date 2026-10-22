@@ -48,7 +48,7 @@ guard?.update({ onThreat: (event) => console.info(event.type) });
 | `headers`        | `SecurityHeadersOptions \| false`                        | 기본 헤더 옵션 | CSP 및 헤더 산출물 생성. `false`면 생략             |
 | `domIdentifiers` | `boolean`                                                | `false`        | CSS Modules 생성 클래스 이름을 불투명한 값으로 변환 |
 
-Vite 자동 SDK의 `devtools.detect`는 기본 `true`입니다. 단축키·우클릭 제한은 명시적으로 켭니다. 감지와 대응의 정확한 계약은 [브라우저 옵션](API_BROWSER.ko.md#webguardoptions)을 확인하세요. `headers`는 [createSecurityHeaders](API_BUILD.ko.md#createsecurityheaders)와 같은 옵션을 받습니다. HTTP 전용 헤더는 생성된 설정을 호스팅 서버에 적용해야 효력이 있습니다.
+Vite 자동 SDK의 `devtools.detect`는 기본 `false`입니다. 창의 외부·내부 크기 차이를 이용한 추정이 정상 환경에서도 오탐할 수 있어 기본으로 켜지 않습니다. 필요하면 `runtime.devtools.detect:true`로 명시적으로 켭니다. 단축키·우클릭 제한도 각각 명시적으로 켭니다. 감지와 대응의 정확한 계약은 [브라우저 옵션](API_BROWSER.ko.md#webguardoptions)을 확인하세요. `headers`는 [createSecurityHeaders](API_BUILD.ko.md#createsecurityheaders)와 같은 옵션을 받습니다. HTTP 전용 헤더는 생성된 설정을 호스팅 서버에 적용해야 효력이 있습니다.
 
 `domIdentifiers`는 CSS Modules 전용입니다. HTML의 모든 ID·클래스·텍스트를 숨기지 않습니다. Lightning CSS, 비활성 CSS Modules, 사용자 지정 `generateScopedName`과의 충돌은 오류입니다. Trusted Types가 앱의 `innerHTML` 같은 문자열 DOM 삽입을 차단할 수 있으므로 호환성 경고를 확인하고 안전한 DOM API로 수정하거나 명시적으로 보고 전용 정책을 선택하세요.
 
@@ -99,7 +99,7 @@ npx next build --webpack
 | `runtime`         | `Omit<WebGuardOptions, "preset" \| "onThreat"> \| false` | `{}`         | 자동 SDK, `false`면 생략                                                                  |
 | `domIdentifiers`  | `boolean`                                                | `false`      | 서버·클라이언트의 지원되는 CSS Modules 이름 생성 연결                                     |
 
-Next 자동 SDK의 `devtools.detect`는 기본 `false`입니다. 필요하면 `runtime.devtools.detect:true`로 켭니다. Vite 자동 연동과 기본값이 다릅니다. 런타임 콜백은 클라이언트에서 `getWebGuard()?.update(...)`로 지정하세요. `runtime` 안의 `preset`·`onThreat`, 알 수 없는 옵션, 잘못된 타입은 거부됩니다.
+Next 자동 SDK의 `devtools.detect`는 Vite 자동 연동과 같이 기본 `false`입니다. 필요하면 `runtime.devtools.detect:true`로 켭니다. 런타임 콜백은 클라이언트에서 `getWebGuard()?.update(...)`로 지정하세요. `runtime` 안의 `preset`·`onThreat`, 알 수 없는 옵션, 잘못된 타입은 거부됩니다.
 
 `domIdentifiers`는 지원되는 Next CSS Modules 로더가 필요합니다. 사용자 지정 `getLocalIdent`, Lightning CSS 등 지원하지 않는 구성은 오류입니다. `next/font` 전용 생성 이름은 글꼴 메타데이터 호환성을 위해 유지합니다. 프레임워크 청크까지 High 수준을 적용하면 빌드 시간·파일 크기·실행 비용이 증가할 수 있습니다.
 

@@ -236,6 +236,7 @@ export function createDomIntegrityMonitor(
   let baseline = "";
   let positionChanged = false;
   let active = true;
+  let state: "off" | "watching" | "mismatch" | "error" | "unavailable" = "off";
   const stop = () => {
     observer?.disconnect();
     observer = undefined;
@@ -312,14 +313,20 @@ export function createDomIntegrityMonitor(
     detail: string,
   ) => {
     stop();
+    if (state !== "unavailable")
+      state = type === "dom-integrity-mismatch" ? "mismatch" : "error";
     if (active) signal(type, detail);
   };
   return {
+    getState() {
+      return state;
+    },
     rebaseline(): boolean {
       stop();
       anchors = [];
       baseline = "";
       if (!active) return false;
+      state = "off";
       try {
         if (!policy.selectors?.length)
           throw new SnapshotError("No static DOM anchors configured.");
@@ -336,8 +343,10 @@ export function createDomIntegrityMonitor(
         }
         baseline = snapshot();
         const Observer = document.defaultView?.MutationObserver;
-        if (!Observer)
+        if (!Observer) {
+          state = "unavailable";
           throw new SnapshotError("DOM observation is unavailable.");
+        }
         observer = new Observer((records) => {
           if (!active || !observer) return;
           try {
@@ -399,6 +408,7 @@ export function createDomIntegrityMonitor(
         for (const [target, options] of targets)
           observer.observe(target, options);
         positionChanged = false;
+        state = "watching";
         return true;
       } catch (error) {
         failure(
@@ -426,6 +436,7 @@ export function createDomIntegrityMonitor(
     },
     destroy() {
       active = false;
+      state = "off";
       stop();
       anchors = [];
       baseline = "";

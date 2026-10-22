@@ -66,6 +66,7 @@
           <summary>상세 가이드 · API 명세</summary>
           <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
           ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/OPERATIONS.ko.html">개발·검증·운영 정책</a
           ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
           ><a href="/docs/API.ko.html">API 명세 전체 목차</a
           ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
@@ -208,8 +209,11 @@ guard?.update({ onThreat: (event) =&gt; console.info(event.type) });
           </div>
           <p>
             Vite 자동 SDK의 <code>devtools.detect</code>는 기본
-            <code>true</code>입니다. 단축키·우클릭 제한은 명시적으로 켭니다.
-            감지와 대응의 정확한 계약은
+            <code>false</code>입니다. 창의 외부·내부 크기 차이를 이용한 추정이
+            정상 환경에서도 오탐할 수 있어 기본으로 켜지 않습니다. 필요하면
+            <code>runtime.devtools.detect:true</code>로 명시적으로 켭니다.
+            단축키·우클릭 제한도 각각 명시적으로 켭니다. 감지와 대응의 정확한
+            계약은
             <a href="/docs/API_BROWSER.ko.html#webguardoptions">브라우저 옵션</a
             >을 확인하세요. <code>headers</code>는
             <a href="/docs/API_BUILD.ko.html#createsecurityheaders"
@@ -341,11 +345,10 @@ export default withWebGuard({ reactStrictMode: true }, { preset: &quot;strict&qu
             </table>
           </div>
           <p>
-            Next 자동 SDK의 <code>devtools.detect</code>는 기본
-            <code>false</code>입니다. 필요하면
-            <code>runtime.devtools.detect:true</code>로 켭니다. Vite 자동 연동과
-            기본값이 다릅니다. 런타임 콜백은 클라이언트에서
-            <code>getWebGuard()?.update(...)</code>로 지정하세요.
+            Next 자동 SDK의 <code>devtools.detect</code>는 Vite 자동 연동과 같이
+            기본 <code>false</code>입니다. 필요하면
+            <code>runtime.devtools.detect:true</code>로 켭니다. 런타임 콜백은
+            클라이언트에서 <code>getWebGuard()?.update(...)</code>로 지정하세요.
             <code>runtime</code> 안의 <code>preset</code>·<code>onThreat</code>,
             알 수 없는 옵션, 잘못된 타입은 거부됩니다.
           </p>

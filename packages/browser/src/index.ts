@@ -47,6 +47,8 @@ export interface WebGuardInstance {
   update(options: WebGuardOptions): void;
   /** Returns detached nested objects; callbacks retain their function identity. */
   getOptions(): WebGuardOptions;
+  /** Read-only runtime snapshot. Does not verify build obfuscation, HTTP headers or DevTools access. */
+  getStatus(): WebGuardStatus;
   /** Fetches only when explicitly called and integrity.enabled is true. */
   checkIntegrity(url: string, expected: string): Promise<boolean>;
   /** One visible-page timer sample, only when debugging.enabled. Never inserts debugger statements. */
@@ -55,6 +57,30 @@ export interface WebGuardInstance {
   getDebuggingState(): DebuggingState;
   /** Accepts current selected static-anchor state as the new baseline. No DOM restoration. */
   rebaselineDom(): boolean;
+}
+export interface WebGuardStatus {
+  version: 1;
+  scope: "runtime-only";
+  lifecycle: "active" | "destroyed";
+  environment: "browser" | "server";
+  features: {
+    shortcuts: "off" | "listening" | "unavailable";
+    contextMenu: "off" | "listening" | "unavailable";
+    geometry: "off" | "listening" | "unavailable";
+    /** Ready means explicit checkIntegrity calls are supported, not that a file was verified. */
+    integrity: "off" | "ready" | "unavailable";
+    domIntegrity: "off" | "watching" | "mismatch" | "error" | "unavailable";
+  };
+  debugging: DebuggingState;
+  pageProtection: {
+    state: "idle" | "pending" | "shown" | "unavailable";
+    reason: BlockReason | null;
+  };
+  coverage: {
+    obfuscation: "not-verified";
+    responseHeaders: "not-verified";
+    devtoolsClosure: "unsupported";
+  };
 }
 const optionKeys = [
   "preset",
@@ -329,6 +355,17 @@ function createGuard(
   let destroyed = false,
     detected = false;
   const remove: (() => void)[] = [];
+  const subscriptions = {
+    shortcuts: false,
+    contextMenu: false,
+    geometry: false,
+  };
+  function removeListeners() {
+    subscriptions.shortcuts = false;
+    subscriptions.contextMenu = false;
+    subscriptions.geometry = false;
+    remove.splice(0).forEach((fn) => fn());
+  }
   const emit = (type: string, detail?: string) => {
     if (destroyed) return;
     const event: ThreatEvent = {
@@ -518,8 +555,10 @@ function createGuard(
         type: string,
         callback: EventListener,
         capture = false,
+        feature?: keyof typeof subscriptions,
       ) {
         target.addEventListener(type, callback, capture);
+        if (feature) subscriptions[feature] = true;
         remove.push(() => target.removeEventListener(type, callback, capture));
       }
       if (options.devtools?.blockShortcuts === true)
@@ -571,20 +610,33 @@ function createGuard(
               blockPage("shortcut");
           },
           true,
+          "shortcuts",
         );
       if (options.devtools?.blockContextMenu === true)
-        listen(browserDocument, "contextmenu", (event) => {
-          if (destroyed || editableEvent(event)) return;
-          event.preventDefault();
-          emit(
-            event.defaultPrevented
-              ? "context-menu-blocked"
-              : "context-menu-unavailable",
-          );
-        });
+        listen(
+          browserDocument,
+          "contextmenu",
+          (event) => {
+            if (destroyed || editableEvent(event)) return;
+            event.preventDefault();
+            emit(
+              event.defaultPrevented
+                ? "context-menu-blocked"
+                : "context-menu-unavailable",
+            );
+          },
+          false,
+          "contextMenu",
+        );
       if (options.devtools?.detect === true) {
-        listen(browserWindow, "resize", () => measure());
-        listen(browserWindow, "orientationchange", () => measure());
+        listen(browserWindow, "resize", () => measure(), false, "geometry");
+        listen(
+          browserWindow,
+          "orientationchange",
+          () => measure(),
+          false,
+          "geometry",
+        );
       }
       // Preserve advisory mode's event-only behavior. Block mode also checks already docked panels.
       if (
@@ -742,7 +794,7 @@ function createGuard(
       }
       if (integrityChanged || options.integrity?.enabled !== true)
         abortIntegrityRequests();
-      remove.splice(0).forEach((fn) => fn());
+      removeListeners();
       const disabledReasons = [...activeReasons].filter(
         (reason) => !shouldBlock(reason),
       );
@@ -755,6 +807,74 @@ function createGuard(
     getOptions() {
       return snapshot(options);
     },
+    getStatus() {
+      const browser = Boolean(browserWindow && browserDocument);
+      const listening = (
+        feature: keyof typeof subscriptions,
+        enabled: boolean | undefined,
+      ) =>
+        destroyed || enabled !== true
+          ? ("off" as const)
+          : !browser
+            ? ("unavailable" as const)
+            : subscriptions[feature]
+              ? ("listening" as const)
+              : ("off" as const);
+      const modalReason = blocker?.getReason();
+      const pageState = destroyed
+        ? "idle"
+        : modalReason
+          ? "shown"
+          : pendingReason
+            ? "pending"
+            : unavailableReported
+              ? "unavailable"
+              : "idle";
+      return {
+        version: 1,
+        scope: "runtime-only",
+        lifecycle: destroyed ? "destroyed" : "active",
+        environment: browser ? "browser" : "server",
+        features: {
+          shortcuts: listening("shortcuts", options.devtools?.blockShortcuts),
+          contextMenu: listening(
+            "contextMenu",
+            options.devtools?.blockContextMenu,
+          ),
+          geometry: listening("geometry", options.devtools?.detect),
+          integrity:
+            destroyed || options.integrity?.enabled !== true
+              ? "off"
+              : typeof fetch === "function" &&
+                  typeof crypto !== "undefined" &&
+                  typeof crypto.subtle?.digest === "function"
+                ? "ready"
+                : "unavailable",
+          domIntegrity:
+            destroyed || options.domIntegrity?.enabled !== true
+              ? "off"
+              : (domMonitor?.getState() ?? "unavailable"),
+        },
+        debugging: pauseWatcher.getState(),
+        pageProtection: {
+          state: pageState,
+          reason:
+            pageState === "idle"
+              ? null
+              : (modalReason ??
+                pendingReason ??
+                reasonPriority.find(
+                  (reason) => activeReasons.has(reason) && shouldBlock(reason),
+                ) ??
+                null),
+        },
+        coverage: {
+          obfuscation: "not-verified",
+          responseHeaders: "not-verified",
+          devtoolsClosure: "unsupported",
+        },
+      };
+    },
     destroy() {
       if (destroyed) return;
       destroyed = true;
@@ -764,7 +884,7 @@ function createGuard(
       domMonitor?.destroy();
       clearBlock(false);
       abortIntegrityRequests();
-      remove.splice(0).forEach((fn) => fn());
+      removeListeners();
       onDestroy?.();
     },
     async checkDebugging() {
@@ -933,6 +1053,7 @@ function registryRecord(host: Window): AutoGuardRecord | undefined {
   for (const key of [
     "update",
     "getOptions",
+    "getStatus",
     "destroy",
     "checkIntegrity",
     "checkDebugging",

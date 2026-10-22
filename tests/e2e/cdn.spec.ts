@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
+import type { WebGuardInstance } from "../../packages/browser/src/index";
 
 test("Java guide direct downloads run unchanged in root and /app browser fixtures", async ({
   page,
@@ -208,6 +209,17 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
   try {
     await page.goto(consumerOrigin + "/");
     await expect(page.locator("#ready")).toHaveText("SDK ready");
+    expect(
+      await page.evaluate(() =>
+        (
+          window as unknown as { webguard: WebGuardInstance }
+        ).webguard.getStatus(),
+      ),
+    ).toMatchObject({
+      lifecycle: "active",
+      features: { shortcuts: "listening" },
+      coverage: { obfuscation: "not-verified" },
+    });
     for (const shortcut of ["F12", "Meta+Alt+i", "Control+Shift+j"]) {
       await page.keyboard.press(shortcut);
       await expect(page.locator("#key")).toHaveText("true");
@@ -229,6 +241,14 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
       };
       scope.webguard.update({ devtools: { blockShortcuts: false } });
     });
+    expect(
+      await page.evaluate(
+        () =>
+          (
+            window as unknown as { webguard: WebGuardInstance }
+          ).webguard.getStatus().features.shortcuts,
+      ),
+    ).toBe("off");
     for (const shortcut of ["F12", "Meta+Alt+i", "Control+Shift+j"]) {
       await page.keyboard.press(shortcut);
       await expect(page.locator("#key")).toHaveText("false");
