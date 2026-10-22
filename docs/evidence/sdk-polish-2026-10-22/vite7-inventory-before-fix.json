@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "checkedAt": "2026-10-22T01:01:20.207Z",
+  "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-npm-consumer-I6NTaV",
+  "vite": "7.3.1",
+  "error": "Error: Unexpected public package file: dist/next-runtime.d.ts\n    at check (file:///Users/uulab/Documents/workspace/uulab/webguard/scripts/verify-npm-consumer.mjs:18:25)\n    at file:///Users/uulab/Documents/workspace/uulab/webguard/scripts/verify-npm-consumer.mjs:214:5"
+}

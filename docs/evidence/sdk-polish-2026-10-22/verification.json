@@ -1,0 +1,96 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T01:08:23.275Z",
+  "sourceCommit": "9ca2af085642f7383c04c671caca14e2cffeea90",
+  "origin": "https://webguard.uulab.co.kr",
+  "deployment": {
+    "id": "56e9a163-b3d5-4b96-ab5d-050e6bff8809",
+    "version": "423bdaa9-7167-4a7e-9adf-ce9d0e908f5a",
+    "previousVersion": "a706f45c-3018-4cde-8059-7e29f52935ae",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "changes": [
+    "Final Vite output directory validation before writing, with late post-order redirect regression",
+    "Private backup/editor suffix removal, serving denial, Next early/final rejection, and known remote backup checks",
+    "Case-insensitive and multi-token link SRI with actual browser CSS tamper rejection",
+    "Korean workbench and reports with accurate single-run timing scope",
+    "Same-preset result preservation and changed-preset invalidation",
+    "Actual demo backup/compression exposure checks and exact expected-diagnostic URL inventory",
+    "Package consumer verifier updated for legitimate Next distribution entry files"
+  ],
+  "verification": {
+    "unitIntegration": {
+      "passed": 569,
+      "files": 40
+    },
+    "initialLocalBrowser": {
+      "engine": "chromium",
+      "passed": 45,
+      "failed": 1,
+      "reason": "New intentional backup/compression404 probes not listed in old test diagnostic inventory"
+    },
+    "correctedDiagnostics": {
+      "passed": 3,
+      "failed": 0,
+      "change": "Exact observed entry and fixed probe URLs only; main resource failures remain unexpected"
+    },
+    "publicHttpBrowser": {
+      "passed": 286,
+      "failed": 0,
+      "skipped": 2,
+      "retries": 0
+    },
+    "skipScope": "Chromium-only CDP debugger pause/resume test on Firefox/WebKit",
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "build": true,
+    "dryRun": true,
+    "sourceReview": "Independent scoped read-only review found no remaining concrete P1/P2 regression in changed guards",
+    "publicFilesByteMatched": 40,
+    "packedFilesByteMatched": 34
+  },
+  "installedCandidate": {
+    "tarballSha512": "88e8f9fc6449a9831ec1d7cdbc29ff3040c86f89c62f486a6ef8529203fd526e3ab09673e7f7b66a8579b1a9d4d09afe7c0ad6634ac30289868f1f5929d57f21",
+    "packedFilesMatchCurrentBuild": 34,
+    "npmPublished": false,
+    "vite7": "7.3.1",
+    "vite8": "8.3.4",
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "engines": ["chromium", "firefox", "webkit"],
+    "vite7MatrixCases": 15
+  },
+  "nativePublicUI": {
+    "koreanHighResult": "Output match; source and protected log totals90/95",
+    "samePresetPreservedCompletedStatus": true,
+    "mobileViewport": [390, 844],
+    "mobileViewportReset": true,
+    "backupAndCompressionVariants": [".bak", "~", ".gz", ".br"],
+    "actualVariantsHTTP": 404,
+    "entryHTTP": 200,
+    "entrySHA384Matched": true,
+    "captures": [
+      "korean-results.png",
+      "mobile-korean.png",
+      "private-backup-probes.png"
+    ],
+    "screenshotsViewedFromSavedBytes": true
+  },
+  "release": {
+    "npmPublication": "paused; no authentication or publication attempted",
+    "canonicalTarballUnchangedSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+    "canonicalRecordUnchangedSha256": "c3f8006e8cd72d2c0c09b94c2d3ff90075bbeb5746fff15e424691bf9ee2b0e6",
+    "legacyCandidateGate": "Expected refusal before authentication: no supported snapshot",
+    "globalCodexConfigurationModified": false
+  },
+  "limits": [
+    "No forced DevTools closure, complete browser-source hiding, or reliable universal DevTools detection",
+    "Remote probes are bounded known alternatives and recorded removals, not arbitrary filename enumeration",
+    "Vite regression preservation uses emptyOutDir:false; this is not full-build rollback",
+    "This turn verifies Vite7/8 and Next consumers; no new PHP/Java runtime claim",
+    "Single-run timing is not a performance benchmark; screenshots do not establish WCAG compliance"
+  ]
+}
