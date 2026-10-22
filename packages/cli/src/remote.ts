@@ -64,23 +64,28 @@ export async function verifyDeployment(
       throw new Error(`Invalid manifest entry: ${path}`);
     return { path, entry, url };
   });
+  const compressionSuffixes = [
+    ".gz",
+    ".br",
+    ".gz.gz",
+    ".gz.br",
+    ".br.gz",
+    ".br.br",
+  ];
+  const codePaths = files
+    .filter(([path]) => /\.[cm]?js$|\.css$/i.test(path))
+    .map(([path]) => path);
   const probes = [
-    ...new Set(
-      [
-        ...files
-          .filter(([path]) => /\.[cm]?js$|\.css$/i.test(path))
-          .map(([path]) => `${path}.map`),
-        ...removedSources,
-      ].flatMap((path) => [
-        path,
-        `${path}.gz`,
-        `${path}.br`,
-        `${path}.gz.gz`,
-        `${path}.gz.br`,
-        `${path}.br.gz`,
-        `${path}.br.br`,
-      ]),
-    ),
+    ...new Set([
+      // Public code is verified as an asset; only its precompressed siblings
+      // are forbidden. A stale sidecar can expose original bytes on a generic host.
+      ...codePaths.flatMap((path) =>
+        compressionSuffixes.map((suffix) => path + suffix),
+      ),
+      ...[...codePaths.map((path) => `${path}.map`), ...removedSources].flatMap(
+        (path) => [path, ...compressionSuffixes.map((suffix) => path + suffix)],
+      ),
+    ]),
   ].map((path) => ({ path, url: safe(path) }));
   const headers = Object.entries(options.expectedHeaders ?? {});
   const seenHeaders = new Set<string>();

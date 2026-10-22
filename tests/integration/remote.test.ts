@@ -1,5 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { createServer, type Server } from "node:http";
+import { brotliCompressSync, gzipSync } from "node:zlib";
 import { verifyDeployment } from "../../packages/cli/src/remote";
 import { hashContent } from "@webguard/integrity";
 const servers: Server[] = [];
@@ -25,7 +26,7 @@ it("reports network failures per asset and continues checking remaining paths", 
   vi.stubGlobal("fetch", request);
   const result = await verifyDeployment("https://example.com/app/", manifest);
   expect(result.valid).toBe(false);
-  expect(result.checked).toBe(9);
+  expect(result.checked).toBe(15);
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
 });
 
@@ -47,7 +48,7 @@ it("checks generated headers on the entry route, assets and missing source respo
           headers: { "X-Content-Type-Options": "nosniff" },
         });
       return new Response(null, {
-        status: /\.map(?:\.(?:gz|br)){0,2}$/.test(input.pathname) ? 404 : 200,
+        status: /\.(?:map|gz|br)$/.test(input.pathname) ? 404 : 200,
       });
     }),
   );
@@ -62,7 +63,7 @@ it("checks generated headers on the entry route, assets and missing source respo
       },
     },
   );
-  expect(result.checked).toBe(9);
+  expect(result.checked).toBe(15);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain(
     "Missing response header on /: Content-Security-Policy",
@@ -104,9 +105,7 @@ it("rejects a changed CSP value even when the header name is present", async () 
         new Response(
           input.pathname.endsWith("main.js") ? "globalThis.ok=true;" : null,
           {
-            status: /\.map(?:\.(?:gz|br)){0,2}$/.test(input.pathname)
-              ? 404
-              : 200,
+            status: /\.(?:map|gz|br)$/.test(input.pathname) ? 404 : 200,
             headers: {
               "Content-Security-Policy":
                 "default-src *; script-src 'unsafe-inline'",
@@ -126,7 +125,7 @@ it("rejects a changed CSP value even when the header name is present", async () 
 
 it("records HTTP timeout as a failed check and completes the source probes", async () => {
   const s = createServer((req, res) => {
-    if (/\.map(?:\.(?:gz|br)){0,2}$/.test(req.url ?? "")) {
+    if (/\.(?:map|gz|br)$/.test(req.url ?? "")) {
       res.statusCode = 404;
       res.end();
     }
@@ -141,7 +140,7 @@ it("records HTTP timeout as a failed check and completes the source probes", asy
     [],
     { timeoutMs: 50 },
   );
-  expect(result).toMatchObject({ valid: false, checked: 9 });
+  expect(result).toMatchObject({ valid: false, checked: 15 });
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
   s.closeAllConnections();
 });
@@ -176,9 +175,65 @@ const manifest = {
     "main.js": { integrity: hashContent("globalThis.ok=true;"), size: 19 },
   },
 };
+it.each([
+  ["main.js", ".gz"],
+  ["main.js", ".br"],
+  ["main.js", ".gz.gz"],
+  ["main.js", ".gz.br"],
+  ["main.js", ".br.gz"],
+  ["main.js", ".br.br"],
+  ["main.mjs", ".gz"],
+  ["main.cjs", ".br"],
+  ["main.css", ".gz.br"],
+])(
+  "rejects exposed compressed code %s%s while the public asset matches its trusted hash",
+  async (asset, suffix) => {
+    const finalCode = "globalThis.x=42;";
+    let original: Uint8Array = Buffer.from(
+      "globalThis.descriptiveOriginalSourceMarker=42;",
+    );
+    for (const encoding of suffix.split(".").filter(Boolean))
+      original =
+        encoding === "gz" ? gzipSync(original) : brotliCompressSync(original);
+    const sidecar = asset + suffix;
+    const requests: string[] = [];
+    const s = createServer((request, response) => {
+      requests.push(request.url ?? "");
+      if (request.url === "/app/") response.end("Public entry");
+      else if (request.url === `/app/${asset}`) response.end(finalCode);
+      else if (request.url === `/app/${sidecar}`) response.end(original);
+      else {
+        response.statusCode = 404;
+        response.end();
+      }
+    });
+    servers.push(s);
+    await new Promise<void>((resolve) => s.listen(0, "127.0.0.1", resolve));
+    const address = s.address();
+    if (!address || typeof address === "string") throw Error("Missing port");
+    const result = await verifyDeployment(
+      `http://127.0.0.1:${address.port}/app/`,
+      {
+        ...manifest,
+        files: {
+          [asset]: {
+            integrity: hashContent(finalCode),
+            size: Buffer.byteLength(finalCode),
+          },
+        },
+      },
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors).toHaveLength(1);
+    expect(result.errors[0]).toContain(sidecar);
+    expect(requests).toContain(`/app/${sidecar}`);
+    // The valid public asset must not also become an absence probe.
+    expect(requests.filter((path) => path === `/app/${asset}`)).toHaveLength(1);
+  },
+);
 it("compares deployed bytes and confirms source-map URL absence", async () => {
   const result = await verifyDeployment(await server(), manifest, ["main.ts"]);
-  expect(result).toEqual({ valid: true, errors: [], checked: 16 });
+  expect(result).toEqual({ valid: true, errors: [], checked: 22 });
 });
 it("does not mistake successful SPA fallback URLs for confirmed source-map absence", async () => {
   const result = await verifyDeployment(await server(true), manifest);
@@ -234,7 +289,7 @@ it("rejects a tampered mount root even when index.html and assets match without 
   const result = await verifyDeployment(deployed.base, deployed.manifest);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain("Deployed hash mismatch: /");
-  expect(result.checked).toBe(10);
+  expect(result.checked).toBe(16);
 });
 
 it("rejects an unsuccessful mount root even when index.html and assets match", async () => {
@@ -253,7 +308,7 @@ it("checks mount root status even when the manifest has no index.html", async ()
   expect(result.errors).toContain(
     "Deployment entry does not respond successfully (404)",
   );
-  expect(result.checked).toBe(9);
+  expect(result.checked).toBe(15);
 });
 
 it("accepts matching mount root and assets without optional header comparisons", async () => {
@@ -262,6 +317,6 @@ it("accepts matching mount root and assets without optional header comparisons",
   expect(await verifyDeployment(deployed.base, deployed.manifest)).toEqual({
     valid: true,
     errors: [],
-    checked: 10,
+    checked: 16,
   });
 });

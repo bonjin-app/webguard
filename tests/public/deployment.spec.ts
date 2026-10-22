@@ -91,6 +91,19 @@ test("public demo serves each application with its intended headers and rejects 
     expect(response.status(), path).toBe(404);
   }
 });
+test("denies compressed siblings of the deployed entry and private reports", async ({
+  request,
+}) => {
+  const entry = await request.get("/demo");
+  const asset = /src="(\/assets\/[^"\s]+\.js)"/.exec(await entry.text())?.[1];
+  expect(asset).toBeTruthy();
+  for (const path of [asset!, `${asset}.map`, "/webguard-report.json"])
+    for (const suffix of [".gz", ".br", ".gz.gz", ".gz.br", ".br.gz", ".br.br"])
+      expect((await request.get(path + suffix)).status(), path + suffix).toBe(
+        404,
+      );
+});
+
 test("deployment checker verifies trusted bytes, actual policies and private URL absence", async ({
   baseURL,
 }) => {
