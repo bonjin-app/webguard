@@ -1,0 +1,95 @@
+{
+  "modules": {
+    ".": {
+      "webguard": "API_INTEGRATIONS.ko.md#webguard",
+      "webguardApp": "API_INTEGRATIONS.ko.md#webguardapp",
+      "ObfuscationLevel": "API_INTEGRATIONS.ko.md#obfuscationlevel",
+      "Preset": "API_BUILD.ko.md#preset",
+      "StringArrayEncoding": "API_INTEGRATIONS.ko.md#stringarrayencoding",
+      "WebGuardAppOptions": "API_INTEGRATIONS.ko.md#webguardappoptions",
+      "WebGuardConfigInput": "API_BUILD.ko.md#webguardconfiginput"
+    },
+    "/client": {
+      "getWebGuard": "API_BROWSER.ko.md#getwebguard",
+      "DebuggingPolicy": "API_BROWSER.ko.md#debuggingpolicy",
+      "DebuggingState": "API_BROWSER.ko.md#debuggingstate",
+      "DomIntegrityPolicy": "API_BROWSER.ko.md#domintegritypolicy",
+      "ThreatEvent": "API_BROWSER.ko.md#threatevent",
+      "WebGuardInstance": "API_BROWSER.ko.md#webguardinstance",
+      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions"
+    },
+    "/browser": {
+      "WebGuard": "API_BROWSER.ko.md#webguard",
+      "default": "API_BROWSER.ko.md#default",
+      "getAutoGuard": "API_BROWSER.ko.md#getautoguard",
+      "installAutoGuard": "API_BROWSER.ko.md#installautoguard",
+      "DebuggingPolicy": "API_BROWSER.ko.md#debuggingpolicy",
+      "DebuggingState": "API_BROWSER.ko.md#debuggingstate",
+      "DomIntegrityPolicy": "API_BROWSER.ko.md#domintegritypolicy",
+      "ThreatEvent": "API_BROWSER.ko.md#threatevent",
+      "WebGuardInstance": "API_BROWSER.ko.md#webguardinstance",
+      "WebGuardOptions": "API_BROWSER.ko.md#webguardoptions"
+    },
+    "/headers": {
+      "createSecurityHeaders": "API_BUILD.ko.md#createsecurityheaders",
+      "SecurityHeadersOptions": "API_BUILD.ko.md#securityheadersoptions",
+      "TrustedTypesMode": "API_BUILD.ko.md#trustedtypesmode"
+    },
+    "/verify": {
+      "checkDeployment": "API_BUILD.ko.md#checkdeployment",
+      "DeploymentCheck": "API_BUILD.ko.md#deploymentcheck"
+    },
+    "/server": {
+      "createProtectedServer": "API_BUILD.ko.md#createprotectedserver"
+    },
+    "/build": {
+      "createDomIdentifierGenerator": "API_BUILD.ko.md#createdomidentifiergenerator",
+      "createManifest": "API_BUILD.ko.md#createmanifest",
+      "createSecurityHeaders": "API_BUILD.ko.md#createsecurityheaders",
+      "defineConfig": "API_BUILD.ko.md#defineconfig",
+      "hashContent": "API_BUILD.ko.md#hashcontent",
+      "protectAppDirectory": "API_BUILD.ko.md#protectappdirectory",
+      "protectDirectory": "API_BUILD.ko.md#protectdirectory",
+      "resolveConfig": "API_BUILD.ko.md#resolveconfig",
+      "scanDirectory": "API_BUILD.ko.md#scandirectory",
+      "verifyDeployment": "API_BUILD.ko.md#verifydeployment",
+      "verifyManifest": "API_BUILD.ko.md#verifymanifest",
+      "DomIdentifierOptions": "API_BUILD.ko.md#domidentifieroptions",
+      "Finding": "API_BUILD.ko.md#finding",
+      "IntegrityManifest": "API_BUILD.ko.md#integritymanifest",
+      "Preset": "API_BUILD.ko.md#preset",
+      "ProtectAppOptions": "API_BUILD.ko.md#protectappoptions",
+      "ProtectOptions": "API_BUILD.ko.md#protectoptions",
+      "ProtectionReport": "API_BUILD.ko.md#protectionreport",
+      "SecurityHeadersOptions": "API_BUILD.ko.md#securityheadersoptions",
+      "TrustedTypesMode": "API_BUILD.ko.md#trustedtypesmode",
+      "WebGuardConfig": "API_BUILD.ko.md#webguardconfig",
+      "WebGuardConfigInput": "API_BUILD.ko.md#webguardconfiginput"
+    },
+    "/next": {
+      "withWebGuard": "API_INTEGRATIONS.ko.md#withwebguard",
+      "WebGuardNextOptions": "API_INTEGRATIONS.ko.md#webguardnextoptions"
+    },
+    "/browser.global.js": {
+      "WebGuard": "API_BROWSER.ko.md#webguard",
+      "default": "API_BROWSER.ko.md#default",
+      "getAutoGuard": "API_BROWSER.ko.md#getautoguard",
+      "installAutoGuard": "API_BROWSER.ko.md#installautoguard"
+    }
+  },
+  "methods": {
+    "WebGuard.init": "API_BROWSER.ko.md#webguardinit",
+    "WebGuardInstance.checkDebugging": "API_BROWSER.ko.md#webguardinstancecheckdebugging",
+    "WebGuardInstance.checkIntegrity": "API_BROWSER.ko.md#webguardinstancecheckintegrity",
+    "WebGuardInstance.destroy": "API_BROWSER.ko.md#webguardinstancedestroy",
+    "WebGuardInstance.getDebuggingState": "API_BROWSER.ko.md#webguardinstancegetdebuggingstate",
+    "WebGuardInstance.getOptions": "API_BROWSER.ko.md#webguardinstancegetoptions",
+    "WebGuardInstance.rebaselineDom": "API_BROWSER.ko.md#webguardinstancerebaselinedom",
+    "WebGuardInstance.update": "API_BROWSER.ko.md#webguardinstanceupdate"
+  },
+  "bins": {
+    "webguard": "API_INTEGRATIONS.ko.md#webguard-cli",
+    "webguard-check": "API_INTEGRATIONS.ko.md#webguard-check",
+    "webguard-serve": "API_INTEGRATIONS.ko.md#webguard-serve"
+  }
+}

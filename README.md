@@ -1,5 +1,7 @@
 # WebGuard
 
+[공개 함수·옵션·반환값·이벤트 API 명세](docs/API.ko.md) · [온라인 API 명세](https://webguard.uulab.co.kr/docs/API.ko.html)
+
 Local, open-source build protection for browser applications. WebGuard raises the effort of analyzing JavaScript, keeps source maps out of public artifacts, verifies asset integrity, and offers optional developer-tool shortcut friction.
 
 **[Try the public demo](https://webguard.uulab.co.kr/demo)** — no installation or account required. Try High obfuscation, live shortcut controls and protected React/JavaScript/TypeScript applications. [Deployment and verification](docs/PUBLIC_DEMO.md).

@@ -41,7 +41,8 @@
     "test:ssr": "node scripts/verify-ssr-templates.mjs",
     "test:next": "node scripts/verify-next-consumer.mjs",
     "test:meta": "node scripts/verify-meta-guards.mjs",
-    "release:check": "node scripts/release-npm.mjs check"
+    "release:check": "node scripts/release-npm.mjs check",
+    "api:check": "node scripts/api-reference.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

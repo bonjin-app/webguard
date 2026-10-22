@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>WebGuard API 명세 — WebGuard</title>
+    <meta
+      name="description"
+      content="API 명세 전체 목차: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/API.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <span>전체 가이드</span
+        ><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+        ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+        ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+        ><a href="/docs/API.ko.html" aria-current="page">API 명세 전체 목차</a
+        ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+        ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+        ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a
+        ><span>이 문서의 목차</span
+        ><a href="#목적에-맞는-진입점">목적에 맞는 진입점</a
+        ><a href="#공개-import-경로">공개 import 경로</a
+        ><a href="#브라우저-함수와-타입">브라우저 함수와 타입</a
+        ><a href="#빌드검증-함수와-타입">빌드·검증 함수와 타입</a
+        ><a href="#연동명령행">연동·명령행</a
+        ><a href="#기본값과-지원-범위">기본값과 지원 범위</a
+        ><a href="#문서와-버전-확인">문서와 버전 확인</a>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <p class="eyebrow">API 명세 전체 목차</p>
+          <p class="docs-meta">
+            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
+            시점은 본문의 기록을 확인하세요.
+          </p>
+          <div class="guide-tools">
+            <a href="/docs/API.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/API.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="webguard-api-명세">WebGuard API 명세</h1>
+          <p>
+            설치 후 호출하는 공개 함수·옵션·반환값·오류·이벤트를 실제 패키지
+            export 기준으로 정리했습니다. 서비스명은 WebGuard이며 import·설치에
+            사용하는 패키지 식별자는 <code>uulab-webguard</code>입니다.
+            <a href="/docs/INSTALL.ko.html">설치</a> →
+            <a href="/docs/ENVIRONMENTS.ko.html">환경별 적용</a> → 아래 함수
+            명세 순서로 확인하세요.
+          </p>
+          <h2 id="목적에-맞는-진입점">목적에 맞는 진입점</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">하고 싶은 일</th>
+                  <th scope="col">사용할 API</th>
+                  <th scope="col">상세 명세</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Vite 설정 한 번으로 난독화·SDK 연결</td>
+                  <td><code>webguardApp</code></td>
+                  <td>
+                    <a href="/docs/API_INTEGRATIONS.ko.html#webguardapp"
+                      >Vite 앱 연동</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Next 프로덕션 브라우저 번들 보호</td>
+                  <td><code>withWebGuard</code></td>
+                  <td>
+                    <a href="/docs/API_INTEGRATIONS.ko.html#withwebguard"
+                      >Next 연동</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>정적 빌드 출력 보호</td>
+                  <td>
+                    <code>protectAppDirectory</code> /
+                    <code>webguard protect-app</code>
+                  </td>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#protectappdirectory"
+                      >Node</a
+                    >
+                    ·
+                    <a href="/docs/API_INTEGRATIONS.ko.html#webguard-cli"
+                      >CLI</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>실행 중 가드 켜기·끄기</td>
+                  <td><code>getWebGuard()?.update</code></td>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinstanceupdate"
+                      >옵션 갱신</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>수동 SDK 시작·종료</td>
+                  <td><code>WebGuard.init</code> / <code>destroy</code></td>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinit">초기화</a>
+                    ·
+                    <a href="/docs/API_BROWSER.ko.html#webguardinstancedestroy"
+                      >종료</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>파일 변조·디버깅 신호 점검</td>
+                  <td>
+                    <code>checkIntegrity</code> / <code>checkDebugging</code>
+                  </td>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancecheckintegrity"
+                      >무결성</a
+                    >
+                    ·
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancecheckdebugging"
+                      >디버깅</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>서버 헤더 생성</td>
+                  <td><code>createSecurityHeaders</code></td>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#createsecurityheaders"
+                      >옵션·결과</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>배포된 파일·헤더·비공개 경로 점검</td>
+                  <td>
+                    <code>checkDeployment</code> / <code>verifyDeployment</code>
+                  </td>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#checkdeployment"
+                      >출력 디렉터리 기준</a
+                    >
+                    ·
+                    <a href="/docs/API_BUILD.ko.html#verifydeployment"
+                      >매니페스트 기준</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2 id="공개-import-경로">공개 import 경로</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">경로</th>
+                  <th scope="col">공개 값</th>
+                  <th scope="col">타입·실행 환경</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>uulab-webguard</code></td>
+                  <td><code>webguardApp</code>, <code>webguard</code></td>
+                  <td>
+                    Vite 설정용 Node. <code>WebGuardAppOptions</code>,
+                    <code>WebGuardConfigInput</code>, <code>Preset</code>,
+                    <code>ObfuscationLevel</code>,
+                    <code>StringArrayEncoding</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/client</code></td>
+                  <td><code>getWebGuard</code></td>
+                  <td>브라우저 자동 인스턴스 접근. 런타임 6개 타입</td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/browser</code></td>
+                  <td>
+                    <code>WebGuard</code>, <code>default</code>,
+                    <code>getAutoGuard</code>, <code>installAutoGuard</code>
+                  </td>
+                  <td>수동·자동 브라우저 SDK. 런타임 6개 타입</td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/browser.global.js</code></td>
+                  <td>전역 <code>WebGuardSDK</code></td>
+                  <td>
+                    script/CDN용 IIFE. <code>WebGuard</code>,
+                    <code>default</code>, <code>getAutoGuard</code>,
+                    <code>installAutoGuard</code> 속성
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/build</code></td>
+                  <td>아래 빌드 함수 11개</td>
+                  <td>빌드 도구용 Node API 및 11개 타입</td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/headers</code></td>
+                  <td><code>createSecurityHeaders</code></td>
+                  <td>
+                    <code>SecurityHeadersOptions</code>,
+                    <code>TrustedTypesMode</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/verify</code></td>
+                  <td><code>checkDeployment</code></td>
+                  <td><code>DeploymentCheck</code></td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/server</code></td>
+                  <td><code>createProtectedServer</code></td>
+                  <td>로컬 Node HTTP 서버</td>
+                </tr>
+                <tr>
+                  <td><code>uulab-webguard/next</code></td>
+                  <td><code>withWebGuard</code></td>
+                  <td><code>WebGuardNextOptions</code>. Next Webpack 설정용</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            브라우저 런타임 타입 6개는 <code>WebGuardOptions</code>,
+            <code>WebGuardInstance</code>, <code>ThreatEvent</code>,
+            <code>DebuggingPolicy</code>, <code>DebuggingState</code>,
+            <code>DomIntegrityPolicy</code>입니다. Node 전용 빌드·서버 모듈을
+            브라우저 앱에 import하지 마세요. 배포된 <code>dist</code>에 선언
+            파일이 있더라도 export map에 없는 <code>/cli</code>,
+            <code>/next-runtime</code> 같은 내부 경로는 공개 import API가
+            아닙니다.
+          </p>
+          <h2 id="브라우저-함수와-타입">브라우저 함수와 타입</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">이름</th>
+                  <th scope="col">의미</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguard">WebGuard</a> ·
+                    <a href="/docs/API_BROWSER.ko.html#default">default</a>
+                  </td>
+                  <td>동일한 SDK 객체. 생성자 아님</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinit"
+                      >WebGuard.init</a
+                    >
+                  </td>
+                  <td>인스턴스 생성</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#installautoguard"
+                      >installAutoGuard</a
+                    >
+                  </td>
+                  <td>브라우저 자동 인스턴스 설치</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#getautoguard"
+                      >getAutoGuard</a
+                    >
+                    ·
+                    <a href="/docs/API_BROWSER.ko.html#getwebguard"
+                      >getWebGuard</a
+                    >
+                  </td>
+                  <td>같은 자동 인스턴스 조회</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinstanceupdate"
+                      >update</a
+                    >
+                  </td>
+                  <td>실행 중 정책 갱신</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancegetoptions"
+                      >getOptions</a
+                    >
+                  </td>
+                  <td>옵션 스냅샷</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancecheckintegrity"
+                      >checkIntegrity</a
+                    >
+                  </td>
+                  <td>공개 파일 해시 검증</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancecheckdebugging"
+                      >checkDebugging</a
+                    >
+                  </td>
+                  <td>디버깅 신호 점검</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancegetdebuggingstate"
+                      >getDebuggingState</a
+                    >
+                  </td>
+                  <td>최근 진단 상태</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BROWSER.ko.html#webguardinstancerebaselinedom"
+                      >rebaselineDom</a
+                    >
+                  </td>
+                  <td>DOM 기준 갱신</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinstancedestroy"
+                      >destroy</a
+                    >
+                  </td>
+                  <td>리스너·타이머·진행 중 검사 정리</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardoptions"
+                      >WebGuardOptions</a
+                    >
+                  </td>
+                  <td>모든 런타임 옵션·기본값·범위</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#webguardinstance"
+                      >WebGuardInstance</a
+                    >
+                  </td>
+                  <td>7개 인스턴스 메서드</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#threatevent"
+                      >ThreatEvent</a
+                    >
+                  </td>
+                  <td>이벤트 종류·필드·콜백</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#debuggingpolicy"
+                      >DebuggingPolicy</a
+                    >
+                    ·
+                    <a href="/docs/API_BROWSER.ko.html#debuggingstate"
+                      >DebuggingState</a
+                    >
+                  </td>
+                  <td>디버깅 정책·관측값</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BROWSER.ko.html#domintegritypolicy"
+                      >DomIntegrityPolicy</a
+                    >
+                  </td>
+                  <td>DOM 감시 정책</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2 id="빌드검증-함수와-타입">빌드·검증 함수와 타입</h2>
+          <p>
+            다음 11개 함수는 <code>uulab-webguard/build</code>에서 가져옵니다.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">함수</th>
+                  <th scope="col">기능</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#defineconfig"
+                      >defineConfig</a
+                    >
+                  </td>
+                  <td>타입 추론을 보존하는 설정 헬퍼</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#resolveconfig"
+                      >resolveConfig</a
+                    >
+                  </td>
+                  <td>프리셋 병합·실제 설정 검증</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#protectappdirectory"
+                      >protectAppDirectory</a
+                    >
+                  </td>
+                  <td>정적 앱 자동 보호·SDK 연결</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#protectdirectory"
+                      >protectDirectory</a
+                    >
+                  </td>
+                  <td>정적 출력 보호</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#scandirectory"
+                      >scanDirectory</a
+                    >
+                  </td>
+                  <td>공개 파일 위험 검사</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="/docs/API_BUILD.ko.html#createdomidentifiergenerator"
+                      >createDomIdentifierGenerator</a
+                    >
+                  </td>
+                  <td>일관된 CSS Modules 이름 생성</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#hashcontent"
+                      >hashContent</a
+                    >
+                  </td>
+                  <td>SHA-384 SRI 해시</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#createmanifest"
+                      >createManifest</a
+                    >
+                  </td>
+                  <td>파일 무결성 매니페스트 생성</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#verifymanifest"
+                      >verifyManifest</a
+                    >
+                  </td>
+                  <td>로컬 매니페스트 비교</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#verifydeployment"
+                      >verifyDeployment</a
+                    >
+                  </td>
+                  <td>실제 HTTP 배포 검사</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#createsecurityheaders"
+                      >createSecurityHeaders</a
+                    >
+                  </td>
+                  <td>CSP·서버 헤더 생성</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <code>/verify</code>의
+            <a href="/docs/API_BUILD.ko.html#checkdeployment">checkDeployment</a
+            >는 출력 디렉터리의 정책·매니페스트를 읽어 배포를 검사합니다.
+            <code>/server</code>의
+            <a href="/docs/API_BUILD.ko.html#createprotectedserver"
+              >createProtectedServer</a
+            >는 로컬 점검용 Node 서버를 반환합니다.
+          </p>
+          <p>
+            공개 설정·결과 타입은
+            <a href="/docs/API_BUILD.ko.html#webguardconfiginput"
+              >WebGuardConfigInput</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#webguardconfig">WebGuardConfig</a>,
+            <a href="/docs/API_BUILD.ko.html#preset">Preset</a>,
+            <a href="/docs/API_BUILD.ko.html#securityheadersoptions"
+              >SecurityHeadersOptions</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#trustedtypesmode"
+              >TrustedTypesMode</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#domidentifieroptions"
+              >DomIdentifierOptions</a
+            >, <a href="/docs/API_BUILD.ko.html#finding">Finding</a>,
+            <a href="/docs/API_BUILD.ko.html#protectappoptions"
+              >ProtectAppOptions</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#protectoptions">ProtectOptions</a>,
+            <a href="/docs/API_BUILD.ko.html#protectionreport"
+              >ProtectionReport</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#integritymanifest"
+              >IntegrityManifest</a
+            >,
+            <a href="/docs/API_BUILD.ko.html#deploymentcheck">DeploymentCheck</a
+            >에 정리했습니다.
+          </p>
+          <h2 id="연동명령행">연동·명령행</h2>
+          <p>
+            Vite의
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguardapp">webguardApp</a
+            >·<a href="/docs/API_INTEGRATIONS.ko.html#webguardappoptions"
+              >WebGuardAppOptions</a
+            >, 저수준
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguard">webguard</a>,
+            Next의
+            <a href="/docs/API_INTEGRATIONS.ko.html#withwebguard"
+              >withWebGuard</a
+            >·<a href="/docs/API_INTEGRATIONS.ko.html#webguardnextoptions"
+              >WebGuardNextOptions</a
+            >,
+            <a href="/docs/API_INTEGRATIONS.ko.html#obfuscationlevel"
+              >ObfuscationLevel</a
+            >·<a href="/docs/API_INTEGRATIONS.ko.html#stringarrayencoding"
+              >StringArrayEncoding</a
+            >을 확인하세요.
+          </p>
+          <p>
+            실행 파일은
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguard-cli">webguard</a>,
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguard-check"
+              >webguard-check</a
+            >,
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguard-serve"
+              >webguard-serve</a
+            >
+            세 개입니다. 각 명령의 인수·허용 옵션·출력·종료 코드를 따로
+            명시했습니다.
+          </p>
+          <h2 id="기본값과-지원-범위">기본값과 지원 범위</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">진입점</th>
+                  <th scope="col">기본 프리셋</th>
+                  <th scope="col">SDK 자동 시작</th>
+                  <th scope="col">디버깅 감지 기본</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>webguardApp</code></td>
+                  <td>strict</td>
+                  <td>예</td>
+                  <td>켜짐</td>
+                </tr>
+                <tr>
+                  <td><code>withWebGuard</code></td>
+                  <td>strict</td>
+                  <td>예</td>
+                  <td>꺼짐</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>protectAppDirectory</code> / <code>protect-app</code>
+                  </td>
+                  <td>strict</td>
+                  <td>예</td>
+                  <td>상세 옵션은 빌드 명세 참고</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>webguard</code>, <code>protectDirectory</code>,
+                    <code>resolveConfig</code>
+                  </td>
+                  <td>standard</td>
+                  <td>아니요</td>
+                  <td>해당 없음</td>
+                </tr>
+                <tr>
+                  <td><code>WebGuard.init</code></td>
+                  <td>런타임 옵션 명세 참고</td>
+                  <td>수동</td>
+                  <td>명시적 정책에 따름</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            옵션 이름이 비슷해도 빌드 프리셋과 런타임 가드는 역할이 다릅니다.
+            난독화는 배포 전에 수행합니다. CDN SDK만 추가하면 기존 앱 소스까지
+            자동 난독화되지는 않습니다. 실행 중 <code>update</code>는 브라우저
+            정책만 바꾸며 이미 전달된 JS를 다시 변환하지 않습니다.
+          </p>
+          <p>
+            단축키 제한은 페이지에 전달되는 취소 가능한 입력에 적용됩니다.
+            브라우저 메뉴로 연 개발자도구 창을 강제로 닫거나, 콘솔
+            실행·Elements·전달된 자산을 완전히 숨기는 API는 없습니다. 디버깅
+            감지는 오탐·미탐 가능한 신호입니다. CSP·SRI·서버 헤더와 서버의
+            인증·인가·입력 검증을 함께 적용하세요. 보호 UI와 클라이언트 해시는
+            서버 보안 경계를 대체하지 않습니다.
+          </p>
+          <h2 id="문서와-버전-확인">문서와 버전 확인</h2>
+          <p>
+            이 문서는 현재 소스의 공개 API 계약입니다. npm 게시와 소스·다운로드
+            버전은 다를 수 있습니다. 설치한 <code>package.json</code> 버전과
+            동봉된 이 명세를 기준으로 사용하고,
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >다운로드</a
+            >에서 제공되는 버전을 확인하세요.
+          </p>
+          <p>
+            공개 export·SDK 메서드와 명세 앵커를 자동 대조합니다. 새 함수가
+            추가되면 명세 누락을 검증 오류로 처리합니다. 함수별 예제는 사용
+            흐름을 설명하며, 문서에 적힌 검사 범위를 넘어 모든 앱·브라우저의
+            실행 호환성을 보증하지 않습니다.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

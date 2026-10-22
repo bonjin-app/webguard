@@ -1,5 +1,7 @@
 # WebGuard 0.3.0 로컬 후보 검토·적용 가이드
 
+[공개 함수·옵션·반환값·이벤트 API 명세](API.ko.md) · [온라인 API 명세](https://webguard.uulab.co.kr/docs/API.ko.html)
+
 패키지 하나로 빌드 난독화, 브라우저 SDK와 배포 검사를 연결합니다. 사용하는 환경을 선택하고, 시험 앱 설치 → 빌드 연결 → 서버 정책 반영 → 실제 배포 검사 순서로 적용하세요.
 
 [설치 없이 체험](https://webguard.uulab.co.kr/demo) · [온라인 적용 안내](https://webguard.uulab.co.kr/docs/#install)

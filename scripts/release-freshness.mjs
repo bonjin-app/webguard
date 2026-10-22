@@ -9,6 +9,10 @@ export const sourceInputs = [
   "LICENSE",
   "docs/INSTALL.ko.md",
   "docs/ENVIRONMENTS.ko.md",
+  "docs/API.ko.md",
+  "docs/API_BROWSER.ko.md",
+  "docs/API_BUILD.ko.md",
+  "docs/API_INTEGRATIONS.ko.md",
   "docs/licenses/javascript-obfuscator.txt",
   "examples/security-server/server.mjs",
   "pnpm-lock.yaml",
@@ -17,6 +21,8 @@ export const sourceInputs = [
   "turbo.json",
   "scripts/package-metadata.mjs",
   "scripts/npm-metadata.mjs",
+  "scripts/api-reference.mjs",
+  "docs/api-reference-map.json",
 ];
 const stale = (message) =>
   new Error(

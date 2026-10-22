@@ -1,6 +1,8 @@
 import { copyFile, readFile, writeFile } from "node:fs/promises";
 import { prepareNpmPackageMetadata } from "./npm-metadata.mjs";
 import { generatePublicGuides } from "./public-guides.mjs";
+import { validateApiReference } from "./api-reference.mjs";
+await validateApiReference();
 const descriptions = {
   shared: "Shared threat-event types.",
   core: "Typed configuration, validation and policy presets.",

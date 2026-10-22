@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>WebGuard 연동 API와 CLI 명세 — WebGuard</title>
+    <meta
+      name="description"
+      content="연동·CLI API: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/API_INTEGRATIONS.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <span>전체 가이드</span
+        ><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+        ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+        ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+        ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+        ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+        ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+        ><a href="/docs/API_INTEGRATIONS.ko.html" aria-current="page"
+          >연동·CLI API</a
+        ><span>이 문서의 목차</span><a href="#webguardapp">webguardApp</a
+        ><a href="#webguardappoptions">WebGuardAppOptions</a
+        ><a href="#webguard">webguard</a><a href="#withwebguard">withWebGuard</a
+        ><a href="#webguardnextoptions">WebGuardNextOptions</a
+        ><a href="#obfuscationlevel">ObfuscationLevel</a
+        ><a href="#stringarrayencoding">StringArrayEncoding</a
+        ><a href="#webguard-cli">webguard CLI</a
+        ><a href="#webguard-check">webguard-check</a
+        ><a href="#webguard-serve">webguard-serve</a
+        ><a href="#환경별-선택과-검증">환경별 선택과 검증</a>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <p class="eyebrow">연동·CLI API</p>
+          <p class="docs-meta">
+            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
+            시점은 본문의 기록을 확인하세요.
+          </p>
+          <div class="guide-tools">
+            <a href="/docs/API_INTEGRATIONS.ko.txt" download
+              >원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/API_INTEGRATIONS.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="webguard-연동-api와-cli-명세">
+            WebGuard 연동 API와 CLI 명세
+          </h1>
+          <p>
+            Vite·Next 빌드 설정과 명령행 도구의 공개 계약입니다. 기술 패키지명은
+            <code>uulab-webguard</code>, 서비스명은 WebGuard입니다. 설치·버전
+            선택은 <a href="/docs/INSTALL.ko.html">설치 가이드</a>, 환경별
+            배치는 <a href="/docs/ENVIRONMENTS.ko.html">환경 가이드</a>, 전체
+            함수는 <a href="/docs/API.ko.html">API 색인</a>을 참고하세요.
+          </p>
+          <h2 id="webguardapp">webguardApp</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { webguardApp } from &quot;uulab-webguard&quot;;
+// webguardApp(input?: WebGuardAppOptions): Plugin[]
+</code></pre>
+          <p>
+            Vite 프로덕션 애플리케이션을 위한 기본 진입점입니다. Strict 난독화,
+            자동 브라우저 SDK 시작, 공개 소스맵 제거, 최종 파일 무결성
+            매니페스트, HTML SRI/CSP 연결과 서버 헤더 파일 생성을 하나의
+            설정으로 연결합니다. 반환된 플러그인 배열을 Vite
+            <code>plugins</code>에 넣습니다. 개발 서버/HMR에는 프로덕션 변환을
+            적용하지 않습니다.
+          </p>
+          <pre tabindex="0" aria-label="코드 예제"><code>// vite.config.ts
+import { defineConfig } from &quot;vite&quot;;
+import { webguardApp } from &quot;uulab-webguard&quot;;
+
+export default defineConfig({
+  plugins: [
+    webguardApp({
+      preset: &quot;strict&quot;,
+      runtime: { devtools: { blockShortcuts: true } },
+    }),
+  ],
+});
+</code></pre>
+          <p>
+            <code>vite build</code>를 실행하고 생성된 <code>dist</code>를
+            배포합니다. 앱의 기존 플러그인과 함께 사용하세요.
+            <code>runtime.onThreat</code> 같은 함수는 빌드 옵션으로 직렬화하지
+            않습니다. 브라우저에서 콜백을 연결합니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { getWebGuard } from &quot;uulab-webguard/client&quot;;
+
+const guard = getWebGuard();
+guard?.update({ onThreat: (event) =&gt; console.info(event.type) });
+</code></pre>
+          <p>
+            실패: 라이브러리 빌드, SSR 빌드, <code>write:false</code>, 충돌하는
+            출력 경로, 안전하지 않은 공개 파일, 지원하지 않는 CSS Modules 설정
+            등은 빌드를 중단합니다. 프레임워크·플러그인 조합의 모든 호환성을
+            보장하지 않으므로 실제 기능과 지연 로드까지 검증하세요. 난독화는
+            브라우저가 받은 코드를 비밀로 만들지 않습니다.
+          </p>
+          <h2 id="webguardappoptions">WebGuardAppOptions</h2>
+          <p>
+            <code>WebGuardConfigInput</code>을 확장합니다. 빌드 공통 필드는
+            <a href="/docs/API_BUILD.ko.html#webguardconfiginput"
+              >빌드 설정 명세</a
+            >를 참고하세요.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">필드</th>
+                  <th scope="col">타입</th>
+                  <th scope="col">기본값</th>
+                  <th scope="col">동작</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>preset</code></td>
+                  <td><code>Preset</code></td>
+                  <td><code>&quot;strict&quot;</code></td>
+                  <td>이 래퍼의 빌드·런타임 프리셋</td>
+                </tr>
+                <tr>
+                  <td><code>runtime</code></td>
+                  <td>
+                    <code
+                      >Omit&lt;WebGuardOptions, &quot;preset&quot; |
+                      &quot;onThreat&quot;&gt; | false</code
+                    >
+                  </td>
+                  <td><code>{}</code></td>
+                  <td>자동 SDK 부팅. <code>false</code>면 부팅 생략</td>
+                </tr>
+                <tr>
+                  <td><code>headers</code></td>
+                  <td><code>SecurityHeadersOptions | false</code></td>
+                  <td>기본 헤더 옵션</td>
+                  <td>CSP 및 헤더 산출물 생성. <code>false</code>면 생략</td>
+                </tr>
+                <tr>
+                  <td><code>domIdentifiers</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>CSS Modules 생성 클래스 이름을 불투명한 값으로 변환</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Vite 자동 SDK의 <code>devtools.detect</code>는 기본
+            <code>true</code>입니다. 단축키·우클릭 제한은 명시적으로 켭니다.
+            감지와 대응의 정확한 계약은
+            <a href="/docs/API_BROWSER.ko.html#webguardoptions">브라우저 옵션</a
+            >을 확인하세요. <code>headers</code>는
+            <a href="/docs/API_BUILD.ko.html#createsecurityheaders"
+              >createSecurityHeaders</a
+            >와 같은 옵션을 받습니다. HTTP 전용 헤더는 생성된 설정을 호스팅
+            서버에 적용해야 효력이 있습니다.
+          </p>
+          <p>
+            <code>domIdentifiers</code>는 CSS Modules 전용입니다. HTML의 모든
+            ID·클래스·텍스트를 숨기지 않습니다. Lightning CSS, 비활성 CSS
+            Modules, 사용자 지정 <code>generateScopedName</code>과의 충돌은
+            오류입니다. Trusted Types가 앱의 <code>innerHTML</code> 같은 문자열
+            DOM 삽입을 차단할 수 있으므로 호환성 경고를 확인하고 안전한 DOM
+            API로 수정하거나 명시적으로 보고 전용 정책을 선택하세요.
+          </p>
+          <h2 id="webguard">webguard</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { webguard } from &quot;uulab-webguard&quot;;
+// webguard(input?: WebGuardConfigInput): Plugin
+</code></pre>
+          <p>
+            난독화·무결성 빌드 단계만 조합하는 저수준 Vite 플러그인입니다. 기본
+            프리셋은 <code>&quot;standard&quot;</code>입니다. SDK 자동 시작과
+            헤더 생성이 필요한 앱은 <code>webguardApp</code>을 사용하세요.
+            프로덕션 번들 변환, 공개 소스맵 제거, 최종 산출물 검사·보고를
+            수행합니다. 지원하지 않는 출력 형태·공개 파일은 오류로 중단합니다.
+            내부 연결용 두 번째 인수는 사용자용 설정 API가 아닙니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { defineConfig } from &quot;vite&quot;;
+import { webguard } from &quot;uulab-webguard&quot;;
+export default defineConfig({ plugins: [webguard({ preset: &quot;strict&quot; })] });
+</code></pre>
+          <h2 id="withwebguard">withWebGuard</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { withWebGuard } from &quot;uulab-webguard/next&quot;;
+// withWebGuard&lt;T extends object&gt;(nextConfig: T, options?: WebGuardNextOptions)
+</code></pre>
+          <p>
+            해결된 Next 설정 객체를 받아 새 설정 객체를 반환합니다. 기존 설정과
+            동기 <code>webpack</code> 훅을 유지하면서 프로덕션 브라우저 Webpack
+            5 번들을 보호하고, 선택한 SDK를 브라우저 엔트리에 주입합니다.
+            <code>productionBrowserSourceMaps:false</code>, 브라우저
+            <code>devtool:false</code>, 최종 내용 해시를 적용합니다.
+          </p>
+          <pre tabindex="0" aria-label="코드 예제"><code>// next.config.mjs
+import { withWebGuard } from &quot;uulab-webguard/next&quot;;
+export default withWebGuard({ reactStrictMode: true }, { preset: &quot;strict&quot; });
+</code></pre>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx next build --webpack
+</code></pre>
+          <p>
+            프로덕션은 명시적인 <code>--webpack</code>이 필요합니다. Turbopack은
+            지원하지 않습니다. 설정 함수·Promise·배열을 직접 전달하지 마세요.
+            비동기 설정이 필요하면 비동기 Next 설정 함수 내부에서 설정을 해결한
+            뒤 <code>withWebGuard</code>를 호출합니다. 기존
+            <code>webpack</code> 훅 자체는 동기적으로 설정 객체를 반환해야
+            합니다.
+          </p>
+          <p>
+            브라우저 <code>static/*.js</code>를 변환합니다. 개발/HMR,
+            서버·Edge·API·RSC 코드는 변환하지 않으며, <code>public/</code> 복사
+            파일이나 HTML Flight 데이터까지 자동 난독화하지 않습니다. 공개
+            소스맵·백업·미리 압축된 코드와 늦게 생성된 미보호 청크는 오류입니다.
+            Next는 이 연동만으로 CSP·SRI·HTTP 헤더가 생성되지 않습니다. 요청별
+            nonce와 서버 정책은 앱에서 관리하세요.
+          </p>
+          <h2 id="webguardnextoptions">WebGuardNextOptions</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">필드</th>
+                  <th scope="col">타입</th>
+                  <th scope="col">기본값</th>
+                  <th scope="col">동작</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>preset</code></td>
+                  <td><code>Preset</code></td>
+                  <td><code>&quot;strict&quot;</code></td>
+                  <td>앱·SDK·분류 불명 청크의 보호 수준</td>
+                </tr>
+                <tr>
+                  <td><code>frameworkPreset</code></td>
+                  <td>
+                    <code>&quot;standard&quot; | &quot;inherit&quot;</code>
+                  </td>
+                  <td><code>&quot;standard&quot;</code></td>
+                  <td>
+                    순수 외부 라이브러리 청크는 기본적으로 Standard 이하로 제한.
+                    <code>inherit</code>은 지정 프리셋 유지
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>runtime</code></td>
+                  <td>
+                    <code
+                      >Omit&lt;WebGuardOptions, &quot;preset&quot; |
+                      &quot;onThreat&quot;&gt; | false</code
+                    >
+                  </td>
+                  <td><code>{}</code></td>
+                  <td>자동 SDK, <code>false</code>면 생략</td>
+                </tr>
+                <tr>
+                  <td><code>domIdentifiers</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>서버·클라이언트의 지원되는 CSS Modules 이름 생성 연결</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Next 자동 SDK의 <code>devtools.detect</code>는 기본
+            <code>false</code>입니다. 필요하면
+            <code>runtime.devtools.detect:true</code>로 켭니다. Vite 자동 연동과
+            기본값이 다릅니다. 런타임 콜백은 클라이언트에서
+            <code>getWebGuard()?.update(...)</code>로 지정하세요.
+            <code>runtime</code> 안의 <code>preset</code>·<code>onThreat</code>,
+            알 수 없는 옵션, 잘못된 타입은 거부됩니다.
+          </p>
+          <p>
+            <code>domIdentifiers</code>는 지원되는 Next CSS Modules 로더가
+            필요합니다. 사용자 지정 <code>getLocalIdent</code>, Lightning CSS 등
+            지원하지 않는 구성은 오류입니다. <code>next/font</code> 전용 생성
+            이름은 글꼴 메타데이터 호환성을 위해 유지합니다. 프레임워크 청크까지
+            High 수준을 적용하면 빌드 시간·파일 크기·실행 비용이 증가할 수
+            있습니다.
+          </p>
+          <h2 id="obfuscationlevel">ObfuscationLevel</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>type ObfuscationLevel = &quot;basic&quot; | &quot;standard&quot; | &quot;high&quot;;
+</code></pre>
+          <p>
+            난독화 엔진의 수준입니다. <code>&quot;strict&quot;</code>는
+            <code>Preset</code> 값이며 이 타입의 값이 아닙니다. Strict 프리셋은
+            High 난독화와 RC4 문자열 인코딩 등을 선택합니다. 실제 기본값·세부
+            구성은
+            <a href="/docs/API_BUILD.ko.html#webguardconfig">빌드 설정</a>을
+            확인하세요.
+          </p>
+          <h2 id="stringarrayencoding">StringArrayEncoding</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>type StringArrayEncoding = &quot;none&quot; | &quot;base64&quot; | &quot;rc4&quot;;
+</code></pre>
+          <p>
+            문자열 배열 인코딩 방식입니다. High 수준의 기본은 <code>rc4</code>,
+            다른 수준의 기본은 <code>none</code>입니다. 클라이언트에서
+            복호화하는 문자열을 암호·서버 비밀로 취급하지 마세요.
+          </p>
+          <h2 id="webguard-cli">webguard CLI</h2>
+          <p>
+            설치된 패키지의 <code>webguard</code> 실행 파일입니다. 입력 경로는
+            빌드가 끝난 정적 디렉터리입니다. JSP·PHP·Python 서버 소스 자체를
+            입력으로 지정하지 마세요. npm 패키지 설치 후
+            <code>npx webguard ...</code> 또는 프로젝트 스크립트에서 호출합니다.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">명령</th>
+                  <th scope="col">필수 인수</th>
+                  <th scope="col">결과·용도</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <code>webguard protect-app INPUT [--output OUTPUT]</code>
+                  </td>
+                  <td>입력 디렉터리</td>
+                  <td>정적 앱 보호, 자동 SDK·정책 연결</td>
+                </tr>
+                <tr>
+                  <td><code>webguard protect INPUT [--output OUTPUT]</code></td>
+                  <td>입력 디렉터리</td>
+                  <td>빌드 산출물 보호. SDK 자동 부팅 없음</td>
+                </tr>
+                <tr>
+                  <td><code>webguard scan INPUT</code></td>
+                  <td>입력 디렉터리</td>
+                  <td>탐지 결과 JSON. error 등급이 있으면 실패</td>
+                </tr>
+                <tr>
+                  <td><code>webguard verify INPUT</code></td>
+                  <td>보호 출력 디렉터리</td>
+                  <td>로컬 매니페스트 검증 JSON</td>
+                </tr>
+                <tr>
+                  <td><code>webguard verify INPUT --base-url URL</code></td>
+                  <td>출력·공개 URL</td>
+                  <td>로컬 검증과 배포 응답 검증 JSON</td>
+                </tr>
+                <tr>
+                  <td><code>webguard report [INPUT]</code></td>
+                  <td>선택, 기본 <code>dist-protected</code></td>
+                  <td>저장된 보고서 원문 출력</td>
+                </tr>
+                <tr>
+                  <td><code>webguard headers</code></td>
+                  <td>없음</td>
+                  <td>서버 보안 헤더 JSON 출력</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx webguard protect-app dist --output dist-protected --preset strict --restrict-shortcuts
+npx webguard scan dist-protected
+npx webguard verify dist-protected
+npx webguard verify dist-protected --base-url https://example.com/
+npx webguard report dist-protected
+npx webguard headers --trusted-types report-only
+</code></pre>
+          <h3 id="cli-옵션">CLI 옵션</h3>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">옵션</th>
+                  <th scope="col">허용 명령</th>
+                  <th scope="col">값·기본값</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>--output</code>, <code>-o</code></td>
+                  <td><code>protect-app</code>, <code>protect</code></td>
+                  <td>
+                    선택 출력 경로. 생략 시
+                    <code>resolve(INPUT) + &quot;-protected&quot;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>--preset</code></td>
+                  <td><code>protect-app</code>, <code>protect</code></td>
+                  <td>
+                    <code>basic</code>, <code>standard</code>,
+                    <code>strict</code>, <code>custom</code>. 앱 기본 strict,
+                    protect 기본 standard
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>--public-base</code></td>
+                  <td><code>protect-app</code>, <code>protect</code></td>
+                  <td>
+                    선택 공개 경로. 원본 경로를 임의로 추정해 다시 쓰지 않음
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>--base-url</code></td>
+                  <td><code>verify</code></td>
+                  <td>선택 배포 URL</td>
+                </tr>
+                <tr>
+                  <td><code>--restrict-shortcuts</code></td>
+                  <td><code>protect-app</code></td>
+                  <td>기본 꺼짐, 페이지에 전달된 취소 가능 단축키 제한</td>
+                </tr>
+                <tr>
+                  <td><code>--restrict-context-menu</code></td>
+                  <td><code>protect-app</code></td>
+                  <td>기본 꺼짐, 페이지 우클릭 제한</td>
+                </tr>
+                <tr>
+                  <td><code>--trusted-types</code></td>
+                  <td><code>protect-app</code>, <code>headers</code></td>
+                  <td>
+                    <code>enforce</code>, <code>report-only</code>,
+                    <code>off</code>. 헤더 기본 enforce
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>--no-runtime</code></td>
+                  <td><code>protect-app</code></td>
+                  <td>SDK 자동 시작 생략</td>
+                </tr>
+                <tr>
+                  <td><code>--no-headers</code></td>
+                  <td><code>protect-app</code></td>
+                  <td>헤더 생성 생략</td>
+                </tr>
+                <tr>
+                  <td><code>--help</code>, <code>-h</code></td>
+                  <td>전체 또는 개별 명령</td>
+                  <td>사용법 출력</td>
+                </tr>
+                <tr>
+                  <td><code>--version</code>, <code>-v</code></td>
+                  <td>단독 실행</td>
+                  <td>설치된 패키지 버전 출력</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            명령마다 허용하는 옵션이 다릅니다. 중복·알 수 없는·해당 명령에서
+            무시될 옵션, 잘못된 값·위치 인수는 오류입니다.
+            <code>--no-runtime</code>과 두 제한 옵션,
+            <code>--no-headers</code>와 <code>--trusted-types</code>를 함께 쓰면
+            오류입니다. 도움말·버전 옵션을 다른 동작 옵션과 섞지 마세요. CLI에는
+            <code>--config</code> 파일 로딩 옵션이 없습니다. 세부 정책이
+            필요하면
+            <a href="/docs/API_BUILD.ko.html#protectappdirectory"
+              >Node 빌드 API</a
+            >를 사용하세요.
+          </p>
+          <p>
+            종료 코드 <code>0</code>은 해당 명령 성공, <code>1</code>은
+            인수·처리 오류 또는 검증 실패입니다. 오류는 표준 오류에 출력합니다.
+            보고서·검사 결과의 의미는
+            <a href="/docs/API_BUILD.ko.html#protectionreport"
+              >ProtectionReport</a
+            >와
+            <a href="/docs/API_BUILD.ko.html#deploymentcheck">DeploymentCheck</a
+            >를 참고하세요.
+          </p>
+          <h2 id="webguard-check">webguard-check</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx webguard-check dist-protected --url https://example.com/
+</code></pre>
+          <p>
+            정확히 <code>DIRECTORY --url URL</code> 순서로 사용합니다. 패키지의
+            <a href="/docs/API_BUILD.ko.html#checkdeployment">checkDeployment</a
+            >를 실행하고 결과 JSON을 출력합니다. <code>--help</code>·<code
+              >-h</code
+            >
+            지원. 성공은 <code>0</code>, 잘못된 인수·예외·검증 실패는
+            <code>1</code>입니다. 임의 인수 순서나
+            <code>webguard verify</code>의 <code>--base-url</code>을 이 명령에
+            사용하지 마세요.
+          </p>
+          <h2 id="webguard-serve">webguard-serve</h2>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx webguard-serve dist-protected --port 4173
+</code></pre>
+          <p>
+            보호 산출물과 생성된 헤더를 로컬에서 확인하는 서버입니다. 기본 포트
+            <code>4173</code>, 바인딩 주소 <code>127.0.0.1</code>이며 공개 운영
+            서버 배포 도구가 아닙니다. <code>--port</code>는 1~65535 정수,
+            <code>--help</code>·<code>-h</code> 지원. 인수·시작 오류는 표준
+            오류와 종료 코드 <code>1</code>로 반환합니다. 서버 객체가 필요하면
+            <a href="/docs/API_BUILD.ko.html#createprotectedserver"
+              >createProtectedServer</a
+            >를 사용하세요.
+          </p>
+          <h2 id="환경별-선택과-검증">환경별 선택과 검증</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">환경</th>
+                  <th scope="col">진입점</th>
+                  <th scope="col">자동 범위</th>
+                  <th scope="col">별도 확인</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Vite·React·Vue</td>
+                  <td><code>webguardApp</code></td>
+                  <td>프로덕션 브라우저 번들·SDK·정책 산출물</td>
+                  <td>호스팅 HTTP 헤더, 전체 앱 동작</td>
+                </tr>
+                <tr>
+                  <td>Next Webpack</td>
+                  <td><code>withWebGuard</code></td>
+                  <td>프로덕션 브라우저 청크·SDK</td>
+                  <td>SSR/RSC, 요청 nonce·CSP·헤더</td>
+                </tr>
+                <tr>
+                  <td>Webpack·esbuild·정적 HTML</td>
+                  <td>
+                    <code>protect-app</code> / <code>protectAppDirectory</code>
+                  </td>
+                  <td>빌드 후 정적 JS·실행 가능한 인라인 script·SDK</td>
+                  <td>동적 스크립트 문자열·실제 배포</td>
+                </tr>
+                <tr>
+                  <td>JSP·Java·PHP·Python SSR</td>
+                  <td>정적 자산 보호 + 브라우저 SDK</td>
+                  <td>준비된 브라우저 JS</td>
+                  <td>동적으로 렌더된 script/nonce·서버 인증·권한</td>
+                </tr>
+                <tr>
+                  <td>CDN·직접 다운로드</td>
+                  <td><code>WebGuardSDK.WebGuard.init</code></td>
+                  <td>선택한 브라우저 가드</td>
+                  <td>앱 코드 난독화는 별도 빌드 단계</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            정적 HTML의 실행 가능한 script 본문과 실제 JS 파일이 처리
+            대상입니다. 런타임에 문자열로 생성하는 모든 코드나 서버 템플릿
+            내부의 모든 언어를 재귀적으로 분석해 변환하지 않습니다. 변환 오류를
+            무시해 미보호 결과를 배포하지 말고, 지원 범위·보호 보고서와 브라우저
+            기능 검증을 함께 확인하세요.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

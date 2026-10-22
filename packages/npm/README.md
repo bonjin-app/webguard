@@ -1,5 +1,7 @@
 # uulab-webguard
 
+[공개 함수·옵션·반환값·이벤트 API 명세](API.ko.md) · [온라인 API 명세](https://webguard.uulab.co.kr/docs/API.ko.html)
+
 개발자의 웹 앱에 설치하는 보호 SDK와 빌드 도구 통합 패키지입니다. 웹사이트는 SDK 동작과 보호 전후를 확인하는 데모이며, 운영 앱의 보호는 설치한 패키지와 배포 설정에서 수행합니다.
 
 Vite 설정 또는 기존 빌드 후처리 한 번으로 Strict/High 난독화·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 브라우저 정책을 연결합니다. Node.js 22.12 이상이 필요합니다. Vite 통합은 Vite 7/8의 ESM 웹 앱용이며 범용 `/build` API·CLI는 Vite 설치를 요구하지 않습니다.

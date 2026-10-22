@@ -105,7 +105,7 @@ async function prepare() {
     if (
       paths.some(
         (path) =>
-          !/^(?:package\.json|README\.md|INSTALL\.ko\.md|ENVIRONMENTS\.ko\.md|LICENSE|THIRD_PARTY_NOTICES\.md|examples\/server\.mjs|dist\/[A-Za-z0-9_./-]+\.(?:js|ts))$/.test(
+          !/^(?:package\.json|README\.md|INSTALL\.ko\.md|ENVIRONMENTS\.ko\.md|API(?:_BROWSER|_BUILD|_INTEGRATIONS)?\.ko\.md|LICENSE|THIRD_PARTY_NOTICES\.md|examples\/server\.mjs|dist\/[A-Za-z0-9_./-]+\.(?:js|ts))$/.test(
             path,
           ) ||
           path.endsWith(".map") ||
@@ -117,6 +117,10 @@ async function prepare() {
       "README.md",
       "INSTALL.ko.md",
       "ENVIRONMENTS.ko.md",
+      "API.ko.md",
+      "API_BROWSER.ko.md",
+      "API_BUILD.ko.md",
+      "API_INTEGRATIONS.ko.md",
       "LICENSE",
       "THIRD_PARTY_NOTICES.md",
       "examples/server.mjs",

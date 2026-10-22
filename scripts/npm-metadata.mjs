@@ -14,6 +14,13 @@ export async function prepareNpmPackageMetadata() {
     new URL("docs/ENVIRONMENTS.ko.md", source),
     new URL("ENVIRONMENTS.ko.md", target),
   );
+  for (const name of [
+    "API.ko.md",
+    "API_BROWSER.ko.md",
+    "API_BUILD.ko.md",
+    "API_INTEGRATIONS.ko.md",
+  ])
+    await copyFile(new URL(`docs/${name}`, source), new URL(name, target));
   await writeFile(
     new URL("examples/server.mjs", target),
     (

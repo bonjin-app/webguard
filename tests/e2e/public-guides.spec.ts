@@ -4,6 +4,10 @@ const guides = [
   ["INSTALL.ko", "WebGuard 0.3.0 로컬 후보 검토·적용 가이드"],
   ["ENVIRONMENTS.ko", "환경별 WebGuard 적용"],
   ["SSR_VERIFICATION", "SSR와 환경별 보호 검증"],
+  ["API.ko", "WebGuard API 명세"],
+  ["API_BROWSER.ko", "브라우저 런타임 API 참조"],
+  ["API_BUILD.ko", "Node 빌드·헤더·무결성·배포 검증 API"],
+  ["API_INTEGRATIONS.ko", "WebGuard 연동 API와 CLI 명세"],
 ] as const;
 
 test("opens complete guides from the Korean documentation home", async ({
@@ -98,6 +102,12 @@ for (const [name, title] of guides) {
           () => document.documentElement.scrollWidth <= window.innerWidth,
         ),
       ).toBe(true);
+      await expect(
+        page.locator('.docs-outline a[aria-current="page"]'),
+      ).toHaveAttribute("href", `/docs/${name}.html`);
+      const firstTopic = page.locator('.docs-outline a[href^="#"]').first();
+      await firstTopic.click();
+      await expect(page.locator("main h2").first()).toBeInViewport();
       const brokenLocalMarkdown = await page
         .locator('a[href$=".md"]:not([href^="https://"])')
         .count();
@@ -107,3 +117,35 @@ for (const [name, title] of guides) {
     }
   });
 }
+
+test("connects the docs and demo setup to the complete API reference", async ({
+  page,
+}) => {
+  await page.goto("/docs/#api-reference");
+  const reference = page.locator("#api-reference");
+  for (const name of ["API", "API_BROWSER", "API_BUILD", "API_INTEGRATIONS"]) {
+    await expect(
+      reference.locator(`a[href="/docs/${name}.ko.html"]`),
+    ).toBeVisible();
+  }
+  await reference.getByRole("link", { name: "API 명세 전체 목차" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "WebGuard API 명세",
+  );
+  await page
+    .getByRole("navigation")
+    .getByRole("link", { name: "브라우저 런타임 API", exact: true })
+    .click();
+  await page
+    .locator('.docs-outline a[href="#webguardinstancecheckintegrity"]')
+    .click();
+  await expect(
+    page.locator("#webguardinstancecheckintegrity"),
+  ).toBeInViewport();
+  await page.goto("/demo#setup");
+  await page
+    .locator(".setup-support")
+    .getByRole("link", { name: "함수·옵션·반환값 API 명세" })
+    .click();
+  await expect(page).toHaveURL(/\/docs\/API\.ko\.html$/);
+});

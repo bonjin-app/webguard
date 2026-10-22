@@ -12,6 +12,10 @@
     "README.md",
     "INSTALL.ko.md",
     "ENVIRONMENTS.ko.md",
+    "API.ko.md",
+    "API_BROWSER.ko.md",
+    "API_BUILD.ko.md",
+    "API_INTEGRATIONS.ko.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "examples/server.mjs"

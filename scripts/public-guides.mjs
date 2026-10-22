@@ -9,6 +9,10 @@ export const publicGuides = [
   { source: "INSTALL.ko.md", label: "설치·적용 전체 가이드" },
   { source: "ENVIRONMENTS.ko.md", label: "환경별 적용 가이드" },
   { source: "SSR_VERIFICATION.md", label: "SSR 검증 기록" },
+  { source: "API.ko.md", label: "API 명세 전체 목차" },
+  { source: "API_BROWSER.ko.md", label: "브라우저 런타임 API" },
+  { source: "API_BUILD.ko.md", label: "Node 빌드·검증 API" },
+  { source: "API_INTEGRATIONS.ko.md", label: "연동·CLI API" },
 ];
 const pagePath = (source) => `/docs/${source.replace(/\.md$/, ".html")}`;
 const escapeHtml = (text) =>

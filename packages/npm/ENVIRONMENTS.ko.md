@@ -1,5 +1,7 @@
 # 환경별 WebGuard 적용
 
+[공개 함수·옵션·반환값·이벤트 API 명세](API.ko.md) · [온라인 API 명세](https://webguard.uulab.co.kr/docs/API.ko.html)
+
 WebGuard는 웹 앱에 설치하는 SDK와 빌드 보호 도구입니다. Vite 전용 서비스가 아니며 웹사이트는 보호 전후를 확인하는 데모입니다. 새 기능은 **게시하지 않은 0.3.0 로컬 후보** 기준입니다. npm 배포는 보류 중이며 검토한 로컬 `.tgz`로 설치합니다. [전체 설치 안내](INSTALL.ko.md).
 
 | 환경                           | 연결 방법                                   | 지원 경계                                                                |

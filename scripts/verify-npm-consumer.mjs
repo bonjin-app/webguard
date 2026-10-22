@@ -196,9 +196,25 @@ try {
     "README.md",
     "INSTALL.ko.md",
     "ENVIRONMENTS.ko.md",
+    "API.ko.md",
+    "API_BROWSER.ko.md",
+    "API_BUILD.ko.md",
+    "API_INTEGRATIONS.ko.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
   ]);
+  for (const name of [
+    "API.ko.md",
+    "API_BROWSER.ko.md",
+    "API_BUILD.ko.md",
+    "API_INTEGRATIONS.ko.md",
+  ]) {
+    const content = await readFile(join(packageRoot, name), "utf8");
+    check(
+      content.trim().length > 0,
+      `Missing or empty public API guide: ${name}`,
+    );
+  }
   for (const entry of packageFiles) {
     const local = relative(packageRoot, join(entry.parentPath, entry.name))
       .split(sep)

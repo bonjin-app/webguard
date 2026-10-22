@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   generatePublicGuides,
+  publicGuides,
   renderGuideMarkdown,
   resolveGuideLink,
 } from "../../scripts/public-guides.mjs";
@@ -95,16 +96,35 @@ describe("public static guides", () => {
     );
   });
 
-  it("generates all three complete static pages, valid local anchors, styles and unchanged text downloads", async () => {
+  it("maps API reference links to complete public pages and preserves symbol anchors", () => {
+    for (const [file, anchor] of [
+      ["API.ko", "공개-진입점"],
+      ["API_BROWSER.ko", "webguardinstancecheckintegrity"],
+      ["API_BUILD.ko", "protectappdirectory"],
+      ["API_INTEGRATIONS.ko", "webguardapp"],
+    ]) {
+      expect(resolveGuideLink(`${file}.md#${anchor}`, "API.ko.md")).toBe(
+        `/docs/${file}.html#${anchor}`,
+      );
+    }
+    expect(publicGuides.map((guide) => guide.source)).toEqual([
+      "INSTALL.ko.md",
+      "ENVIRONMENTS.ko.md",
+      "SSR_VERIFICATION.md",
+      "API.ko.md",
+      "API_BROWSER.ko.md",
+      "API_BUILD.ko.md",
+      "API_INTEGRATIONS.ko.md",
+    ]);
+  });
+
+  it("generates all complete static pages, valid local anchors, styles and unchanged text downloads", async () => {
     const output = await mkdtemp(join(tmpdir(), "webguard-guides-"));
     try {
       await generatePublicGuides({ output });
       const documents = new Map<string, Document>();
-      for (const name of [
-        "INSTALL.ko",
-        "ENVIRONMENTS.ko",
-        "SSR_VERIFICATION",
-      ]) {
+      for (const { source } of publicGuides) {
+        const name = source.replace(/\.md$/, "");
         const html = await readFile(join(output, `${name}.html`), "utf8");
         const document = new JSDOM(html, {
           url: `https://webguard.uulab.co.kr/docs/${name}.html`,
@@ -112,6 +132,16 @@ describe("public static guides", () => {
         documents.set(`/docs/${name}.html`, document);
         expect(document.documentElement.lang).toBe("ko");
         expect(document.querySelector("main h1")).not.toBeNull();
+        expect(
+          document.querySelectorAll('.docs-outline a[aria-current="page"]'),
+        ).toHaveLength(1);
+        for (const guide of publicGuides) {
+          expect(
+            document.querySelector(
+              `.docs-outline a[href="/docs/${guide.source.replace(/\.md$/, ".html")}"]`,
+            ),
+          ).not.toBeNull();
+        }
         expect(
           document
             .querySelector('link[rel="stylesheet"]')
@@ -131,6 +161,12 @@ describe("public static guides", () => {
         )) {
           if (link.origin !== "https://webguard.uulab.co.kr") continue;
           const target = documents.get(link.pathname);
+          if (
+            /^\/docs\/API(?:_BROWSER|_BUILD|_INTEGRATIONS)?\.ko\.html$/.test(
+              link.pathname,
+            )
+          )
+            expect(target, link.href).toBeDefined();
           if (target && link.hash)
             expect(
               target.getElementById(decodeURIComponent(link.hash.slice(1))),
