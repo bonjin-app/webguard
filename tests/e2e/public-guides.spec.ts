@@ -9,12 +9,22 @@ const guides = [
 test("opens complete guides from the Korean documentation home", async ({
   page,
 }) => {
+  // Exercise the observed race: document text arrives before the shared CSS.
+  await page.route("**/docs/guide.css", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    await route.continue();
+  });
   await page.goto("/docs/");
   await page
     .locator("#complete-guides")
     .getByRole("link", { name: "설치·적용 전체 가이드" })
     .click();
   await expect(page).toHaveURL(/\/docs\/INSTALL\.ko\.html$/);
+  await page.waitForLoadState("load");
+  await expect(page.locator(".docs-header")).toHaveCSS(
+    "background-color",
+    "rgb(237, 248, 255)",
+  );
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     guides[0][1],
   );
@@ -22,6 +32,11 @@ test("opens complete guides from the Korean documentation home", async ({
     .getByRole("link", { name: "환경별 적용 가이드", exact: true })
     .click();
   await expect(page).toHaveURL(/\/docs\/ENVIRONMENTS\.ko\.html$/);
+  await page.waitForLoadState("load");
+  await expect(page.locator(".docs-header")).toHaveCSS(
+    "background-color",
+    "rgb(237, 248, 255)",
+  );
   await expect(
     page.getByRole("link", { name: "설치 가이드", exact: true }),
   ).toHaveAttribute(
