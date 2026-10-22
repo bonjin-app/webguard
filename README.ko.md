@@ -25,6 +25,8 @@
 
 [SDK/패키지 다운로드](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 npm·pnpm 고정 URL 설치 명령을 복사하면 파일 이동이나 경로 수정 없이 앱에 설치할 수 있습니다. npm 게시는 계속 보류합니다. 설치 URL과 선택한 도구의 lockfile을 함께 관리하세요. npm은 `npm ci`, pnpm은 `pnpm install --frozen-lockfile`로 CI에 설치합니다. pnpm 11 자체는 Node 22.13 이상이 필요하며 SDK 최소 버전은 22.12입니다. 검토한 `.tgz`를 내려받아 설치하는 방법도 유지합니다.
 
+처음 적용한다면 내 환경의 순서만 따라가세요: [Vite·React·Vue](docs/START_VITE.ko.md) · [Next.js](docs/START_NEXT.ko.md) · [Webpack·esbuild](docs/START_STATIC.ko.md) · [HTML·jQuery](docs/START_HTML.ko.md) · [Java·JSP](docs/START_JAVA.ko.md) · [Python](docs/START_PYTHON.ko.md) · [PHP](docs/START_PHP.ko.md) · [CDN SDK](docs/START_CDN.ko.md). 각 문서에 수정 파일·실행 명령·정상 결과가 있습니다.
+
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
 ```

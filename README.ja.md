@@ -25,6 +25,8 @@ WebGuard をビルドに組み込み、保護したブラウザー向けアセ�
 
 [SDK / パッケージダウンロード](https://webguard.uulab.co.kr/docs/#sdk-downloads)で npm・pnpm の固定 URL インストールコマンドをコピーできます。ファイルの移動やパス編集は不要です。npm 公開は引き続き保留中です。URL と使用するツールの lockfile を一緒に管理し、CI では npm は `npm ci`、pnpm は `pnpm install --frozen-lockfile` を使ってください。pnpm 11 自体には Node 22.13 以上が必要です。SDK の最小要件は 22.12 です。確認済み `.tgz` のローカルインストールも利用できます。
 
+環境別のクイックスタート（韓国語）: [Vite / React / Vue](docs/START_VITE.ko.md)、[Next.js](docs/START_NEXT.ko.md)、[Webpack / esbuild](docs/START_STATIC.ko.md)、[HTML / jQuery](docs/START_HTML.ko.md)、[Java / JSP](docs/START_JAVA.ko.md)、[Python](docs/START_PYTHON.ko.md)、[PHP](docs/START_PHP.ko.md)、[CDN SDK](docs/START_CDN.ko.md)。編集するファイル、実行順序、正常な結果を個別に確認できます。
+
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
 ```

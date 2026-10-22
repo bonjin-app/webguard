@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>Vite · React · Vue에 WebGuard 적용하기 — WebGuard</title>
+    <meta
+      name="description"
+      content="Vite · React · Vue: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/START_VITE.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#준비-사항">준비 사항</a
+          ><a href="#1-패키지-설치">1. 패키지 설치</a
+          ><a href="#2-기존-vite-설정-수정">2. 기존 Vite 설정 수정</a
+          ><a href="#3-빌드실행">3. 빌드·실행</a
+          ><a href="#4-정상-결과-확인">4. 정상 결과 확인</a
+          ><a href="#문제-해결">문제 해결</a><a href="#다음-단계">다음 단계</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments" open>
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html" aria-current="page"
+            >Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference">
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>환경별 시작</span
+            ><span aria-hidden="true"> / </span><span>Vite · React · Vue</span>
+          </nav>
+          <div class="guide-tools">
+            <a href="/docs/START_VITE.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/START_VITE.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="vite--react--vue에-webguard-적용하기">
+            Vite · React · Vue에 WebGuard 적용하기
+          </h1>
+          <p>
+            기존 Vite 7/8 웹 앱에 적용합니다. React·Vue 플러그인은 유지하고
+            WebGuard만 추가하세요.
+            <strong
+              >프로덕션 빌드의 JavaScript 난독화·SDK 시작·SRI·정책 생성</strong
+            >을 연결합니다.
+          </p>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#install"
+              >환경 다시 선택</a
+            >
+            ·
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguardapp">함수와 옵션</a>
+          </p>
+          <h2 id="준비-사항">준비 사항</h2>
+          <ul>
+            <li>
+              Node.js 22.12 이상. pnpm 11은 Node.js 22.13 이상이 필요합니다.
+            </li>
+            <li>
+              기존 앱의 <code>package.json</code>과
+              <code>vite.config.ts</code> 또는 <code>vite.config.js</code>가
+              있는 폴더에서 실행합니다.
+            </li>
+            <li>
+              이 경로는 브라우저 앱용입니다. Vite SSR 서버 번들·라이브러리
+              빌드는 대상이 아닙니다.
+            </li>
+          </ul>
+          <h2 id="1-패키지-설치">1. 패키지 설치</h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >설치 명령 복사</a
+            >에서 npm·pnpm 중 사용하는 도구를 선택하고, 고정 URL 명령을 앱
+            폴더에서 실행하세요. npm 게시는 보류 중이므로 <code>@latest</code>로
+            이 후보를 설치하지 않습니다.
+          </p>
+          <p>
+            파일로 받은 경우에는 <code>.tgz</code>를
+            <code>package.json</code> 옆에 저장한 뒤 실행합니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npm install -D ./uulab-webguard-0.3.0.tgz
+</code></pre>
+          <h2 id="2-기존-vite-설정-수정">2. 기존 Vite 설정 수정</h2>
+          <p>
+            <strong
+              >수정할 파일: <code>vite.config.ts</code> 또는
+              <code>vite.config.js</code>.</strong
+            >
+            아래는 React 예제입니다. 기존 <code>react()</code>와 다른
+            플러그인·alias·서버 설정을 지우지 마세요.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { defineConfig } from &quot;vite&quot;;
+import react from &quot;@vitejs/plugin-react&quot;;
+import { webguardApp } from &quot;uulab-webguard&quot;;
+
+export default defineConfig({
+  plugins: [
+    react(),
+    webguardApp({
+      runtime: {
+        devtools: { blockShortcuts: true, blockContextMenu: true },
+      },
+    }),
+  ],
+});
+</code></pre>
+          <p>
+            Vue는 기존 <code>vue()</code>를 유지하고 같은
+            <code>webguardApp(...)</code> 항목만 추가합니다. 일반 Vite 앱도 기존
+            <code>plugins</code> 배열에 추가하면 됩니다. SDK를 앱 코드에서 다시
+            초기화할 필요는 없습니다.
+          </p>
+          <p>
+            <strong
+              >일반 Vite 원본 템플릿의 <code>innerHTML</code>을 그대로 쓰는
+              경우:</strong
+            >
+            <code>webguardApp</code> 옵션에
+            <code>headers: { trustedTypes: &quot;report-only&quot; }</code>를
+            명시하거나 안전한 DOM API로 바꾸세요. 관찰 모드는 해당 문자열 삽입을
+            차단하지 않습니다.
+            <a href="https://webguard.uulab.co.kr/demo#setup"
+              >프로젝트별 설정 생성기</a
+            >를 이용할 수도 있습니다.
+          </p>
+          <h2 id="3-빌드실행">3. 빌드·실행</h2>
+          <pre tabindex="0" aria-label="코드 예제"><code>npm run build
+npx --no-install webguard doctor dist
+npx --no-install webguard-serve dist --port 4173
+</code></pre>
+          <p>
+            브라우저에서 <code>http://127.0.0.1:4173</code>을 엽니다.
+            <code>build.outDir</code>를 바꿨다면 위 <code>dist</code>도 실제
+            출력 폴더로 바꾸세요. 개발 서버인 <code>npm run dev</code>에는 빌드
+            보호가 적용되지 않습니다.
+          </p>
+          <h2 id="4-정상-결과-확인">4. 정상 결과 확인</h2>
+          <ul>
+            <li>
+              진단 명령이 <code>WebGuard: Local check passed.</code>를
+              출력합니다.
+            </li>
+            <li>
+              <code>dist</code>에 <code>webguard-manifest.json</code>,
+              <code>webguard-headers.json</code>이 생성됩니다.
+            </li>
+            <li>
+              실제 페이지의 렌더링·버튼·폼·이동이 동작해야 합니다. 진단
+              통과만으로 앱 동작을 확인한 것은 아닙니다.
+            </li>
+            <li>
+              JavaScript는 보호된 코드이고 공개 소스맵이 제거됩니다. 브라우저에
+              전달한 파일은 계속 열람할 수 있습니다.
+            </li>
+          </ul>
+          <p>다른 터미널에서 로컬 HTTP 정책과 바이트도 확인합니다.</p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+</code></pre>
+          <h2 id="문제-해결">문제 해결</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">증상</th>
+                  <th scope="col">먼저 확인할 것</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>React·Vue 화면이 깨짐</td>
+                  <td>원래 프레임워크 플러그인을 유지했는지 확인</td>
+                </tr>
+                <tr>
+                  <td><code>WG_TRUSTED_TYPES_SINK</code> 또는 빈 화면</td>
+                  <td>
+                    문자열 HTML 삽입을 확인하고 DOM API 수정 또는 관찰 모드를
+                    명시
+                  </td>
+                </tr>
+                <tr>
+                  <td>외부 API·폰트가 차단됨</td>
+                  <td>
+                    <a href="/docs/API_BUILD.ko.html#securityheadersoptions"
+                      >허용 출처 설정</a
+                    >을 검토하고 재빌드
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>doctor</code>가 파일 변경을 보고함</td>
+                  <td>
+                    같은 빌드의 최종 폴더를 검사하고, 기준 매니페스트를 임의로
+                    다시 만들지 않기
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2 id="다음-단계">다음 단계</h2>
+          <p>
+            <strong>배포할 폴더는 <code>dist</code>입니다.</strong> 호스트에
+            생성 HTTP 정책과 비공개 경로 제한을 적용하고 실제 URL로
+            <code>webguard-check</code>를 실행하세요.
+            <code>webguard-serve</code>는 로컬 확인용이며 운영 HTTPS 서버가
+            아닙니다.
+          </p>
+          <p>
+            <a
+              href="/docs/INSTALL.ko.html#5-운영-호스트에도-http-정책과-비공개-경로-적용"
+              >운영 호스트 정책</a
+            >
+            ·
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/react-vite/README.md"
+              >실행 가능한 React 예제</a
+            >
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

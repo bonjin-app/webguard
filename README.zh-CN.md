@@ -25,6 +25,8 @@
 
 在 [SDK / 包下载](https://webguard.uulab.co.kr/docs/#sdk-downloads)复制 npm 或 pnpm 的固定 URL 安装命令，即可在应用目录安装，无需移动文件或编辑路径。npm 发布仍暂停。请一起管理安装 URL 和所用工具的 lockfile：npm 使用 `npm ci`，pnpm 使用 `pnpm install --frozen-lockfile`。pnpm 11 本身要求 Node 22.13+，SDK 最低要求仍为 22.12。也可以下载经过检查的 `.tgz` 后本地安装。
 
+按环境选择快速入门（韩语）：[Vite / React / Vue](docs/START_VITE.ko.md)、[Next.js](docs/START_NEXT.ko.md)、[Webpack / esbuild](docs/START_STATIC.ko.md)、[HTML / jQuery](docs/START_HTML.ko.md)、[Java / JSP](docs/START_JAVA.ko.md)、[Python](docs/START_PYTHON.ko.md)、[PHP](docs/START_PHP.ko.md)、[CDN SDK](docs/START_CDN.ko.md)。每篇单独列出修改文件、命令顺序和预期结果。
+
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
 ```

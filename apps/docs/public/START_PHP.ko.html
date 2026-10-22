@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>PHP · SSR에 WebGuard 적용하기 — WebGuard</title>
+    <meta
+      name="description"
+      content="PHP: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/START_PHP.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#준비-사항">준비 사항</a
+          ><a href="#1-설치">1. 설치</a
+          ><a href="#2-클라이언트-js와-php-공통-레이아웃-수정"
+            >2. 클라이언트 JS와 PHP 공통 레이아웃 수정</a
+          ><a href="#3-빌드실행">3. 빌드·실행</a
+          ><a href="#4-정상-결과-확인">4. 정상 결과 확인</a
+          ><a href="#문제-해결">문제 해결</a><a href="#다음-단계">다음 단계</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments" open>
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html" aria-current="page">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference">
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>환경별 시작</span
+            ><span aria-hidden="true"> / </span><span>PHP</span>
+          </nav>
+          <div class="guide-tools">
+            <a href="/docs/START_PHP.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/START_PHP.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="php--ssr에-webguard-적용하기">
+            PHP · SSR에 WebGuard 적용하기
+          </h1>
+          <p>
+            <strong>내 서버의 브라우저 JavaScript를 보호하는 순서</strong
+            >입니다. 서버 언어·템플릿 자체는 난독화하지 않습니다. 저장소 예제
+            실행은 맨 아래에 따로 있습니다.
+          </p>
+          <h2 id="준비-사항">준비 사항</h2>
+          <ul>
+            <li>
+              빌드 머신: Node <strong>22.12 이상</strong>, npm. 서버 요청마다
+              Node를 실행하지 않습니다.
+            </li>
+            <li>서버: PHP 8 이상 및 기존 PHP 웹서비스.</li>
+            <li>
+              기존 앱을 백업하고 인라인 JS를 외부 파일로 옮깁니다. 인증·권한
+              검증은 기존 서버에서 유지합니다.
+            </li>
+          </ul>
+          <h2 id="1-설치">1. 설치</h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >다운로드 화면</a
+            >에서 <strong>빌드 도구 패키지 <code>.tgz</code></strong
+            >를 받아 적용할 프로젝트 루트에
+            <code>uulab-webguard-0.3.0.tgz</code>로 저장합니다. 그 폴더에서
+            실행하세요.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npm install --save-dev ./uulab-webguard-0.3.0.tgz
+</code></pre>
+          <p>
+            다운로드 대신 화면의 <strong>고정 URL 설치 명령</strong>을 그대로
+            복사해도 됩니다. npm 게시는 보류 중이므로
+            <code>npm install uulab-webguard</code>로 이 후보가 설치된다고
+            가정하지 마세요.
+          </p>
+          <h2 id="2-클라이언트-js와-php-공통-레이아웃-수정">
+            2. 클라이언트 JS와 PHP 공통 레이아웃 수정
+          </h2>
+          <p>
+            프로젝트 루트에 <code>webguard-src/</code> 폴더를 만들고 보호할 앱
+            JS를 <code>webguard-src/app.js</code>로 옮깁니다. SDK 파일은 아래
+            빌드 파일이 설치된 패키지에서 자동으로 복사합니다.
+          </p>
+          <p><code>webguard-src/init.js</code>를 새로 만듭니다.</p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>window.webguard = WebGuardSDK.WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+});
+</code></pre>
+          <p>
+            PHP 공통 레이아웃에서는 <strong>SDK → init → app</strong> 순서로
+            외부 스크립트를 불러옵니다. 아래 빌드 후 출력되는 태그 3개를 기존 앱
+            스크립트 대신 넣으세요. 다른 앱 파일이 있다면 같은 방식으로
+            추가합니다.
+          </p>
+          <h2 id="3-빌드실행">3. 빌드·실행</h2>
+          <p>
+            프로젝트 루트에 <code>scripts/</code> 폴더를 만들고 다음을
+            <strong><code>scripts/webguard-assets.mjs</code></strong
+            >로 저장합니다. <code>TARGET</code>은 기존 서버의 정적 파일 폴더이며
+            <code>ASSET_BASE</code>는 브라우저에서 사용하는 URL입니다. 실제
+            서비스 경로에 맞춰 두 값을 확인하세요.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>import { copyFile, mkdir, readFile } from &quot;node:fs/promises&quot;;
+import { constants } from &quot;node:fs&quot;;
+import { dirname } from &quot;node:path&quot;;
+import { createRequire } from &quot;node:module&quot;;
+import { createHash } from &quot;node:crypto&quot;;
+import { protectDirectory } from &quot;uulab-webguard/build&quot;;
+
+const require = createRequire(import.meta.url);
+const SOURCE = &quot;webguard-src&quot;;
+const OUTPUT = &quot;webguard-built&quot;;
+const TARGET = &quot;public/assets/webguard&quot;;
+const ASSET_BASE = &quot;/assets/webguard&quot;;
+const files = [&quot;webguard.global.js&quot;, &quot;init.js&quot;, &quot;app.js&quot;];
+
+await copyFile(
+  require.resolve(&quot;uulab-webguard/browser.global.js&quot;),
+  `${SOURCE}/webguard.global.js`,
+);
+await protectDirectory(SOURCE, {
+  output: OUTPUT,
+  privateArtifactsDir: &quot;.webguard-private/maps&quot;,
+  config: { preset: &quot;strict&quot; },
+});
+await mkdir(dirname(TARGET), { recursive: true });
+await mkdir(TARGET);
+for (const name of files) {
+  const bytes = await readFile(`${OUTPUT}/${name}`);
+  await copyFile(
+    `${OUTPUT}/${name}`,
+    `${TARGET}/${name}`,
+    constants.COPYFILE_EXCL,
+  );
+  const sri = &quot;sha384-&quot; + createHash(&quot;sha384&quot;).update(bytes).digest(&quot;base64&quot;);
+  console.log(
+    `&lt;script defer src=&quot;${ASSET_BASE}/${name}&quot; integrity=&quot;${sri}&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;`,
+  );
+}
+</code></pre>
+          <p>프로젝트 루트에서 실행할 명령은 하나입니다.</p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>node scripts/webguard-assets.mjs
+</code></pre>
+          <p>
+            출력되는 태그 3개를 위 공통 레이아웃에 붙입니다. JavaScript 파일만
+            공개 폴더로 복사하며 보고서·소스맵·원본은 공개하지 않습니다.
+            <code>webguard-src/webguard.global.js</code>는 매번 SDK에서
+            생성하므로 직접 편집하지 마세요.
+          </p>
+          <p>
+            <code>OUTPUT</code>·비공개 맵 폴더·<code>TARGET</code>은
+            <strong>새 경로</strong>여야 합니다. 재빌드할 때 세 경로와
+            <code>ASSET_BASE</code>를 새 릴리스 경로로 함께 변경하세요. 기존
+            결과를 지우거나 덮어쓰지 않고 생성 후 검토합니다. 다른 앱 파일은
+            <code>files</code>와 공통 레이아웃에도 명시적으로 추가하세요.
+          </p>
+          <p>
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/server-templates/webguard.php"
+              >PHP 헤더 레시피</a
+            >를 참고해 <strong>어떤 출력보다 먼저</strong> 헤더를 적용하세요. 이
+            레시피는 공개 루트 밖의 JSON 정책 파일을
+            <code>WEBGUARD_HEADERS_FILE</code>로 지정해야 합니다. JSON 생성은
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/server-templates/README.md"
+              >서버 통합 레시피</a
+            >의 <code>createSecurityHeaders()</code> 예제를 사용합니다. PHP가
+            아닌 Apache·Nginx가 직접 제공하는 JS·CSS에도 헤더를 적용해야 합니다.
+          </p>
+          <p>
+            기존 CSP에 동작 중인 외부 출처·nonce가 있다면 병합해 시험하세요.
+            <code>script-src &#39;self&#39;</code>,
+            <code>object-src &#39;none&#39;</code>,
+            <code>base-uri &#39;none&#39;</code>, HTTP의
+            <code>frame-ancestors</code>와 <code>nosniff</code>가 기본 점검
+            대상입니다. 파일 교체 시 SRI도 갱신하고 릴리스별 URL 또는 재검증
+            캐시를 사용합니다.
+          </p>
+          <p>
+            이제 <strong>기존 서비스의 빌드·시작·배포 명령</strong>을
+            실행합니다. 난독화는 배포 전에 한 번 수행하며 매 HTTP 요청에서
+            수행하지 않습니다.
+          </p>
+          <h2 id="4-정상-결과-확인">4. 정상 결과 확인</h2>
+          <ol>
+            <li>페이지의 기존 버튼·로그인·API가 이전처럼 동작해야 합니다.</li>
+            <li>
+              Network에서 JS 3개가 <code>200</code>, Sources에서는 변환된 JS가
+              보여야 합니다. 원본 소스맵이 공개되지 않아야 합니다.
+            </li>
+            <li>
+              콘솔에서 <code>window.webguard</code>가 생성되어 있고 SRI·CSP 로딩
+              오류가 없어야 합니다.
+            </li>
+            <li>
+              페이지가 전달받은 검사 단축키·우클릭을 제한하는지 확인합니다.
+              브라우저 메뉴나 이미 열린 개발자도구를 강제로 닫는 기능은
+              아닙니다.
+            </li>
+            <li>
+              HTML·자산·API·오류 응답의 HTTP 헤더와 비공개 파일의
+              <code>404</code>를 확인합니다.
+            </li>
+          </ol>
+          <h2 id="문제-해결">문제 해결</h2>
+          <ul>
+            <li>
+              <strong>앱이 실행되지 않음:</strong> 스크립트 순서·실제 URL·SRI를
+              먼저 확인하세요. CDN/프록시의 추가 JS 변환을 끕니다.
+            </li>
+            <li>
+              <strong>CSP 오류:</strong> 인라인 초기화·이벤트 속성을 외부 JS로
+              옮기고 기존 정책과 충돌하는 출처를 확인하세요.
+            </li>
+            <li>
+              <strong>템플릿 경로 오류:</strong> 위 경로는 이 가이드의
+              예시입니다. 서비스의 컨텍스트 경로·정적 파일 매핑과 맞춰야 합니다.
+            </li>
+          </ul>
+          <h2 id="다음-단계">다음 단계</h2>
+          <p>
+            <a href="/docs/API_BROWSER.ko.html">브라우저 함수 명세</a> ·
+            <a href="/docs/API_BUILD.ko.html">빌드 함수 명세</a> ·
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/server-templates/README.md"
+              >서버 통합</a
+            >
+          </p>
+          <h3 id="선택-저장소의-실행-예제부터-보기">
+            선택: 저장소의 실행 예제부터 보기
+          </h3>
+          <p>
+            아래는
+            <strong>패키지 설치 앱이 아닌 WebGuard 저장소 루트</strong>에서만
+            실행합니다. 저장소를 받은 뒤 Node <strong>22.13 이상</strong>·pnpm
+            <strong>11</strong>로 <code>pnpm install --frozen-lockfile</code>을
+            먼저 실행하세요. 준비 스크립트와 서버 예제 원본은
+            <code>.tgz</code>에 포함되지 않습니다.
+          </p>
+          <pre tabindex="0" aria-label="코드 예제"><code>pnpm build
+node scripts/prepare-ssr-templates.mjs
+php -S 127.0.0.1:4191 -t .demo-dist/ssr-templates/public examples/ssr-templates/php/router.php
+</code></pre>
+          <p>
+            <code>http://127.0.0.1:4191/?name=홍길동</code>을 엽니다. 인사·요청
+            ID, 카운터와 서버 API 결과를 확인합니다. PHP 내장 서버는 개발용이며
+            운영에서는 기존 PHP-FPM·Apache 구성을 사용합니다.
+          </p>
+          <p>
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/ssr-templates/README.md"
+              >실행 예제 상세</a
+            >에서 하위 경로와 검증 범위를 확인하세요.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

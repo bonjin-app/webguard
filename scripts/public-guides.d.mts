@@ -4,7 +4,11 @@ export interface RenderedGuide {
   headings: Array<{ level: number; text: string; id: string }>;
   links: string[];
 }
-export const publicGuides: Array<{ source: string; label: string }>;
+export const publicGuides: Array<{
+  source: string;
+  label: string;
+  category?: "environment";
+}>;
 export function resolveGuideLink(
   href: string,
   sourceFile: string,

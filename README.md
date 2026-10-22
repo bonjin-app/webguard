@@ -25,6 +25,8 @@ Build tools require **Node.js 22.12+**. The product is **WebGuard**; `uulab-webg
 
 Copy the pinned npm or pnpm install command from [SDK/package downloads](https://webguard.uulab.co.kr/docs/#sdk-downloads) to install directly in your app without moving files or editing paths. npm publication remains paused. Keep the package URL and the selected manager’s lockfile together: use `npm ci` with package-lock.json or `pnpm install --frozen-lockfile` with pnpm-lock.yaml. pnpm 11 itself requires Node >=22.13; the SDK minimum remains 22.12. Downloading a reviewed `.tgz` and installing it locally remains an alternative.
 
+Start with your environment: [Vite / React / Vue](docs/START_VITE.ko.md), [Next.js](docs/START_NEXT.ko.md), [Webpack / esbuild](docs/START_STATIC.ko.md), [HTML / jQuery](docs/START_HTML.ko.md), [Java / JSP](docs/START_JAVA.ko.md), [Python](docs/START_PYTHON.ko.md), [PHP](docs/START_PHP.ko.md), or [CDN SDK](docs/START_CDN.ko.md). These Korean quickstarts list the files to edit, commands and expected results separately.
+
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
 ```

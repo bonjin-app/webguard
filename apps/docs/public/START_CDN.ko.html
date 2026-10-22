@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>CDN · 파일 다운로드로 WebGuard 시작하기 — WebGuard</title>
+    <meta
+      name="description"
+      content="CDN · 직접 SDK: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/START_CDN.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#준비-사항">준비 사항</a
+          ><a href="#1-설치-방식-선택">1. 설치 방식 선택</a
+          ><a href="#2-초기화-파일과-html-수정">2. 초기화 파일과 HTML 수정</a
+          ><a href="#3-배포실행">3. 배포·실행</a
+          ><a href="#4-정상-결과-확인">4. 정상 결과 확인</a
+          ><a href="#문제-해결">문제 해결</a><a href="#다음-단계">다음 단계</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments" open>
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html" aria-current="page"
+            >CDN · 직접 SDK</a
+          >
+        </details>
+        <details class="guide-nav-group guide-nav-reference">
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>환경별 시작</span
+            ><span aria-hidden="true"> / </span><span>CDN · 직접 SDK</span>
+          </nav>
+          <div class="guide-tools">
+            <a href="/docs/START_CDN.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/START_CDN.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="cdn--파일-다운로드로-webguard-시작하기">
+            CDN · 파일 다운로드로 WebGuard 시작하기
+          </h1>
+          <p>
+            <strong>빌드 도구 없이 브라우저 런타임 가드만 연결</strong>하는
+            방법입니다. 앱 JavaScript의 자동 난독화는
+            <a href="/docs/START_HTML.ko.html">HTML·jQuery 적용</a> 또는
+            <a href="/docs/START_STATIC.ko.html">정적 빌드 적용</a>을
+            선택하세요.
+          </p>
+          <h2 id="준비-사항">준비 사항</h2>
+          <ul>
+            <li>
+              HTML 공통 레이아웃과 정적 JS 파일을 수정할 권한이 필요합니다.
+            </li>
+            <li>이 방법은 Node·npm 설치가 필요하지 않습니다.</li>
+            <li>
+              이미 Vite·Next·정적 빌드 통합이 SDK를 자동 시작한다면 수동 SDK를
+              중복 설치하지 마세요.
+            </li>
+          </ul>
+          <h2 id="1-설치-방식-선택">1. 설치 방식 선택</h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >다운로드 화면</a
+            >을 엽니다. 아래 <strong>하나만</strong> 선택합니다.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">방식</th>
+                  <th scope="col">가져올 항목</th>
+                  <th scope="col">파일을 놓는 위치</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CDN</td>
+                  <td>고정 SDK URL·SRI가 포함된 스크립트 태그, 초기화 예제</td>
+                  <td>초기화 파일만 내 서버에 저장</td>
+                </tr>
+                <tr>
+                  <td>직접 다운로드</td>
+                  <td>독립 SDK JavaScript, 초기화 예제</td>
+                  <td>두 파일 모두 내 서버에 저장</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            두 방식 모두 독립 브라우저 SDK입니다. <code>.tgz</code>는 Node 빌드
+            도구 패키지이므로 이 경로에서는 필요하지 않습니다. 다운로드 후보
+            제공과 npm 게시 여부는 별개이며 npm 게시는 보류 중입니다.
+          </p>
+          <h2 id="2-초기화-파일과-html-수정">2. 초기화 파일과 HTML 수정</h2>
+          <p>
+            내 사이트의 정적 경로 <code>/assets/webguard-init.js</code>에 외부
+            초기화 예제를 저장합니다. 공통 레이아웃 안에 인라인으로 붙이지
+            않습니다.
+          </p>
+          <p>직접 간단히 시작하려면 같은 파일을 다음 내용으로 만드세요.</p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>window.webguard = WebGuardSDK.WebGuard.init({
+  devtools: { blockShortcuts: true, blockContextMenu: true },
+});
+</code></pre>
+          <p>
+            다운로드 초기화 예제와 위 코드를 동시에 넣지 마세요. SDK가 한 번만
+            시작되어야 합니다. 화면을 완전히 종료할 때는 인스턴스의
+            <code>destroy()</code>로 정리할 수 있습니다.
+          </p>
+          <h3 id="cdn-선택-시">CDN 선택 시</h3>
+          <ol>
+            <li>
+              다운로드 화면의 <strong>CDN 연결 태그</strong>를 그대로
+              복사합니다. 고정 URL·정확한
+              <code>integrity</code
+              >·<code>crossorigin=&quot;anonymous&quot;</code>가 함께 있어야
+              합니다.
+            </li>
+            <li>
+              내 HTML 공통 레이아웃의 앱 스크립트 <strong>앞</strong>에
+              붙입니다. 복사한 외부 초기화 태그의 경로를
+              <code>/assets/webguard-init.js</code>와 맞춥니다.
+            </li>
+            <li>
+              앱 스크립트도 <code>defer</code>로 연결합니다. 최종 순서는
+              <strong>SDK → 외부 초기화 → 앱</strong>입니다.
+              <code>async</code>를 섞으면 이 순서를 보장하지 않습니다.
+            </li>
+          </ol>
+          <p>
+            예시의 가짜 SRI나 <code>latest</code> URL을 직접 만들지 마세요.
+            다운로드 화면은 현재 검토 후보에 대응하는 고정 태그를 제공합니다.
+          </p>
+          <h3 id="직접-다운로드-선택-시">직접 다운로드 선택 시</h3>
+          <ol>
+            <li>
+              SDK를 내 서버의 <code>/assets/webguard.global.js</code>에
+              저장합니다.
+            </li>
+            <li>
+              같은 다운로드 화면의 SDK SRI를 유지하고 <code>src</code>만 내 서버
+              경로로 바꿉니다. 다운로드한 바이트를 다시 편집하거나 압축 변환하지
+              않습니다.
+            </li>
+            <li>
+              그 뒤에 <code>/assets/webguard-init.js</code>, 마지막으로 앱 JS를
+              <code>defer</code>로 연결합니다.
+            </li>
+          </ol>
+          <p>
+            CDN이 불필요한 서비스는 이 방식으로 SDK를 직접 제공합니다. 서버
+            경로가 <code>/app/</code> 아래라면 태그와 실제 정적 경로를 모두 그
+            경로에 맞춥니다.
+          </p>
+          <h2 id="3-배포실행">3. 배포·실행</h2>
+          <p>
+            정적 파일과 수정한 HTML을 기존 배포 방식으로 함께 배포합니다. 초기화
+            파일만 먼저 배포하거나 SDK 버전만 바꾸지 마세요.
+          </p>
+          <p>
+            서버 CSP가 있다면 CDN 사용 시 <code>script-src</code>에
+            <code>https://webguard.uulab.co.kr</code>와 내 외부 초기화 파일을
+            허용해야 합니다. 직접 호스팅은 실제 파일 출처를 허용합니다.
+            <strong
+              >기존 CSP를 지우거나 <code>unsafe-inline</code>을 추가하는 것으로
+              해결하지 마세요.</strong
+            >
+          </p>
+          <p>
+            HTTP 보안 헤더는 서버에서 따로 적용합니다.
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/server-templates/README.md"
+              >서버 헤더 레시피</a
+            >를 참고하세요. SDK 파일 하나로 서버 CSP·인증·권한 검증이 자동
+            구성되지는 않습니다.
+          </p>
+          <h2 id="4-정상-결과-확인">4. 정상 결과 확인</h2>
+          <ol>
+            <li>
+              Network에서 SDK·초기화·앱 JS가 순서대로 로드되고
+              <code>200</code>인지 확인합니다.
+            </li>
+            <li>
+              콘솔에 <code>WebGuardSDK is not defined</code>, SRI·CSP 오류가
+              없어야 합니다. 위 최소 초기화 코드 사용 시
+              <code>window.webguard</code>가 생성됩니다.
+            </li>
+            <li>
+              페이지 안에서 우클릭과 페이지로 전달되는 검사 단축키를 시험합니다.
+            </li>
+            <li>앱의 기존 버튼·로그인·API가 정상 동작하는지 확인합니다.</li>
+          </ol>
+          <p>
+            브라우저 메뉴나 이미 열린 개발자도구는 강제로 닫을 수 없습니다.
+            <strong
+              >CDN SDK를 연결한 것만으로 Sources의 앱 코드가 난독화되지는
+              않습니다.</strong
+            >
+            앱 코드 변환은 별도 빌드 통합이 필요합니다.
+          </p>
+          <h2 id="문제-해결">문제 해결</h2>
+          <ul>
+            <li>
+              <strong>SDK가 없다는 오류:</strong> 태그 순서·URL·CSP·SRI 오류를
+              먼저 확인하세요. 모든 파일에 <code>async</code>를 쓰면 실행 순서가
+              달라질 수 있습니다.
+            </li>
+            <li>
+              <strong>SRI 불일치:</strong> 파일을 변환한 프록시를 확인하고 고정
+              SDK URL과 같은 릴리스의 SRI를 다시 복사하세요.
+            </li>
+            <li>
+              <strong>가드가 두 번 반응:</strong> 기존 자동 시작 통합 또는 수동
+              <code>init()</code>의 중복 여부를 확인하세요.
+            </li>
+            <li>
+              <strong>태그를 붙였는데 가드가 꺼져 있음:</strong> SDK 로드만으로
+              시작되지 않습니다. 초기화 파일 요청과 실행 여부를 확인하세요.
+            </li>
+          </ul>
+          <h2 id="다음-단계">다음 단계</h2>
+          <ul>
+            <li>
+              앱 코드도 자동 난독화:
+              <a href="/docs/START_VITE.ko.html">Vite·React</a> ·
+              <a href="/docs/START_NEXT.ko.html">Next.js</a> ·
+              <a href="/docs/START_HTML.ko.html">HTML·jQuery</a> ·
+              <a href="/docs/START_STATIC.ko.html">정적 빌드</a>
+            </li>
+            <li>
+              서버 템플릿: <a href="/docs/START_JAVA.ko.html">Java·JSP</a> ·
+              <a href="/docs/START_PYTHON.ko.html">Python</a> ·
+              <a href="/docs/START_PHP.ko.html">PHP</a>
+            </li>
+            <li>
+              기능 설정과 함수:
+              <a href="/docs/API_BROWSER.ko.html">브라우저 SDK 명세</a>
+            </li>
+          </ul>
+          <p>
+            업데이트는
+            <strong
+              >새 고정 URL과 SRI를 함께 선택 → 시험 앱에서 확인 → 앱
+              배포</strong
+            >
+            순서로 진행합니다. 이전 고정 URL·SRI·초기화 파일을 함께 보관하면
+            검증한 이전 상태로 복구하기 쉽습니다.
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

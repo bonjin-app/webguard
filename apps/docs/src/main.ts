@@ -1,6 +1,7 @@
 import { downloadsMarkup, initDownloads } from "../../downloads";
 import "../../downloads.css";
 import "./style.css";
+import { installationMarkup } from "./installation";
 import { getAutoGuard, installAutoGuard } from "@webguard/browser";
 import { siteGuardOptions } from "../../site-guard-options";
 
@@ -10,7 +11,7 @@ const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
 <header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
-<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#install">설치와 빌드</a><a href="#sdk-downloads">다운로드·CDN</a><a href="#environments">환경별 적용</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#runtime-hardening">클래스·DOM·실행 지연</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a><span>전체 문서</span><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a><span>API 명세</span><a href="/docs/API.ko.html">API 명세 전체 목차</a><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a></nav><main id="main-content" tabindex="-1">
+<div class="layout"><nav class="docs-outline" aria-label="문서 목차"><span>시작하기</span><a href="#overview">가이드 소개</a><a href="#install">환경 선택 · 설치 시작</a><a href="#sdk-downloads">설치 명령 · 다운로드</a><a href="#other-environments">연동 방식 상세</a><a href="#security-strengths">SDK가 더하는 보호</a><a href="#integration-scope">자동 적용과 선택 설정</a><a href="#presets">난독화 프리셋</a><span>기능 안내</span><a href="#cli">범용 CLI</a><a href="#automatic">SDK 자동 연결</a><a href="#policy">보안 헤더</a><a href="#browser">브라우저 SDK</a><a href="#integrity-budgets">파일 검사 한도</a><a href="#runtime-hardening">클래스·DOM·실행 지연</a><a href="#page-block">페이지 보호 모드</a><a href="#playground">데모 사용법</a><a href="#limits">보호 범위</a><a href="#source">소스와 검증</a><span>전체 문서</span><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a><span>API 명세</span><a href="/docs/API.ko.html">API 명세 전체 목차</a><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a></nav><main id="main-content" tabindex="-1">
 <aside class="site-protection" aria-label="이 문서의 실제 보호 설정">
   <details id="site-protection-controls">
     <summary><span>이 문서에도 WebGuard 적용 중</span><span class="site-protection-action">실제 설정 바꾸기</span></summary>
@@ -28,7 +29,16 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </details>
 </aside>
 <section id="overview" class="docs-intro"><div class="eyebrow">WEBGUARD GUIDE</div><h1>내 웹 앱에,<br><span>WebGuard를 연결하세요.</span></h1><p class="lead">빌드할 때 코드를 난독화하고, 배포할 때 정책을 연결하고,<br>실행 중에는 브라우저 가드를 제어하는 SDK입니다.</p><div class="docs-actions"><a class="primary" href="#install">설치부터 시작하기</a><a class="secondary" href="#environments">다른 환경에 적용하기</a></div><p class="docs-meta">Node.js 22.12+ · Vite와 범용 빌드 지원 · 별도 서비스 계정 없이 사용</p><aside>난독화는 코드 분석을 어렵게 합니다. 브라우저에 전달된 파일은 관찰할 수 있으므로 비밀값과 권한 검증은 서버에서 관리하세요.</aside></section>
+${installationMarkup}
 ${downloadsMarkup}
+<details class="installation-reference"><summary>Vite 설정과 배포 검사 상세 참고</summary><section id="vite-reference"><h2>설치하고, 내 앱에 적용하세요</h2><aside>0.3.0은 아직 npm에 게시하지 않았습니다. 현재 공개 버전은 0.2.0입니다. 아래 새 동작은 로컬 후보 기준이며 공개 0.2.0에 동일하게 제공된다고 판단하지 마세요.</aside><p>Node.js 22.12 이상에서 사용합니다. 패키지 하나에 범용 CLI·빌드 API·독립 SDK·Vite 연동·보호 서버가 포함됩니다. Vite가 없어도 범용 빌드 경로를 사용할 수 있습니다. 아래는 Vite 7/8의 ESM 웹 앱 설정입니다.</p><p>위 다운로드·CDN 영역에서 npm 또는 pnpm을 선택하면 현재 후보의 고정 URL 설치 명령이 아래에도 반영됩니다. 프로젝트 폴더에서 그대로 실행하세요. 파일 다운로드 방식도 선택할 수 있습니다.</p><pre><code id="docs-install" data-package-install-code>다운로드 목록을 불러오는 중…</code></pre><details class="future-install"><summary>npm 게시 후 사용할 설치 명령</summary><pre><code># 0.3.0 배포 후에만 실행 — 현재는 미게시
+npm install -D uulab-webguard@0.3.0</code></pre></details><pre><code>import { defineConfig } from 'vite';
+import { webguardApp } from 'uulab-webguard';
+export default defineConfig({ plugins: [webguardApp()] });</code></pre><p>Strict/High·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 초기 HTML CSP 메타가 기본 적용됩니다. 호스트 헤더가 없어도 메타를 지원하는 정책은 동작합니다. 네트워크는 기본 connect-src 'self'이고 Trusted Types는 지원 브라우저에서 강제합니다. 미지원 환경을 보호된 것으로 판단하지 마세요. 개발/HMR은 그대로 유지합니다.</p><pre><code>npm run build
+npx --no-install webguard doctor dist
+npx --no-install webguard-serve dist --port 4173</code></pre><p>루프백 보호 서버는 실제 응답 헤더와 비공개 파일 제한을 적용합니다. Vite preview도 같은 플러그인이 별도 설정 없이 처리합니다. 정적 호스트·CDN은 생성 _headers 지원 여부와 비공개 경로 거부 규칙을 모두 설정해야 합니다. frame-ancestors·Trusted Types report-only·MIME 보호는 실제 HTTP 헤더가 필요합니다.</p><h3>초기 렌더링 호환성을 먼저 확인하세요</h3><p>공식 vanilla 템플릿은 innerHTML을 사용하므로 기본 Trusted Types 강제 정책에서 화면이 뜨지 않을 수 있습니다. 앱 소스의 문자열 HTML 삽입 지점을 발견하면 빌드가 WG_TRUSTED_TYPES_SINK 경고와 상대 파일 위치를 표시합니다. 경고는 구문 검사이며 실행 경로·별칭·동적 키·의존성을 전부 검사하지 못합니다. 안전한 DOM API로 바꾸거나 headers.trustedTypes: 'report-only'를 명시적으로 선택한 후 브라우저에서 확인하세요. 관찰 모드는 해당 sink를 차단하지 않고 실제 HTTP 헤더가 필요합니다. 정책을 자동으로 약하게 바꾸지는 않습니다.</p><p><a href="/demo#setup">프로젝트별 Vite 설정 생성기 열기</a> — React·DOM API 앱·vanilla 원본 템플릿과 단축키·우클릭 옵션에 맞는 설정을 복사합니다. 생성기 선택은 현재 페이지의 보호 정책을 바꾸지 않습니다.</p><h3>실제 배포 결과 검사</h3><pre><code>npx --no-install webguard-check dist --url http://127.0.0.1:4173/
+npx --no-install webguard-check dist --url https://YOUR-SITE.example/</code></pre><p>실제 배포에 사용한 로컬 dist로 바이트·SHA-384·응답 헤더·소스맵과 서버 제어 파일 노출을 검사합니다. 메타 정책이 있어도 필수 HTTP 정책 누락을 대신하지 못합니다. 실패하면 JSON 오류와 종료 코드 1을 반환합니다. 원격 매니페스트를 신뢰 기준으로 바꾸지 않습니다.</p><p><a href="/docs/INSTALL.ko.html">한국어 전체 가이드 열기</a> — 외부 API 허용, Trusted Types 호환성, 보호 서버와 정적 호스트 설정을 포함합니다. 설치 패키지에도 INSTALL.ko.md가 포함됩니다.</p><p>RC4 문자열은 런타임에 복원됩니다. 전달된 HTML·CSS·JavaScript와 네트워크 요청은 관찰할 수 있으며, 개발자도구 창을 잠그지 않습니다. 비밀값·가격 재계산·권한 검증은 서버 책임입니다.</p></section></details>
+
 <section id="security-strengths" aria-labelledby="strengths-heading"><div class="eyebrow">WHAT WEBGUARD ADDS</div><h2 id="strengths-heading">코드·실행·배포를 함께 다룹니다</h2><p>WebGuard의 강점은 난독화 결과만 만드는 데서 끝나지 않고, SDK 초기화와 배포 검사를 같은 빌드 흐름에 연결하는 것입니다. 아래 내용은 공개 데모에 적용된 미게시 0.3.0 후보 기준입니다. npm 게시는 보류 중입니다.</p>
 <div class="protection-path">
 <article><span class="protection-phase">BUILD</span><div><h3>읽기 쉬운 코드가 그대로 배포되지 않도록</h3><p>Strict / High는 RC4 문자열 인코딩·문자열 분할·제어 흐름 변환을 적용하고 공개 소스맵을 제거합니다. 앱 코드를 분석하는 비용을 높이며, 문자열은 실행 중 복원됩니다.</p><a href="/demo#try-examples">원본과 난독화 결과 비교 →</a></div></article>
@@ -43,14 +53,7 @@ ${downloadsMarkup}
 <tr><th scope="row">파일 검사 · 직접 호출</th><td>신뢰하는 기준 해시와 공개 파일 비교. 쿠키·리퍼러 없이 요청하고 리디렉션 거부</td><td><a href="#integrity-budgets">검사 활성화 후 checkIntegrity 호출</a>. 기본 10초·압축 해제 후 16MiB·동시 4개. 자동 전체 파일 감시 아님</td></tr>
 <tr><th scope="row">호스트·서버 · 별도</th><td>보호 서버·Vite preview는 헤더와 비공개 경로 제한 적용</td><td>정적 호스트·CDN은 <a href="#policy">실제 헤더와 경로 거부 규칙</a> 적용. 인증·가격·권한은 앱 서버에서 검증</td></tr>
 </tbody></table></div><p>브라우저가 실행하려고 받은 JavaScript·HTML·CSS와 요청은 관찰할 수 있습니다. 비밀값을 숨기거나 사용자 브라우저를 신뢰하는 방식의 인증을 제공하지 않습니다. <a href="#limits">전체 보호 범위 확인 →</a></p></section>
-<section id="install"><h2>설치하고, 내 앱에 적용하세요</h2><aside>0.3.0은 아직 npm에 게시하지 않았습니다. 현재 공개 버전은 0.2.0입니다. 아래 새 동작은 로컬 후보 기준이며 공개 0.2.0에 동일하게 제공된다고 판단하지 마세요.</aside><p>Node.js 22.12 이상에서 사용합니다. 패키지 하나에 범용 CLI·빌드 API·독립 SDK·Vite 연동·보호 서버가 포함됩니다. Vite가 없어도 범용 빌드 경로를 사용할 수 있습니다. 아래는 Vite 7/8의 ESM 웹 앱 설정입니다.</p><p>위 다운로드·CDN 영역에서 npm 또는 pnpm을 선택하면 현재 후보의 고정 URL 설치 명령이 아래에도 반영됩니다. 프로젝트 폴더에서 그대로 실행하세요. 파일 다운로드 방식도 선택할 수 있습니다.</p><pre><code id="docs-install" data-package-install-code>다운로드 목록을 불러오는 중…</code></pre><details class="future-install"><summary>npm 게시 후 사용할 설치 명령</summary><pre><code># 0.3.0 배포 후에만 실행 — 현재는 미게시
-npm install -D uulab-webguard@0.3.0</code></pre></details><pre><code>import { defineConfig } from 'vite';
-import { webguardApp } from 'uulab-webguard';
-export default defineConfig({ plugins: [webguardApp()] });</code></pre><p>Strict/High·RC4 문자열 인코딩, 자동 SDK 시작, SRI·공개 소스맵 제거와 초기 HTML CSP 메타가 기본 적용됩니다. 호스트 헤더가 없어도 메타를 지원하는 정책은 동작합니다. 네트워크는 기본 connect-src 'self'이고 Trusted Types는 지원 브라우저에서 강제합니다. 미지원 환경을 보호된 것으로 판단하지 마세요. 개발/HMR은 그대로 유지합니다.</p><pre><code>npm run build
-npx --no-install webguard doctor dist
-npx --no-install webguard-serve dist --port 4173</code></pre><p>루프백 보호 서버는 실제 응답 헤더와 비공개 파일 제한을 적용합니다. Vite preview도 같은 플러그인이 별도 설정 없이 처리합니다. 정적 호스트·CDN은 생성 _headers 지원 여부와 비공개 경로 거부 규칙을 모두 설정해야 합니다. frame-ancestors·Trusted Types report-only·MIME 보호는 실제 HTTP 헤더가 필요합니다.</p><h3>초기 렌더링 호환성을 먼저 확인하세요</h3><p>공식 vanilla 템플릿은 innerHTML을 사용하므로 기본 Trusted Types 강제 정책에서 화면이 뜨지 않을 수 있습니다. 앱 소스의 문자열 HTML 삽입 지점을 발견하면 빌드가 WG_TRUSTED_TYPES_SINK 경고와 상대 파일 위치를 표시합니다. 경고는 구문 검사이며 실행 경로·별칭·동적 키·의존성을 전부 검사하지 못합니다. 안전한 DOM API로 바꾸거나 headers.trustedTypes: 'report-only'를 명시적으로 선택한 후 브라우저에서 확인하세요. 관찰 모드는 해당 sink를 차단하지 않고 실제 HTTP 헤더가 필요합니다. 정책을 자동으로 약하게 바꾸지는 않습니다.</p><p><a href="/demo#setup">프로젝트별 Vite 설정 생성기 열기</a> — React·DOM API 앱·vanilla 원본 템플릿과 단축키·우클릭 옵션에 맞는 설정을 복사합니다. 생성기 선택은 현재 페이지의 보호 정책을 바꾸지 않습니다.</p><h3>실제 배포 결과 검사</h3><pre><code>npx --no-install webguard-check dist --url http://127.0.0.1:4173/
-npx --no-install webguard-check dist --url https://YOUR-SITE.example/</code></pre><p>실제 배포에 사용한 로컬 dist로 바이트·SHA-384·응답 헤더·소스맵과 서버 제어 파일 노출을 검사합니다. 메타 정책이 있어도 필수 HTTP 정책 누락을 대신하지 못합니다. 실패하면 JSON 오류와 종료 코드 1을 반환합니다. 원격 매니페스트를 신뢰 기준으로 바꾸지 않습니다.</p><p><a href="/docs/INSTALL.ko.html">한국어 전체 가이드 열기</a> — 외부 API 허용, Trusted Types 호환성, 보호 서버와 정적 호스트 설정을 포함합니다. 설치 패키지에도 INSTALL.ko.md가 포함됩니다.</p><p>RC4 문자열은 런타임에 복원됩니다. 전달된 HTML·CSS·JavaScript와 네트워크 요청은 관찰할 수 있으며, 개발자도구 창을 잠그지 않습니다. 비밀값·가격 재계산·권한 검증은 서버 책임입니다.</p></section>
-<section id="environments"><h2>Vite 외 환경에도 연결하세요</h2><p>Webpack·esbuild·일반 HTML/jQuery는 기존 빌드 후 같은 보호 명령을 사용합니다. Vite는 선택적 의존성이며 범용 빌드 API를 가져올 때 필요하지 않습니다. SDK 초기화·난독화·SRI·헤더 파일을 함께 생성합니다.</p><pre><code>npm run build:raw
+<section id="other-environments"><h2>Vite 외 환경에도 연결하세요</h2><p>Webpack·esbuild·일반 HTML/jQuery는 기존 빌드 후 같은 보호 명령을 사용합니다. Vite는 선택적 의존성이며 범용 빌드 API를 가져올 때 필요하지 않습니다. SDK 초기화·난독화·SRI·헤더 파일을 함께 생성합니다.</p><pre><code>npm run build:raw
 npx --no-install webguard protect-app dist --output dist-protected --trusted-types report-only
 npx --no-install webguard-serve dist-protected --port 4173</code></pre><pre><code>import { protectAppDirectory } from 'uulab-webguard/build';
 await protectAppDirectory('dist', {
@@ -140,6 +143,26 @@ const outlineLinks =
   document.querySelectorAll<HTMLAnchorElement>(".docs-outline a");
 function syncCurrentSection() {
   const current = window.location.hash || "#overview";
+  let target: HTMLElement | null = null;
+  try {
+    target = document.getElementById(decodeURIComponent(current.slice(1)));
+  } catch {
+    /* An invalid URL fragment cannot match a section. */
+  }
+  let opened = false;
+  if (target) {
+    for (
+      let ancestor = target.parentElement;
+      ancestor;
+      ancestor = ancestor.parentElement
+    ) {
+      if (ancestor instanceof HTMLDetailsElement && !ancestor.open) {
+        ancestor.open = true;
+        opened = true;
+      }
+    }
+  }
+  if (opened) requestAnimationFrame(() => target?.scrollIntoView());
   for (const link of outlineLinks) {
     if (link.getAttribute("href") === current)
       link.setAttribute("aria-current", "location");
@@ -148,6 +171,17 @@ function syncCurrentSection() {
 }
 window.addEventListener("hashchange", syncCurrentSection);
 syncCurrentSection();
+window.addEventListener("load", () => {
+  if (!window.location.hash) return;
+  syncCurrentSection();
+  try {
+    document
+      .getElementById(decodeURIComponent(window.location.hash.slice(1)))
+      ?.scrollIntoView();
+  } catch {
+    /* Ignore malformed fragments. */
+  }
+});
 
 const siteSwitch = (id: string) =>
   document.querySelector<HTMLInputElement>(`#${id}`)!;

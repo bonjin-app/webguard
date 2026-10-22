@@ -35,43 +35,64 @@
     </header>
     <div class="layout">
       <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
-        <span>전체 가이드</span
-        ><a href="/docs/INSTALL.ko.html" aria-current="page"
-          >설치·적용 전체 가이드</a
-        ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
-        ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
-        ><a href="/docs/API.ko.html">API 명세 전체 목차</a
-        ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
-        ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
-        ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a
-        ><span>이 문서의 목차</span
-        ><a href="#가장-짧은-적용-순서">가장 짧은 적용 순서</a
-        ><a href="#직접-다운로드와-cdn-선택">직접 다운로드와 CDN 선택</a
-        ><a href="#1-설치">1. 설치</a
-        ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
-        ><a href="#설정-입력-검증">설정 입력 검증</a
-        ><a href="#2-vite-플러그인-하나로-적용">2. Vite 플러그인 하나로 적용</a
-        ><a href="#3-선택적으로-개발자-단축키우클릭-제한-켜기"
-          >3. 선택적으로 개발자 단축키·우클릭 제한 켜기</a
-        ><a href="#4-외부-api와-trusted-types-호환성-조정"
-          >4. 외부 API와 Trusted Types 호환성 조정</a
-        ><a href="#5-운영-호스트에도-http-정책과-비공개-경로-적용"
-          >5. 운영 호스트에도 HTTP 정책과 비공개 경로 적용</a
-        ><a href="#6-배포-결과-자동-검사">6. 배포 결과 자동 검사</a
-        ><a href="#7-수동-sdk와-문제-해결">7. 수동 SDK와 문제 해결</a
-        ><a href="#8-reactnextjs와-jspjavapythonphp"
-          >8. React·Next.js와 JSP·Java·Python·PHP</a
-        ><a href="#9-선택-기능-css-식별자와-런타임-신호"
-          >9. 선택 기능: CSS 식별자와 런타임 신호</a
-        ><a href="#미리-압축된-배포-파일">미리 압축된 배포 파일</a>
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span
+          ><a href="#내-환경에-맞는-빠른-시작">내 환경에 맞는 빠른 시작</a
+          ><a href="#가장-짧은-적용-순서">가장 짧은 적용 순서</a
+          ><a href="#직접-다운로드와-cdn-선택">직접 다운로드와 CDN 선택</a
+          ><a href="#1-설치">1. 설치</a
+          ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
+          ><a href="#설정-입력-검증">설정 입력 검증</a
+          ><a href="#2-vite-플러그인-하나로-적용"
+            >2. Vite 플러그인 하나로 적용</a
+          ><a href="#3-선택적으로-개발자-단축키우클릭-제한-켜기"
+            >3. 선택적으로 개발자 단축키·우클릭 제한 켜기</a
+          ><a href="#4-외부-api와-trusted-types-호환성-조정"
+            >4. 외부 API와 Trusted Types 호환성 조정</a
+          ><a href="#5-운영-호스트에도-http-정책과-비공개-경로-적용"
+            >5. 운영 호스트에도 HTTP 정책과 비공개 경로 적용</a
+          ><a href="#6-배포-결과-자동-검사">6. 배포 결과 자동 검사</a
+          ><a href="#7-수동-sdk와-문제-해결">7. 수동 SDK와 문제 해결</a
+          ><a href="#8-reactnextjs와-jspjavapythonphp"
+            >8. React·Next.js와 JSP·Java·Python·PHP</a
+          ><a href="#9-선택-기능-css-식별자와-런타임-신호"
+            >9. 선택 기능: CSS 식별자와 런타임 신호</a
+          ><a href="#미리-압축된-배포-파일">미리 압축된 배포 파일</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments">
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference" open>
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html" aria-current="page"
+            >설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
       </nav>
       <main id="main-content" tabindex="-1">
         <div class="guide-intro">
-          <p class="eyebrow">설치·적용 전체 가이드</p>
-          <p class="docs-meta">
-            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
-            시점은 본문의 기록을 확인하세요.
-          </p>
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>상세 가이드</span
+            ><span aria-hidden="true"> / </span
+            ><span>설치·적용 전체 가이드</span>
+          </nav>
           <div class="guide-tools">
             <a href="/docs/INSTALL.ko.txt" download>원문 .txt 다운로드</a
             ><a
@@ -117,6 +138,79 @@
             아래 새 동작은 0.3.0 후보 기준입니다. npm의 0.2.0에 동일하게
             제공된다고 판단하지 마세요. 게시와 별개로 로컬 검토를 진행합니다.
           </p>
+          <h2 id="내-환경에-맞는-빠른-시작">내 환경에 맞는 빠른 시작</h2>
+          <p>
+            <strong>처음 적용한다면 아래에서 하나만 선택하세요.</strong> 각
+            안내에 설치 명령, 수정할 파일, 실행 순서와 정상 결과를 따로
+            정리했습니다. 이 문서의 나머지는 정책·옵션을 더 조정할 때 보는 상세
+            참고입니다.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">내 환경</th>
+                  <th scope="col">읽을 안내</th>
+                  <th scope="col">적용 방식</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>React·Vue·일반 Vite</td>
+                  <td><a href="/docs/START_VITE.ko.html">Vite 빠른 시작</a></td>
+                  <td>기존 Vite 설정에 플러그인 추가</td>
+                </tr>
+                <tr>
+                  <td>Next.js App Router</td>
+                  <td>
+                    <a href="/docs/START_NEXT.ko.html">Next.js 빠른 시작</a>
+                  </td>
+                  <td>전용 어댑터 + Webpack 빌드</td>
+                </tr>
+                <tr>
+                  <td>Webpack·esbuild</td>
+                  <td>
+                    <a href="/docs/START_STATIC.ko.html">정적 빌드 빠른 시작</a>
+                  </td>
+                  <td>기존 빌드 뒤에 보호 단계 연결</td>
+                </tr>
+                <tr>
+                  <td>HTML·jQuery</td>
+                  <td><a href="/docs/START_HTML.ko.html">HTML 빠른 시작</a></td>
+                  <td>배포용 HTML·JS 폴더 보호</td>
+                </tr>
+                <tr>
+                  <td>Java·JSP</td>
+                  <td>
+                    <a href="/docs/START_JAVA.ko.html">Java·JSP 빠른 시작</a>
+                  </td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>Python</td>
+                  <td>
+                    <a href="/docs/START_PYTHON.ko.html">Python 빠른 시작</a>
+                  </td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>PHP</td>
+                  <td><a href="/docs/START_PHP.ko.html">PHP 빠른 시작</a></td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>CDN·직접 SDK</td>
+                  <td><a href="/docs/START_CDN.ko.html">CDN 빠른 시작</a></td>
+                  <td>런타임 가드만 수동 연결</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <h2 id="가장-짧은-적용-순서">가장 짧은 적용 순서</h2>
           <ol>
             <li>
@@ -1486,7 +1580,7 @@ export function StaticNotice() {
         </article>
         <footer>
           <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
-          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
         </footer>
       </main>
     </div>

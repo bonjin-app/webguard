@@ -35,34 +35,56 @@
     </header>
     <div class="layout">
       <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
-        <span>전체 가이드</span
-        ><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
-        ><a href="/docs/ENVIRONMENTS.ko.html" aria-current="page"
-          >환경별 적용 가이드</a
-        ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
-        ><a href="/docs/API.ko.html">API 명세 전체 목차</a
-        ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
-        ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
-        ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a
-        ><span>이 문서의 목차</span
-        ><a href="#설치부터-확인까지-한-흐름">설치부터 확인까지 한 흐름</a
-        ><a href="#sdk-파일cdn과-빌드-도구의-차이"
-          >SDK 파일·CDN과 빌드 도구의 차이</a
-        ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
-        ><a href="#미리-압축된-파일과-배포-압축">미리 압축된 파일과 배포 압축</a
-        ><a href="#자동-연결과-수동-sdk">자동 연결과 수동 SDK</a
-        ><a href="#react와-nextjs-ssr">React와 Next.js SSR</a
-        ><a href="#jspjavapythonphp의-서버-렌더링"
-          >JSP·Java·Python·PHP의 서버 렌더링</a
-        ><a href="#배포-전에-확인할-것">배포 전에 확인할 것</a>
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span
+          ><a href="#먼저-내-환경의-순서대로-적용하기"
+            >먼저 내 환경의 순서대로 적용하기</a
+          ><a href="#환경별-지원-범위">환경별 지원 범위</a
+          ><a href="#설치부터-확인까지-한-흐름">설치부터 확인까지 한 흐름</a
+          ><a href="#sdk-파일cdn과-빌드-도구의-차이"
+            >SDK 파일·CDN과 빌드 도구의 차이</a
+          ><a href="#한-번-연결하는-후처리">한 번 연결하는 후처리</a
+          ><a href="#미리-압축된-파일과-배포-압축"
+            >미리 압축된 파일과 배포 압축</a
+          ><a href="#자동-연결과-수동-sdk">자동 연결과 수동 SDK</a
+          ><a href="#react와-nextjs-ssr">React와 Next.js SSR</a
+          ><a href="#jspjavapythonphp의-서버-렌더링"
+            >JSP·Java·Python·PHP의 서버 렌더링</a
+          ><a href="#배포-전에-확인할-것">배포 전에 확인할 것</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments">
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference" open>
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html" aria-current="page"
+            >환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
       </nav>
       <main id="main-content" tabindex="-1">
         <div class="guide-intro">
-          <p class="eyebrow">환경별 적용 가이드</p>
-          <p class="docs-meta">
-            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
-            시점은 본문의 기록을 확인하세요.
-          </p>
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>상세 가이드</span
+            ><span aria-hidden="true"> / </span><span>환경별 적용 가이드</span>
+          </nav>
           <div class="guide-tools">
             <a href="/docs/ENVIRONMENTS.ko.txt" download>원문 .txt 다운로드</a
             ><a
@@ -89,6 +111,82 @@
             npm 배포는 보류 중이며 검토한 로컬 <code>.tgz</code>로 설치합니다.
             <a href="/docs/INSTALL.ko.html">전체 설치 안내</a>.
           </p>
+          <h2 id="먼저-내-환경의-순서대로-적용하기">
+            먼저 내 환경의 순서대로 적용하기
+          </h2>
+          <p>
+            다른 환경의 명령을 섞지 말고 사용하는 환경 하나를 선택하세요.
+            <strong>내 앱에 설치하는 과정</strong>과
+            <strong>WebGuard 저장소의 실행 예제를 돌리는 과정</strong>은 각
+            안내에서 구분합니다.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">내 환경</th>
+                  <th scope="col">읽을 안내</th>
+                  <th scope="col">적용 방식</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>React·Vue·일반 Vite</td>
+                  <td><a href="/docs/START_VITE.ko.html">Vite 빠른 시작</a></td>
+                  <td>기존 Vite 설정에 플러그인 추가</td>
+                </tr>
+                <tr>
+                  <td>Next.js App Router</td>
+                  <td>
+                    <a href="/docs/START_NEXT.ko.html">Next.js 빠른 시작</a>
+                  </td>
+                  <td>전용 어댑터 + Webpack 빌드</td>
+                </tr>
+                <tr>
+                  <td>Webpack·esbuild</td>
+                  <td>
+                    <a href="/docs/START_STATIC.ko.html">정적 빌드 빠른 시작</a>
+                  </td>
+                  <td>기존 빌드 뒤에 보호 단계 연결</td>
+                </tr>
+                <tr>
+                  <td>HTML·jQuery</td>
+                  <td><a href="/docs/START_HTML.ko.html">HTML 빠른 시작</a></td>
+                  <td>배포용 HTML·JS 폴더 보호</td>
+                </tr>
+                <tr>
+                  <td>Java·JSP</td>
+                  <td>
+                    <a href="/docs/START_JAVA.ko.html">Java·JSP 빠른 시작</a>
+                  </td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>Python</td>
+                  <td>
+                    <a href="/docs/START_PYTHON.ko.html">Python 빠른 시작</a>
+                  </td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>PHP</td>
+                  <td><a href="/docs/START_PHP.ko.html">PHP 빠른 시작</a></td>
+                  <td>외부 브라우저 자산 + 서버 정책</td>
+                </tr>
+                <tr>
+                  <td>CDN·직접 SDK</td>
+                  <td><a href="/docs/START_CDN.ko.html">CDN 빠른 시작</a></td>
+                  <td>런타임 가드만 수동 연결</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2 id="환경별-지원-범위">환경별 지원 범위</h2>
           <div
             class="table-scroll"
             role="region"
@@ -732,7 +830,7 @@ const className = generateName(&quot;notice&quot;, &quot;/absolute/project/Notic
         </article>
         <footer>
           <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
-          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
         </footer>
       </main>
     </div>

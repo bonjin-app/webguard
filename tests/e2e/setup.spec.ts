@@ -26,9 +26,11 @@ test("offers generic builds and classic SDK integration without Vite", async ({
   ).toBe(true);
   await page.goto("/docs/#environments");
   await expect(page.locator("#environments")).toContainText("Webpack");
-  await expect(page.locator("#environments")).toContainText(
-    "uulab-webguard/build",
-  );
+  await page
+    .locator('#environments a[href="/docs/START_STATIC.ko.html"]')
+    .click();
+  await expect(page.locator("main")).toContainText("webguard protect-app");
+  await expect(page.locator("main")).toContainText("Webpack");
 });
 
 test("generates one Vite configuration for strict React and explicit vanilla compatibility", async ({

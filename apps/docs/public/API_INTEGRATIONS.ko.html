@@ -35,33 +35,53 @@
     </header>
     <div class="layout">
       <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
-        <span>전체 가이드</span
-        ><a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
-        ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
-        ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
-        ><a href="/docs/API.ko.html">API 명세 전체 목차</a
-        ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
-        ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
-        ><a href="/docs/API_INTEGRATIONS.ko.html" aria-current="page"
-          >연동·CLI API</a
-        ><span>이 문서의 목차</span><a href="#webguardapp">webguardApp</a
-        ><a href="#webguardappoptions">WebGuardAppOptions</a
-        ><a href="#webguard">webguard</a><a href="#withwebguard">withWebGuard</a
-        ><a href="#webguardnextoptions">WebGuardNextOptions</a
-        ><a href="#obfuscationlevel">ObfuscationLevel</a
-        ><a href="#stringarrayencoding">StringArrayEncoding</a
-        ><a href="#webguard-cli">webguard CLI</a
-        ><a href="#webguard-check">webguard-check</a
-        ><a href="#webguard-serve">webguard-serve</a
-        ><a href="#환경별-선택과-검증">환경별 선택과 검증</a>
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#webguardapp">webguardApp</a
+          ><a href="#webguardappoptions">WebGuardAppOptions</a
+          ><a href="#webguard">webguard</a
+          ><a href="#withwebguard">withWebGuard</a
+          ><a href="#webguardnextoptions">WebGuardNextOptions</a
+          ><a href="#obfuscationlevel">ObfuscationLevel</a
+          ><a href="#stringarrayencoding">StringArrayEncoding</a
+          ><a href="#webguard-cli">webguard CLI</a
+          ><a href="#webguard-check">webguard-check</a
+          ><a href="#webguard-serve">webguard-serve</a
+          ><a href="#환경별-선택과-검증">환경별 선택과 검증</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments">
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html">Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference" open>
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html" aria-current="page"
+            >연동·CLI API</a
+          >
+        </details>
       </nav>
       <main id="main-content" tabindex="-1">
         <div class="guide-intro">
-          <p class="eyebrow">연동·CLI API</p>
-          <p class="docs-meta">
-            저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증
-            시점은 본문의 기록을 확인하세요.
-          </p>
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>상세 가이드</span
+            ><span aria-hidden="true"> / </span><span>연동·CLI API</span>
+          </nav>
           <div class="guide-tools">
             <a href="/docs/API_INTEGRATIONS.ko.txt" download
               >원문 .txt 다운로드</a
@@ -678,7 +698,7 @@ npx --no-install webguard doctor dist-protected --json
         </article>
         <footer>
           <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
-          <a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
         </footer>
       </main>
     </div>

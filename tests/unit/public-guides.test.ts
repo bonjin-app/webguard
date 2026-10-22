@@ -12,6 +12,27 @@ import {
 } from "../../scripts/public-guides.mjs";
 
 describe("public static guides", () => {
+  const environmentGuides = [
+    ["START_VITE.ko.md", "Vite · React · Vue"],
+    ["START_NEXT.ko.md", "Next.js"],
+    ["START_STATIC.ko.md", "Webpack · esbuild"],
+    ["START_HTML.ko.md", "일반 HTML · jQuery"],
+    ["START_JAVA.ko.md", "Java · JSP"],
+    ["START_PYTHON.ko.md", "Python"],
+    ["START_PHP.ko.md", "PHP"],
+    ["START_CDN.ko.md", "CDN · 직접 SDK"],
+  ] as const;
+
+  it("registers separate environment guides and resolves their public URLs", () => {
+    for (const [source, label] of environmentGuides) {
+      expect(publicGuides.find((guide) => guide.source === source)?.label).toBe(
+        label,
+      );
+      expect(resolveGuideLink(`${source}#설치`, "INSTALL.ko.md")).toBe(
+        `/docs/${source.replace(/\.md$/, ".html")}#설치`,
+      );
+    }
+  });
   it("finishes empty ordered and unordered list items without hanging the build", () => {
     const output = execFileSync(
       process.execPath,
@@ -115,6 +136,7 @@ describe("public static guides", () => {
       "API_BROWSER.ko.md",
       "API_BUILD.ko.md",
       "API_INTEGRATIONS.ko.md",
+      ...environmentGuides.map(([source]) => source),
     ]);
   });
 
@@ -132,6 +154,30 @@ describe("public static guides", () => {
         documents.set(`/docs/${name}.html`, document);
         expect(document.documentElement.lang).toBe("ko");
         expect(document.querySelector("main h1")).not.toBeNull();
+        const outline = document.querySelector(".docs-outline")!;
+        expect(outline.querySelector("a")?.getAttribute("href")).toBe(
+          "/docs/#install",
+        );
+        expect(outline.querySelector(".guide-nav-toc")).not.toBeNull();
+        const environmentGroup = outline.querySelector<HTMLDetailsElement>(
+          ".guide-nav-environments",
+        )!;
+        const referenceGroup = outline.querySelector<HTMLDetailsElement>(
+          ".guide-nav-reference",
+        )!;
+        const isEnvironment = environmentGuides.some(
+          ([file]) => file === source,
+        );
+        expect(environmentGroup.open).toBe(isEnvironment);
+        expect(referenceGroup.open).toBe(!isEnvironment);
+        expect(outline.innerHTML.indexOf("guide-nav-toc")).toBeLessThan(
+          outline.innerHTML.indexOf("guide-nav-environments"),
+        );
+        expect(environmentGroup.querySelectorAll("a")).toHaveLength(8);
+        expect(referenceGroup.querySelectorAll("a")).toHaveLength(7);
+        expect(
+          document.querySelector(".guide-breadcrumb")?.textContent,
+        ).toContain(isEnvironment ? "환경별 시작" : "상세 가이드");
         expect(
           document.querySelectorAll('.docs-outline a[aria-current="page"]'),
         ).toHaveLength(1);

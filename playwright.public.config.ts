@@ -14,6 +14,7 @@ const browserTests = [
   "**/e2e/product-presence.spec.ts",
   "**/e2e/docs-site-guard.spec.ts",
   "**/e2e/public-guides.spec.ts",
+  "**/e2e/installation-guides.spec.ts",
   "**/e2e/downloads.spec.ts",
   "**/e2e/cdn.spec.ts",
   "**/e2e/diagnostics.spec.ts",

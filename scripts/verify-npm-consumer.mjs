@@ -191,11 +191,22 @@ try {
     recursive: true,
     withFileTypes: true,
   });
+  const installationGuides = [
+    "START_VITE.ko.md",
+    "START_NEXT.ko.md",
+    "START_STATIC.ko.md",
+    "START_HTML.ko.md",
+    "START_JAVA.ko.md",
+    "START_PYTHON.ko.md",
+    "START_PHP.ko.md",
+    "START_CDN.ko.md",
+  ];
   const allowedRoot = new Set([
     "package.json",
     "README.md",
     "INSTALL.ko.md",
     "ENVIRONMENTS.ko.md",
+    ...installationGuides,
     "API.ko.md",
     "API_BROWSER.ko.md",
     "API_BUILD.ko.md",
@@ -204,16 +215,14 @@ try {
     "THIRD_PARTY_NOTICES.md",
   ]);
   for (const name of [
+    ...installationGuides,
     "API.ko.md",
     "API_BROWSER.ko.md",
     "API_BUILD.ko.md",
     "API_INTEGRATIONS.ko.md",
   ]) {
     const content = await readFile(join(packageRoot, name), "utf8");
-    check(
-      content.trim().length > 0,
-      `Missing or empty public API guide: ${name}`,
-    );
+    check(content.trim().length > 0, `Missing or empty public guide: ${name}`);
   }
   for (const entry of packageFiles) {
     const local = relative(packageRoot, join(entry.parentPath, entry.name))

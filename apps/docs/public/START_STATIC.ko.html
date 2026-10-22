@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf8ff" />
+    <title>Webpack · esbuild에 WebGuard 적용하기 — WebGuard</title>
+    <meta
+      name="description"
+      content="Webpack · esbuild: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."
+    />
+    <link
+      rel="canonical"
+      href="https://webguard.uulab.co.kr/docs/START_STATIC.ko.html"
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="stylesheet" href="/docs/guide.css" />
+  </head>
+  <body class="guide-page">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="docs-header">
+      <a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"
+        ><img
+          class="docs-logo"
+          src="/docs/favicon.svg"
+          alt=""
+          width="36"
+          height="36"
+        /><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a
+      >
+      <div class="docs-header-links">
+        <a href="/docs/">가이드 홈</a
+        ><a class="docs-demo-link" href="/demo">데모 체험</a>
+      </div>
+    </header>
+    <div class="layout">
+      <nav class="docs-outline" aria-label="전체 가이드와 문서 목차">
+        <a class="guide-nav-back" href="/docs/#install"
+          >환경 선택으로 돌아가기</a
+        >
+        <div class="guide-nav-group guide-nav-toc">
+          <span>이 문서의 목차</span><a href="#준비-사항">준비 사항</a
+          ><a href="#1-패키지-설치">1. 패키지 설치</a
+          ><a href="#2-빌드-스크립트-연결">2. 빌드 스크립트 연결</a
+          ><a href="#3-빌드실행">3. 빌드·실행</a
+          ><a href="#4-정상-결과-확인">4. 정상 결과 확인</a
+          ><a href="#문제-해결">문제 해결</a><a href="#다음-단계">다음 단계</a>
+        </div>
+        <details class="guide-nav-group guide-nav-environments" open>
+          <summary>다른 환경의 설치 방법</summary>
+          <a href="/docs/START_VITE.ko.html">Vite · React · Vue</a
+          ><a href="/docs/START_NEXT.ko.html">Next.js</a
+          ><a href="/docs/START_STATIC.ko.html" aria-current="page"
+            >Webpack · esbuild</a
+          ><a href="/docs/START_HTML.ko.html">일반 HTML · jQuery</a
+          ><a href="/docs/START_JAVA.ko.html">Java · JSP</a
+          ><a href="/docs/START_PYTHON.ko.html">Python</a
+          ><a href="/docs/START_PHP.ko.html">PHP</a
+          ><a href="/docs/START_CDN.ko.html">CDN · 직접 SDK</a>
+        </details>
+        <details class="guide-nav-group guide-nav-reference">
+          <summary>상세 가이드 · API 명세</summary>
+          <a href="/docs/INSTALL.ko.html">설치·적용 전체 가이드</a
+          ><a href="/docs/ENVIRONMENTS.ko.html">환경별 적용 가이드</a
+          ><a href="/docs/SSR_VERIFICATION.html">SSR 검증 기록</a
+          ><a href="/docs/API.ko.html">API 명세 전체 목차</a
+          ><a href="/docs/API_BROWSER.ko.html">브라우저 런타임 API</a
+          ><a href="/docs/API_BUILD.ko.html">Node 빌드·검증 API</a
+          ><a href="/docs/API_INTEGRATIONS.ko.html">연동·CLI API</a>
+        </details>
+      </nav>
+      <main id="main-content" tabindex="-1">
+        <div class="guide-intro">
+          <nav class="guide-breadcrumb" aria-label="현재 문서 위치">
+            <a href="/docs/#install">환경 선택</a
+            ><span aria-hidden="true"> / </span><span>환경별 시작</span
+            ><span aria-hidden="true"> / </span><span>Webpack · esbuild</span>
+          </nav>
+          <div class="guide-tools">
+            <a href="/docs/START_STATIC.ko.txt" download>원문 .txt 다운로드</a
+            ><a
+              href="https://github.com/bonjin-app/webguard/blob/main/docs/START_STATIC.ko.md"
+              >저장소 원문 보기 ↗</a
+            >
+          </div>
+        </div>
+        <article class="guide-content">
+          <h1 id="webpack--esbuild에-webguard-적용하기">
+            Webpack · esbuild에 WebGuard 적용하기
+          </h1>
+          <p>
+            기존 번들러가 만든 <strong>정적 HTML·JavaScript 출력</strong>을
+            보호합니다. Webpack·esbuild 전용 플러그인을 새로 설치할 필요 없이
+            빌드 뒤에 한 단계를 연결합니다.
+          </p>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#install"
+              >환경 다시 선택</a
+            >
+            ·
+            <a href="/docs/API_INTEGRATIONS.ko.html#webguard-cli"
+              >범용 CLI 명세</a
+            >
+          </p>
+          <h2 id="준비-사항">준비 사항</h2>
+          <ul>
+            <li>
+              Node.js 22.12 이상. pnpm 11은 Node.js 22.13 이상이 필요합니다.
+            </li>
+            <li>
+              기존 빌드가 <code>dist</code>에 HTML·JS를 내보내야 합니다. 경로가
+              다르면 아래 <code>dist</code>를 실제 출력으로 바꾸세요.
+            </li>
+            <li>
+              서버 번들·프로젝트 루트·<code>.next</code>·WAR/JAR는 이 후처리에
+              넣지 않습니다.
+            </li>
+          </ul>
+          <h2 id="1-패키지-설치">1. 패키지 설치</h2>
+          <p>
+            <a href="https://webguard.uulab.co.kr/docs/#sdk-downloads"
+              >설치 명령 복사</a
+            >에서 사용하는 도구의 고정 URL 명령을 앱 폴더에서 실행합니다. npm
+            게시는 보류 중입니다.
+          </p>
+          <p>
+            파일을 받은 경우 <code>.tgz</code>를 앱 폴더에 저장하고 실행합니다.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npm install -D ./uulab-webguard-0.3.0.tgz
+</code></pre>
+          <h2 id="2-빌드-스크립트-연결">2. 빌드 스크립트 연결</h2>
+          <p>
+            <strong>수정할 파일: <code>package.json</code></strong
+            >. 원래 빌드 명령을 <code>build:raw</code>로 유지하고 보호 단계를
+            뒤에 연결합니다. 아래는 Webpack 예제입니다.
+          </p>
+          <pre tabindex="0" aria-label="코드 예제"><code>{
+  &quot;scripts&quot;: {
+    &quot;build:raw&quot;: &quot;webpack --mode production&quot;,
+    &quot;guard:build&quot;: &quot;webguard protect-app dist --output dist-protected --trusted-types report-only --restrict-shortcuts --restrict-context-menu&quot;,
+    &quot;build&quot;: &quot;npm run build:raw &amp;&amp; npm run guard:build&quot;,
+    &quot;preview:protected&quot;: &quot;webguard-serve dist-protected --port 4173&quot;
+  }
+}
+</code></pre>
+          <p>
+            esbuild는 <code>build:raw</code>에 기존 esbuild 명령을 그대로
+            둡니다. <code>guard:build</code>는 같습니다. 자동 SDK
+            초기화·JavaScript 난독화·SRI·정책 생성을 함께 연결합니다.
+          </p>
+          <p>
+            이 예제는 로더의 문자열 DOM 동작을 위해 Trusted Types
+            <strong>관찰 모드</strong>를 명시합니다. 해당 삽입을 차단하지 않으며
+            관찰에는 실제 HTTP 헤더가 필요합니다. 앱 호환성을 확인한 뒤 강제
+            모드로 변경할 수 있습니다.
+          </p>
+          <h2 id="3-빌드실행">3. 빌드·실행</h2>
+          <pre tabindex="0" aria-label="코드 예제"><code>npm run build
+npx --no-install webguard doctor dist-protected
+npm run preview:protected
+</code></pre>
+          <p><code>http://127.0.0.1:4173</code>을 엽니다.</p>
+          <p>
+            <strong>보호 출력은 새 폴더여야 합니다.</strong>
+            <code>dist-protected</code>가 이미 있으면 덮어쓰지 않습니다.
+            로컬에서 다음 빌드를 시험할 때는 새 출력 경로를 지정하고 진단·서버
+            명령도 같은 경로로 맞추세요. 깨끗한 CI 작업 공간에서는 같은
+            스크립트를 재사용할 수 있습니다.
+          </p>
+          <h2 id="4-정상-결과-확인">4. 정상 결과 확인</h2>
+          <ul>
+            <li>
+              <code>doctor</code>가 <code>WebGuard: Local check passed.</code>를
+              출력합니다.
+            </li>
+            <li>
+              원래 <code>dist</code>는 유지되고 <code>dist-protected</code>에
+              보호 결과가 생깁니다.
+            </li>
+            <li>
+              스크립트 순서·동적 청크·폼·페이지 이동을 브라우저에서 확인합니다.
+            </li>
+            <li>다른 터미널에서 실제 응답도 검사합니다.</li>
+          </ul>
+          <pre
+            tabindex="0"
+            aria-label="코드 예제"
+          ><code>npx --no-install webguard-check dist-protected --url http://127.0.0.1:4173/
+</code></pre>
+          <h2 id="문제-해결">문제 해결</h2>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="가이드 비교표"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">증상</th>
+                  <th scope="col">먼저 확인할 것</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>출력 폴더가 이미 있다는 오류</td>
+                  <td>기존 결과를 보존하고 새 보호 출력 경로 지정</td>
+                </tr>
+                <tr>
+                  <td>인라인 이벤트·스타일 CSP 오류</td>
+                  <td>
+                    외부 파일·이벤트 리스너로 옮기거나 기존 정책을 명시적으로
+                    관리
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>.js.gz</code>·<code>.br</code> 오류</td>
+                  <td>
+                    보호 전 사전 압축을 끄고 최종 파일을 HTTP 압축으로 전송
+                  </td>
+                </tr>
+                <tr>
+                  <td>동적 청크가 안 열림</td>
+                  <td>원래 빌드의 공개 base와 실제 배포 경로가 같은지 확인</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2 id="다음-단계">다음 단계</h2>
+          <p>
+            <strong><code>dist-protected</code>만 배포합니다.</strong> 원본
+            <code>dist</code>를 함께 올리지 마세요. 생성 헤더와 비공개 경로
+            제한을 호스트에 적용합니다. 파일명은 그대로이므로 릴리스 경로 또는
+            재검증 캐시를 사용하고 서비스 워커·외부 SRI는 최종 바이트로
+            갱신하세요.
+          </p>
+          <p>
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/webpack/README.md"
+              >Webpack 예제</a
+            >
+            ·
+            <a
+              href="https://github.com/bonjin-app/webguard/blob/main/examples/esbuild/README.md"
+              >esbuild 예제</a
+            >
+          </p>
+        </article>
+        <footer>
+          <p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p>
+          <a href="/docs/#install">환경 선택으로 돌아가기 →</a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

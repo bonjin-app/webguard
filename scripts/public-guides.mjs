@@ -13,6 +13,30 @@ export const publicGuides = [
   { source: "API_BROWSER.ko.md", label: "브라우저 런타임 API" },
   { source: "API_BUILD.ko.md", label: "Node 빌드·검증 API" },
   { source: "API_INTEGRATIONS.ko.md", label: "연동·CLI API" },
+  {
+    source: "START_VITE.ko.md",
+    label: "Vite · React · Vue",
+    category: "environment",
+  },
+  { source: "START_NEXT.ko.md", label: "Next.js", category: "environment" },
+  {
+    source: "START_STATIC.ko.md",
+    label: "Webpack · esbuild",
+    category: "environment",
+  },
+  {
+    source: "START_HTML.ko.md",
+    label: "일반 HTML · jQuery",
+    category: "environment",
+  },
+  { source: "START_JAVA.ko.md", label: "Java · JSP", category: "environment" },
+  { source: "START_PYTHON.ko.md", label: "Python", category: "environment" },
+  { source: "START_PHP.ko.md", label: "PHP", category: "environment" },
+  {
+    source: "START_CDN.ko.md",
+    label: "CDN · 직접 SDK",
+    category: "environment",
+  },
 ];
 const pagePath = (source) => `/docs/${source.replace(/\.md$/, ".html")}`;
 const escapeHtml = (text) =>
@@ -242,12 +266,15 @@ export function renderGuideMarkdown(markdown, sourceFile) {
 function guidePage(guide, result) {
   const path = pagePath(guide.source);
   const download = path.replace(/\.html$/, ".txt");
-  const nav = publicGuides
-    .map(
-      (item) =>
-        `<a href="${pagePath(item.source)}"${item.source === guide.source ? ' aria-current="page"' : ""}>${item.label}</a>`,
-    )
-    .join("");
+  const environment = guide.category === "environment";
+  const category = environment ? "환경별 시작" : "상세 가이드";
+  const navLinks = (items) =>
+    items
+      .map(
+        (item) =>
+          `<a href="${pagePath(item.source)}"${item.source === guide.source ? ' aria-current="page"' : ""}>${escapeHtml(item.label)}</a>`,
+      )
+      .join("");
   const toc = result.headings
     .filter((item) => item.level === 2)
     .map(
@@ -255,10 +282,11 @@ function guidePage(guide, result) {
         `<a href="#${escapeHtml(item.id)}">${escapeHtml(item.text)}</a>`,
     )
     .join("");
+  const nav = `<a class="guide-nav-back" href="/docs/#install">환경 선택으로 돌아가기</a><div class="guide-nav-group guide-nav-toc"><span>이 문서의 목차</span>${toc}</div><details class="guide-nav-group guide-nav-environments"${environment ? " open" : ""}><summary>다른 환경의 설치 방법</summary>${navLinks(publicGuides.filter((item) => item.category === "environment"))}</details><details class="guide-nav-group guide-nav-reference"${environment ? "" : " open"}><summary>상세 가이드 · API 명세</summary>${navLinks(publicGuides.filter((item) => item.category !== "environment"))}</details>`;
   return `<!doctype html>
 <html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#edf8ff"><title>${escapeHtml(result.title)} — WebGuard</title><meta name="description" content="${escapeHtml(guide.label)}: WebGuard의 설치, 적용 방법과 검증 범위를 확인하세요."><link rel="canonical" href="https://webguard.uulab.co.kr${path}"><link rel="icon" type="image/svg+xml" href="/docs/favicon.svg"><link rel="stylesheet" href="/docs/guide.css"></head>
 <body class="guide-page"><a class="skip-link" href="#main-content">본문으로 건너뛰기</a><header class="docs-header"><a href="/docs/" class="docs-brand" aria-label="WebGuard 개발자 가이드 홈"><img class="docs-logo" src="/docs/favicon.svg" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="/docs/">가이드 홈</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
-<div class="layout"><nav class="docs-outline" aria-label="전체 가이드와 문서 목차"><span>전체 가이드</span>${nav}<span>이 문서의 목차</span>${toc}</nav><main id="main-content" tabindex="-1"><div class="guide-intro"><p class="eyebrow">${escapeHtml(guide.label)}</p><p class="docs-meta">저장소 문서를 빌드 시점에 HTML로 생성했습니다. npm 게시 여부와 검증 시점은 본문의 기록을 확인하세요.</p><div class="guide-tools"><a href="${download}" download>원문 .txt 다운로드</a><a href="${repository}docs/${guide.source}">저장소 원문 보기 ↗</a></div></div><article class="guide-content">${result.html}</article><footer><p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p><a href="/docs/">개발자 가이드 홈으로 돌아가기 →</a></footer></main></div></body></html>\n`;
+<div class="layout"><nav class="docs-outline" aria-label="전체 가이드와 문서 목차">${nav}</nav><main id="main-content" tabindex="-1"><div class="guide-intro"><nav class="guide-breadcrumb" aria-label="현재 문서 위치"><a href="/docs/#install">환경 선택</a><span aria-hidden="true"> / </span><span>${category}</span><span aria-hidden="true"> / </span><span>${escapeHtml(guide.label)}</span></nav><div class="guide-tools"><a href="${download}" download>원문 .txt 다운로드</a><a href="${repository}docs/${guide.source}">저장소 원문 보기 ↗</a></div></div><article class="guide-content">${result.html}</article><footer><p>WebGuard · 비밀값과 권한 검증은 서버에서 관리하세요.</p><a href="/docs/#install">환경 선택으로 돌아가기 →</a></footer></main></div></body></html>\n`;
 }
 
 /** Generate only public presentation files; package-local Markdown copies stay untouched. */
