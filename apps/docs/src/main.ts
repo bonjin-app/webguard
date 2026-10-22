@@ -83,7 +83,6 @@ function scrollToCurrentSection(behavior: ScrollBehavior = "auto") {
     /* Ignore malformed fragments. */
   }
 }
-window.addEventListener("load", () => scrollToCurrentSection());
 
 const siteSwitch = (id: string) =>
   document.querySelector<HTMLInputElement>(`#${id}`)!;
@@ -243,8 +242,17 @@ async function loadDownloadsForInitialSection() {
       },
     );
   }
+  const pageLoaded =
+    document.readyState === "complete"
+      ? Promise.resolve()
+      : new Promise<void>((resolve) =>
+          window.addEventListener("load", () => resolve(), {
+            once: true,
+            signal: interaction.signal,
+          }),
+        );
   try {
-    await initDownloads();
+    await Promise.all([initDownloads(), pageLoaded]);
     // The catalog expands above later sections. Restore the requested anchor
     // after layout settles, while respecting any navigation or user input.
     await new Promise<void>((resolve) =>

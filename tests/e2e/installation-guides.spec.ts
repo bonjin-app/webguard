@@ -148,3 +148,71 @@ test("does not pull the reader back after they scroll during catalog loading", a
     releaseCatalog();
   }
 });
+
+test("does not request an application scroll after reader input before page load", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    const original = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function (options) {
+      const root = document.documentElement;
+      if (root.dataset.readerScrolled === "true")
+        root.dataset.readerAutoScrolls = String(
+          Number(root.dataset.readerAutoScrolls ?? 0) + 1,
+        );
+      return original.call(this, options);
+    };
+  });
+  let releaseLogo!: () => void;
+  const logoGate = new Promise<void>((resolve) => {
+    releaseLogo = resolve;
+  });
+  await page.route("**/docs/favicon.svg", async (route) => {
+    await logoGate;
+    await route.continue();
+  });
+  try {
+    await page.goto("/docs/#configure", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("[data-download-ready]")).toBeVisible();
+    expect(await page.evaluate(() => document.readyState)).toBe("interactive");
+    await page.evaluate(() => {
+      window.addEventListener(
+        "wheel",
+        () => {
+          document.documentElement.dataset.readerScrolled = "true";
+          document.documentElement.dataset.readerAutoScrolls = "0";
+        },
+        { once: true },
+      );
+    });
+    await page.mouse.wheel(0, -800);
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-reader-scrolled",
+      "true",
+    );
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    releaseLogo();
+    await page.waitForLoadState("load");
+    await expect(page.locator("[data-download-ready]")).toBeVisible();
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    // Isolate application scroll requests from the browser's own fragment
+    // handling during load. The preceding test checks actual catalog layout.
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-reader-auto-scrolls",
+      "0",
+    );
+  } finally {
+    releaseLogo();
+  }
+});
