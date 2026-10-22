@@ -148,9 +148,13 @@ test("Java guide direct downloads run unchanged in root and /app browser fixture
     );
   } finally {
     await page.goto("about:blank");
-    await new Promise<void>((resolve, reject) =>
-      server.close((error) => (error ? reject(error) : resolve())),
-    );
+    await new Promise<void>((resolve, reject) => {
+      server.close((error) => (error ? reject(error) : resolve()));
+      // Browsers may leave speculative TCP connections without an HTTP request.
+      // close() alone waits for them even after navigating away. This server
+      // belongs solely to this finished fixture; release all its connections.
+      server.closeAllConnections();
+    });
   }
 });
 
@@ -280,8 +284,12 @@ test("loads the pinned CDN SDK with SRI across origins and rejects changed bytes
     ).toBe("undefined");
   } finally {
     await page.goto("about:blank");
-    await new Promise<void>((resolve, reject) =>
-      server.close((error) => (error ? reject(error) : resolve())),
-    );
+    await new Promise<void>((resolve, reject) => {
+      server.close((error) => (error ? reject(error) : resolve()));
+      // Browsers may leave speculative TCP connections without an HTTP request.
+      // close() alone waits for them even after navigating away. This server
+      // belongs solely to this finished fixture; release all its connections.
+      server.closeAllConnections();
+    });
   }
 });
