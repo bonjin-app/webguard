@@ -1,0 +1,165 @@
+{
+  "status": "failed",
+  "checkedAt": "2026-10-22T05:26:55.872Z",
+  "project": "/var/folders/hc/ck1bcnks1kx3z5rslhm3qtg80000gn/T/webguard-generic-consumer-rClRe0",
+  "tarball": "/Users/uulab/Documents/workspace/uulab/webguard/distributions/releases/0.3.0-d1ed5a80dd1ea138/uulab-webguard-0.3.0.tgz",
+  "integrity": "sha512-yHBPUZGGrErnfkQ/DUR9Lzt23Z8BCHJEoMXbPjb40t7v5rQjiv8nwcOCeGO4t6ojbUegswqzRCpgDuV+GUMW4A==",
+  "versions": {
+    "webpack": "5.112.0",
+    "esbuild": "0.28.2",
+    "jquery": "4.0.0"
+  },
+  "viteInstalled": false,
+  "builds": [
+    {
+      "name": "webpack",
+      "url": "http://127.0.0.1:55678",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    },
+    {
+      "name": "esbuild",
+      "url": "http://127.0.0.1:55686",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    },
+    {
+      "name": "plain-html",
+      "url": "http://127.0.0.1:55696",
+      "jsFiles": 3,
+      "transformed": true,
+      "manifestValid": true,
+      "inputPreserved": true,
+      "sourceMapsPublic": false
+    }
+  ],
+  "browserCases": [],
+  "typesWithoutVite": true,
+  "browserFailure": {
+    "engine": "chromium",
+    "tool": "webpack",
+    "url": "http://127.0.0.1:55678",
+    "phase": "automatic-startup",
+    "pageErrors": ["Synthetic startup page error"],
+    "consoleErrors": [
+      "Loading the script 'http://127.0.0.1:55678/assets/webguard-runtime.js' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+      "Loading the script 'http://127.0.0.1:55678/assets/app.js' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ],
+    "failedRequests": [
+      {
+        "url": "http://127.0.0.1:55678/assets/webguard-runtime.js",
+        "error": "csp"
+      },
+      {
+        "url": "http://127.0.0.1:55678/assets/app.js",
+        "error": "csp"
+      }
+    ],
+    "responses": [
+      {
+        "url": "http://127.0.0.1:55678/",
+        "status": 200,
+        "type": "document",
+        "contentType": "text/html; charset=utf-8",
+        "csp": "default-src 'none'; script-src 'none'; style-src 'self'",
+        "cspReportOnly": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'"
+      }
+    ],
+    "readyState": "complete",
+    "startupText": "SDK 확인 중",
+    "startupDisplay": "block",
+    "sdkType": "undefined",
+    "automaticGuard": false,
+    "scripts": [
+      {
+        "src": "http://127.0.0.1:55678/assets/webguard-runtime.js",
+        "type": "",
+        "async": false,
+        "defer": false,
+        "integrity": "sha384-+FAtRh7WgoUECkshrX3htaT4Qg+sd4DmEAN9F6GCQBq3KRTJLPRt3YscyaeLqhOO"
+      },
+      {
+        "src": "http://127.0.0.1:55678/assets/app.js",
+        "type": "",
+        "async": false,
+        "defer": true,
+        "integrity": "sha384-oUxWkhEJ5zRCR2dCTNT+d/TzuK2Xjc1r39J9WL0SyOoAd9SREqPoS7f1os7uw/Pw"
+      }
+    ],
+    "cspViolations": [
+      {
+        "directive": "script-src-elem",
+        "blockedURI": "http://127.0.0.1:55678/assets/webguard-runtime.js",
+        "disposition": "enforce",
+        "sourceFile": "",
+        "line": 0,
+        "column": 0
+      },
+      {
+        "directive": "script-src-elem",
+        "blockedURI": "http://127.0.0.1:55678/assets/app.js",
+        "disposition": "enforce",
+        "sourceFile": "",
+        "line": 0,
+        "column": 0
+      }
+    ],
+    "fixture": {
+      "directory": "/tmp/webguard-rc-generic-diagnostics-KOlDIN/generic-failure-foggrm",
+      "files": [
+        {
+          "path": "_headers",
+          "bytes": 632,
+          "sha256": "5f9f2022e62cad61834449ab6867124fdf956ee2b9b45377fe589b4fc45b04db"
+        },
+        {
+          "path": "assets/293.b96b044ca57eea121607.js",
+          "bytes": 7301,
+          "sha256": "73e1b903311c7eccd6d3fd5e347079bd2379df3293fd68d837aa089bb4785683"
+        },
+        {
+          "path": "assets/app.js",
+          "bytes": 46646,
+          "sha256": "7f718832814596cf9edc8e7ea7238bc52c5303aac403f09d77ed640b6fa6c844"
+        },
+        {
+          "path": "assets/webguard-runtime.js",
+          "bytes": 304805,
+          "sha256": "d4c3dba6dd2263f4ab8767b5050fe4dcab249f482ba4d71c804d885027184ee5"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1368,
+          "sha256": "5f9d052b2e50858c060dd77e298ae4880265f8b689b5cd040ce36ee2c9463ff7"
+        },
+        {
+          "path": "style.css",
+          "bytes": 801,
+          "sha256": "14d31511130a252e5957636b1bc81b4966bd71caa520376a7963fc06d6fc1237"
+        },
+        {
+          "path": "webguard-headers.json",
+          "bytes": 657,
+          "sha256": "735776e86347c85944fb3080f1ed8abf78a85d80fd09344a8370801b02c5654b"
+        },
+        {
+          "path": "webguard-manifest.json",
+          "bytes": 805,
+          "sha256": "58d45c648ffe8a66bdf2dab92dec6345888e4939ce83d2d227dafe1fbd7fc0e1"
+        },
+        {
+          "path": "webguard-report.json",
+          "bytes": 1830,
+          "sha256": "95976ece7f13ae432373a7fa4b238f06c69aa02babf142ceecefcf6c09a2a881"
+        }
+      ]
+    }
+  },
+  "error": "locator.waitFor: Timeout 1000ms exceeded.\nCall log:\n  - waiting for locator('#startup').filter({ hasText: 'SDK ready before app' }) to be visible\n\n    at /Users/uulab/Documents/workspace/uulab/webguard/scripts/verify-generic-consumer.mjs:411:14"
+}

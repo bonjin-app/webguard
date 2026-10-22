@@ -12,7 +12,7 @@ import {
 } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium, firefox, webkit } from "@playwright/test";
 
@@ -82,6 +82,75 @@ async function files(directory, prefix = "") {
     else output.push(prefix + entry.name);
   }
   return output;
+}
+async function captureStartupFailure(page, context) {
+  let timer;
+  try {
+    const state = await Promise.race([
+      page
+        .evaluate(() => {
+          const startup = document.querySelector("#startup");
+          let automaticGuard;
+          try {
+            automaticGuard = Boolean(globalThis.WebGuardSDK?.getAutoGuard?.());
+          } catch (error) {
+            automaticGuard = String(error).slice(0, 2000);
+          }
+          return {
+            readyState: document.readyState,
+            startupText: startup?.textContent?.slice(0, 2000) ?? null,
+            startupDisplay: startup
+              ? globalThis.getComputedStyle(startup).display
+              : null,
+            sdkType: typeof globalThis.WebGuardSDK,
+            automaticGuard,
+            scripts: Array.from(document.scripts)
+              .slice(0, 16)
+              .map((script) => ({
+                src: script.src.slice(0, 2048),
+                type: script.type,
+                async: script.async,
+                defer: script.defer,
+                integrity: script.integrity,
+              })),
+            cspViolations: globalThis.webguardConsumerCspViolations ?? [],
+          };
+        })
+        .catch((error) => ({ stateUnavailable: error.message.slice(0, 2000) })),
+      new Promise((resolve) => {
+        timer = setTimeout(
+          () => resolve({ stateUnavailable: "Page state exceeded 1000 ms" }),
+          1000,
+        );
+      }),
+    ]);
+    return {
+      ...context,
+      pageErrors: context.pageErrors.slice(0, 32),
+      ...state,
+    };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function preserveFailureFixture(output) {
+  if (!evidence) return undefined;
+  const fixtureFiles = [];
+  let bytes = 0;
+  for (const path of await files(output)) {
+    const content = await readFile(join(output, path));
+    bytes += content.byteLength;
+    if (fixtureFiles.length >= 32 || bytes > 4 * 1024 * 1024)
+      throw new Error("Failure fixture exceeds the 32-file/4-MiB budget");
+    fixtureFiles.push({
+      path,
+      bytes: content.byteLength,
+      sha256: createHash("sha256").update(content).digest("hex"),
+    });
+  }
+  const directory = await mkdtemp(join(dirname(evidence), "generic-failure-"));
+  await cp(output, join(directory, "protected"), { recursive: true });
+  return { directory, files: fixtureFiles };
 }
 async function observeKey(page, target, combination) {
   const key = combination.split("+").at(-1);
@@ -237,7 +306,7 @@ void protectAppDirectory('dist', options);
       sourceMapsPublic: false,
     };
     result.builds.push(buildReceipt);
-    hosts.push({ name, url });
+    hosts.push({ name, url, output });
     await save();
   }
   // A classic script is usable by server templates without a build-tool runtime.
@@ -275,11 +344,86 @@ void protectAppDirectory('dist', options);
         const page = await browser.newPage();
         const errors = [];
         page.on("pageerror", (error) => errors.push(error.message));
-        await page.goto(host.url);
-        await page
-          .locator("#startup")
-          .filter({ hasText: "SDK ready before app" })
-          .waitFor();
+        const startupContext = {
+          engine: engineName,
+          tool: host.name,
+          url: host.url,
+          phase: "navigation",
+          pageErrors: errors,
+          consoleErrors: [],
+          failedRequests: [],
+          responses: [],
+        };
+        page.on("console", (message) => {
+          if (
+            message.type() === "error" &&
+            startupContext.consoleErrors.length < 32
+          )
+            startupContext.consoleErrors.push(message.text().slice(0, 2000));
+        });
+        page.on("requestfailed", (request) => {
+          if (startupContext.failedRequests.length < 32)
+            startupContext.failedRequests.push({
+              url: request.url().slice(0, 2048),
+              error: request.failure()?.errorText,
+            });
+        });
+        page.on("response", (response) => {
+          const type = response.request().resourceType();
+          if (
+            startupContext.responses.length < 32 &&
+            (type === "document" ||
+              type === "script" ||
+              response.status() >= 400)
+          ) {
+            const headers = response.headers();
+            startupContext.responses.push({
+              url: response.url().slice(0, 2048),
+              status: response.status(),
+              type,
+              contentType: headers["content-type"],
+              csp: headers["content-security-policy"],
+              cspReportOnly: headers["content-security-policy-report-only"],
+            });
+          }
+        });
+        await page.addInitScript(() => {
+          globalThis.webguardConsumerCspViolations = [];
+          document.addEventListener("securitypolicyviolation", (event) => {
+            const records = globalThis.webguardConsumerCspViolations;
+            if (records.length < 32)
+              records.push({
+                directive: event.effectiveDirective,
+                blockedURI: event.blockedURI.slice(0, 2048),
+                disposition: event.disposition,
+                sourceFile: event.sourceFile.slice(0, 2048),
+                line: event.lineNumber,
+                column: event.columnNumber,
+              });
+          });
+        });
+        try {
+          await page.goto(host.url);
+          startupContext.phase = "automatic-startup";
+          await page
+            .locator("#startup")
+            .filter({ hasText: "SDK ready before app" })
+            .waitFor();
+        } catch (error) {
+          result.browserFailure = await captureStartupFailure(
+            page,
+            startupContext,
+          );
+          try {
+            result.browserFailure.fixture = await preserveFailureFixture(
+              host.output,
+            );
+          } catch (fixtureError) {
+            result.browserFailure.fixtureError = fixtureError.message;
+          }
+          await save();
+          throw error;
+        }
         assert.equal(
           await page.evaluate(
             () =>
