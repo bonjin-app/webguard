@@ -63,6 +63,59 @@ it("rejects a dead relative link even when all translations share it", async () 
   );
 });
 
+async function appendLink(directory: string, link: string) {
+  for (const file of editions) {
+    const path = join(directory, file);
+    await writeFile(path, (await readFile(path, "utf8")) + `\n${link}\n`);
+  }
+}
+
+it("rejects a stale cross-document section link even when its file exists", async () => {
+  const { validateReadmes } = await api();
+  const directory = await fixture();
+  await appendLink(directory, "[Guide](docs/guide.md#removed-section)");
+  await expect(validateReadmes({ directory })).rejects.toThrow(
+    /missing.*anchor.*docs\/guide\.md#removed-section/i,
+  );
+});
+
+it("checks same-document anchors without counting headings inside examples", async () => {
+  const { validateReadmes } = await api();
+  const directory = await fixture();
+  await appendLink(
+    directory,
+    "```md\n## Fake target\n```\n\n[Example](#fake-target)",
+  );
+  await expect(validateReadmes({ directory })).rejects.toThrow(
+    /missing.*anchor.*#fake-target/i,
+  );
+});
+
+it("accepts encoded Unicode and duplicate heading anchors and explicit named targets", async () => {
+  const { validateReadmes } = await api();
+  const directory = await fixture();
+  await writeFile(
+    join(directory, "docs/guide.md"),
+    '# Guide\n\n## `WebGuard.init()`\n\n## 설치 안내\n\n## 설치 안내\n\n<a id="stable-api"></a>\n',
+  );
+  await appendLink(
+    directory,
+    "[API](docs/guide.md#webguardinit) [설치](docs/guide.md#%EC%84%A4%EC%B9%98-%EC%95%88%EB%82%B4-1) [Stable](docs/guide.md#stable-api) [Home](#webguard)",
+  );
+  await expect(validateReadmes({ directory })).resolves.toMatchObject({
+    languages: 4,
+  });
+});
+
+it("reports malformed encoded fragments as document errors", async () => {
+  const { validateReadmes } = await api();
+  const directory = await fixture();
+  await appendLink(directory, "[Guide](docs/guide.md#%not-an-escape)");
+  await expect(validateReadmes({ directory })).rejects.toThrow(
+    /invalid.*fragment/i,
+  );
+});
+
 it("rejects missing language navigation and omitted install sections", async () => {
   const { validateReadmes } = await api();
   const directory = await fixture();

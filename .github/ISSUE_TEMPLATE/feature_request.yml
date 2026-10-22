@@ -1,0 +1,33 @@
+name: Feature request
+description: Describe a concrete integration need or developer-experience improvement.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem using a synthetic example; do not include proprietary source or customer data.
+        Suspected vulnerabilities belong in [private security reporting](https://github.com/bonjin-app/webguard/security/advisories/new).
+  - type: textarea
+    id: use_case
+    attributes:
+      label: User problem and environment
+      description: Who needs this, which integration/framework/browser is involved, and what task is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Proposed behavior and success criteria
+      description: Give a concrete before/after example and describe how a user would confirm it works. Browser SDKs cannot reliably close or disable browser-owned DevTools.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Current workaround or alternatives
+      description: What have you tried, and why does it not satisfy the use case?
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and tradeoffs
+      description: Optional considerations such as SSR, accessibility, CSP, performance, debugging or migration from existing APIs.

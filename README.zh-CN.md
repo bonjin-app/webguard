@@ -183,6 +183,8 @@ Vite 示例请使用 `dist`。此命令以可信构建为基准，对比已部�
 
 ## 从源码运行和贡献
 
+请先安装 Node.js 22.13+。如果尚未安装 pnpm，可运行 `npm install --global pnpm@11.10.0` 安装固定版本；Corepack 的方法见[首次贡献指南（英语）](CONTRIBUTING.md#first-contribution)。无需 npm 发布权限或托管账户。
+
 ```sh
 git clone https://github.com/bonjin-app/webguard.git
 cd webguard
@@ -197,6 +199,10 @@ pnpm verify
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
+
+## 帮助、问题反馈与贡献
+
+通过[错误报告或功能请求](https://github.com/bonjin-app/webguard/issues/new/choose)提供最小脱敏复现、准确的软件包版本或提交及运行环境。疑似漏洞请使用[私密安全报告](https://github.com/bonjin-app/webguard/security/advisories/new)，并遵循[安全策略（英语）](SECURITY.md)。请勿提交凭证或私有应用源码。[贡献指南（英语）](CONTRIBUTING.md)介绍各模块的验证、生成文件与候选版本处理方式。
 
 [生产候选版验收标准（韩语）](docs/PRODUCTION_READINESS.ko.md) · [支持、更新与回滚（英语）](docs/SUPPORT.md)
 

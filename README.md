@@ -183,6 +183,8 @@ Use `dist` for the Vite example. This compares deployed asset/entry bytes, actua
 
 ## Run and contribute from source
 
+Install Node.js 22.13+ first. If pnpm is not available, install the pinned version with `npm install --global pnpm@11.10.0`; Corepack is another option in the [first-contribution guide](CONTRIBUTING.md#first-contribution). No npm publishing or hosting account is needed.
+
 ```sh
 git clone https://github.com/bonjin-app/webguard.git
 cd webguard
@@ -197,6 +199,10 @@ pnpm verify
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
+
+## Get help or contribute
+
+[Report a bug or request a feature](https://github.com/bonjin-app/webguard/issues/new/choose) with a small sanitized reproduction, your exact package/commit and environment. Use [private security reporting](https://github.com/bonjin-app/webguard/security/advisories/new) for suspected vulnerabilities; follow the [security policy](SECURITY.md). Please do not submit credentials or proprietary application source. The [contribution guide](CONTRIBUTING.md) maps modules to focused checks and explains generated files and candidate releases.
 
 [Candidate acceptance (Korean)](docs/PRODUCTION_READINESS.ko.md) · [Support, updates and rollback (English)](docs/SUPPORT.md)
 

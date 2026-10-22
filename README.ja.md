@@ -183,6 +183,8 @@ Vite の例では `dist` を使用します。このコマンドは、デプロ�
 
 ## ソースから実行・貢献する
 
+先に Node.js 22.13 以降をインストールしてください。pnpm がなければ `npm install --global pnpm@11.10.0` で固定バージョンを導入できます。Corepack の手順は[初めての貢献ガイド（英語）](CONTRIBUTING.md#first-contribution)を参照してください。npm 公開権限やホスティングのアカウントは不要です。
+
 ```sh
 git clone https://github.com/bonjin-app/webguard.git
 cd webguard
@@ -197,6 +199,10 @@ pnpm verify
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
+
+## サポート・報告・貢献
+
+[不具合報告・機能リクエスト](https://github.com/bonjin-app/webguard/issues/new/choose)には、小さな匿名化済み再現例、正確なパッケージバージョン・コミットと実行環境を記載してください。脆弱性の疑いは[非公開のセキュリティ報告](https://github.com/bonjin-app/webguard/security/advisories/new)を利用し、[セキュリティポリシー（英語）](SECURITY.md)に従ってください。認証情報や非公開のアプリケーションソースは投稿しないでください。[貢献ガイド（英語）](CONTRIBUTING.md)にモジュール別の検証、生成ファイル、候補リリースの扱いをまとめています。
 
 [本番候補の受け入れ基準（韓国語）](docs/PRODUCTION_READINESS.ko.md) · [サポート・更新・ロールバック（英語）](docs/SUPPORT.md)
 

@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible installation, compatibility or demo problem.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For suspected vulnerabilities, use [private security reporting](https://github.com/bonjin-app/webguard/security/advisories/new) and read [SECURITY.md](https://github.com/bonjin-app/webguard/blob/main/SECURITY.md).
+        Do not upload proprietary source, credentials, tokens, user data or working exploit payloads. Use a synthetic, sanitized reproduction. No telemetry upload is required.
+  - type: input
+    id: version
+    attributes:
+      label: Version and artifact
+      description: Package version plus repository commit or pinned download/CDN URL; include a hash if available. Candidate APIs may differ from npm latest.
+      placeholder: "0.3.0 candidate; commit …; pinned SDK URL …"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and integration
+      description: OS, Node/package manager (if used), framework/build tool, browser and versions. For script-only integration, say Node is not used.
+      placeholder: "macOS …; Chrome …; Vite …; Node …; pnpm …"
+    validations:
+      required: true
+  - type: textarea
+    id: policy
+    attributes:
+      label: Relevant options and host policies
+      description: Sanitized WebGuard settings and relevant CSP/SRI/Trusted Types/cache headers. Say default/none if applicable; remove secret origins, nonces and tokens.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction and steps
+      description: Provide a small public synthetic repository, or paste the smallest safe example and exact commands/steps. Do not attach your production application.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and evidence
+      description: Include sanitized errors and before/after behavior with protection disabled/enabled if tested. Distinguish local, deployed, automated and physical-browser observations. Remove sensitive information from screenshots/logs.
+    validations:
+      required: true

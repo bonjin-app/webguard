@@ -2,6 +2,11 @@
 
 ## 0.3.0 local candidate — npm publication held
 
+- Add public bug/feature forms, private security routing and a pull-request template; document a contributor's tool setup, focused verification, module ownership and immutable generated distributions.
+- Keep English, Korean, Japanese and Simplified Chinese README setup/support paths aligned. README verification now rejects broken same-document and linked Markdown section anchors, including malformed URL escapes.
+- Expose detached `getStatus()` runtime diagnostics without network requests; distinguish configured policy, actual listeners, unsupported browser control and unverified build/server coverage. Keep Vite geometry monitoring opt-in.
+- Provide pinned download installation commands, read-only `webguard doctor` diagnostics, and separate SDK installation / interactive demo journeys.
+
 - Reject inherited policy overrides, accessor configuration and sparse string lists before resolving core protection settings.
 - Render complete Korean guides with safe static HTML, consistent navigation and working guide links while preserving text downloads.
 - Gate fresh installed Vite 7/8, generic and Next consumer projects plus workspace SSR fixtures in CI using one temporary candidate; never replace the held release archive.
@@ -17,9 +22,18 @@
 - Validate package bytes and build inputs before publishing, reject legacy/stale candidates before authentication, and recheck after registry lookup.
 - Add Next.js installation examples, clarify environment/compression guidance, and bring live demo controls closer to the first screen.
 
-These changes are local and demonstrated on the public website; npm publication remains paused. The held archive is preserved until a separately authorized release is prepared.
+This section describes the source candidate. The public demo demonstrates its deployed features; repository contribution tooling is verified separately. npm publication remains paused. The held archive is preserved until a separately authorized release is prepared.
 
-## 0.1.0 — Unreleased
+## 0.2.0 — 2026-10-20
+
+- Add `webguard-check` and the Node-only `uulab-webguard/verify` entry for final deployed bytes, response policies and known private/source-map paths.
+- Bound remote verification requests and streaming downloads; validate paths before networking, and report per-resource failures.
+- Preserve editable Shadow DOM interactions, cancel pending integrity work during cleanup, and reject conflicting Vite output directories.
+- Verify registry readback after publication without republishing an existing version. npm publication of the newer candidate remains paused.
+
+See the [detailed change history (Korean)](docs/CHANGELOG.md) and [support, update and rollback policy](docs/SUPPORT.md).
+
+## 0.1.0 — Initial functionality
 
 - Strict TypeScript monorepo, typed presets and output-path selection.
 - AST-based JavaScript protection, private-map options and transactional CLI.

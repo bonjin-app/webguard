@@ -183,6 +183,8 @@ Vite 예제에서는 `dist`를 사용하세요. 이 명령은 배포된 에셋·
 
 ## 소스에서 실행 및 기여
 
+먼저 Node.js 22.13 이상을 설치하세요. pnpm이 없다면 `npm install --global pnpm@11.10.0`으로 고정 버전을 설치합니다. Corepack 사용 방법은 [첫 기여 안내 (영어)](CONTRIBUTING.md#first-contribution)에 있습니다. npm 게시 권한이나 호스팅 계정은 필요하지 않습니다.
+
 ```sh
 git clone https://github.com/bonjin-app/webguard.git
 cd webguard
@@ -197,6 +199,10 @@ pnpm verify
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
+
+## 질문·오류 제보·기여
+
+[오류 제보 또는 기능 요청](https://github.com/bonjin-app/webguard/issues/new/choose)에 작은 비식별 재현 예제, 정확한 패키지 버전·커밋과 실행 환경을 남겨주세요. 취약점 의심 내용은 [비공개 보안 제보](https://github.com/bonjin-app/webguard/security/advisories/new)를 이용하고 [보안 정책 (영어)](SECURITY.md)을 확인하세요. 인증정보나 회사의 비공개 소스는 올리지 마세요. [기여 가이드 (영어)](CONTRIBUTING.md)에는 모듈별 검사, 생성 파일과 후보 릴리스 처리 방법이 정리되어 있습니다.
 
 [프로덕션 후보 기준 (한국어)](docs/PRODUCTION_READINESS.ko.md) · [지원·업데이트·롤백 (영어)](docs/SUPPORT.md)
 

@@ -12,6 +12,42 @@ const editions = [
   "README.zh-CN.md",
 ];
 
+// Match the ATX headings and explicit <a> targets used by this repository.
+// GitHub's heading rules: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#section-links
+function markdownAnchors(markdown) {
+  const lines = [];
+  let fence;
+  for (const line of markdown.split(/\r?\n/)) {
+    if (fence) {
+      if (new RegExp(`^ {0,3}${fence[0]}{${fence.length},}\\s*$`).test(line))
+        fence = undefined;
+      continue;
+    }
+    const start = /^ {0,3}(`{3,}|~{3,})/.exec(line);
+    if (start) fence = start[1];
+    else lines.push(line);
+  }
+  const prose = lines.join("\n");
+  const ids = new Set();
+  for (const heading of prose.matchAll(/^ {0,3}#{1,6}\s+(.+?)\s*#*\s*$/gm)) {
+    const base = heading[1]
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/<[^>]*>/g, "")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\p{M}_ -]/gu, "")
+      .replace(/ /g, "-");
+    let id = base;
+    let suffix = 0;
+    while (ids.has(id)) id = `${base}-${++suffix}`;
+    ids.add(id);
+  }
+  for (const anchor of prose.matchAll(
+    /<a\s+[^>]*\b(?:id|name)=["']([^"']+)["'][^>]*>/gi,
+  ))
+    ids.add(anchor[1]);
+  return ids;
+}
+
 // Bounded to this repository's inline links and fenced examples. Prose and
 // translated comments may differ; executable tokens and destinations may not.
 function inspect(markdown) {
@@ -141,6 +177,7 @@ export async function validateReadmes({ directory = root } = {}) {
   const documents = [];
   const errors = [];
   let relativeLinks = 0;
+  let fragmentLinks = 0;
   let codeBlocks = 0;
   for (const file of editions) {
     try {
@@ -150,13 +187,34 @@ export async function validateReadmes({ directory = root } = {}) {
         if (!document.links.includes(target))
           errors.push(`${file}: missing language navigation ${target}`);
       for (const link of document.links) {
-        if (/^(?:https?:|mailto:|#)/i.test(link)) continue;
-        const target = resolve(directory, dirname(file), link.split("#")[0]);
+        if (/^(?:https?:|mailto:)/i.test(link)) continue;
+        const separator = link.indexOf("#");
+        const path = separator < 0 ? link : link.slice(0, separator);
+        const target = path
+          ? resolve(directory, dirname(file), path)
+          : join(directory, file);
         try {
           await access(target);
-          relativeLinks++;
+          if (path) relativeLinks++;
         } catch {
           errors.push(`${file}: missing relative link ${link}`);
+          continue;
+        }
+        if (
+          separator >= 0 &&
+          link.slice(separator + 1) &&
+          /\.md$/i.test(target)
+        ) {
+          let fragment;
+          try {
+            fragment = decodeURIComponent(link.slice(separator + 1));
+          } catch {
+            errors.push(`${file}: invalid encoded fragment ${link}`);
+            continue;
+          }
+          if (!markdownAnchors(await readFile(target, "utf8")).has(fragment))
+            errors.push(`${file}: missing Markdown anchor ${link}`);
+          fragmentLinks++;
         }
       }
       for (const { language, code } of document.examples) {
@@ -199,6 +257,7 @@ export async function validateReadmes({ directory = root } = {}) {
   return {
     languages: documents.length,
     relativeLinks,
+    fragmentLinks,
     codeBlocks,
     typedExamples,
   };

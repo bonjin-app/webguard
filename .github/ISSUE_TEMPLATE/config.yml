@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/bonjin-app/webguard/security/advisories/new
+    about: Report suspected vulnerabilities privately; never post credentials or exploit details in public issues.
+  - name: Installation and API documentation
+    url: https://webguard.uulab.co.kr/docs/
+    about: Choose an environment-specific installation guide and check the SDK API reference.
