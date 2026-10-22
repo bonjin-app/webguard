@@ -79,9 +79,11 @@ export async function verifyDeployment(
     ...new Set([
       // Public code is verified as an asset; only its precompressed siblings
       // are forbidden. A stale sidecar can expose original bytes on a generic host.
-      ...codePaths.flatMap((path) =>
-        compressionSuffixes.map((suffix) => path + suffix),
-      ),
+      ...codePaths.flatMap((path) => [
+        `${path}.bak`,
+        `${path}~`,
+        ...compressionSuffixes.map((suffix) => path + suffix),
+      ]),
       ...[...codePaths.map((path) => `${path}.map`), ...removedSources].flatMap(
         (path) => [path, ...compressionSuffixes.map((suffix) => path + suffix)],
       ),

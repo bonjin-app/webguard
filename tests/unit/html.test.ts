@@ -30,3 +30,30 @@ it("removes map directives in legacy JavaScript MIME scripts and inert template 
   );
   expect(html).not.toContain("base64,private");
 });
+
+it.each([
+  "StyleSheet",
+  "alternate stylesheet",
+  "\tMODULEPRELOAD\n",
+  "stylesheet\falternate",
+])("adds final-byte SRI to valid rel tokens %j", (rel) => {
+  const html = addSubresourceIntegrity(
+    `<link rel="${rel}" href="assets/app.css" integrity="sha384-old">`,
+    "index.html",
+    new Map([["assets/app.css", Buffer.from("body{color:blue}")]]),
+  );
+  expect(html).toContain(hashContent("body{color:blue}"));
+  expect(html).not.toContain("sha384-old");
+  expect(html).toContain('crossorigin="anonymous"');
+});
+it.each(["preload", "notstylesheet", "modulepreloadx", "icon"])(
+  "leaves unsupported rel %s unchanged",
+  (rel) => {
+    const html = addSubresourceIntegrity(
+      `<link rel="${rel}" href="assets/app.css">`,
+      "index.html",
+      new Map([["assets/app.css", Buffer.from("body{}")]]),
+    );
+    expect(html).not.toContain("integrity=");
+  },
+);

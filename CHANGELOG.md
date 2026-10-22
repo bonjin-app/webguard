@@ -2,6 +2,11 @@
 
 ## 0.3.0 local candidate — npm publication held
 
+- Exclude editor/backup artifacts and refuse them in Next public compiler output; verify common backup alternatives and show them in the deployed-resource demo.
+- Revalidate Vite's finalized output directory before writing, including late post-order plugin changes.
+- Apply final-byte SRI to case-insensitive and multi-token stylesheet/modulepreload links; verify actual CSS tamper rejection in browsers.
+- Localize the obfuscation workbench and reports in Korean, preserving API preset identifiers and clarifying single-run timing.
+
 - Reject precompressed code before transformation; exclude compressed source maps, private source and deployment controls from public output and verify their known remote alternatives.
 - Give Next.js production client chunks the same credential pre-scan and early/final compressed-output checks while preserving server helpers.
 - Detect same-parent DOM movement, retain the positional mismatch until explicit trusted rebaselining, and use reason-specific protection messages.

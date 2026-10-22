@@ -34,8 +34,8 @@ test("does not charge slow real Worker startup against the code execution budget
 }) => {
   await slowWorkerStartup(page, 1400);
   await page.goto("/#try-examples");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치", {
     timeout: 20000,
   });
   await expect(page.locator("#logs")).toContainText("Order total: 90");
@@ -54,8 +54,8 @@ test("allows bounded iframe startup before starting execution", async ({
     }
   });
   await page.goto("/#try-examples");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치", {
     timeout: 20000,
   });
   await expect(page.locator("iframe")).toHaveCount(0);
@@ -66,8 +66,8 @@ test("reports unavailable startup separately and cleans up instead of claiming c
 }) => {
   await slowWorkerStartup(page, 0, true);
   await page.goto("/#try-examples");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Execution error", {
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("실행 오류", {
     timeout: 20000,
   });
   await expect(page.locator("#logs")).toContainText(
@@ -78,7 +78,7 @@ test("reports unavailable startup separately and cleans up instead of claiming c
   );
   await expect(page.locator("iframe")).toHaveCount(0);
   await expect(
-    page.getByRole("button", { name: "Protect & compare" }),
+    page.getByRole("button", { name: "난독화하고 비교하기" }),
   ).toBeEnabled();
 });
 
@@ -88,10 +88,10 @@ test("still terminates infinite code after delayed startup at the execution dead
   await slowWorkerStartup(page, 1400);
   await page.goto("/#try-examples");
   await page
-    .getByLabel("Source JavaScript", { exact: true })
+    .getByLabel("원본 JavaScript", { exact: true })
     .fill("while (true) {}");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Execution error", {
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("실행 오류", {
     timeout: 20000,
   });
   await expect(page.locator("#logs")).toContainText(
@@ -107,7 +107,7 @@ test("Worker ready spam cannot extend the execution deadline", async ({
   page,
 }) => {
   await page.goto("/#try-examples");
-  await page.getByLabel("Source JavaScript", { exact: true }).fill(`
+  await page.getByLabel("원본 JavaScript", { exact: true }).fill(`
 const stop = performance.now() + 3000;
 while (performance.now() < stop) {
   postMessage({ kind: 'ready' });
@@ -115,8 +115,8 @@ while (performance.now() < stop) {
   while (performance.now() < next) {}
 }
 console.log('late output');`);
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Execution error");
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("실행 오류");
   await expect(page.locator("#logs")).toContainText(
     "Execution timed out (1000 ms)",
   );
@@ -138,12 +138,12 @@ test("cleans up failed Worker construction and keeps the controls available", as
     });
   });
   await page.goto("/#try-examples");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Execution error");
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("실행 오류");
   await expect(page.locator("#logs")).toContainText("Sandbox startup failed");
   await expect(page.locator("iframe")).toHaveCount(0);
   await expect(
-    page.getByRole("button", { name: "Protect & compare" }),
+    page.getByRole("button", { name: "난독화하고 비교하기" }),
   ).toBeEnabled();
   expect(errors).toEqual([]);
 });
@@ -153,7 +153,7 @@ test("cancels pending startup on pagehide and supports another run", async ({
 }) => {
   await slowWorkerStartup(page, 1400);
   await page.goto("/#try-examples");
-  await page.getByRole("button", { name: "Protect & compare" }).click();
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
   await expect(page.locator("iframe").first()).toBeAttached();
   await page.evaluate(() =>
     window.dispatchEvent(
@@ -161,7 +161,7 @@ test("cancels pending startup on pagehide and supports another run", async ({
     ),
   );
   await expect(
-    page.getByRole("button", { name: "Protect & compare" }),
+    page.getByRole("button", { name: "난독화하고 비교하기" }),
   ).toBeEnabled({ timeout: 20000 });
   await expect(page.locator("#logs")).toContainText("Execution cancelled");
   await expect(page.locator("iframe")).toHaveCount(0);
@@ -170,8 +170,8 @@ test("cancels pending startup on pagehide and supports another run", async ({
       new PageTransitionEvent("pageshow", { persisted: true }),
     ),
   );
-  await page.getByRole("button", { name: "Protect & compare" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
+  await page.getByRole("button", { name: "난독화하고 비교하기" }).click();
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치", {
     timeout: 20000,
   });
   await expect(page.locator("iframe")).toHaveCount(0);

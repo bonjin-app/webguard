@@ -3,7 +3,10 @@ import { WebGuard, type WebGuardOptions } from "@webguard/browser";
 import { resolveConfig, type Preset } from "@webguard/core";
 import { createDomIdentifierGenerator } from "../../cli/src/dom-identifiers.js";
 import { hasPotentialCredential } from "../../cli/src/scan.js";
-import { isPrecompressedCodePath } from "../../cli/src/private-path.mjs";
+import {
+  isBackupPath,
+  isPrecompressedCodePath,
+} from "../../cli/src/private-path.mjs";
 import JavaScriptObfuscator from "javascript-obfuscator";
 import {
   createObfuscatorOptions,
@@ -245,6 +248,10 @@ class NextProtectionPlugin {
           if (/\.map(?:\.(?:gz|br))*$/i.test(asset.name))
             throw new Error(
               `WebGuard Next refuses public source maps: ${asset.name}`,
+            );
+          if (isBackupPath(asset.name))
+            throw new Error(
+              `WebGuard Next refuses backup files: ${asset.name}`,
             );
           if (isPrecompressedCodePath(asset.name))
             throw new Error(

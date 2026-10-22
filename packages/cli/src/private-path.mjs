@@ -3,9 +3,17 @@ export function isPrecompressedCodePath(path) {
   return /\.(?:[cm]?js|css)(?:\.(?:gz|br))+$/i.test(path);
 }
 
+/** Editor/backup copies must never bypass protection through an alternate suffix. */
+export function isBackupPath(path) {
+  const uncompressed = path.replace(/(?:\.(?:gz|br))+$/i, "");
+  return /(?:\.(?:bak|backup|old|orig|save|swp|swo|tmp)|~)$/i.test(
+    uncompressed,
+  );
+}
+
 /** Raw development/server files and local deployment controls are not public payload. */
 export function isPrivatePath(path) {
-  if (isPrecompressedCodePath(path)) return true;
+  if (isPrecompressedCodePath(path) || isBackupPath(path)) return true;
   // Classify the underlying filename without decoding untrusted compressed bytes.
   // All terminal wrappers are removed, including mixed/repeated gzip/Brotli suffixes.
   const normalized = path

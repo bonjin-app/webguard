@@ -377,11 +377,11 @@ test("runs the complete feature tour with real SDK, scenario, and High protectio
     "pass",
   );
   await page.getByRole("tab", { name: "코드 난독화", exact: true }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치", {
     timeout: 30000,
   });
   await expect(
-    page.getByRole("button", { name: "High", exact: true }),
+    page.getByRole("button", { name: "강력", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#runtime-tour-status")).toHaveAttribute(
     "data-state",

@@ -26,7 +26,7 @@ it("reports network failures per asset and continues checking remaining paths", 
   vi.stubGlobal("fetch", request);
   const result = await verifyDeployment("https://example.com/app/", manifest);
   expect(result.valid).toBe(false);
-  expect(result.checked).toBe(15);
+  expect(result.checked).toBe(17);
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
 });
 
@@ -63,7 +63,7 @@ it("checks generated headers on the entry route, assets and missing source respo
       },
     },
   );
-  expect(result.checked).toBe(15);
+  expect(result.checked).toBe(17);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain(
     "Missing response header on /: Content-Security-Policy",
@@ -140,7 +140,7 @@ it("records HTTP timeout as a failed check and completes the source probes", asy
     [],
     { timeoutMs: 50 },
   );
-  expect(result).toMatchObject({ valid: false, checked: 15 });
+  expect(result).toMatchObject({ valid: false, checked: 17 });
   expect(result.errors).toContain("Unable to check deployed asset: main.js");
   s.closeAllConnections();
 });
@@ -176,6 +176,8 @@ const manifest = {
   },
 };
 it.each([
+  ["main.js", ".bak"],
+  ["main.js", "~"],
   ["main.js", ".gz"],
   ["main.js", ".br"],
   ["main.js", ".gz.gz"],
@@ -192,7 +194,9 @@ it.each([
     let original: Uint8Array = Buffer.from(
       "globalThis.descriptiveOriginalSourceMarker=42;",
     );
-    for (const encoding of suffix.split(".").filter(Boolean))
+    for (const encoding of suffix
+      .split(".")
+      .filter((value) => value === "gz" || value === "br"))
       original =
         encoding === "gz" ? gzipSync(original) : brotliCompressSync(original);
     const sidecar = asset + suffix;
@@ -233,7 +237,7 @@ it.each([
 );
 it("compares deployed bytes and confirms source-map URL absence", async () => {
   const result = await verifyDeployment(await server(), manifest, ["main.ts"]);
-  expect(result).toEqual({ valid: true, errors: [], checked: 22 });
+  expect(result).toEqual({ valid: true, errors: [], checked: 24 });
 });
 it("does not mistake successful SPA fallback URLs for confirmed source-map absence", async () => {
   const result = await verifyDeployment(await server(true), manifest);
@@ -289,7 +293,7 @@ it("rejects a tampered mount root even when index.html and assets match without 
   const result = await verifyDeployment(deployed.base, deployed.manifest);
   expect(result.valid).toBe(false);
   expect(result.errors).toContain("Deployed hash mismatch: /");
-  expect(result.checked).toBe(16);
+  expect(result.checked).toBe(18);
 });
 
 it("rejects an unsuccessful mount root even when index.html and assets match", async () => {
@@ -308,7 +312,7 @@ it("checks mount root status even when the manifest has no index.html", async ()
   expect(result.errors).toContain(
     "Deployment entry does not respond successfully (404)",
   );
-  expect(result.checked).toBe(15);
+  expect(result.checked).toBe(17);
 });
 
 it("accepts matching mount root and assets without optional header comparisons", async () => {
@@ -317,6 +321,6 @@ it("accepts matching mount root and assets without optional header comparisons",
   expect(await verifyDeployment(deployed.base, deployed.manifest)).toEqual({
     valid: true,
     errors: [],
-    checked: 16,
+    checked: 18,
   });
 });

@@ -132,6 +132,44 @@ it("rejects an outputOptions hook redirect before writing unprotected files", as
   );
 });
 
+it("rejects a later post-order outputOptions redirect before writing or replacing either output", async () => {
+  const root = await fixture();
+  await expect(
+    build({
+      root,
+      configFile: false,
+      publicDir: false,
+      logLevel: "silent",
+      plugins: [
+        webguard({
+          obfuscation: { enabled: false },
+          sourceMaps: { privateArtifacts: true },
+        }),
+        {
+          name: "redirect-output-after-webguard-validation",
+          enforce: "post",
+          outputOptions: {
+            order: "post",
+            handler(output) {
+              return { ...output, dir: join(root, "unprotected") };
+            },
+          },
+        },
+      ],
+      build: { outDir: "dist", emptyOutDir: false },
+    }),
+  ).rejects.toThrow(/WebGuard.*(?:output|outDir)/i);
+  expect((await readdir(root)).sort()).toEqual([
+    "dist",
+    "index.html",
+    "main.js",
+  ]);
+  expect(await readdir(join(root, "dist"))).toEqual(["previous.txt"]);
+  expect(await readFile(join(root, "dist", "previous.txt"), "utf8")).toBe(
+    "PREVIOUS BUILD",
+  );
+});
+
 it("allows a relative output directory when both Vite and its bundler resolve it to build.outDir", async () => {
   const root = await fixture();
   await build({

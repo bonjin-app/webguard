@@ -31,13 +31,13 @@ test("runs a ready-made strong example and shows its real output", async ({
 }) => {
   await page.goto("/#try-examples");
   await page.getByRole("button", { name: "폼 검증 예제 실행" }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match", {
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치", {
     timeout: 30000,
   });
   await expect(page.locator("#logs")).toContainText("Valid form: true");
   await expect(page.locator("#logs")).toContainText("Invalid form: false");
   await expect(
-    page.getByRole("button", { name: "High", exact: true }),
+    page.getByRole("button", { name: "강력", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#output")).not.toHaveValue("");
 });

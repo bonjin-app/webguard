@@ -98,7 +98,16 @@ test("denies compressed siblings of the deployed entry and private reports", asy
   const asset = /src="(\/assets\/[^"\s]+\.js)"/.exec(await entry.text())?.[1];
   expect(asset).toBeTruthy();
   for (const path of [asset!, `${asset}.map`, "/webguard-report.json"])
-    for (const suffix of [".gz", ".br", ".gz.gz", ".gz.br", ".br.gz", ".br.br"])
+    for (const suffix of [
+      ".bak",
+      "~",
+      ".gz",
+      ".br",
+      ".gz.gz",
+      ".gz.br",
+      ".br.gz",
+      ".br.br",
+    ])
       expect((await request.get(path + suffix)).status(), path + suffix).toBe(
         404,
       );

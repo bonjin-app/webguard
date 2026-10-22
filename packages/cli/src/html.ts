@@ -83,7 +83,12 @@ export function addSubresourceIntegrity(
       node.tagName === "script"
         ? attr("src")
         : node.tagName === "link" &&
-            /^(?:stylesheet|modulepreload)$/.test(attr("rel")?.value ?? "")
+            (attr("rel")?.value ?? "")
+              .toLowerCase()
+              .split(/[\t\n\f\r ]+/)
+              .some(
+                (token) => token === "stylesheet" || token === "modulepreload",
+              )
           ? attr("href")
           : undefined;
     if (!source) return;

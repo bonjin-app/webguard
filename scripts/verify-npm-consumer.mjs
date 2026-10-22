@@ -213,7 +213,7 @@ try {
     }
     check(
       allowedRoot.has(local) ||
-        /^dist\/(?:index|browser|browser\.global|client|headers|verify|check|server|serve|build|cli)\.(?:js|d\.ts)$/.test(
+        /^dist\/(?:index|browser|browser\.global|client|headers|verify|check|server|serve|build|cli|next|next-runtime)\.(?:js|d\.ts)$/.test(
           local,
         ) ||
         /^dist\/(?:index|remote)-[A-Za-z0-9_-]+\.d\.ts$/.test(local) ||

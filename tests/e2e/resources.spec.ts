@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import ts from "typescript";
+import { addSubresourceIntegrity } from "../../packages/cli/src/html";
 const probes = [
   "/src/main.ts",
   "/package.json",
@@ -34,7 +35,12 @@ async function fixture(page: Page) {
   );
   await page.route("**/*", async (route) => {
     const path = new URL(route.request().url()).pathname;
-    if (probes.includes(path) || path === fixturePath + ".map")
+    if (
+      probes.includes(path) ||
+      [".map", ".bak", "~", ".gz", ".br"].some(
+        (suffix) => path === fixturePath + suffix,
+      )
+    )
       await route.fulfill({ status: 404, body: "" });
     else await route.fallback();
   });
@@ -91,7 +97,10 @@ test("audits actual deployed source URLs and matches the document entry SRI agai
     "data-result",
     "pass",
   );
-  for (const path of [...probes, entry + ".map"]) {
+  for (const path of [
+    ...probes,
+    ...[".map", ".bak", "~", ".gz", ".br"].map((suffix) => entry + suffix),
+  ]) {
     await expect(page.locator(`[data-resource-path="${path}"]`)).toContainText(
       "HTTP 404",
     );
@@ -223,7 +232,7 @@ test("preserves resource auditing across persisted page lifecycle events and rel
     "data-result",
     "pass",
   );
-  await expect(page.locator("#resource-results li")).toHaveCount(7);
+  await expect(page.locator("#resource-results li")).toHaveCount(11);
   await page.evaluate(() => {
     window.dispatchEvent(
       new PageTransitionEvent("pagehide", { persisted: true }),
@@ -237,4 +246,58 @@ test("preserves resource auditing across persisted page lifecycle events and rel
     "data-result",
     "pass",
   );
+});
+
+test("rejects an exposed backup even when the public entry hash matches", async ({
+  page,
+}) => {
+  await fixture(page);
+  await page.route(`**${fixturePath}.bak`, (route) =>
+    route.fulfill({ status: 200, body: "Original source backup" }),
+  );
+  await page.locator("#resource-audit").click();
+  await expect(page.locator("#resource-summary")).toHaveAttribute(
+    "data-result",
+    "fail",
+  );
+  await expect(
+    page.locator(`[data-resource-path="${fixturePath}.bak"]`),
+  ).toContainText("HTTP 200");
+  await expect(page.locator("#resource-code")).toHaveAttribute(
+    "data-result",
+    "pass",
+  );
+  await expect(page.locator("#resource-code")).not.toContainText(
+    "Original source backup",
+  );
+});
+
+test("enforces generated SRI for mixed-case and multi-token stylesheet links in a real browser", async ({
+  page,
+}) => {
+  const stylesheet = "body { color: rgb(0, 80, 200); }";
+  for (const rel of ["StyleSheet", "next\tSTYLESHEET"]) {
+    let tampered = false;
+    const html = addSubresourceIntegrity(
+      `<style>body { color: black; }</style><link rel="${rel}" href="/assets/rel-fixture.css"><p>Styled content</p>`,
+      "rel-fixture.html",
+      new Map([["assets/rel-fixture.css", Buffer.from(stylesheet)]]),
+    );
+    await page.route("**/rel-fixture.html", (route) =>
+      route.fulfill({ contentType: "text/html", body: html }),
+    );
+    await page.route("**/assets/rel-fixture.css", (route) =>
+      route.fulfill({
+        contentType: "text/css",
+        body: tampered ? "body { color: red; }" : stylesheet,
+      }),
+    );
+    await page.goto("/rel-fixture.html");
+    await expect(page.locator("p")).toHaveCSS("color", "rgb(0, 80, 200)");
+    tampered = true;
+    await page.reload();
+    await expect(page.locator("p")).toHaveCSS("color", "rgb(0, 0, 0)");
+    await page.unroute("**/rel-fixture.html");
+    await page.unroute("**/assets/rel-fixture.css");
+  }
 });

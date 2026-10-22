@@ -8,6 +8,7 @@ describe("Next client compiler output scope", () => {
     syntheticValue?: string;
     sidecar?: string;
     late?: boolean;
+    backup?: boolean;
   }>([
     {
       title: "preserves server helpers while protecting public JavaScript",
@@ -35,7 +36,20 @@ describe("Next client compiler output scope", () => {
         late,
       })),
     ),
-  ])("$title", async ({ source, syntheticValue, sidecar, late }) => {
+    ...[
+      "static/chunks/app.js.bak",
+      "static/app.js~",
+      "static/app.js.backup.gz",
+    ].flatMap((sidecar) =>
+      [false, true].map((late) => ({
+        title: `rejects ${late ? "late" : "early"} public backup ${sidecar}`,
+        source: "globalThis.browserResult = 21 * 2;",
+        sidecar,
+        late,
+        backup: true,
+      })),
+    ),
+  ])("$title", async ({ source, syntheticValue, sidecar, late, backup }) => {
     const server = "self.__SERVER_MANIFEST = { original: true };";
     const assets = new Map([
       [
@@ -116,9 +130,11 @@ describe("Next client compiler output scope", () => {
     plugin.apply(compiler);
     if (sidecar && !late) {
       await expect(transforms[0]!()).rejects.toThrow(
-        sidecar.includes(".map.")
-          ? "refuses public source maps"
-          : "refuses precompressed code",
+        backup
+          ? "refuses backup files"
+          : sidecar.includes(".map.")
+            ? "refuses public source maps"
+            : "refuses precompressed code",
       );
       expect(assets.get("static/chunks/app.js")!.source.source()).toBe(source);
       expect(
@@ -152,9 +168,11 @@ describe("Next client compiler output scope", () => {
     if (sidecar && late) {
       addSidecar();
       expect(() => reports[0]!()).toThrow(
-        sidecar.includes(".map.")
-          ? "refuses public source maps"
-          : "refuses precompressed code",
+        backup
+          ? "refuses backup files"
+          : sidecar.includes(".map.")
+            ? "refuses public source maps"
+            : "refuses precompressed code",
       );
     } else for (const report of reports) report();
   });

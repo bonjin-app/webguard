@@ -62,6 +62,7 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
 }) => {
   const uncaught: string[] = [];
   const unexpectedConsole: string[] = [];
+  const expectedProbeURLs = new Set<string>();
   page.on("pageerror", (error) => uncaught.push(error.message));
   page.on("console", (message) => {
     if (message.type() !== "error") return;
@@ -74,15 +75,27 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
       (!url || url.startsWith("about:srcdoc"));
     const expectedQuote =
       url.endsWith("/api/demo/quote") && text.includes("409");
-    const expectedAudit =
-      text.includes("404") &&
-      /\/(src\/main\.ts|package\.json|\.env|vite\.config\.ts|webguard-report\.json|assets\/[^/]+\.js\.map|examples\/vanilla-js\/about\/not-a-static-page\/)$/.test(
-        url,
-      );
+    const expectedAudit = text.includes("404") && expectedProbeURLs.has(url);
     if (!expectedPolicy && !expectedQuote && !expectedAudit)
       unexpectedConsole.push(`${url}: ${text}`);
   });
   await page.goto("/");
+  for (const path of [
+    "/src/main.ts",
+    "/package.json",
+    "/.env",
+    "/vite.config.ts",
+    "/webguard-report.json",
+    "/examples/vanilla-js/about/not-a-static-page/",
+  ])
+    expectedProbeURLs.add(new URL(path, page.url()).href);
+  const entry = await page
+    .locator('script[type="module"][src]')
+    .first()
+    .getAttribute("src");
+  expect(entry).toBeTruthy();
+  for (const suffix of [".map", ".bak", "~", ".gz", ".br"])
+    expectedProbeURLs.add(new URL(entry! + suffix, page.url()).href);
   await page.locator("#runtime-advanced > summary").click();
   await page.getByRole("button", { name: "전체 기능 체험 시작" }).click();
   await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
@@ -90,7 +103,7 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
     timeout: 30000,
   });
   await page.getByRole("tab", { name: "코드 난독화", exact: true }).click();
-  await expect(page.locator("#equivalence")).toHaveText("Outputs match");
+  await expect(page.locator("#equivalence")).toHaveText("출력 일치");
   await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
   await expect(page.locator("#policy-summary")).toContainText("비교 완료");
   await expect(page.locator("#compat-summary")).toHaveAttribute(

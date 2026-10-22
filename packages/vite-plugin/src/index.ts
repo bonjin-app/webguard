@@ -57,6 +57,17 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
   >();
   const include = picomatch(policy.obfuscation.include),
     exclude = picomatch(policy.obfuscation.exclude);
+  function validateResolvedOutput(output: { file?: unknown; dir?: unknown }) {
+    if (vite.isWorker) return;
+    const bundler = vite.build.rolldownOptions ?? vite.build.rollupOptions;
+    validateOutputDirectory(
+      output,
+      vite.root,
+      vite.build.outDir,
+      bundler?.cwd ?? process.cwd(),
+      "output",
+    );
+  }
   return {
     name: "webguard",
     apply: "build",
@@ -65,8 +76,14 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
       written = false;
       metrics.clear();
     },
-    writeBundle() {
-      written = true;
+    writeBundle: {
+      order: "post",
+      sequential: true,
+      handler(output) {
+        if (vite.isWorker) return;
+        validateResolvedOutput(output);
+        written = true;
+      },
     },
     config() {
       return {
@@ -105,16 +122,16 @@ export function webguard(input: WebGuardConfigInput = {}): Plugin {
     outputOptions: {
       order: "post",
       handler(output) {
-        if (vite.isWorker) return null;
-        const bundler = vite.build.rolldownOptions ?? vite.build.rollupOptions;
-        validateOutputDirectory(
-          output,
-          vite.root,
-          vite.build.outDir,
-          bundler?.cwd ?? process.cwd(),
-          "output",
-        );
+        validateResolvedOutput(output);
         return null;
+      },
+    },
+    generateBundle: {
+      order: "post",
+      handler(output) {
+        // A later outputOptions hook can rewrite our earlier validated object.
+        // Check the finalized destination before the bundler writes any files.
+        validateResolvedOutput(output);
       },
     },
     renderChunk: {
