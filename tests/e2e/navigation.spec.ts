@@ -10,6 +10,10 @@ test("opens /demo directly on operable controls and preserves the home introduct
   for (const id of ["runtime-page-block", "shortcuts", "context"])
     await expect(page.locator(`#${id}`)).toBeInViewport({ ratio: 1 });
   await expect(page.locator("#shortcuts")).toBeEnabled();
+  await expect(page.locator(".sdk-hero")).toBeHidden();
+  await expect(page.locator("#sdk-strengths")).toBeHidden();
+  await expect(page.locator("#deployment-proof")).toBeHidden();
+  await expect(page.locator("#developer-resources")).toBeHidden();
   expect(
     await page
       .locator("#sdk-demo")
@@ -112,7 +116,8 @@ test("starts with a quiet browser guard surface and preserves choices across key
   await expect(
     page.getByRole("tab", { name: tabs[3], exact: true }),
   ).toBeFocused();
-  await expect(page.locator("#security-lab")).toBeVisible();
+  await expect(page.locator("#policy-lab")).toBeVisible();
+  await expect(page.locator("#security-lab")).toBeHidden();
   await page.keyboard.press("ArrowLeft");
   await expect(
     page.getByRole("tab", { name: tabs[2], exact: true }),
@@ -123,6 +128,57 @@ test("starts with a quiet browser guard surface and preserves choices across key
   await expect(runtime).toHaveAttribute("aria-selected", "true");
   await expect(page.locator("#shortcuts")).toBeChecked();
   await expect(page.locator("#runtime-advanced")).not.toHaveAttribute("open");
+});
+
+test("advanced labs show one scenario at a time and preserve results across navigation", async ({
+  page,
+}) => {
+  await page.goto("/demo#security-lab");
+  const navigation = page.getByRole("navigation", { name: "고급 검사 선택" });
+  await expect(page.locator("#security-lab")).toBeVisible();
+  await expect(page.locator("#policy-lab")).toBeHidden();
+  await page.locator("#lab-all").click();
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료");
+  await navigation
+    .getByRole("link", { name: "리소스 공개 검사", exact: true })
+    .click();
+  await expect(page.locator("#resource-exposure")).toBeVisible();
+  await expect(page.locator("#security-lab")).toBeHidden();
+  await expect(
+    navigation.getByRole("link", { name: "리소스 공개 검사", exact: true }),
+  ).toHaveAttribute("aria-current", "location");
+  await page.getByRole("tab", { name: "브라우저 가드", exact: true }).click();
+  await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
+  await expect(page.locator("#resource-exposure")).toBeVisible();
+  await navigation
+    .getByRole("link", { name: "삽입·변조 시나리오", exact: true })
+    .click();
+  await expect(page.locator("#lab-summary")).toContainText("5개 체험 완료");
+});
+
+test("runtime diagnosis has readable feature states before its optional raw snapshot", async ({
+  page,
+}) => {
+  await page.goto("/demo#runtime-diagnostics");
+  await expect(page.locator("#runtime-diagnostics")).toHaveAttribute(
+    "open",
+    "",
+  );
+  await expect(page.locator('[data-runtime-feature="shortcuts"]')).toHaveText(
+    "입력 수신 중",
+  );
+  await expect(page.locator("#runtime-status-raw")).not.toHaveAttribute("open");
+  await page.locator("#runtime-page-block").uncheck();
+  await page.locator("#shortcuts").uncheck();
+  await expect(page.locator('[data-runtime-feature="shortcuts"]')).toHaveText(
+    "꺼짐",
+  );
+  await page.locator("#runtime-status-raw > summary").click();
+  await expect(page.locator("#runtime-status")).toBeVisible();
+  expect(
+    JSON.parse((await page.locator("#runtime-status").textContent())!).features
+      .shortcuts,
+  ).toBe("off");
 });
 
 test("routes existing deep links to their tabs and opens setup disclosures", async ({

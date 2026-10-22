@@ -17,9 +17,9 @@ const siteGuard = getAutoGuard() ?? installAutoGuard(siteGuardOptions);
 const logoUrl = new URL("favicon.svg", document.baseURI).href;
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
-<header class="docs-header"><a href="/demo" class="docs-brand" aria-label="WebGuard 데모 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">개발자 가이드</span></a><div class="docs-header-links"><a href="#install">SDK 적용하기</a><a class="docs-demo-link" href="/demo">데모 체험</a></div></header>
+<header class="docs-header"><a href="/" class="docs-brand" aria-label="WebGuard 홈"><img class="docs-logo" src="${logoUrl}" alt="" width="36" height="36"><span>WebGuard</span><span class="docs-badge">브라우저 보호 SDK</span></a><nav class="docs-header-links" aria-label="주요 메뉴"><a href="/">홈</a><a href="/demo">데모</a><a href="/docs/" aria-current="page">문서</a><a class="docs-demo-link" href="/#sdk-downloads">SDK 다운로드</a></nav></header>
 <div class="layout">${docsOutlineMarkup}<main id="main-content" tabindex="-1">
-<section id="overview" class="docs-intro docs-home-intro"><p class="eyebrow">WEBGUARD GUIDE</p><h1>내 환경에 맞게,<br><span>설치부터 적용 확인까지.</span></h1><p class="lead">환경을 고르고 패키지를 연결하세요.<br>빌드·브라우저·배포에서 확인할 내용을 순서대로 안내합니다.</p><div class="docs-actions"><a class="primary" href="#install">내 환경 선택하기</a><a class="secondary" href="#verify-installation">적용 확인 순서</a></div><p class="docs-meta">Node.js 22.12+ · 별도 서비스 계정 없이 사용 · npm 미게시 후보</p><a class="docs-live-link" href="#site-protection-controls">이 문서에 적용된 실제 보호 설정 보기 ↗</a></section>
+<section id="overview" class="docs-intro docs-home-intro"><p class="eyebrow">WEBGUARD SDK GUIDE</p><h1>SDK를 연결하고,<br><span>내 앱에서 확인하세요.</span></h1><p class="lead">파일 다운로드나 CDN으로 브라우저 가드를 시작하세요.<br>앱 코드 난독화가 필요하면 내 환경의 빌드 통합을 추가합니다.</p><div class="docs-actions"><a class="primary" href="/docs/START_CDN.ko.html">파일 · CDN으로 시작하기</a><a class="secondary" href="#install">내 환경의 가이드 찾기</a></div><p class="docs-meta">독립 SDK는 npm·Node.js 없이 사용 · 별도 서비스 계정 불필요</p><a class="docs-live-link" href="#site-protection-controls">이 문서에 적용된 실제 SDK 설정 보기 ↗</a></section>
 ${installationMarkup}
 ${downloadsMarkup}
 ${verificationMarkup}

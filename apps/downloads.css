@@ -42,7 +42,23 @@
   padding: 24px;
   border: 1px solid #e2eaf4;
   border-radius: 16px;
-  background: #f7faff;
+  background: #fff;
+}
+.sdk-downloads .download-route-label {
+  margin: 0 0 14px;
+  color: #0753df;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.sdk-downloads .download-heading {
+  max-width: 720px;
+}
+.sdk-downloads .download-grid article > p {
+  margin-block: 12px;
+}
+.sdk-downloads .download-grid article > .download-meta {
+  margin-top: 0;
 }
 .sdk-downloads h3 {
   margin: 0 0 14px;
@@ -128,5 +144,8 @@
   }
   .sdk-downloads .download-grid article {
     padding: 20px;
+  }
+  .sdk-downloads .download-grid details {
+    padding-inline: 14px;
   }
 }

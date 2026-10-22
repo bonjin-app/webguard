@@ -74,7 +74,7 @@ test("runtime diagnostics follow actual guard policy and modal state", async ({
   await page.goto("/demo#live-demo");
   const panel = page.locator("#runtime-diagnostics");
   await expect(panel).toBeVisible({ timeout: 1500 });
-  await panel.locator("summary").click();
+  await panel.locator(":scope > summary").click();
   const status = async () =>
     JSON.parse((await page.locator("#runtime-status").textContent())!);
   expect(await status()).toMatchObject({

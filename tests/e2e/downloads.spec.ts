@@ -134,9 +134,11 @@ test("install command stays disabled while loading and rejects a hostile catalog
   });
   await page.goto("/docs/#sdk-downloads", { waitUntil: "domcontentloaded" });
   const section = page.locator("#sdk-downloads");
-  await expect(
-    section.getByRole("button", { name: "설치 명령 복사", exact: true }),
-  ).toBeDisabled();
+  const installCopy = section.locator("[data-download-install-copy]");
+  // The new two-path chooser reveals actionable controls only after validating
+  // the catalog. Hidden copy controls must remain disabled as well.
+  await expect(installCopy).toBeHidden();
+  await expect(installCopy).toBeDisabled();
   await expect(page.locator("#docs-install")).toHaveText(
     "다운로드 목록을 불러오는 중…",
   );
@@ -145,9 +147,8 @@ test("install command stays disabled while loading and rejects a hostile catalog
     "목록을 불러올 수 없습니다",
   );
   await expect(page.locator("#docs-install")).not.toContainText("https:");
-  await expect(
-    section.getByRole("button", { name: "설치 명령 복사", exact: true }),
-  ).toBeDisabled();
+  await expect(installCopy).toBeHidden();
+  await expect(installCopy).toBeDisabled();
   await expect(section.locator("[data-download-package]")).not.toHaveAttribute(
     "href",
   );

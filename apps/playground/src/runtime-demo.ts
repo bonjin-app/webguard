@@ -8,7 +8,7 @@ export const runtimeMarkup = `
 <div class="runtime-stage"><div id="runtime-target" class="runtime-target" tabindex="0" role="group" aria-label="본문 시험 영역"><h3>이 영역을 클릭하고 직접 눌러보세요.</h3><p>Mac ⌘+⌥+I · Windows Ctrl+Shift+I · F12<br>우클릭도 시험할 수 있습니다.</p><img src="${inputArt}" alt="" width="150" height="140"><p id="runtime-input-result" class="runtime-outcome" aria-live="polite">아직 실제 입력이 관측되지 않았습니다.</p></div>
 <div class="runtime-synthetic"><h4>버튼으로 빠르게 비교</h4><div class="lab-actions"><button id="test-f12" class="sample-run">F12 시험 이벤트 실행</button><button id="test-mac-inspect" class="sample-run">⌘+⌥+I 시험 이벤트 실행</button><button id="test-menu" class="sample-run">우클릭 시험 이벤트 실행</button></div><p id="live-result" aria-live="polite">옵션을 바꾸고 시험 이벤트를 실행해 보세요.</p><p class="lab-limit">버튼은 합성 이벤트의 취소 여부를 검사합니다. 실제 개발자도구 열림을 검사하지 않습니다.</p></div></div></div>
 <p class="runtime-scope">스위치 설정은 이 페이지 전체에 즉시 적용됩니다. 보호 안내만 켜도 단축키 제한이 자동으로 켜지지 않습니다. 보호 안내를 끄면 편집 영역의 검사 단축키를 허용합니다. 브라우저 메뉴에서 개발자도구를 여는 동작과 콘솔 실행은 제어하지 못합니다.</p>
-<details id="runtime-diagnostics" class="runtime-advanced"><summary>SDK 실행 상태 확인</summary><p>설정값과 실제 실행 상태를 구분합니다. DOM 감시 중지·페이지 안내 실패도 확인할 수 있습니다. 화면은 마지막으로 읽은 상태이며 버튼으로 다시 확인할 수 있습니다.</p><button id="runtime-status-refresh" class="sample-run" type="button">지금 상태 다시 확인</button><pre id="runtime-status" class="lab-result" aria-label="SDK 실행 상태"></pre><p class="lab-limit">파일 검사 ready는 검사 호출 가능 상태이며 검증 성공을 뜻하지 않습니다. 이 진단은 난독화·HTTP 헤더·개발자도구 창 상태를 검증하지 않습니다. 내용·URL·입력값은 포함하거나 전송하지 않습니다.</p><a href="/docs/OPERATIONS.ko.html">개발·검증·운영 적용 가이드 →</a></details>
+<details id="runtime-diagnostics" class="runtime-advanced"><summary>SDK 실행 상태 확인</summary><p>설정값과 실제 실행 상태를 구분합니다. DOM 감시 중지·페이지 안내 실패도 확인할 수 있습니다. 화면은 마지막으로 읽은 상태이며 버튼으로 다시 확인할 수 있습니다.</p><div id="runtime-status-summary" class="runtime-status-summary" aria-label="SDK 기능별 실행 상태"><div><span>SDK 수명</span><strong data-runtime-feature="lifecycle"></strong></div><div><span>검사 단축키</span><strong data-runtime-feature="shortcuts"></strong></div><div><span>본문 우클릭</span><strong data-runtime-feature="contextMenu"></strong></div><div><span>정적 DOM 감시</span><strong data-runtime-feature="domIntegrity"></strong></div><div><span>실행 지연 관찰</span><strong data-runtime-feature="debugging"></strong></div><div><span>페이지 보호 안내</span><strong data-runtime-feature="pageProtection"></strong></div></div><button id="runtime-status-refresh" class="sample-run" type="button">지금 상태 다시 확인</button><details id="runtime-status-raw" class="runtime-status-raw"><summary>개발자용 원본 JSON 보기</summary><pre id="runtime-status" class="lab-result" aria-label="SDK 실행 상태"></pre></details><p class="lab-limit">파일 검사 ready는 검사 호출 가능 상태이며 검증 성공을 뜻하지 않습니다. 이 진단은 난독화·HTTP 헤더·개발자도구 창 상태를 검증하지 않습니다. 내용·URL·입력값은 포함하거나 전송하지 않습니다.</p><a href="/docs/OPERATIONS.ko.html">개발·검증·운영 적용 가이드 →</a></details>
 <details id="runtime-events" class="runtime-advanced"><summary>로컬 이벤트 기록 <span id="runtime-latest-event">아직 기록된 이벤트가 없습니다.</span></summary><div class="lab-actions"><button id="runtime-clear" class="text-button">기록 지우기</button></div><ul id="runtime-log" class="runtime-log" aria-live="polite" aria-label="로컬 이벤트 기록"></ul><p>최근 20건만 기록합니다. 입력 내용은 수집하지 않고 기록을 서버로 보내지 않습니다.</p></details>
 <details id="runtime-advanced" class="runtime-advanced"><summary>고급 설정과 편집 영역 시험</summary>
 <div class="runtime-limit"><strong>페이지 보호 안내는 개발자도구를 닫는 기능이 아닙니다.</strong><p>제한된 검사 단축키나 창 크기 추정 신호에 반응해 페이지 안내를 표시합니다. 창 크기 감지는 오탐 가능성이 있어 기본 OFF입니다. 새로고침하면 기본 설정으로 돌아갑니다. 난독화·소스맵 제거·서버 헤더는 빌드·배포에 적용되며 이 스위치로 해제되지 않습니다.</p></div>
@@ -84,11 +84,37 @@ export function reportRuntimeThreat(event: ThreatEvent) {
 }
 export function initRuntimeDemo(guard: WebGuardInstance) {
   const refresh = () => {
-    get("runtime-status").textContent = JSON.stringify(
-      guard.getStatus(),
-      null,
-      2,
-    );
+    const status = guard.getStatus();
+    const labels: Record<string, string> = {
+      active: "실행 중",
+      destroyed: "종료됨",
+      off: "꺼짐",
+      listening: "입력 수신 중",
+      watching: "감시 중",
+      mismatch: "변경 감지 · 감시 중지",
+      error: "오류 · 감시 중지",
+      unavailable: "사용 불가",
+      manual: "수동 검사만",
+      suspended: "일시 중지",
+      idle: "표시 안 함",
+      pending: "화면 준비 대기",
+      shown: "안내 표시 중",
+    };
+    for (const [name, value] of Object.entries({
+      lifecycle: status.lifecycle,
+      shortcuts: status.features.shortcuts,
+      contextMenu: status.features.contextMenu,
+      domIntegrity: status.features.domIntegrity,
+      debugging: status.debugging.state,
+      pageProtection: status.pageProtection.state,
+    })) {
+      const output = document.querySelector<HTMLElement>(
+        `[data-runtime-feature="${name}"]`,
+      )!;
+      output.textContent = labels[value] ?? value;
+      output.dataset.state = value;
+    }
+    get("runtime-status").textContent = JSON.stringify(status, null, 2);
   };
   refreshRuntimeStatus = refresh;
   get("runtime-status-refresh").addEventListener("click", refresh);

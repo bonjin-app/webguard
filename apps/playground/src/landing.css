@@ -173,6 +173,68 @@
 .mobile-break {
   display: none;
 }
+.connection-paths {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 64px 0;
+  border-bottom: 1px solid var(--line);
+}
+.connection-heading h2 {
+  margin: 12px 0 30px;
+  color: var(--ink);
+  font-size: 28px;
+  letter-spacing: -1px;
+  line-height: 1.5;
+}
+.connection-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px;
+}
+.connection-options article {
+  min-width: 0;
+}
+.connection-label {
+  color: #2866dd;
+  font-size: 12px;
+  font-weight: 650;
+}
+.connection-options h3 {
+  margin: 10px 0 14px;
+  color: var(--ink);
+  font-size: 21px;
+  letter-spacing: -0.6px;
+}
+.connection-options p {
+  font-size: 14px;
+  line-height: 1.9;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.connection-options .connection-scope {
+  margin-top: 10px;
+  color: #67768d;
+  font-size: 12px;
+}
+.connection-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin-top: 16px;
+}
+.connection-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  color: #2866dd;
+  font-size: 13px;
+  text-decoration: none;
+}
+.connection-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .is-landing-page .sdk-strengths {
   padding-block: 90px 64px;
 }
@@ -321,6 +383,7 @@
 }
 @media (max-width: 1180px) {
   .environment-ribbon,
+  .connection-paths,
   .developer-resources,
   .product-footer {
     margin-inline: 24px;
@@ -402,6 +465,27 @@
   }
   .environment-ribbon a {
     min-height: 32px;
+  }
+  .connection-paths {
+    padding-block: 42px;
+  }
+  .connection-heading h2 {
+    font-size: 25px;
+    margin-bottom: 26px;
+  }
+  .connection-options {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .connection-options article + article {
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .connection-options h3 {
+    font-size: 20px;
+  }
+  .connection-options p {
+    font-size: 13px;
   }
   .is-landing-page .sdk-strengths {
     padding-block: 64px 42px;

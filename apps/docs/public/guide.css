@@ -136,6 +136,13 @@ summary:focus-visible,
   font-weight: 650;
 }
 
+.docs-header-links a[aria-current="page"] {
+  color: #0753df;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+}
+
 .docs-header-links .docs-demo-link {
   padding: 10px 18px;
   border-radius: 10px;
@@ -933,6 +940,7 @@ footer {
   .installation-steps li {
     grid-template-columns: 1fr;
     gap: 6px;
+    align-content: start;
   }
   .installation-steps li > span {
     grid-row: auto;
@@ -1209,4 +1217,50 @@ footer {
   .guide-page .guide-tools {
     margin-bottom: 20px;
   }
+}
+
+/* Keep every shared route available without squeezing the mobile header. */
+@media (max-width: 600px) {
+  html {
+    scroll-padding-top: 144px;
+  }
+  .docs-header {
+    flex-wrap: wrap;
+    gap: 2px 12px;
+  }
+  .docs-header-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .docs-header-links .docs-demo-link {
+    padding: 8px 12px;
+  }
+}
+
+.installation-group:first-child .installation-choices {
+  grid-template-columns: minmax(0, 1fr);
+}
+.installation-group:first-child .installation-choice {
+  min-height: 112px;
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+.installation-boundary {
+  padding-left: 18px;
+  border-left: 3px solid var(--accent-line);
+  font-size: 14px;
+}
+.installation-boundary strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.installation-operations {
+  font-size: 13px;
+}
+.installation-operations a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }

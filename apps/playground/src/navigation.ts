@@ -3,6 +3,26 @@ export function initDemoNavigation() {
   const tabs = [
     ...document.querySelectorAll<HTMLButtonElement>("[data-demo-tab]"),
   ];
+  const labs = [
+    "policy-lab",
+    "security-lab",
+    "compatibility-lab",
+    "resource-exposure",
+  ];
+  let activeLab = labs[0]!;
+  function selectLab(id: string) {
+    if (!labs.includes(id)) return;
+    activeLab = id;
+    for (const lab of labs) document.getElementById(lab)!.hidden = lab !== id;
+    for (const link of document.querySelectorAll<HTMLAnchorElement>(
+      ".advanced-navigation a",
+    )) {
+      if (link.hash === `#${id}`) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    }
+  }
+  for (const id of labs) document.getElementById(id)!.dataset.demoLab = id;
+  selectLab(activeLab);
   function select(name: string) {
     for (const tab of tabs) {
       const selected = tab.dataset.demoTab === name;
@@ -24,12 +44,16 @@ export function initDemoNavigation() {
     if (!target) return;
     const panel = target.closest<HTMLElement>(".demo-view");
     if (panel) select(panel.id.replace("-view", ""));
+    const lab = target.closest<HTMLElement>("[data-demo-lab]");
+    if (lab) selectLab(lab.id);
     for (
-      let parent = target.parentElement;
+      let parent: HTMLElement | null = target;
       parent;
       parent = parent.parentElement
     )
       if (parent instanceof HTMLDetailsElement) parent.open = true;
+      else if (parent.hasAttribute("data-demo-marketing"))
+        parent.hidden = false;
     // The browser may attempt its anchor scroll before a hidden panel is revealed.
     requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
   }
@@ -40,7 +64,7 @@ export function initDemoNavigation() {
         runtime: "live-demo",
         obfuscation: "try-examples",
         integrity: "sdk-file",
-        advanced: "policy-lab",
+        advanced: activeLab,
       }[tab.dataset.demoTab!];
       history.replaceState(null, "", `#${target}`);
     });
