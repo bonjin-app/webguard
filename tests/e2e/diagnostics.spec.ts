@@ -115,6 +115,10 @@ test("explains intentional CSP and 409 diagnostics without uncaught app errors",
     "정상 해시: 일치",
   );
   await page.getByRole("tab", { name: "고급 검사", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "고급 검사 선택" })
+    .getByRole("link", { name: "삽입·변조 시나리오", exact: true })
+    .click();
   await expect(page.locator("#lab-console-guide")).toContainText(
     "예상된 시험 로그",
   );
