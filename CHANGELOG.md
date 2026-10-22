@@ -4,6 +4,7 @@
 
 - Add public bug/feature forms, private security routing and a pull-request template; document a contributor's tool setup, focused verification, module ownership and immutable generated distributions.
 - Keep English, Korean, Japanese and Simplified Chinese README setup/support paths aligned. README verification now rejects broken same-document and linked Markdown section anchors, including malformed URL escapes.
+- Align installed-package validation with the shipped operations guide and opt-in geometry monitoring; require nonempty guide content while retaining the package file allowlist.
 - Expose detached `getStatus()` runtime diagnostics without network requests; distinguish configured policy, actual listeners, unsupported browser control and unverified build/server coverage. Keep Vite geometry monitoring opt-in.
 - Provide pinned download installation commands, read-only `webguard doctor` diagnostics, and separate SDK installation / interactive demo journeys.
 

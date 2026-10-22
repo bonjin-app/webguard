@@ -206,6 +206,7 @@ try {
     "README.md",
     "INSTALL.ko.md",
     "ENVIRONMENTS.ko.md",
+    "OPERATIONS.ko.md",
     ...installationGuides,
     "API.ko.md",
     "API_BROWSER.ko.md",
@@ -216,6 +217,7 @@ try {
   ]);
   for (const name of [
     ...installationGuides,
+    "OPERATIONS.ko.md",
     "API.ko.md",
     "API_BROWSER.ko.md",
     "API_BUILD.ko.md",
@@ -655,9 +657,9 @@ WebGuard.init({blockShortcuts:true});\n`,
   const defaults = JSON.parse(await page.locator("#status").textContent());
   check(
     defaults.preset === "strict" &&
-      defaults.devtools.detect === true &&
+      defaults.devtools.detect === false &&
       defaults.devtools.blockShortcuts !== true,
-    "Automatic SDK defaults changed",
+    `Automatic SDK defaults changed: ${JSON.stringify(defaults)}`,
   );
   const dispatch = () =>
     page.evaluate(() =>

@@ -267,9 +267,9 @@ async function exercise(
       const options = JSON.parse(await page.locator("#status").textContent());
       check(
         options.preset === "strict" &&
-          options.devtools.detect === true &&
+          options.devtools.detect === false &&
           Boolean(options.devtools.blockShortcuts) === optIn,
-        "SDK configuration did not match one Vite setting",
+        `SDK configuration did not match one Vite setting: ${JSON.stringify(options)}`,
       );
       async function keyboard(key, expected) {
         await page.keyboard.press(key);
