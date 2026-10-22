@@ -1,0 +1,360 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T00:14:02.303347+00:00",
+  "sourceCommit": "cb74f63",
+  "origin": "https://webguard.uulab.co.kr",
+  "demoUrl": "https://webguard.uulab.co.kr/demo?ux=cb74f63#live-demo",
+  "deployment": {
+    "id": "8b154abf-2ead-43c2-a6fa-9be1fe34ffba",
+    "version": "33c6a555-d850-4e06-bfab-b1f1257fc725",
+    "previousVersion": "bdc8d5d3-813a-4401-80b1-635ec4426580",
+    "trafficPercentage": 100,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "changes": [
+    "Independent page-response, shortcut and context-menu switches; invalid advanced threshold no longer blocks unrelated updates",
+    "Dedicated /demo workbench before SDK introduction; visible input tests, per-test results, separate local history and two runtime cards",
+    "Automatic counters, history and pending manual samples survive response-only changes; latest response applies when a signal resolves",
+    "Selected static notice recovery reconstructs the connected canonical element after tampering, replacement, removal and movement",
+    "Sequential seven-stage tour rejects re-entry, reports progress and synchronizes response captions"
+  ],
+  "verification": {
+    "unitIntegration": {
+      "passed": 487,
+      "failed": 0
+    },
+    "localFeatureBrowser": {
+      "passed": 109,
+      "skipped": 2
+    },
+    "finalLocalTour": {
+      "passed": 3,
+      "failed": 0
+    },
+    "publicHttpBrowser": {
+      "passed": 270,
+      "failed": 0,
+      "skipped": 2,
+      "retries": 0
+    },
+    "skips": "Chromium-only CDP debugger pause/resume test skipped on Firefox and WebKit; ordinary observation, DOM and switches pass all three engines",
+    "build": true,
+    "rootTypes": true,
+    "workerTypes": true,
+    "lint": true,
+    "format": true,
+    "dryRun": true,
+    "review": "Read-only review findings corrected: invalid threshold, detached DOM recovery, pending sample cancellation, and stale tour response captions"
+  },
+  "actualDebuggerVerification": {
+    "engine": "chromium",
+    "method": "CDP pause/resume",
+    "automaticWatchWithoutManualSample": true,
+    "scope": "Delay suspicion after resumption, sticky report and optional page response; not universal DevTools-open detection or closure"
+  },
+  "nativePublicUI": {
+    "offThenOnSyntheticMacInput": ["allowed", "prevented"],
+    "sdkNativeModalShownAndRechecked": true,
+    "domTamperDetected": true,
+    "switchReactivationRestoresCanonicalNotice": true,
+    "automaticSampleObserved": 86,
+    "captures": [
+      "workbench-public-controls.png",
+      "workbench-public-response.png",
+      "workbench-public-runtime.png"
+    ],
+    "scope": "Input buttons generate explicitly labeled synthetic events; this native UI proof does not establish browser-menu or DevTools closure"
+  },
+  "installedCandidate": {
+    "sha512": "08ae08962ba0a9b2c66651a261f6fd7df3ae391dce4a13c335debc54cf983ab47a22e76266bed30a464d86dfffd7d42d1188abaa981aa5fc91018f5803735d91",
+    "packedFilesMatchCurrentBuild": 34,
+    "evidence": "workbench-vite-consumer-verification.json",
+    "browsers": ["chromium", "firefox", "webkit"],
+    "npmPublished": false
+  },
+  "npmPublication": "paused",
+  "canonicalReleaseTarballUnchangedSha512": "913e4f52ea53ea2a8cd01d3a5d016ce016fe740cfff340cfbcd472a51587771161c2a844d810fe6b679d95b8034baa1e3b463b37b93bb4723852c665c3af521f",
+  "codexConfigurationModified": false,
+  "interruptedRunDiagnostic": {
+    "failedRunLog": "/tmp/webguard-workbench-public.log",
+    "scope": "Extracted diagnostic observations; failure occurred before app/SDK execution and before Protect click. Original transient trace was replaced by the next Playwright output directory.",
+    "failedPhase": "page.goto waiting for load",
+    "firstRun": {
+      "passed": 269,
+      "failed": 1,
+      "skipped": 2
+    },
+    "traceObservations": {
+      "testStartLocal": "2026-10-21T18:15:40.065+09:00",
+      "mainDocumentStatus": 200,
+      "mainDocumentWaitMs": 371517.916,
+      "entryJavaScriptAndCSSIncomplete": true,
+      "protectClicked": false
+    },
+    "systemPowerCorrelation": {
+      "sleepLocal": "2026-10-21T18:15:38+09:00",
+      "nextDarkWakeLocal": "2026-10-21T18:21:51+09:00",
+      "interpretation": "Sleep/dark-wake interval matches navigation wait; no sandbox code change or timeout increase justified by this record."
+    },
+    "unmodifiedExactScenario": {
+      "passed": 3,
+      "failed": 0,
+      "durationsSeconds": [7.2, 7.7, 7.9]
+    },
+    "finalRunIdleSleepPrevention": "Process-scoped caffeinate -i; no persistent OS or Codex settings changed",
+    "timeoutChanged": false,
+    "testExcluded": false
+  },
+  "publicReadback": {
+    "checkedAt": "2026-10-21T09:12:35.607Z",
+    "total": 40,
+    "matches": 40,
+    "files": [
+      {
+        "path": "/assets/index-BVDA66CA.css",
+        "status": 200,
+        "sha256": "c881843043fc89858c5b3e55303436a6076cf4e0c5a975261e2eba04b9f63182",
+        "matches": true
+      },
+      {
+        "path": "/assets/index-CmD-3kyK.js",
+        "status": 200,
+        "sha256": "23a47735c86d6779b6c65cc4615e801c1e36d4acaefb8194f7fc70e1467ea2d6",
+        "matches": true
+      },
+      {
+        "path": "/assets/index.browser-ByBebKLV.js",
+        "status": 200,
+        "sha256": "ab780c5035acedd04b688d9ef53f55018a43a57066c8904b5f5d05d2e9015086",
+        "matches": true
+      },
+      {
+        "path": "/assets/input-try-C8omM10O.webp",
+        "status": 200,
+        "sha256": "74207c03739acdde01ae3ddf13b229a6e93c84c5c5f182402ffd629ffb6a6e9a",
+        "matches": true
+      },
+      {
+        "path": "/assets/sdk-cube-BfW27hof.webp",
+        "status": 200,
+        "sha256": "23e5234de0988e8120b5cb0f88cd44f72108f1c5739a2d08767f5ed5cfe02e0a",
+        "matches": true
+      },
+      {
+        "path": "/assets/sky-background-BT0G8_Wo.webp",
+        "status": 200,
+        "sha256": "3d33ef4d58f8ce2663fac5c90cef59419ffd9dfef2a8ce452208981be686d40b",
+        "matches": true
+      },
+      {
+        "path": "/assets/transform.worker-D28RKw-2.js",
+        "status": 200,
+        "sha256": "4956caa08708d548fbcefe714369ced77fd209fa32292fb160bbbd32853a3f9e",
+        "matches": true
+      },
+      {
+        "path": "/assets/web-app-B46Mgxd8.webp",
+        "status": 200,
+        "sha256": "e5713cfe4e1af0bcba1978d2ec39fe4d15010d3c5800c059e75111be678cd554",
+        "matches": true
+      },
+      {
+        "path": "/docs/assets/index-Cykba1Iu.js",
+        "status": 200,
+        "sha256": "a52596680572eb973a41e025d4883b07c4a4a29058dd5fe08c50624372d84d85",
+        "matches": true
+      },
+      {
+        "path": "/docs/assets/index-gal6gU6H.css",
+        "status": 200,
+        "sha256": "f6fbdc8f8364f1a58cb696b7ec724e29157f7f531013de39e2ac6f16d43194db",
+        "matches": true
+      },
+      {
+        "path": "/docs/ENVIRONMENTS.ko.txt",
+        "status": 200,
+        "sha256": "ebdd006038e3bfdbd6ee6888de5a2cc69a3b34dcc1f02ec02d2354965e8f4c46",
+        "matches": true
+      },
+      {
+        "path": "/docs/favicon.svg",
+        "status": 200,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "matches": true
+      },
+      {
+        "path": "/docs/index.html",
+        "status": 200,
+        "sha256": "f7c7a843b96482fac86d3fb2670e840217b1608ac154c570e3c28e648460ffe3",
+        "matches": true
+      },
+      {
+        "path": "/docs/INSTALL.ko.txt",
+        "status": 200,
+        "sha256": "cc55cc283699c53155ba750907cbfb3660eabe48d932d073e9b93dddd0c62b6c",
+        "matches": true
+      },
+      {
+        "path": "/docs/og-docs.png",
+        "status": 200,
+        "sha256": "e8d8572358ff5fe23f14979c16bd555e7aed3c952b17d1862e692d3001539492",
+        "matches": true
+      },
+      {
+        "path": "/docs/SSR_VERIFICATION.txt",
+        "status": 200,
+        "sha256": "04f29c48127373aa76688441a3265e3a58b094c5c0f4667cad4fbb8961c34a6d",
+        "matches": true
+      },
+      {
+        "path": "/docs/third-party-licenses.md",
+        "status": 200,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/assets/index-65KBRBiT.css",
+        "status": 200,
+        "sha256": "7bb114201f0b4ea7bc020483af2af86319173853f15afb6f368dee0b3dcceee3",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/assets/index-BtnIOE8Y.js",
+        "status": 200,
+        "sha256": "d6fdfec17275d7f1cc2c16b3f0ce7c335b2f0ae8bbe2656626c4709b27227369",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/assets/lazy-B5w_WjCQ.js",
+        "status": 200,
+        "sha256": "6736db1ba66b68fc4631dc393e0dcd9fcfab5b6746c3fc531fbea2b5e047bc9b",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/index.html",
+        "status": 200,
+        "sha256": "95628ddd7b575292ae4d36676e3a07f3e45f885bf736e1504f54baf5d17f5819",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/third-party-licenses.md",
+        "status": 200,
+        "sha256": "711200ed091dc3a2714bfe95bd803097f004ac1ab71c1cd6c8b1226466aef609",
+        "matches": true
+      },
+      {
+        "path": "/examples/react/webguard-manifest.json",
+        "status": 200,
+        "sha256": "a20f4dcd11a84adf42de4185f83cca21e00e0bc522bc909af778e80945bebd5b",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/about/index.html",
+        "status": 200,
+        "sha256": "96a08f00d91fd88d832adaa3376e4adacc8bcb85294d0eeb797a0c1fb6bf1f50",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/about-BZRefGzA.js",
+        "status": 200,
+        "sha256": "ce3446785bf37dcdc0bc579f48992fb040e82ce64c870cec2ba766375fbffb50",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/index-DEZoKF5g.js",
+        "status": 200,
+        "sha256": "c958b5a1582d9d67c0d1d1b60498d6d019ac2aa6f9e82df845af5dab91c62a5a",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/lazy-BJjI3jXR.js",
+        "status": 200,
+        "sha256": "190d2cc27900c84be6338db2f31555e4a002f668244dae21fe20be04a43350a9",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/assets/style-BzABUnnU.css",
+        "status": 200,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/index.html",
+        "status": 200,
+        "sha256": "214005246736ee49abbf16ec8115e55dc29a82db6359be2f6da1837721e482a6",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-js/webguard-manifest.json",
+        "status": 200,
+        "sha256": "9db6070214d296c7d18dcae84e5dbe0882061b26ba654c465c7610a03045f6e2",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index-BzABUnnU.css",
+        "status": 200,
+        "sha256": "c3fc49007f946d3e9b9a94f7cfecd4205588391f9e57245188af39e96314fcce",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/index-DdTnrrQq.js",
+        "status": 200,
+        "sha256": "f4c9289ad98629746946abc1c67c7363978d42bc90cbe2c3500238619319ce80",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-ts/assets/lazy-CZmBxdLW.js",
+        "status": 200,
+        "sha256": "f274f434f44aaff5ee3e523b0e7c43831763c7f66103aece500761bf011447ee",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-ts/index.html",
+        "status": 200,
+        "sha256": "81b7f3e778a1210a650ad29180e4c93ce820299a10e176a8784182d61f4a5ee4",
+        "matches": true
+      },
+      {
+        "path": "/examples/vanilla-ts/webguard-manifest.json",
+        "status": 200,
+        "sha256": "9a1e92d0112861ea0245221e670b209ff3fcc3af30b4edce3b152c44ed16c295",
+        "matches": true
+      },
+      {
+        "path": "/favicon.ico",
+        "status": 200,
+        "sha256": "83cd354fe36b23b5ee6f101c0ef53aeb01cefd8c67777c75d70e78af792c7831",
+        "matches": true
+      },
+      {
+        "path": "/favicon.svg",
+        "status": 200,
+        "sha256": "ae22e4220033117f9713c338a142e7633d3d1fd094fa0f3e4510980c094b8471",
+        "matches": true
+      },
+      {
+        "path": "/index.html",
+        "status": 200,
+        "sha256": "3439e0b7a385042d47619abf82daac7ccd5373677736d5fbc2740dcc98896dfa",
+        "matches": true
+      },
+      {
+        "path": "/og-demo.png",
+        "status": 200,
+        "sha256": "6e0c4167a085cf5819a601cb45b6cf7a0c136e411ca41b4ea4b844a5d3af53fc",
+        "matches": true
+      },
+      {
+        "path": "/third-party-licenses.md",
+        "status": 200,
+        "sha256": "28a4956b163373f96b45287cfbad032dc6267bb33da600474a87a05f5e93e1df",
+        "matches": true
+      }
+    ]
+  },
+  "limitations": [
+    "Web SDK cannot force-close or prohibit DevTools or hide resources already delivered to the browser",
+    "Timing observes sufficient deadline delays after execution resumes; tools merely open or short pauses can be missed and CPU load can produce false signals",
+    "Client UI responses and selected static DOM monitoring do not replace server authorization or an external integrity trust root"
+  ]
+}

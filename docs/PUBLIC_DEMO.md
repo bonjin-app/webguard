@@ -4,7 +4,23 @@
 
 The public adapter runs the same demo applications on Cloudflare Workers Static Assets. It does not execute submitted JavaScript on a server: transformation and bounded test execution remain in the visitor's browser.
 
-## Automatic observation and repeatable protection flow (current)
+## Operable switches and dedicated demo workbench (current)
+
+[Open the updated controls](https://webguard.uulab.co.kr/demo?ux=cb74f63#live-demo) · [DOM and execution observation](https://webguard.uulab.co.kr/demo?ux=cb74f63#runtime-hardening). Source **cb74f63** is deployed as Worker **33c6a555-d850-4e06-bfab-b1f1257fc725**, deployment **8b154abf-2ead-43c2-a6fa-9be1fe34ffba**, at 100% traffic. Bindings and runtime configuration are unchanged; **40/40 public files** match the prepared build. npm publication remains paused and its canonical release candidate is unchanged.
+
+The default page response no longer locks the shortcut switch ON. Page response, shortcut restriction and context-menu restriction are independent, and an invalid advanced threshold retains the actual valid value while other switches still apply. `/demo` starts at the workbench, with settings beside the input target and explicitly labeled synthetic test buttons. Local history, advanced settings and detailed limits use separate disclosures. DOM and execution observation have two spacious cards and visible response captions.
+
+SDK response-only updates preserve automatic deadlines/counters/history and pending manual samples; completed suspicion uses the latest response policy. The demo restores a connected canonical static notice before rebaselining after text changes, replacement, removal or movement. The seven-stage tour runs sequentially, prevents re-entry, updates response captions and labels stage completion separately from each check's success or failure.
+
+Fresh checks passed **487 unit/integration**, **109 local feature browser cases** plus the final **3 tour cases**, and **270 public HTTP/browser cases**, with two explicit CDP-only skips and no retries. Chromium CDP pause/resume verifies the actual automatic execution-delay signal and optional response. A fresh installed Vite candidate passes all three engines; all **34 packed files** match the current built package. Native public UI confirmed OFF/ON synthetic input differences, actual SDK modal/recheck, DOM tamper detection and switch-driven canonical recovery. Synthetic input is not proof of native browser DevTools closure.
+
+The first public run recorded one WebKit navigation timeout before Protect was clicked or app JS/CSS completed. Its 371-second document wait coincides with laptop sleep/dark-wake transitions. The unchanged exact case then passed three times in 7–8 seconds. The complete rerun used only process-scoped idle-sleep prevention and passed 270/270 available cases; no timeouts were increased or tests excluded. The receipt preserves the interrupted-run observations separately.
+
+The SDK still cannot close or universally detect open DevTools. Execution-delay observation requires a sufficiently delayed deadline and resumption; CPU scheduling can cause false signals. The demo presents these conditions alongside the controls.
+
+[Deployment receipt](evidence/workbench-deployment.json) · [Installed Vite verification](evidence/workbench-vite-consumer-verification.json) · [Public controls](evidence/workbench-public-controls.png) · [SDK response](evidence/workbench-public-response.png) · [DOM recovery and observation](evidence/workbench-public-runtime.png).
+
+## Automatic observation and repeatable protection flow (preceding release)
 
 [Try the updated demo](https://webguard.uulab.co.kr/demo?watch=d5fcf5c#runtime-hardening) · [Korean setup](https://webguard.uulab.co.kr/docs/#runtime-hardening). The previous execution toggle only allowed a manually requested timer sample. It now starts actual SDK observation via debugging.watch, with full-interval deadlines, visibility suspension and live getDebuggingState samples. The product demo and guide enable report-only observation by default; SDK consumer defaults remain OFF.
 
