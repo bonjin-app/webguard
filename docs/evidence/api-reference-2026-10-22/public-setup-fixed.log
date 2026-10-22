@@ -1,0 +1,23 @@
+
+Running 12 tests using 3 workers
+
+(node:14868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14869) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (1.6s)
+  ✓   3 [firefox] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (1.6s)
+  ✓   4 [webkit] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (1.2s)
+  ✓   2 [chromium] › tests/e2e/setup.spec.ts:3:1 › offers generic builds and classic SDK integration without Vite (2.8s)
+  ✓   5 [firefox] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (1.2s)
+  ✓   6 [webkit] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (1.3s)
+  ✓   8 [firefox] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (1.1s)
+  ✓  10 [firefox] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (1.4s)
+  ✓   7 [chromium] › tests/e2e/setup.spec.ts:34:1 › generates one Vite configuration for strict React and explicit vanilla compatibility (2.7s)
+  ✓   9 [webkit] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (1.7s)
+  ✓  11 [chromium] › tests/e2e/setup.spec.ts:79:1 › copies the selected configuration and keeps choices when integration tabs change (2.4s)
+  ✓  12 [chromium] › tests/e2e/setup.spec.ts:126:1 › provides a scoped Next configuration and links server-rendered environments (2.7s)
+
+  12 passed (11.1s)

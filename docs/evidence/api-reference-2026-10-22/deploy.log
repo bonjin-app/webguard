@@ -1,0 +1,58 @@
+
+ ⛅️ wrangler 4.151.2 (update available 4.151.3)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 89 files from the assets directory /Users/uulab/Documents/workspace/uulab/webguard/.cloudflare-dist/public
+🌀 Starting asset upload...
+🌀 Found 35 new or modified static assets to upload. Proceeding with upload...
++ /examples/vanilla-js/assets/about-18olsQ_e.js
++ /examples/react/webguard-manifest.json
++ /examples/vanilla-ts/assets/lazy-C4vYkY_Q.js
++ /examples/vanilla-ts/index.html
++ /docs/index.html
++ /docs/API_INTEGRATIONS.ko.txt
++ /docs/ENVIRONMENTS.ko.txt
++ /examples/vanilla-ts/assets/index-B82-e-9W.js
++ /docs/INSTALL.ko.txt
++ /docs/INSTALL.ko.html
++ /docs/assets/index-BfeXqjDv.js
++ /assets/index.browser-BJrsL4ej.js
++ /examples/vanilla-ts/webguard-manifest.json
++ /examples/react/index.html
++ /examples/vanilla-js/about/index.html
++ /examples/react/assets/lazy-C5PeAHwO.js
++ /downloads/catalog.json
++ /docs/SSR_VERIFICATION.html
++ /examples/vanilla-js/assets/index-bo5NVjGS.js
++ /docs/ENVIRONMENTS.ko.html
++ /docs/API_BROWSER.ko.txt
++ /docs/API_BROWSER.ko.html
++ /assets/index-IzzcayGb.js
++ /examples/react/assets/index-sdJWcYvK.js
++ /examples/vanilla-js/assets/lazy-B4Ak9ivN.js
++ /examples/vanilla-js/webguard-manifest.json
++ /examples/vanilla-js/index.html
++ /index.html
++ /docs/API.ko.txt
++ /docs/API.ko.html
++ /docs/API_INTEGRATIONS.ko.html
++ /docs/API_BUILD.ko.txt
++ /docs/API_BUILD.ko.html
++ /downloads/releases/0.3.0-f200caff650d6cd5/uulab-webguard-0.3.0.tgz
++ /assets/transform.worker-DWjsUhzy.js
+Uploaded 11 of 35 assets
+Uploaded 23 of 35 assets
+Uploaded 35 of 35 assets
+✨ Success! Uploaded 35 files (33 already uploaded) (2.62 sec)
+
+Total Upload: 17.59 KiB / gzip: 3.40 KiB
+Worker Startup Time: 2 ms
+Your Worker has access to the following bindings:
+Binding            Resource      
+env.ASSETS         Assets        
+
+Uploaded webguard-demo (7.89 sec)
+Deployed webguard-demo triggers (1.68 sec)
+  https://webguard-demo.uulab.workers.dev
+  webguard.uulab.co.kr (custom domain)
+Current Version ID: 58be7569-77a6-472e-9d94-3e8e8077799e

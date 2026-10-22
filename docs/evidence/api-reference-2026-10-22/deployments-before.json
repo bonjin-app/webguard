@@ -1,0 +1,172 @@
+[
+  {
+    "id": "7f2829c4-c102-4eeb-a429-f874f1de74e9",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "SSR environment guides and verified client adapters; source cff59f4; npm publication paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "31d4800d-cd46-4cff-95df-8ff61c15e0a5",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-21T07:13:39.769464Z"
+  },
+  {
+    "id": "fa3b07dd-0286-4fab-858f-f6d26db22d97",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard runtime guards and opaque CSS Modules; source 368e725; npm publication paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "e832eaf9-9a35-4bab-9a35-071a749c9adf",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-21T08:05:08.226261Z"
+  },
+  {
+    "id": "4c94544f-361f-47d6-b34d-413b53f803f0",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard automatic visible-page observation and repeatable demo flow; source d5fcf5c; npm publishing paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "bdc8d5d3-813a-4401-80b1-635ec4426580",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-21T08:45:17.879061Z"
+  },
+  {
+    "id": "8b154abf-2ead-43c2-a6fa-9be1fe34ffba",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard operable independent switches, dedicated demo workbench and preserved runtime checks; source pending readback; npm publishing paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "33c6a555-d850-4e06-bfab-b1f1257fc725",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-21T09:11:56.802243Z"
+  },
+  {
+    "id": "c82ae9b8-eaa9-4af0-b90c-3b0650e030ad",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard full review fixes: compressed asset protection, Next parity and clearer demo; source e3aa9c6; npm paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "500acbb5-fbc8-417d-a1d3-08a3f13ce4fa",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T00:32:53.315386Z"
+  },
+  {
+    "id": "8d3ee58b-8bf4-437c-8aeb-005f13060032",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard reviewed SDK and compressed asset verification; source 3f6fd67; npm publication paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "a706f45c-3018-4cde-8059-7e29f52935ae",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T00:38:19.776378Z"
+  },
+  {
+    "id": "56e9a163-b3d5-4b96-ab5d-050e6bff8809",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard SDK hardening: final output validation, private backups, link SRI and Korean demo; source 9ca2af0; npm paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "423bdaa9-7167-4a7e-9adf-ce9d0e908f5a",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T01:02:58.930792Z"
+  },
+  {
+    "id": "b13da3c6-0432-4738-b190-f3ff885836bb",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard configuration safety and unified Korean SDK guides; source 4a26a29; npm paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "144e98d1-6771-45d9-9970-320cade7d25c",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T01:26:46.531886Z"
+  },
+  {
+    "id": "15c893a7-b556-4b60-b36b-ee267bbf27df",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard static inline protection, pinned SDK CDN and direct downloads; verified source 1409d18; npm paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "71af970e-9525-4fd4-bd91-887597d43c48",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T02:39:34.740286Z"
+  },
+  {
+    "id": "005629f6-e221-41c8-9eaa-83d4cc607656",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "uulab.official@gmail.com",
+    "annotations": {
+      "workers/message": "WebGuard verified downloads and pinned CDN; cached-page initializer fix; source 02a8f34; retained previous release; npm paused",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "e50d6e63-4bd4-46dd-8ce0-b4ee977222e4",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-22T02:49:10.014782Z"
+  }
+]

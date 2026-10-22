@@ -139,7 +139,7 @@ test("provides a scoped Next configuration and links server-rendered environment
   );
   await expect(page.locator("#setup-hint")).toContainText("SSR");
   await expect(page.locator("#setup-hint")).toContainText("CSP");
-  await page.locator(".setup-support a").click();
+  await page.locator('.setup-support a[href="/docs/#environments"]').click();
   await expect(page.locator("#environments")).toBeVisible();
   await expect(page.locator("#environments")).toContainText("Python");
   await expect(page.locator("#environments")).toContainText("JSP");

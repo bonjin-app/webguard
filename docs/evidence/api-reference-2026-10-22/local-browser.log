@@ -1,0 +1,85 @@
+[WebServer] (node:11915) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11917) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4175 --strictPort
+[WebServer] (node:11933) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+[WebServer]   - import "../site-guard-options" without a file extension (vite.config.ts:3:34). Add the file extension
+[WebServer] Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+[WebServer] (node:11969) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4176 --strictPort --port 4176 --strictPort
+[WebServer] (node:11985) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12003) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite preview --host 127.0.0.1 --port 4177 --strictPort --port 4177 --strictPort
+[WebServer] (node:12022) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 36 tests using 4 workers
+
+(node:12032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12030) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12031) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12029) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (1.1s)
+  ✓   4 [chromium] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (1.1s)
+  ✓   5 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (286ms)
+  ✓   6 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (385ms)
+  ✓   7 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (149ms)
+  ✓   8 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (148ms)
+  ✓   9 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (166ms)
+  ✓  11 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (152ms)
+  ✓  10 [chromium] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (295ms)
+(node:12063) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (2.3s)
+(node:12065) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (2.9s)
+(node:12073) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [firefox] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (1.1s)
+  ✓  14 [firefox] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (980ms)
+  ✓  17 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (358ms)
+  ✓  15 [firefox] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (845ms)
+  ✓  19 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (291ms)
+  ✓  18 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (471ms)
+  ✓  20 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (270ms)
+  ✓  21 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (288ms)
+  ✓  22 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (335ms)
+  ✓  23 [firefox] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (279ms)
+(node:12112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [firefox] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (2.0s)
+(node:12120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [chromium] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (4.1s)
+  ✓  24 [firefox] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (912ms)
+(node:12131) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [webkit] › tests/e2e/downloads.spec.ts:7:3 › /demo shows retained SDK downloads and exact CDN SRI (772ms)
+(node:12147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  26 [webkit] › tests/e2e/downloads.spec.ts:7:3 › /docs/ shows retained SDK downloads and exact CDN SRI (703ms)
+  ✓  28 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › INSTALL.ko is a complete styled static guide with text download (414ms)
+  ✓  27 [webkit] › tests/e2e/downloads.spec.ts:59:1 › download catalog failure is explicit and retry restores safe links (641ms)
+  ✓  31 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › SSR_VERIFICATION is a complete styled static guide with text download (285ms)
+  ✓  30 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › ENVIRONMENTS.ko is a complete styled static guide with text download (459ms)
+  ✓  32 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API.ko is a complete styled static guide with text download (298ms)
+  ✓  33 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_BROWSER.ko is a complete styled static guide with text download (311ms)
+  ✓  34 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_BUILD.ko is a complete styled static guide with text download (313ms)
+  ✓  35 [webkit] › tests/e2e/public-guides.spec.ts:57:3 › API_INTEGRATIONS.ko is a complete styled static guide with text download (291ms)
+  ✓  29 [webkit] › tests/e2e/public-guides.spec.ts:13:1 › opens complete guides from the Korean documentation home (2.0s)
+  ✓  36 [webkit] › tests/e2e/public-guides.spec.ts:121:1 › connects the docs and demo setup to the complete API reference (1.3s)
+
+  36 passed (12.1s)
