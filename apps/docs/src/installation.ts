@@ -45,7 +45,7 @@ const groups = [
 
 export const installationMarkup = `
 <section id="install" class="installation-start" aria-labelledby="installation-heading">
-<div class="eyebrow">START WITH YOUR STACK</div>
+<div class="eyebrow">01 · 환경 선택</div>
 <h2 id="installation-heading">사용하는 환경을 선택하세요</h2>
 <p>내 프로젝트에 맞는 문서 하나만 따라가세요. 필요한 파일, 설정 위치, 실행 명령과 적용 확인 방법을 순서대로 안내합니다.</p>
 <ol class="installation-steps" aria-label="적용 순서"><li><span>1</span><strong>환경 선택</strong><small>내 앱에 맞는 가이드</small></li><li><span>2</span><strong>설치 · 설정</strong><small>예제 그대로 연결</small></li><li><span>3</span><strong>빌드 · 확인</strong><small>실행과 정책 검사</small></li></ol>

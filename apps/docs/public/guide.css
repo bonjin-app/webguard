@@ -991,6 +991,197 @@ footer {
   color: #0753df;
 }
 
+/* The documentation home follows the adoption flow before optional reference. */
+.docs-home-outline b {
+  margin-right: 10px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 650;
+}
+.docs-home-outline .docs-outline-demo {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+}
+.docs-home-intro {
+  padding-bottom: 40px;
+  margin-bottom: 48px;
+}
+.docs-home-intro h1 {
+  font-size: clamp(32px, 3.4vw, 42px);
+}
+.docs-home-intro .lead {
+  font-size: 16px;
+}
+.docs-live-link,
+.docs-next a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+}
+.verification-path {
+  display: grid;
+  gap: 0;
+  margin: 28px 0;
+}
+.verification-path article {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 16px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+.verification-path article > span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+.verification-path h3,
+.verification-path p {
+  margin: 0 0 8px;
+}
+.docs-note {
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: var(--code);
+  background: var(--surface-soft);
+  font-size: 13px;
+}
+.docs-next {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+.docs-topic-group {
+  margin-top: 36px;
+}
+.docs-topic-group > h3 {
+  margin-bottom: 4px;
+}
+.docs-topic-group > p {
+  margin: 0 0 18px;
+  font-size: 13px;
+}
+.docs-topic,
+.docs-topic-group > .installation-reference {
+  margin: 0 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.docs-topic > summary,
+.docs-topic-group > .installation-reference > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+  padding: 18px 22px;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+.docs-topic > summary::-webkit-details-marker {
+  display: none;
+}
+.docs-topic > summary strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 650;
+}
+.docs-topic > summary small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.docs-topic > summary:hover,
+.docs-topic-group > .installation-reference > summary:hover {
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+.docs-topic-icon {
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: 400;
+}
+.docs-topic[open] > summary .docs-topic-icon {
+  transform: rotate(45deg);
+}
+.docs-topic > section,
+.docs-topic-group > .installation-reference > section {
+  margin: 0;
+  padding: 24px 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+}
+.docs-topic > section h2 {
+  font-size: 22px;
+}
+.docs-reference-hub > section {
+  margin: 32px 0 0;
+  padding-bottom: 0;
+  border: 0;
+}
+.docs-reference-hub .cards {
+  display: block;
+  margin: 18px 0 0;
+}
+.docs-reference-hub .cards article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 20px;
+  padding: 20px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+.docs-reference-hub .cards h3,
+.docs-reference-hub .cards p {
+  margin: 0;
+}
+.docs-reference-hub .cards p {
+  font-size: 13px;
+}
+.docs-reference-hub .cards article > a {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .docs-home-intro {
+    margin-bottom: 36px;
+    padding-bottom: 32px;
+  }
+  .docs-topic > summary,
+  .docs-topic-group > .installation-reference > summary,
+  .docs-topic > section,
+  .docs-topic-group > .installation-reference > section {
+    padding: 18px 16px;
+  }
+  .docs-reference-hub .cards article {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .docs-reference-hub .cards article > a {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
 @media (max-width: 800px) {
   .guide-page .docs-outline {
     display: block;
