@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-22T02:57:12.791Z",
+  "sourceCommit": "02a8f34f533d719e205ad81efffb1e14d1eb0259",
+  "unit": {
+    "files": 45,
+    "passed": 630
+  },
+  "localDownloadBrowser": {
+    "passed": 12,
+    "engines": ["chromium", "firefox", "webkit"]
+  },
+  "public": {
+    "total": 312,
+    "passed": 310,
+    "skipped": 2,
+    "retries": 0,
+    "skipReason": "Chromium CDP-only scenarios unavailable in Firefox and WebKit"
+  },
+  "installedConsumers": {
+    "status": "passed",
+    "packageSha512": "561dfd366da2632816c2947f19c270019eb18f72498ab670a24193ee90dc0aa39a913d409b116f546b1e1235b9dd2bcb5ed33227d8ae1ed857ecde40b5487ee8",
+    "matchesPublicDownload": true,
+    "phpRuntime": "unavailable; skipped"
+  },
+  "build": {
+    "typecheck": true,
+    "lint": true,
+    "format": true,
+    "deployBuild": true,
+    "workerTypecheck": true,
+    "dryRun": true
+  },
+  "publicReadback": {
+    "files": 55,
+    "packageFiles": 34,
+    "retainedReleases": 2,
+    "version": "e50d6e63-4bd4-46dd-8ce0-b4ee977222e4",
+    "deploymentId": "005629f6-e221-41c8-9eaa-83d4cc607656"
+  },
+  "preservation": {
+    "npmPublished": false,
+    "heldArtifactsUnchanged": true,
+    "codexConfigUnchanged": true,
+    "runtimeAndBindingsUnchanged": true
+  },
+  "review": {
+    "materialFindingsResolved": true,
+    "covered": [
+      "inline CSP execution and policy ownership",
+      "distribution path and byte integrity",
+      "writer concurrency and transaction failure",
+      "static timer scope false positives"
+    ]
+  },
+  "limitations": [
+    "Arbitrary dynamic code and aliases are not exhaustively analyzed.",
+    "PHP runtime and new Java/JSP/ASP.NET/Nginx operating-server verification not performed.",
+    "Event-based persisted lifecycle tests do not prove actual back-forward-cache hits on all devices.",
+    "Physical device certification and remote CI runs not observed.",
+    "Anonymous npm latest readback timed out; no publication or authentication attempted."
+  ]
+}

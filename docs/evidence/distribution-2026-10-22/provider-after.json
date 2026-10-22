@@ -1,0 +1,39 @@
+{
+  "id": "e50d6e63-4bd4-46dd-8ce0-b4ee977222e4",
+  "number": 39,
+  "metadata": {
+    "created_on": "2026-10-22T02:49:09.064027Z",
+    "source": "wrangler",
+    "author_id": "f85b113ca1403cdf8d8444ca700dc3eb",
+    "author_email": "uulab.official@gmail.com",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/message": "WebGuard verified downloads and pinned CDN; cached-page initializer fix; source 02a8f34; retained previous release; npm paused",
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "8f7454bba5b888fe791afc74cd8eaf55ccdd451874995a5feb5506bb0ae0fbca",
+      "handlers": ["fetch"],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "assets": {
+        "html_handling": "none",
+        "not_found_handling": "none",
+        "serve_directly": false,
+        "raw_run_worker_first": true,
+        "base_path": "/"
+      },
+      "compatibility_date": "2026-10-20",
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "name": "ASSETS",
+        "type": "assets"
+      }
+    ]
+  }
+}
