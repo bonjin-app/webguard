@@ -15,9 +15,7 @@
   "resources": {
     "script": {
       "etag": "365704c02a9e8ea3ed77980a2fa06a64bb8d25e3b278711e4d08f0c920abed70",
-      "handlers": [
-        "fetch"
-      ],
+      "handlers": ["fetch"],
       "last_deployed_from": "wrangler"
     },
     "script_runtime": {

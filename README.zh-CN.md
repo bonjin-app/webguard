@@ -23,7 +23,7 @@
 
 **发布状态（核查于 2026-10-22）：** npm `latest` 版本为 **0.2.0**。下文集成方式针对的是**尚未发布的 0.3.0 候选版本**。npm 发布仍处于暂停状态；通过 `npm install uulab-webguard@latest` 安装的版本不包含这些候选版 API。
 
-从 [SDK / 包下载](https://webguard.uulab.co.kr/docs/#sdk-downloads)获取候选版本，对照[下载目录](https://webguard.uulab.co.kr/downloads/catalog.json)验证摘要，然后安装实际下载的文件：
+从 [SDK / 包下载](https://webguard.uulab.co.kr/docs/#sdk-downloads)获取候选版本，并对照[下载目录](https://webguard.uulab.co.kr/downloads/catalog.json)验证摘要。执行以下命令前，请将下载的 `.tgz` 移至应用的项目根目录，或将命令中的路径替换为文件的实际绝对路径：
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz

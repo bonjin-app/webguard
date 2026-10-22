@@ -23,7 +23,7 @@ WebGuard をビルドに組み込み、保護したブラウザー向けアセ�
 
 **リリース状況（2026-10-22 確認）：** npm の `latest` は **0.2.0** です。以下の連携方法は、**未公開の 0.3.0 候補版**を対象としています。npm への公開は引き続き一時停止中です。`npm install uulab-webguard@latest` で候補版の API が使えるとは考えないでください。
 
-[SDK・パッケージのダウンロード](https://webguard.uulab.co.kr/docs/#sdk-downloads)から候補版を取得し、[ダウンロードカタログ](https://webguard.uulab.co.kr/downloads/catalog.json)とダイジェストを照合して、実際にダウンロードしたファイルをインストールします。
+[SDK・パッケージのダウンロード](https://webguard.uulab.co.kr/docs/#sdk-downloads)から候補版を取得し、[ダウンロードカタログ](https://webguard.uulab.co.kr/downloads/catalog.json)とダイジェストを照合します。以下のコマンドを実行する前に、ダウンロードした `.tgz` をアプリのプロジェクトルートへ移動するか、コマンドのパスを実際のファイルの絶対パスに置き換えてください。
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz

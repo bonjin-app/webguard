@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:e2e": "pnpm demo:build && playwright test",
-    "verify": "pnpm build && pnpm typecheck && pnpm lint && pnpm test",
+    "verify": "pnpm build && pnpm readme:check && pnpm typecheck && pnpm lint && pnpm test",
     "benchmark": "node scripts/benchmark.mjs",
     "dev": "pnpm --filter @webguard/playground dev",
     "benchmark:browser": "node scripts/benchmark-browser.mjs",
@@ -42,7 +42,8 @@
     "test:next": "node scripts/verify-next-consumer.mjs",
     "test:meta": "node scripts/verify-meta-guards.mjs",
     "release:check": "node scripts/release-npm.mjs check",
-    "api:check": "node scripts/api-reference.mjs"
+    "api:check": "node scripts/api-reference.mjs",
+    "readme:check": "node scripts/check-readmes.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

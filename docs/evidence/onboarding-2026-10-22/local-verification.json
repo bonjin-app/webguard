@@ -1,0 +1,24 @@
+{
+  "scope": "Local source/build/format/unit and isolated installed-internal-package verification; GitHub CI must be read separately.",
+  "baseCommit": "de305c81dd6eec70ba622ba77675429dd28bbf8a",
+  "checks": {
+    "verify": "passed",
+    "unitIntegrationFiles": 48,
+    "unitIntegrationTests": 643,
+    "format": "passed",
+    "readmeLanguages": 4,
+    "readmeRelativeLinks": 132,
+    "readmeCodeBlocks": 52,
+    "typedExamplesAgainstSource": 5,
+    "coldStoreConsumer": "passed"
+  },
+  "files": {
+    "scripts/check-readmes.mjs": "91ab4a7f25a33b56edd43db730276a969c910ab599b28b8fa678bdf75d547977",
+    "scripts/verify-package-consumer.mjs": "716b76da5dfb5195ccc025e435e40ad1ab534c8c59c354ce55949b5bed0349b2",
+    "tests/unit/readme.test.ts": "0d5bfd4fa8915038aabc8ba83082ea462e9feadeef04c353429554051d8854b8",
+    ".github/workflows/ci.yml": "45a12f29026e5bb444f71cdd928f58324483208cf2af07bf15b45ce99396f056"
+  },
+  "npmPublished": false,
+  "publicDemoRedeployed": false,
+  "configChanged": false
+}

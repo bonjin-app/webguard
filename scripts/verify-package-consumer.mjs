@@ -1,9 +1,32 @@
-import { mkdtemp, readFile, writeFile, readdir, rm } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  writeFile,
+  readdir,
+  rm,
+} from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 const root = fileURLToPath(new URL("../", import.meta.url));
+const args = process.argv.slice(2);
+let evidence = join(root, "docs/evidence/package-consumer.json");
+let isolatedStore = false;
+for (let index = 0; index < args.length; index++) {
+  if (args[index] === "--isolated-store") isolatedStore = true;
+  else if (
+    args[index] === "--evidence" &&
+    args[index + 1] &&
+    !args[index + 1].startsWith("--")
+  )
+    evidence = resolve(args[++index]);
+  else
+    throw Error(
+      "Usage: node scripts/verify-package-consumer.mjs [--isolated-store] [--evidence PATH]",
+    );
+}
 const temporary = await mkdtemp(join(tmpdir(), "webguard-one-package-"));
 function run(args, cwd = root) {
   const r = spawnSync("pnpm", args, { cwd, encoding: "utf8", timeout: 120000 });
@@ -53,7 +76,15 @@ try {
         .join("\n") +
       "\n",
   );
-  run(["install", "--offline", "--ignore-scripts"], temporary);
+  run(
+    [
+      "install",
+      "--prefer-offline",
+      "--ignore-scripts",
+      ...(isolatedStore ? ["--store-dir", join(temporary, "pnpm-store")] : []),
+    ],
+    temporary,
+  );
   await writeFile(
     join(temporary, "index.html"),
     '<html><head></head><body><script type="module" src="/main.js"></script></body></html>',
@@ -104,7 +135,10 @@ try {
   const report = {
     checkedAt: new Date().toISOString(),
     method:
-      "Offline install of packed tarballs in unrelated temporary application; no workspace links or aliases",
+      "Prefer-offline install of packed tarballs in unrelated temporary application, with registry downloads for cache misses; no workspace links or aliases",
+    packageStore: isolatedStore
+      ? "fresh isolated store"
+      : "configured pnpm store",
     directProtectionDependency: "@webguard/vite-plugin only",
     fixtureOverrides:
       "All internal temporary package names pinned to local tarballs because no packages are published",
@@ -115,10 +149,8 @@ try {
     headerArtifacts: true,
     registryPublish: false,
   };
-  await writeFile(
-    join(root, "docs/evidence/package-consumer.json"),
-    JSON.stringify(report, null, 2) + "\n",
-  );
+  await mkdir(dirname(evidence), { recursive: true });
+  await writeFile(evidence, JSON.stringify(report, null, 2) + "\n");
   console.log(
     "Packaged consumer build, automatic SDK, client subpath and headers passed.",
   );

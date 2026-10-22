@@ -23,7 +23,7 @@
 
 **2026-10-22 확인 기준 릴리스 상태:** npm `latest`는 **0.2.0**입니다. 아래 통합 안내는 **아직 배포하지 않은 0.3.0 후보 버전**을 설명합니다. npm 배포는 계속 보류 중이므로 `npm install uulab-webguard@latest`로 후보 버전 API를 사용할 수 있다고 가정하지 마세요.
 
-[SDK/패키지 다운로드](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 후보 버전을 내려받고, [다운로드 카탈로그](https://webguard.uulab.co.kr/downloads/catalog.json)의 다이제스트와 대조한 뒤 실제로 내려받은 파일을 설치하세요.
+[SDK/패키지 다운로드](https://webguard.uulab.co.kr/docs/#sdk-downloads)에서 후보 버전을 내려받고, [다운로드 카탈로그](https://webguard.uulab.co.kr/downloads/catalog.json)의 다이제스트와 대조하세요. 아래 명령 전에 내려받은 `.tgz`를 적용할 앱의 프로젝트 루트로 옮기거나, 명령의 경로를 실제 파일의 절대 경로로 바꾸세요.
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz

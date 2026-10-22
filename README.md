@@ -23,7 +23,7 @@ Build tools require **Node.js 22.12+**. The product is **WebGuard**; `uulab-webg
 
 **Release status, checked 2026-10-22:** npm `latest` is **0.2.0**. The integrations below describe the **unpublished 0.3.0 candidate**. npm publication remains paused; do not expect these candidate APIs from `npm install uulab-webguard@latest`.
 
-Download the candidate from [SDK/package downloads](https://webguard.uulab.co.kr/docs/#sdk-downloads), verify its digest against the [download catalog](https://webguard.uulab.co.kr/downloads/catalog.json), and install the actual downloaded file:
+Download the candidate from [SDK/package downloads](https://webguard.uulab.co.kr/docs/#sdk-downloads) and verify its digest against the [download catalog](https://webguard.uulab.co.kr/downloads/catalog.json). Move the downloaded `.tgz` into your application’s project root before running the command below, or substitute its actual absolute path:
 
 ```sh
 npm install -D ./uulab-webguard-0.3.0.tgz
