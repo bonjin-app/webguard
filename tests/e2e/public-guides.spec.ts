@@ -54,7 +54,24 @@ for (const [name, title] of guides) {
         "background-color",
         "rgb(237, 248, 255)",
       );
-      await expect(page.locator("script")).toHaveCount(0);
+      // Cloudflare injects its existing account RUM beacon for browser requests.
+      // Our built HTML has no application scripts (covered by generation tests and
+      // byte readback). Accept only this observed host asset; unknown scripts fail.
+      const scripts = await page.locator("script").evaluateAll((elements) =>
+        elements.map((element) => ({
+          src: element.getAttribute("src"),
+          integrity: element.getAttribute("integrity"),
+        })),
+      );
+      if (new URL(page.url()).hostname === "webguard.uulab.co.kr") {
+        expect(scripts.length).toBeLessThanOrEqual(1);
+        for (const script of scripts)
+          expect(script).toEqual({
+            src: "https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092",
+            integrity:
+              "sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==",
+          });
+      } else expect(scripts).toEqual([]);
       await expect(
         page.getByRole("link", { name: "원문 .txt 다운로드" }),
       ).toHaveAttribute("download", "");
